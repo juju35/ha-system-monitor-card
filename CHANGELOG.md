@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0
+
+### Changes
+- The warning color falls back to Home Assistant's default `#ffa600` (was `#ffa000`), like the other juju35 cards. The upload tile uses `--info-color` instead of a fixed blue.
+
+### Development
+- Releases are published when `version` in `package.json` has no tag yet: bump the version, add its CHANGELOG section and push, like the other juju35 repositories (the manual Release workflow run is no longer needed).
+- Issue templates, stale workflow and a "Update release notes" workflow, shared with the other repositories.
+
 ## 1.0.3
 
 ### 💄 Style

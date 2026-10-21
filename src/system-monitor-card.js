@@ -353,7 +353,7 @@ const fireMoreInfo = (node, entityId) => {
 // ---------------------------------------------------------------------------
 
 const BASE_STYLE = `
-  :host { --sm-blue: #18bcf2; --sm-ok: var(--success-color, #43a047); --sm-warn: var(--warning-color, #ffa000); --sm-crit: var(--error-color, #db4437); }
+  :host { --sm-blue: #18bcf2; --sm-ok: var(--success-color, #43a047); --sm-warn: var(--warning-color, #ffa600); --sm-crit: var(--error-color, #db4437); }
   ha-card { overflow: hidden; }
   .icon { width: 18px; height: 18px; fill: currentColor; flex: none; }
   .muted { color: var(--secondary-text-color); }
@@ -494,7 +494,7 @@ const FULL_STYLE = `
   .tile .k { font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tile .v { font-size: 15px; font-weight: 500; }
   .tile .t { font-size: 11px; color: var(--secondary-text-color); }
-  .tile.up { --c: #2196f3; }
+  .tile.up { --c: var(--info-color, #039be5); }
   .tile.down { --c: var(--sm-ok); }
   .vol { margin-bottom: 10px; }
   .vol:last-child { margin-bottom: 0; }

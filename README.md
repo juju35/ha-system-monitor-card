@@ -161,10 +161,9 @@ npm run screenshots  # renders the cards with mock data (scripts/mock-states.mjs
 
 ### Releasing
 
-1. Add a `## <version>` section at the top of [CHANGELOG.md](CHANGELOG.md)
-2. Run the **Release** workflow from the Actions tab with that version
-
-The workflow builds the card, creates the tag and the GitHub release with the changelog section as notes, and attaches `system-monitor-card.js`.
+1. Bump `version` in `package.json` and run `npm run build`
+2. Add a `## <version>` section at the top of [CHANGELOG.md](CHANGELOG.md)
+3. Push to `main`: the **Release** workflow creates the tag and the GitHub release with the changelog section as notes, and attaches `system-monitor-card.js`
 
 ## Translations
 

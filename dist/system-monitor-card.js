@@ -8,7 +8,7 @@
  * registry (platform "systemmonitor" and translation key), whatever the language.
  */
 
-const VERSION = "1.0.3";
+const VERSION = "1.1.0";
 const IMG_LOGO = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMjQwIj48cGF0aCBmaWxsPSIjRjJGNEY5IiBkPSJNMjQwIDIyNC44MTNDMjQwIDIzMy4wNjMgMjMzLjI1IDIzOS44MTMgMjI1IDIzOS44MTNIMTVDNi43NSAyMzkuODEzIDAgMjMzLjA2MyAwIDIyNC44MTNWMTM0LjgxM0MwIDEyNi41NjMgNC43NyAxMTUuMDQzIDEwLjYxIDEwOS4yMDNMMTA5LjM5IDEwLjQyM0MxMTUuMjIgNC41OTMwNCAxMjQuNzcgNC41OTMwNCAxMzAuNiAxMC40MjNMMjI5LjM5IDEwOS4yMTNDMjM1LjIyIDExNS4wNDMgMjQwIDEyNi41NzMgMjQwIDEzNC44MjNWMjI0LjgyM1YyMjQuODEzWiIvPjxwYXRoIGZpbGw9IiMxOEJDRjIiIGQ9Ik0yMjkuMzkgMTA5LjIwM0wxMzAuNjEgMTAuNDIzQzEyNC43OCA0LjU5MzA0IDExNS4yMyA0LjU5MzA0IDEwOS40IDEwLjQyM0wxMC42MSAxMDkuMjAzQzQuNzggMTE1LjAzMyAwIDEyNi41NjMgMCAxMzQuODEzVjIyNC44MTNDMCAyMzMuMDYzIDYuNzUgMjM5LjgxMyAxNSAyMzkuODEzSDEwNy4yN0w2Ni42NCAxOTkuMTgzQzY0LjU1IDE5OS45MDMgNjIuMzIgMjAwLjMxMyA2MCAyMDAuMzEzQzQ4LjcgMjAwLjMxMyAzOS41IDE5MS4xMTMgMzkuNSAxNzkuODEzQzM5LjUgMTY4LjUxMyA0OC43IDE1OS4zMTMgNjAgMTU5LjMxM0M3MS4zIDE1OS4zMTMgODAuNSAxNjguNTEzIDgwLjUgMTc5LjgxM0M4MC41IDE4Mi4xNDMgODAuMDkgMTg0LjM3MyA3OS4zNyAxODYuNDYzTDExMSAyMTguMDkzVjEwMi4yMTNDMTA0LjIgOTguODczIDk5LjUgOTEuODkzIDk5LjUgODMuODIzQzk5LjUgNzIuNTIzIDEwOC43IDYzLjMyMyAxMjAgNjMuMzIzQzEzMS4zIDYzLjMyMyAxNDAuNSA3Mi41MjMgMTQwLjUgODMuODIzQzE0MC41IDkxLjg5MyAxMzUuOCA5OC44NzMgMTI5IDEwMi4yMTNWMTgzLjQ4M0wxNjAuNDYgMTUyLjAyM0MxNTkuODQgMTUwLjA2MyAxNTkuNSAxNDcuOTgzIDE1OS41IDE0NS44MjNDMTU5LjUgMTM0LjUyMyAxNjguNyAxMjUuMzIzIDE4MCAxMjUuMzIzQzE5MS4zIDEyNS4zMjMgMjAwLjUgMTM0LjUyMyAyMDAuNSAxNDUuODIzQzIwMC41IDE1Ny4xMjMgMTkxLjMgMTY2LjMyMyAxODAgMTY2LjMyM0MxNzcuNSAxNjYuMzIzIDE3NS4xMiAxNjUuODUzIDE3Mi45MSAxNjUuMDMzTDEyOSAyMDguOTQzVjIzOS44MjNIMjI1QzIzMy4yNSAyMzkuODIzIDI0MCAyMzMuMDczIDI0MCAyMjQuODIzVjEzNC44MjNDMjQwIDEyNi41NzMgMjM1LjIzIDExNS4wNTMgMjI5LjM5IDEwOS4yMTNWMTA5LjIwM1oiLz48L3N2Zz4K";
 
 const ICONS = {
@@ -353,7 +353,7 @@ const fireMoreInfo = (node, entityId) => {
 // ---------------------------------------------------------------------------
 
 const BASE_STYLE = `
-  :host { --sm-blue: #18bcf2; --sm-ok: var(--success-color, #43a047); --sm-warn: var(--warning-color, #ffa000); --sm-crit: var(--error-color, #db4437); }
+  :host { --sm-blue: #18bcf2; --sm-ok: var(--success-color, #43a047); --sm-warn: var(--warning-color, #ffa600); --sm-crit: var(--error-color, #db4437); }
   ha-card { overflow: hidden; }
   .icon { width: 18px; height: 18px; fill: currentColor; flex: none; }
   .muted { color: var(--secondary-text-color); }
@@ -494,7 +494,7 @@ const FULL_STYLE = `
   .tile .k { font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tile .v { font-size: 15px; font-weight: 500; }
   .tile .t { font-size: 11px; color: var(--secondary-text-color); }
-  .tile.up { --c: #2196f3; }
+  .tile.up { --c: var(--info-color, #039be5); }
   .tile.down { --c: var(--sm-ok); }
   .vol { margin-bottom: 10px; }
   .vol:last-child { margin-bottom: 0; }
