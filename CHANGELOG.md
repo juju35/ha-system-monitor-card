@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0
+
+### Changes
+- **Check for updates** now runs on the server, through the new [HACS Refresh](https://github.com/juju35/ha-hacs-refresh) integration: the card presses its button, then shows the progress and the time of the last check from its sensors. The check goes on when the page is closed, and is no longer limited to administrators. Without HACS Refresh, a link to install it replaces the button.
+
 ## 1.2.1
 
 ### 💄 Style

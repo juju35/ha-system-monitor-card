@@ -91,3 +91,13 @@ for (const [slug, name, category, repo, installed, latest, domain] of HACS) {
   if (latest !== installed)
     hacsUpdates[id] = { entity_id: id, state: "on", attributes: { ...attributes, latest_version: latest, release_url: `https://github.com/${repo}/releases/${latest}` } };
 }
+
+// HACS Refresh integration: checks every HACS repository for updates on the server.
+for (const [id, state, attributes] of [
+  ["button.hacs_refresh_check_for_updates", "unknown", {}],
+  ["sensor.hacs_refresh_status", "idle", { device_class: "enum", done: 6, total: 6, updates: 2, failed: [], error: null }],
+  ["sensor.hacs_refresh_last_check", new Date(Date.now() - 2 * 3600 * 1000).toISOString(), { device_class: "timestamp" }],
+]) {
+  states[id] = { entity_id: id, state, attributes };
+  entities[id] = { entity_id: id, platform: "hacs_refresh", device_id: "hacs_refresh" };
+}

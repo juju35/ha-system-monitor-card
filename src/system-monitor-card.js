@@ -68,6 +68,8 @@ const STRINGS = {
     check_updates: "Check for updates",
     checking: "Checking {i}/{n}…",
     check_failed: "Check failed: {e}",
+    last_check: "Last check {t}",
+    needs_refresh: "Install HACS Refresh to check every extension for updates from Home Assistant.",
     github: "Open on GitHub",
     // Editor
     title: "Title (optional, defaults to Home Assistant)",
@@ -111,6 +113,8 @@ const STRINGS = {
     check_updates: "Rechercher les mises à jour",
     checking: "Recherche {i}/{n}…",
     check_failed: "Échec de la recherche : {e}",
+    last_check: "Dernière recherche {t}",
+    needs_refresh: "Installez HACS Refresh pour rechercher les mises à jour de toutes les extensions depuis Home Assistant.",
     github: "Ouvrir sur GitHub",
     title: "Titre (facultatif, Home Assistant par défaut)",
     show_image: "Afficher le logo Home Assistant",
@@ -404,6 +408,30 @@ const discoverHacs = (hass) => {
   return out.sort((x, y) => y.update - x.update || x.name.localeCompare(y.name));
 };
 
+/** Entities of the HACS Refresh integration, which checks every HACS repository for updates on the server. */
+const discoverRefresh = (hass) => {
+  const out = {};
+  for (const e of Object.values(hass.entities || {})) {
+    if (e.platform !== "hacs_refresh" || !hass.states[e.entity_id]) continue;
+    if (e.entity_id.startsWith("button.")) out.button = e.entity_id;
+    else if (e.entity_id.startsWith("sensor.")) {
+      const s = hass.states[e.entity_id];
+      if (e.translation_key === "last_check" || s.attributes.device_class === "timestamp") out.lastCheck = e.entity_id;
+      else out.status = e.entity_id;
+    }
+  }
+  return out;
+};
+
+const relTime = (iso, locale) => {
+  const sec = (Date.parse(iso) - Date.now()) / 1000;
+  if (!Number.isFinite(sec)) return "";
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
+  for (const [unit, size] of [["day", 86400], ["hour", 3600], ["minute", 60]])
+    if (Math.abs(sec) >= size) return rtf.format(Math.round(sec / size), unit);
+  return rtf.format(Math.round(sec), "second");
+};
+
 const fireMoreInfo = (node, entityId) => {
   if (!entityId) return;
   node.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId }, bubbles: true, composed: true }));
@@ -514,24 +542,16 @@ class SystemMonitorBase extends HTMLElement {
     return `<span class="ext-logo"><img src="${esc(src[0])}" data-fb="${esc(src.slice(1).join(" "))}" data-cat="${cat}" alt="" loading="lazy" referrerpolicy="no-referrer"></span>`;
   }
 
-  /** Asks HACS to fetch every downloaded repository again from GitHub (admin only). */
+  /** Presses the HACS Refresh button: the check runs on the server, its progress comes back through the status sensor. */
   async _checkHacs() {
-    if (this._checking) return;
+    const rf = discoverRefresh(this._hass);
+    if (!rf.button) return;
     this._checkError = null;
-    this._checking = { i: 0, n: 0 };
-    this._update();
     try {
-      const repos = (await this._hass.callWS({ type: "hacs/repositories/list" })).filter((r) => r.installed);
-      this._checking.n = repos.length;
-      for (const r of repos) {
-        this._checking.i += 1;
-        this._update();
-        await this._hass.callWS({ type: "hacs/repository/refresh", repository: String(r.id) });
-      }
+      await this._hass.callService("button", "press", { entity_id: rf.button });
     } catch (e) {
       this._checkError = e?.message || String(e);
     }
-    this._checking = null;
     this._update();
   }
 
@@ -644,6 +664,9 @@ const FULL_STYLE = `
   .spin { animation: sm-spin 1s linear infinite; }
   @keyframes sm-spin { to { transform: rotate(360deg); } }
   .err { font-size: 12px; color: var(--sm-crit); }
+  .toolbar .last { font-size: 12px; }
+  .toolbar .hint { font-size: 12px; color: var(--secondary-text-color); text-decoration: none; }
+  .toolbar .hint:hover { text-decoration: underline; }
   .exts { margin-top: 4px; }
   .ext { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; }
   .ext + .ext { border-top: 1px solid var(--divider-color, rgba(127,127,127,.25)); }
@@ -863,16 +886,31 @@ class SystemMonitorCard extends SystemMonitorBase {
         <span class="count">${ext.length}</span>${svgIcon(ICONS.chevron, "chevron")}
       </div>`;
     if (!open) return `<div class="hacs">${head}</div>`;
+    const rf = discoverRefresh(this._hass);
     const admin = !this._hass.user || this._hass.user.is_admin;
-    const ck = this._checking;
-    const toolbar = admin
-      ? `<div class="toolbar">
-          <button class="btn" data-action="hacs-check" ${ck ? "disabled" : ""}>
-            ${svgIcon(ICONS.refresh, ck ? "spin" : "")}${esc(ck ? this._t("checking").replace("{i}", ck.i).replace("{n}", ck.n || "…") : this._t("check_updates"))}
+    let toolbar = "";
+    if (rf.button) {
+      const st = this._s(rf.status);
+      const running = st?.state === "running";
+      const busy = running || this._s(rf.button)?.state === "unavailable";
+      const label = running
+        ? this._t("checking").replace("{i}", st.attributes.done ?? 0).replace("{n}", st.attributes.total || "…")
+        : this._t("check_updates");
+      const error = this._checkError || (st?.state === "error" ? st.attributes.error : null);
+      const last = this._s(rf.lastCheck)?.state;
+      const lastText = !running && last && !["unknown", "unavailable"].includes(last)
+        ? this._t("last_check").replace("{t}", relTime(last, lang(this._hass, this._config)))
+        : "";
+      toolbar = `<div class="toolbar">
+          <button class="btn" data-action="hacs-check" ${busy ? "disabled" : ""}>
+            ${svgIcon(ICONS.refresh, running ? "spin" : "")}${esc(label)}
           </button>
-          ${this._checkError ? `<span class="err">${esc(this._t("check_failed").replace("{e}", this._checkError))}</span>` : ""}
-        </div>`
-      : "";
+          ${lastText ? `<span class="muted last clickable" data-entity="${rf.lastCheck}">${esc(lastText)}</span>` : ""}
+          ${error ? `<span class="err">${esc(this._t("check_failed").replace("{e}", error))}</span>` : ""}
+        </div>`;
+    } else if (admin) {
+      toolbar = `<div class="toolbar"><a class="hint" href="https://github.com/juju35/ha-hacs-refresh" target="_blank" rel="noopener noreferrer">${esc(this._t("needs_refresh"))}</a></div>`;
+    }
     const rows = ext.map((x) => {
       const ver = x.update ? `${esc(x.installed || "?")} → <b>${esc(x.latest || "?")}</b>` : esc(x.installed || "—");
       const status = x.update

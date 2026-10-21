@@ -27,7 +27,7 @@ The cards are built on top of the core [System Monitor integration](https://www.
 - Network download / upload rates and totals, per interface (virtual interfaces such as `docker0` or `hassio` are hidden)
 - Storage: every monitored mount point and the swap, with used space
 - Monitored processes, green when running and red when stopped
-- **HACS extensions**: a collapsible list of every repository downloaded with HACS, with its logo, version, update status and a GitHub button, plus a **Check for updates** button; the overall HACS status sits under the Home Assistant one
+- **HACS extensions**: a collapsible list of every repository downloaded with HACS, with its logo, version, update status and a GitHub button, plus a **Check for updates** button that runs on the server through [HACS Refresh](https://github.com/juju35/ha-hacs-refresh); the overall HACS status sits under the Home Assistant one
 - Colors turn orange / red when a threshold is crossed (CPU, RAM, disk, temperature)
 - Click any value to open its Home Assistant history (more-info dialog)
 - Visual editor in the dashboard UI for both cards (no YAML needed)
@@ -46,7 +46,7 @@ Most of its sensors are disabled by default: open the **System Monitor** device 
 | Network | Network throughput in / out, Network in / out (totals) |
 | Storage | Disk use + Disk free for each mount point, Swap use + Swap free |
 | Processes | Process binary sensors (configured in the integration options) |
-| HACS | Nothing: the update entities HACS creates for downloaded repositories are used as is |
+| HACS | Nothing for the list: the update entities HACS creates for downloaded repositories are used as is. The **Check for updates** button needs the [HACS Refresh](https://github.com/juju35/ha-hacs-refresh) integration |
 
 Sections and gauges without any enabled sensor are simply not displayed.
 
@@ -156,7 +156,7 @@ Logos are loaded dynamically, best source first:
 3. The avatar of the GitHub owner of the repository
 4. An icon for the HACS category (integration, dashboard, theme…)
 
-**Check for updates** asks HACS to fetch every downloaded repository again from GitHub, one after the other, with the progress on the button. It uses HACS' websocket API and is shown to administrators only.
+**Check for updates** presses the button of the [HACS Refresh](https://github.com/juju35/ha-hacs-refresh) integration: Home Assistant asks HACS to fetch every downloaded repository again from GitHub, in the background, and the card shows the progress and the time of the last check from HACS Refresh's sensors. The check goes on if you leave the page, and HACS Refresh can also check at an interval set in its options. Without HACS Refresh, the button is replaced by a link to install it.
 
 Thresholds:
 
