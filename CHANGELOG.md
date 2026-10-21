@@ -1,67 +1,68 @@
 # Changelog
 
+## 1.8.5
+
+### Changes
+- HACS now asks for Home Assistant 2024.8 or later, the version that brought the sections view the card supports; the README says so under **Prerequisites**.
+
+### Fixes
+- "Uptime:" and "Load:" in English, without the French space before the colon.
+
+### Maintenance
+- CHANGELOG headings use the same plain English set as the other ha-* repositories.
+
 ## 1.8.4
 
-### 💄 Style
-
+### Changes
 - A click on the **Integrations** tile shows its section unfolded even while every integration is available (last reload, last check, **Check now** button); a click elsewhere hides it again, like the processes one.
 
 ## 1.8.3
 
-### 💄 Style
-
+### Changes
 - The **Processes** section is hidden while every process runs, like the integrations one. Its tile in the status row still shows "Running", and a click on it shows the list. It shows up by itself as soon as a process stops.
 
 ## 1.8.2
 
-### 💄 Style
-
+### Changes
 - The **Integrations** section is hidden while every integration is available. Its tile in the status row still shows "Available".
 
 ## 1.8.1
 
-### 🐛 Fixes
-
+### Fixes
 - The processes list folds again on a click elsewhere, like the HACS and integrations lists, while every process runs.
 - While a process is stopped, the processes list stays unfolded: neither its title nor a click elsewhere folds it.
 
 ## 1.8.0
 
-### 💄 Style
-
+### Changes
 - The HACS, processes and integrations statuses leave the header for a row of tiles under it, side by side and the same width: section icon and name, then the status in green, orange or red. Click a tile to unfold its section. The Home Assistant Core / OS update stays next to the logo, and the header is no longer stretched by a column of badges.
 
 ## 1.7.1
 
-### 💄 Style
-
+### Changes
 - The processes status in the header moves after the HACS one, just before the integrations one.
 
 ## 1.7.0
 
-### ✨ Features
-
+### What's new
 - The processes section is folded while every process runs, and unfolds by itself as soon as one stops. Its title shows the number of processes and, in red, the number stopped.
 - Processes status in the header, right after the Home Assistant one: "Processes running" or the number of processes stopped; click it to fold or unfold the list.
 
 ## 1.6.0
 
-### ✨ Features
-
+### What's new
 - **Integrations** section with [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog): the integrations whose entities are all unavailable, with their logo, since when, the number of reloads and **Given up** when the watchdog stopped reloading one; the last reload and the last check; a **Check now** button next to the title. Click a line to open the integration page. Folded by default, like the HACS list.
 - Integrations status under the HACS one in the header: "Integrations available" or the number of unavailable integrations; click it to unfold the list.
 - New option `show_watchdog` (also in the visual editor). The section is only shown when Integration Watchdog is set up.
 
 ## 1.5.1
 
-### 🧹 Maintenance
-
+### Maintenance
 - Remove the `package-lock.json` committed by mistake in 1.5.0. Nothing changes for users.
 
 ## 1.5.0
 
-### ✨ Features
-
+### What's new
 - A click anywhere else on the page folds the HACS extensions list again, as in ha-carburants-france.
 
 ## 1.4.0
@@ -71,12 +72,12 @@
 
 ## 1.3.3
 
-### 💄 Style
+### Changes
 - The **Check for updates** button sits right after the HACS title and update badge, away from the extension count and the fold chevron, so it is no longer pressed by mistake.
 
 ## 1.3.2
 
-### 💄 Style
+### Changes
 - The **Check for updates** button moved to the HACS section header, next to the number of extensions: it stays visible while the list is folded (the default). It spins and shows the progress while a check runs; the time of the last check is shown under the header once the list is unfolded.
 
 ## 1.3.1
@@ -91,7 +92,7 @@
 
 ## 1.2.1
 
-### 💄 Style
+### Changes
 - HACS section header laid out like the ha-dockhand-card sections: the number of extensions is aligned on the right, before a chevron that rotates when the section folds.
 
 ## 1.2.0
@@ -114,20 +115,17 @@
 
 ## 1.0.3
 
-### 💄 Style
-
+### Changes
 - The Home Assistant logo is now on the left of the header, before the title, versions and status, on both cards.
 
 ## 1.0.2
 
-### 🐛 Fixes
-
+### Fixes
 - Uptime is now displayed: the System Monitor "Last boot" sensor has no translation key (it is named after its `uptime` device class, e.g. "Temps de fonctionnement" in French), so it was skipped by the entity discovery.
 
 ## 1.0.1
 
-### 🐛 Fixes
-
+### Fixes
 - Recognize an `uptime` translation key for the System Monitor "Last boot" sensor.
 
 ## 1.0.0
@@ -138,8 +136,7 @@ First release of the System Monitor cards for Home Assistant, built for the core
 |---|---|
 | ![system-monitor-card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card.png) | ![system-monitor-mini-card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card.png) |
 
-### ✨ Features
-
+### What's new
 - **System Monitor Card** (`custom:system-monitor-card`): CPU, RAM, disk and CPU temperature gauges, uptime, load average, IP address, network download / upload, storage (mount points and swap) and monitored processes.
 - **System Monitor Mini Card** (`custom:system-monitor-mini-card`): compact overview with CPU, RAM, disk, temperature, update status, network and uptime.
 - **Automatic discovery** of the System Monitor entities through the entity registry: no entity to pick, works whatever the language of the installation.
@@ -150,14 +147,12 @@ First release of the System Monitor cards for Home Assistant, built for the core
 - Light and dark mode, English and French.
 - Single file with no external dependency, the Home Assistant logo is embedded.
 
-### 📦 Installation
-
+### Installation
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-system-monitor-card&category=plugin)
 
 Open the link above (or add `https://github.com/juju35/ha-system-monitor-card` as a **Dashboard** custom repository in HACS), click **Download**, then reload your browser. Manual install: copy `system-monitor-card.js` from the assets below to `/config/www/` and add `/local/system-monitor-card.js` as a JavaScript Module resource.
 
-### 🚀 Quick start
-
+### Quick start
 ```yaml
 type: custom:system-monitor-card
 ```

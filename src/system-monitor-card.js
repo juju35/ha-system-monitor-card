@@ -48,8 +48,8 @@ const STRINGS = {
     network: "Network",
     storage: "Storage",
     processes: "Processes",
-    uptime: "Uptime",
-    load: "Load",
+    uptime: "Uptime:",
+    load: "Load:",
     download: "Download",
     upload: "Upload",
     total: "Total",
@@ -123,7 +123,7 @@ const STRINGS = {
     storage: "Stockage",
     processes: "Processus",
     uptime: "Allumé depuis",
-    load: "Charge",
+    load: "Charge :",
     download: "Réception",
     upload: "Envoi",
     total: "Total",
@@ -1009,12 +1009,12 @@ class SystemMonitorCard extends SystemMonitorBase {
     const up = uptimeSec(this._s(sc.last_boot));
     if (up !== null)
       facts.push(
-        `<span class="clickable" data-entity="${sc.last_boot}">${svgIcon(ICONS.timer)}${this._t("uptime")} : ${fmtUptime(up, this._hass, this._config)}</span>`
+        `<span class="clickable" data-entity="${sc.last_boot}">${svgIcon(ICONS.timer)}${this._t("uptime")} ${fmtUptime(up, this._hass, this._config)}</span>`
       );
     const loads = ["load_1m", "load_5m", "load_15m"].filter((k) => sc[k]);
     if (loads.length)
       facts.push(
-        `<span class="clickable" data-entity="${sc[loads[0]]}">${svgIcon(ICONS.load)}${this._t("load")} : ${loads
+        `<span class="clickable" data-entity="${sc[loads[0]]}">${svgIcon(ICONS.load)}${this._t("load")} ${loads
           .map((k) => {
             const v = num(this._s(sc[k]));
             return v === null ? "—" : v.toFixed(2);

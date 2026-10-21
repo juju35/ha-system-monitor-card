@@ -37,6 +37,8 @@ The cards are built on top of the core [System Monitor integration](https://www.
 
 ## Prerequisites
 
+Home Assistant 2024.8 or later, and:
+
 The [System Monitor integration](https://www.home-assistant.io/integrations/systemmonitor/) must be added (**Settings → Devices & services → Add integration → System Monitor**).
 
 Most of its sensors are disabled by default: open the **System Monitor** device and enable the ones you want to see on the card, for example:

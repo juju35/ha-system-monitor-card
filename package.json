@@ -1,6 +1,6 @@
 {
   "name": "ha-system-monitor-card",
-  "version": "1.8.4",
+  "version": "1.8.5",
   "description": "Lovelace cards for Home Assistant to monitor the machine running Home Assistant (System Monitor integration).",
   "private": true,
   "type": "module",
