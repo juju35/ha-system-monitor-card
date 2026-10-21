@@ -25,6 +25,17 @@ const ICONS = {
   ip: "M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3M12,7A2,2 0 0,1 14,9A2,2 0 0,1 12,11A2,2 0 0,1 10,9A2,2 0 0,1 12,7Z",
   process: "M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M15,18V16H6V18H15M18,14V12H6V14H18Z",
   swap: "M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z",
+  hacs: "M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L10.11,5.22L16,8.61L17.96,7.5L12,4.15M6.04,7.5L12,10.85L13.96,9.75L8.08,6.35L6.04,7.5M5,15.91L11,19.29V12.58L5,9.21V15.91M19,15.91V9.21L13,12.58V19.29L19,15.91Z",
+  github: "M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z",
+  refresh: "M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z",
+  chevronDown: "M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z",
+  chevronRight: "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z",
+  // Fallbacks per HACS category when no logo can be loaded.
+  integration: "M22,13.5C22,15.26 20.7,16.72 19,16.96V20A2,2 0 0,1 17,22H13.2V21.7A2.7,2.7 0 0,0 10.5,19C9,19 7.8,20.21 7.8,21.7V22H4A2,2 0 0,1 2,20V16.2H2.3C3.79,16.2 5,15 5,13.5C5,12 3.79,10.8 2.3,10.8H2V7A2,2 0 0,1 4,5H7.04C7.28,3.3 8.74,2 10.5,2C12.26,2 13.72,3.3 13.96,5H17A2,2 0 0,1 19,7V10.04C20.7,10.28 22,11.74 22,13.5M17,15H18.5A1.5,1.5 0 0,0 20,13.5A1.5,1.5 0 0,0 18.5,12H17V7H12V5.5A1.5,1.5 0 0,0 10.5,4A1.5,1.5 0 0,0 9,5.5V7H4V9.12C5.76,9.8 7,11.5 7,13.5C7,15.5 5.75,17.2 4,17.88V20H6.12C6.8,18.25 8.5,17 10.5,17C12.5,17 14.2,18.25 14.88,20H17V15Z",
+  plugin: "M19,5V7H15V5H19M9,5V11H5V5H9M19,13V19H15V13H19M9,17V19H5V17H9M21,3H13V9H21V3M11,3H3V13H11V3M21,11H13V21H21V11M11,15H3V21H11V15Z",
+  theme: "M12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2C17.5,2 22,6 22,11A6,6 0 0,1 16,17H14.2C13.9,17 13.7,17.2 13.7,17.5C13.7,17.6 13.8,17.7 13.8,17.8C14.2,18.3 14.4,18.9 14.4,19.5C14.5,20.9 13.4,22 12,22M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C12.3,20 12.5,19.8 12.5,19.5C12.5,19.3 12.4,19.2 12.4,19.1C12,18.6 11.8,18.1 11.8,17.5C11.8,16.1 12.9,15 14.3,15H16A4,4 0 0,0 20,11C20,7.1 16.4,4 12,4M6.5,10C7.3,10 8,10.7 8,11.5C8,12.3 7.3,13 6.5,13C5.7,13 5,12.3 5,11.5C5,10.7 5.7,10 6.5,10M9.5,6C10.3,6 11,6.7 11,7.5C11,8.3 10.3,9 9.5,9C8.7,9 8,8.3 8,7.5C8,6.7 8.7,6 9.5,6M14.5,6C15.3,6 16,6.7 16,7.5C16,8.3 15.3,9 14.5,9C13.7,9 13,8.3 13,7.5C13,6.7 13.7,6 14.5,6M17.5,10C18.3,10 19,10.7 19,11.5C19,12.3 18.3,13 17.5,13C16.7,13 16,12.3 16,11.5C16,10.7 16.7,10 17.5,10Z",
+  python_script: "M19.14,7.5A2.86,2.86 0 0,1 22,10.36V14.14A2.86,2.86 0 0,1 19.14,17H12C12,17.39 12.32,17.96 12.71,17.96H17V19.64A2.86,2.86 0 0,1 14.14,22.5H9.86A2.86,2.86 0 0,1 7,19.64V15.89C7,14.31 8.28,13.04 9.86,13.04H15.11C16.69,13.04 17.96,11.76 17.96,10.18V7.5H19.14M14.86,19.29C14.46,19.29 14.14,19.59 14.14,20.18C14.14,20.77 14.46,20.89 14.86,20.89A0.71,0.71 0 0,0 15.57,20.18C15.57,19.59 15.25,19.29 14.86,19.29M4.86,17.5C3.28,17.5 2,16.22 2,14.64V10.86C2,9.28 3.28,8 4.86,8H12C12,7.61 11.68,7.04 11.29,7.04H7V5.36C7,3.78 8.28,2.5 9.86,2.5H14.14C15.72,2.5 17,3.78 17,5.36V9.11C17,10.69 15.72,11.96 14.14,11.96H8.89C7.31,11.96 6.04,13.24 6.04,14.82V17.5H4.86M9.14,5.71C9.54,5.71 9.86,5.41 9.86,4.82C9.86,4.23 9.54,4.11 9.14,4.11C8.75,4.11 8.43,4.23 8.43,4.82C8.43,5.41 8.75,5.71 9.14,5.71Z",
+  template: "M14 2H6C4.89 2 4 2.9 4 4V20C4 21.11 4.89 22 6 22H18C19.11 22 20 21.11 20 20V8L14 2M18 20H6V4H13V9H18V20M9.54 15.65L11.63 17.74L10.35 19L7 15.65L10.35 12.3L11.63 13.56L9.54 15.65M17 15.65L13.65 19L12.38 17.74L14.47 15.65L12.38 13.56L13.65 12.3L17 15.65Z",
 };
 
 const STRINGS = {
@@ -51,6 +62,14 @@ const STRINGS = {
     up_to_date: "Up to date",
     update: "Update",
     no_sm: "No System Monitor entities found. Is the System Monitor integration installed and are its sensors enabled?",
+    hacs: "HACS",
+    hacs_ok: "HACS up to date",
+    hacs_updates_one: "1 HACS update",
+    hacs_updates: "{n} HACS updates",
+    check_updates: "Check for updates",
+    checking: "Checking {i}/{n}…",
+    check_failed: "Check failed: {e}",
+    github: "Open on GitHub",
     // Editor
     title: "Title (optional, defaults to Home Assistant)",
     show_image: "Show Home Assistant logo",
@@ -58,6 +77,7 @@ const STRINGS = {
     show_network: "Show network",
     show_storage: "Show storage",
     show_processes: "Show processes",
+    show_hacs: "Show HACS extensions",
     interface: "Network interface (optional, all by default)",
     language: "Language",
     lang_auto: "Automatic",
@@ -85,12 +105,21 @@ const STRINGS = {
     up_to_date: "À jour",
     update: "Mise à jour",
     no_sm: "Aucune entité System Monitor trouvée. L'intégration System Monitor est-elle installée et ses capteurs activés ?",
+    hacs: "HACS",
+    hacs_ok: "HACS à jour",
+    hacs_updates_one: "1 mise à jour HACS",
+    hacs_updates: "{n} mises à jour HACS",
+    check_updates: "Rechercher les mises à jour",
+    checking: "Recherche {i}/{n}…",
+    check_failed: "Échec de la recherche : {e}",
+    github: "Ouvrir sur GitHub",
     title: "Titre (facultatif, Home Assistant par défaut)",
     show_image: "Afficher le logo Home Assistant",
     show_system: "Afficher le système (CPU, RAM, disque, température)",
     show_network: "Afficher le réseau",
     show_storage: "Afficher le stockage",
     show_processes: "Afficher les processus",
+    show_hacs: "Afficher les extensions HACS",
     interface: "Interface réseau (facultatif, toutes par défaut)",
     language: "Langue",
     lang_auto: "Automatique",
@@ -343,6 +372,39 @@ const memUsage = (hass, sc, prefix) => {
   return { used, total: used !== null && free !== null ? used + free : null, pct: p };
 };
 
+// ---------------------------------------------------------------------------
+// HACS extensions
+// ---------------------------------------------------------------------------
+
+/**
+ * Repositories downloaded with HACS, read from their update entities (platform "hacs"):
+ * HACS names the device after the repository and stores its category in the device model,
+ * and the release URL carries the GitHub "owner/repo".
+ */
+const discoverHacs = (hass) => {
+  const out = [];
+  for (const e of Object.values(hass.entities || {})) {
+    if (e.platform !== "hacs" || !e.entity_id.startsWith("update.") || e.hidden) continue;
+    const s = hass.states[e.entity_id];
+    if (!s) continue;
+    const a = s.attributes;
+    const dev = (hass.devices || {})[e.device_id];
+    const repo = /github\.com\/([^/]+\/[^/]+)/.exec(a.release_url || "")?.[1] || null;
+    out.push({
+      id: e.entity_id,
+      name: dev?.name_by_user || dev?.name || String(a.friendly_name || e.entity_id).replace(/ update$/i, ""),
+      category: dev?.model || (a.entity_picture ? "integration" : null),
+      repo,
+      domain: /\/_\/([^/]+)\/icon\.png/.exec(a.entity_picture || "")?.[1] || null,
+      installed: a.installed_version,
+      latest: a.latest_version,
+      update: s.state === "on",
+      busy: !!a.in_progress,
+    });
+  }
+  return out.sort((x, y) => y.update - x.update || x.name.localeCompare(y.name));
+};
+
 const fireMoreInfo = (node, entityId) => {
   if (!entityId) return;
   node.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId }, bubbles: true, composed: true }));
@@ -377,14 +439,106 @@ class SystemMonitorBase extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this._html = "";
+    this._hacsOpen = false;
+    this._imgFailed = new Set();
     this.shadowRoot.addEventListener("click", (ev) => {
-      const el = ev.composedPath().find((n) => n.dataset && n.dataset.entity);
+      const path = ev.composedPath();
+      // Links (GitHub) open on their own, without the more-info dialog.
+      if (path.some((n) => n.tagName === "A")) return;
+      const action = path.find((n) => n.dataset && n.dataset.action);
+      if (action) {
+        if (action.dataset.action === "hacs") this._hacsOpen = !this._hacsOpen;
+        if (action.dataset.action === "hacs-check") this._checkHacs();
+        this._update();
+        return;
+      }
+      const el = path.find((n) => n.dataset && n.dataset.entity);
       if (el) fireMoreInfo(this, el.dataset.entity);
     });
+    // Logos load dynamically: on error, try the next source, then fall back to the category icon.
+    this.shadowRoot.addEventListener(
+      "error",
+      (ev) => {
+        const img = ev.target;
+        if (img.tagName !== "IMG" || img.dataset.fb === undefined) return;
+        this._imgFailed.add(img.getAttribute("src"));
+        const next = img.dataset.fb.split(" ").filter((u) => u && !this._imgFailed.has(u));
+        if (next.length) {
+          img.dataset.fb = next.slice(1).join(" ");
+          img.src = next[0];
+        } else img.replaceWith(Object.assign(document.createElement("span"), { innerHTML: svgIcon(ICONS[img.dataset.cat] || ICONS.hacs) }).firstChild);
+      },
+      true
+    );
+  }
+
+  connectedCallback() {
+    // The brands access token rotates: refresh it before it expires.
+    this._tokenTimer = setInterval(() => this._fetchBrandsToken(true), 20 * 60 * 1000);
+  }
+
+  disconnectedCallback() {
+    clearInterval(this._tokenTimer);
+  }
+
+  /** Token for /api/brands (Home Assistant 2026.3+), which serves local custom integration brands before the CDN. */
+  async _fetchBrandsToken(force = false) {
+    if (!this._hass || (this._brandsToken !== undefined && !force) || this._tokenPending) return;
+    this._tokenPending = true;
+    try {
+      const res = await this._hass.callWS({ type: "brands/access_token" });
+      this._brandsToken = res?.token || null;
+    } catch (e) {
+      this._brandsToken = null; // older Home Assistant: CDN only
+    }
+    this._tokenPending = false;
+    this._html = "";
+    this._update();
+  }
+
+  /** Logo sources of an extension, best first: local/proxied brand, brands CDN, GitHub owner avatar. */
+  _logoSources(x) {
+    const out = [];
+    if (x.domain) {
+      if (this._brandsToken)
+        out.push(`/api/brands/integration/${encodeURIComponent(x.domain)}/icon.png?placeholder=no&token=${encodeURIComponent(this._brandsToken)}`);
+      out.push(`https://brands.home-assistant.io/_/${encodeURIComponent(x.domain)}/icon.png`);
+    }
+    if (x.repo) out.push(`https://github.com/${x.repo.split("/")[0]}.png?size=64`);
+    return out.filter((u) => !this._imgFailed.has(u));
+  }
+
+  _logo(x) {
+    const src = this._logoSources(x);
+    const cat = ICONS[x.category] ? x.category : "hacs";
+    if (!src.length) return `<span class="ext-logo fallback">${svgIcon(ICONS[cat])}</span>`;
+    return `<span class="ext-logo"><img src="${esc(src[0])}" data-fb="${esc(src.slice(1).join(" "))}" data-cat="${cat}" alt="" loading="lazy" referrerpolicy="no-referrer"></span>`;
+  }
+
+  /** Asks HACS to fetch every downloaded repository again from GitHub (admin only). */
+  async _checkHacs() {
+    if (this._checking) return;
+    this._checkError = null;
+    this._checking = { i: 0, n: 0 };
+    this._update();
+    try {
+      const repos = (await this._hass.callWS({ type: "hacs/repositories/list" })).filter((r) => r.installed);
+      this._checking.n = repos.length;
+      for (const r of repos) {
+        this._checking.i += 1;
+        this._update();
+        await this._hass.callWS({ type: "hacs/repository/refresh", repository: String(r.id) });
+      }
+    } catch (e) {
+      this._checkError = e?.message || String(e);
+    }
+    this._checking = null;
+    this._update();
   }
 
   set hass(hass) {
     this._hass = hass;
+    this._fetchBrandsToken();
     this._update();
   }
 
@@ -440,9 +594,19 @@ class SystemMonitorBase extends HTMLElement {
         <div class="titles">
           <div class="name">${esc(c.title || "Home Assistant")}</div>
           <div class="sub">${esc(sub)}</div>
-          ${chip}
+          <div class="chips">${chip}${this._hacsChip()}</div>
         </div>
       </div>`;
+  }
+
+  /** HACS status under the Home Assistant one: all extensions up to date, or how many have an update. */
+  _hacsChip() {
+    if (this._config.show_hacs === false) return "";
+    const ext = discoverHacs(this._hass);
+    if (!ext.length) return "";
+    const n = ext.filter((x) => x.update).length;
+    const text = n === 0 ? this._t("hacs_ok") : n === 1 ? this._t("hacs_updates_one") : this._t("hacs_updates").replace("{n}", n);
+    return `<span class="chip clickable ${n ? "warn" : "good"}" data-action="hacs"><span class="dot"></span>${esc(text)}</span>`;
   }
 
   _noSm() {
@@ -466,7 +630,33 @@ const ring = (p) => {
 
 const FULL_STYLE = `
   .logo { height: 64px; width: 64px; }
-  .titles .chip { margin-top: 6px; }
+  .titles .chips { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 6px; }
+  .section-title.toggle { cursor: pointer; margin-bottom: 0; user-select: none; }
+  .section-title .grow { flex: 1; }
+  .section-title .chip { text-transform: none; letter-spacing: 0; padding: 0 8px; }
+  .hacs .toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500; padding: 6px 12px;
+         border: none; border-radius: 10px; cursor: pointer; color: var(--primary-color, #03a9f4);
+         background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); }
+  .btn:disabled { cursor: default; opacity: .8; }
+  .btn .icon { width: 16px; height: 16px; }
+  .spin { animation: sm-spin 1s linear infinite; }
+  @keyframes sm-spin { to { transform: rotate(360deg); } }
+  .err { font-size: 12px; color: var(--sm-crit); }
+  .exts { margin-top: 4px; }
+  .ext { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; }
+  .ext + .ext { border-top: 1px solid var(--divider-color, rgba(127,127,127,.25)); }
+  .ext .grow { flex: 1; min-width: 0; }
+  .ext-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ext-ver { font-size: 12px; color: var(--secondary-text-color); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ext-ver b { font-weight: 500; color: var(--sm-warn); }
+  .ext-logo { width: 32px; height: 32px; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 8px; overflow: hidden; }
+  .ext-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .ext-logo.fallback, .ext-logo:has(> svg) { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--secondary-text-color); }
+  .ext .chip { flex: none; }
+  .gh { flex: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+        color: var(--secondary-text-color); }
+  .gh:hover { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
   .content { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 16px; }
   .section-title { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; text-transform: uppercase;
                    letter-spacing: .04em; color: var(--secondary-text-color); margin-bottom: 8px; }
@@ -535,6 +725,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     if (c.show_network !== false) parts.push(this._network(sm));
     if (c.show_storage !== false) parts.push(this._storage(sm));
     if (c.show_processes !== false) parts.push(this._processes(sm));
+    if (c.show_hacs !== false) parts.push(this._hacs());
     return `<style>${BASE_STYLE}${FULL_STYLE}</style>
       <ha-card>
         ${this._header(sm)}
@@ -660,6 +851,44 @@ class SystemMonitorCard extends SystemMonitorBase {
     return `<div><div class="section-title">${svgIcon(ICONS.database)}${this._t("storage")}</div>${rows.join("")}</div>`;
   }
 
+  _hacs() {
+    const ext = discoverHacs(this._hass);
+    if (!ext.length) return "";
+    const open = this._hacsOpen;
+    const n = ext.filter((x) => x.update).length;
+    const head = `<div class="section-title toggle" data-action="hacs" role="button" aria-expanded="${open}">
+        ${svgIcon(ICONS.hacs)}${this._t("hacs")}<span class="arg">· ${ext.length}</span>
+        ${n ? `<span class="chip warn"><span class="dot"></span>${n}</span>` : ""}
+        <span class="grow"></span>${svgIcon(open ? ICONS.chevronDown : ICONS.chevronRight)}
+      </div>`;
+    if (!open) return `<div class="hacs">${head}</div>`;
+    const admin = !this._hass.user || this._hass.user.is_admin;
+    const ck = this._checking;
+    const toolbar = admin
+      ? `<div class="toolbar">
+          <button class="btn" data-action="hacs-check" ${ck ? "disabled" : ""}>
+            ${svgIcon(ICONS.refresh, ck ? "spin" : "")}${esc(ck ? this._t("checking").replace("{i}", ck.i).replace("{n}", ck.n || "…") : this._t("check_updates"))}
+          </button>
+          ${this._checkError ? `<span class="err">${esc(this._t("check_failed").replace("{e}", this._checkError))}</span>` : ""}
+        </div>`
+      : "";
+    const rows = ext.map((x) => {
+      const ver = x.update ? `${esc(x.installed || "?")} → <b>${esc(x.latest || "?")}</b>` : esc(x.installed || "—");
+      const status = x.update
+        ? `<span class="chip warn"><span class="dot"></span>${esc(this._t("update"))}</span>`
+        : `<span class="chip good"><span class="dot"></span>${esc(this._t("up_to_date"))}</span>`;
+      const gh = x.repo
+        ? `<a class="gh" href="https://github.com/${esc(x.repo)}" target="_blank" rel="noopener noreferrer" title="${esc(this._t("github"))}" aria-label="${esc(this._t("github"))}">${svgIcon(ICONS.github)}</a>`
+        : "";
+      return `<div class="ext clickable" data-entity="${x.id}">
+          ${this._logo(x)}
+          <div class="grow"><div class="ext-name">${esc(x.name)}</div><div class="ext-ver">${ver}</div></div>
+          ${status}${gh}
+        </div>`;
+    });
+    return `<div class="hacs">${head}${toolbar}<div class="exts">${rows.join("")}</div></div>`;
+  }
+
   _processes(sm) {
     const chips = Object.entries(sm.procs).map(([name, id]) => {
       const on = this._s(id)?.state === "on";
@@ -677,7 +906,7 @@ class SystemMonitorCard extends SystemMonitorBase {
 const MINI_STYLE = `
   .header { padding: 12px 12px 4px; }
   .logo { height: 40px; width: 40px; }
-  .titles .chip { display: none; }
+  .titles .chips { display: none; }
   .name { font-size: 16px; }
   .content { padding: 4px 12px 12px; display: flex; flex-direction: column; gap: 8px; }
   .metric { display: grid; grid-template-columns: 18px 64px 1fr 56px; align-items: center; gap: 8px; font-size: 13px; }
@@ -855,7 +1084,7 @@ class SystemMonitorEditorBase extends HTMLElement {
 
 class SystemMonitorCardEditor extends SystemMonitorEditorBase {
   static get toggles() {
-    return ["show_system", "show_network", "show_storage", "show_processes"];
+    return ["show_system", "show_network", "show_storage", "show_processes", "show_hacs"];
   }
 }
 

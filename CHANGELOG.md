@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0
+
+### What's new
+- HACS extensions: a collapsible section lists every repository downloaded with HACS, updates first, with its logo, installed and latest version, update status and a GitHub button. Click a line to open its update dialog.
+- **Check for updates** button at the top of the list: HACS fetches every downloaded repository again from GitHub, with the progress on the button (administrators only).
+- HACS status under the Home Assistant one in the header: "HACS up to date" or the number of updates; click it to unfold the list.
+- Logos are loaded dynamically: Home Assistant's brands proxy (custom integration `brand/icon.png`), then the brands CDN, then the GitHub owner's avatar, then an icon for the HACS category.
+- New option `show_hacs` (also in the visual editor).
+
 ## 1.1.0
 
 ### Changes

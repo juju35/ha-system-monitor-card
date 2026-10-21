@@ -43,6 +43,7 @@ const NAMES = {
 
 export const states = {};
 export const entities = {};
+export const devices = {};
 for (const [obj, key, state, attributes, arg] of raw) {
   const id = `${key === "process" ? "binary_sensor" : "sensor"}.system_monitor_${obj}`;
   const friendly_name = `System Monitor ${NAMES[key || "uptime"]}${arg ? ` ${arg}` : ""}`;
@@ -63,3 +64,30 @@ export const updateAvailable = {
     attributes: { installed_version: "2026.10.2", latest_version: "2026.10.3" },
   },
 };
+
+// Repositories downloaded with HACS: one update entity each, on a device named after the repository
+// whose model is the HACS category; the release URL carries the GitHub "owner/repo".
+const HACS = [
+  ["hacs", "HACS", "integration", "hacs/integration", "2.0.5", "2.0.5", "hacs"],
+  ["parcel", "Parcel", "integration", "juju35/ha-parcel", "0.1.7", "0.2.0", "parcel"],
+  ["webrtc", "WebRTC Camera", "integration", "AlexxIT/WebRTC", "v3.6.1", "v3.6.1", "webrtc"],
+  ["mushroom", "Mushroom", "plugin", "piitaya/lovelace-mushroom", "v4.5.0", "v4.5.0"],
+  ["system_monitor_card", "System Monitor Card", "plugin", "juju35/ha-system-monitor-card", "1.1.0", "1.2.0"],
+  ["catppuccin", "Catppuccin Theme", "theme", "catppuccin/home-assistant", "v2.1.2", "v2.1.2"],
+];
+export const hacsUpdates = {};
+for (const [slug, name, category, repo, installed, latest, domain] of HACS) {
+  const id = `update.${slug}_update`;
+  const attributes = {
+    friendly_name: `${name} update`,
+    installed_version: installed,
+    latest_version: installed,
+    release_url: `https://github.com/${repo}/releases/${installed}`,
+    ...(domain ? { entity_picture: `https://brands.home-assistant.io/_/${domain}/icon.png` } : {}),
+  };
+  states[id] = { entity_id: id, state: "off", attributes };
+  entities[id] = { entity_id: id, platform: "hacs", device_id: `hacs_${slug}` };
+  devices[`hacs_${slug}`] = { id: `hacs_${slug}`, name, model: category };
+  if (latest !== installed)
+    hacsUpdates[id] = { entity_id: id, state: "on", attributes: { ...attributes, latest_version: latest, release_url: `https://github.com/${repo}/releases/${latest}` } };
+}

@@ -27,6 +27,7 @@ The cards are built on top of the core [System Monitor integration](https://www.
 - Network download / upload rates and totals, per interface (virtual interfaces such as `docker0` or `hassio` are hidden)
 - Storage: every monitored mount point and the swap, with used space
 - Monitored processes, green when running and red when stopped
+- **HACS extensions**: a collapsible list of every repository downloaded with HACS, with its logo, version, update status and a GitHub button, plus a **Check for updates** button; the overall HACS status sits under the Home Assistant one
 - Colors turn orange / red when a threshold is crossed (CPU, RAM, disk, temperature)
 - Click any value to open its Home Assistant history (more-info dialog)
 - Visual editor in the dashboard UI for both cards (no YAML needed)
@@ -45,6 +46,7 @@ Most of its sensors are disabled by default: open the **System Monitor** device 
 | Network | Network throughput in / out, Network in / out (totals) |
 | Storage | Disk use + Disk free for each mount point, Swap use + Swap free |
 | Processes | Process binary sensors (configured in the integration options) |
+| HACS | Nothing: the update entities HACS creates for downloaded repositories are used as is |
 
 Sections and gauges without any enabled sensor are simply not displayed.
 
@@ -100,6 +102,7 @@ show_system: true
 show_network: true
 show_storage: true
 show_processes: true
+show_hacs: true
 interface: eth0
 language: fr
 ```
@@ -124,6 +127,7 @@ language: fr
 | `show_network` | both | `true` | Network download / upload |
 | `show_storage` | both | `true` | Full card: mount points and swap. Mini card: disk bar |
 | `show_processes` | full | `true` | Monitored processes |
+| `show_hacs` | full | `true` | HACS extensions list and HACS status under the Home Assistant one |
 | `interface` | both | All physical interfaces | Network interface to display (e.g. `eth0`, `enp0s3`) |
 | `language` | both | Auto | Force language: `fr` or `en` (auto-detects from HA settings) |
 
@@ -133,12 +137,26 @@ language: fr
 |---|---|
 | ![card](screenshots/card.png) | ![card dark](screenshots/card-dark.png) |
 | ![mini card](screenshots/mini-card.png) | ![mini card dark](screenshots/mini-card-dark.png) |
+| ![HACS extensions](screenshots/card-hacs.png) | |
 
 ## How it works
 
 The cards read the entity registry of Home Assistant and keep the entities of the `systemmonitor` platform. Each sensor is recognized by its translation key (`processor_use`, `memory_use_percent`, `disk_free`, `throughput_network_in`…), so entity ids translated in another language (for example `sensor.system_monitor_utilisation_du_processeur`) and renamed entities are supported. Mount points, interfaces and process names are read from the end of the sensor name. When the registry is not available, English entity ids (`sensor.system_monitor_processor_use`…) are used as a fallback.
 
 The Core and OS versions come from the `update.home_assistant_core_*` and `update.home_assistant_operating_system_*` entities when they exist, otherwise from the running Home Assistant version.
+
+### HACS extensions
+
+HACS creates an update entity for every repository it downloaded. The card lists them with their name and category (from the HACS device), installed and latest version, and the GitHub repository (from the release URL). The list is folded by default: click the **HACS** section, or the HACS status in the header, to unfold it. Click a line to open its update dialog (release notes, install), or the GitHub button to open the repository.
+
+Logos are loaded dynamically, best source first:
+
+1. For integrations, Home Assistant's brands proxy (`/api/brands`, Home Assistant 2026.3 and later), which serves the `brand/icon.png` shipped by a custom integration before the brands CDN
+2. The brands CDN (`brands.home-assistant.io`)
+3. The avatar of the GitHub owner of the repository
+4. An icon for the HACS category (integration, dashboard, theme…)
+
+**Check for updates** asks HACS to fetch every downloaded repository again from GitHub, one after the other, with the progress on the button. It uses HACS' websocket API and is shown to administrators only.
 
 Thresholds:
 
