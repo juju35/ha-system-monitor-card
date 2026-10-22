@@ -938,6 +938,7 @@ const FULL_STYLE = `
   .gh[role="button"] { cursor: pointer; }
   .gh[aria-disabled="true"] { cursor: default; }
   .gh:hover { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
+  .gh.placeholder { visibility: hidden; }
   .content { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 12px; }
   .section-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; text-transform: uppercase;
                    letter-spacing: .04em; color: var(--secondary-text-color); margin-bottom: 6px; }
@@ -1183,6 +1184,8 @@ class SystemMonitorCard extends SystemMonitorBase {
     const st = rf.status ? this._s(rf.status) : null;
     const fullRunning = st?.state === "running";
     const serverChecking = new Set(st?.attributes?.checking || []);
+    // Without a GitHub link, keep its slot so the buttons stay aligned with the other rows.
+    const hasRepo = ext.some((x) => x.repo);
     const rows = ext.map((x) => {
       const ver = x.update ? `${esc(x.installed || "?")} → <b>${esc(x.latest || "?")}</b>` : esc(x.installed || "—");
       const status = x.update
@@ -1190,7 +1193,9 @@ class SystemMonitorCard extends SystemMonitorBase {
         : `<span class="chip good"><span class="dot"></span>${esc(this._t("up_to_date"))}</span>`;
       const gh = x.repo
         ? `<a class="gh" href="https://github.com/${esc(x.repo)}" target="_blank" rel="noopener noreferrer" title="${esc(this._t("github"))}" aria-label="${esc(this._t("github"))}">${svgIcon(ICONS.github)}</a>`
-        : "";
+        : hasRepo
+          ? `<span class="gh placeholder" aria-hidden="true"></span>`
+          : "";
       const checking = fullRunning || serverChecking.has(x.id) || !!this._extChecking?.has(x.id);
       const check = canCheckExt
         ? `<span class="gh" role="button" tabindex="0" data-action="hacs-check-ext" data-target="${x.id}" title="${esc(this._t("check_ext"))}" aria-label="${esc(this._t("check_ext"))}" aria-disabled="${checking}">${svgIcon(ICONS.refresh, checking ? "spin" : "")}</span>`

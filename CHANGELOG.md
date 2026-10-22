@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.11.2
+
+### Fixes
+- HACS list: an extension without a GitHub repository keeps an empty slot in place of the GitHub button, so its status and check buttons line up with the other rows.
+
 ## 1.11.1
 
 ### Changes
