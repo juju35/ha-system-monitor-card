@@ -51,6 +51,8 @@ const shots = [
   { file: "card-watchdog", type: "system-monitor-card", theme: "light", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false, show_hacs: false }, open: true, action: "wd" },
   { file: "mini-card", type: "system-monitor-mini-card", theme: "light", width: 380, config: {} },
   { file: "mini-card-dark", type: "system-monitor-mini-card", theme: "dark", width: 380, config: { language: "fr" }, update: true },
+  { file: "status-card", type: "system-monitor-status-card", theme: "light", width: 380, config: {}, procsOk: true },
+  { file: "status-card-dark", type: "system-monitor-status-card", theme: "dark", width: 380, config: { language: "fr" }, update: true },
 ];
 
 const browser = await chromium.launch(

@@ -14,13 +14,13 @@ The cards are built on top of the core [System Monitor integration](https://www.
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-system-monitor-card&category=plugin)
 
-| System Monitor Card | System Monitor Mini Card |
-|---|---|
-| ![system-monitor-card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card.png) | ![system-monitor-mini-card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card.png) |
+| System Monitor Card | System Monitor Mini Card | System Monitor Status Card |
+|---|---|---|
+| ![system-monitor-card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card.png) | ![system-monitor-mini-card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card.png) | ![system-monitor-status-card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card.png) |
 
 ## Features
 
-- Two cards: a full **System Monitor Card** and a compact **System Monitor Mini Card**
+- Three cards: a full **System Monitor Card**, a compact **System Monitor Mini Card** and a minimal **System Monitor Status Card** (versions, overall statuses and one HACS update button)
 - Automatic discovery of the System Monitor entities through the entity registry (any language)
 - CPU, RAM, disk and CPU temperature gauges, uptime, load average and IP address
 - Home Assistant Core and OS versions, with an orange badge when an update is available
@@ -31,7 +31,7 @@ The cards are built on top of the core [System Monitor integration](https://www.
 - **Unavailable integrations**: with [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog), a collapsible list of the integrations whose entities are all unavailable, with their logo, since when, how many times they were reloaded and whether the watchdog gave up, plus the last reload and a **Check now** button; its overall status sits in the status row
 - Colors turn orange / red when a threshold is crossed (CPU, RAM, disk, temperature)
 - Click any value to open its Home Assistant history (more-info dialog)
-- Visual editor in the dashboard UI for both cards (no YAML needed)
+- Visual editor in the dashboard UI for every card (no YAML needed)
 - Light and dark mode, English and French
 - Single file, no external dependency, the Home Assistant logo is embedded
 
@@ -84,7 +84,7 @@ Or manually:
 
 ### Visual editor
 
-Edit a dashboard, click **Add card** and search for **System Monitor Card** or **System Monitor Mini Card**. Set an optional title, choose the sections to display, the network interface and the language. The preview updates live, and options left at their default are kept out of the generated YAML.
+Edit a dashboard, click **Add card** and search for **System Monitor Card**, **System Monitor Mini Card** or **System Monitor Status Card**. Set an optional title, choose the sections to display, the network interface and the language. The preview updates live, and options left at their default are kept out of the generated YAML.
 
 ### Minimal
 
@@ -94,6 +94,10 @@ type: custom:system-monitor-card
 
 ```yaml
 type: custom:system-monitor-mini-card
+```
+
+```yaml
+type: custom:system-monitor-status-card
 ```
 
 ### Full options
@@ -122,20 +126,30 @@ interface: eth0
 language: fr
 ```
 
+```yaml
+type: custom:system-monitor-status-card
+title: My Home Assistant
+show_image: true
+show_hacs: true
+show_processes: true
+show_watchdog: true
+language: fr
+```
+
 ### Options reference
 
 | Option | Card | Default | Description |
 |---|---|---|---|
-| `title` | both | `Home Assistant` | Card title |
-| `show_image` | both | `true` | Show the Home Assistant logo |
+| `title` | all | `Home Assistant` | Card title |
+| `show_image` | all | `true` | Show the Home Assistant logo |
 | `show_system` | full | `true` | CPU, RAM, disk and temperature gauges, uptime, load, IP address |
-| `show_network` | both | `true` | Network download / upload |
-| `show_storage` | both | `true` | Full card: mount points and swap. Mini card: disk bar |
-| `show_processes` | full | `true` | Monitored processes and their status tile |
-| `show_hacs` | full | `true` | HACS extensions list and their status tile |
-| `show_watchdog` | full | `true` | Unavailable integrations list and their status tile (needs Integration Watchdog) |
-| `interface` | both | All physical interfaces | Network interface to display (e.g. `eth0`, `enp0s3`) |
-| `language` | both | Auto | Force language: `fr` or `en` (auto-detects from HA settings) |
+| `show_network` | full, mini | `true` | Network download / upload |
+| `show_storage` | full, mini | `true` | Full card: mount points and swap. Mini card: disk bar |
+| `show_processes` | full, status | `true` | Monitored processes and their status tile |
+| `show_hacs` | full, status | `true` | HACS extensions list (status card: update button) and their status tile |
+| `show_watchdog` | full, status | `true` | Unavailable integrations list and their status tile (needs Integration Watchdog) |
+| `interface` | full, mini | All physical interfaces | Network interface to display (e.g. `eth0`, `enp0s3`) |
+| `language` | all | Auto | Force language: `fr` or `en` (auto-detects from HA settings) |
 
 ## Screenshots
 
@@ -143,6 +157,7 @@ language: fr
 |---|---|
 | ![card](screenshots/card.png) | ![card dark](screenshots/card-dark.png) |
 | ![mini card](screenshots/mini-card.png) | ![mini card dark](screenshots/mini-card-dark.png) |
+| ![status card](screenshots/status-card.png) | ![status card dark](screenshots/status-card-dark.png) |
 | ![HACS extensions](screenshots/card-hacs.png) | ![Unavailable integrations](screenshots/card-watchdog.png) |
 
 ## How it works
@@ -154,6 +169,15 @@ The Core and OS versions come from the `update.home_assistant_core_*` and `updat
 ### Status row
 
 Under the header, a row of tiles gives the overall status of each section: **HACS** (up to date or the number of updates), **Processes** (running or the number stopped) and **Integrations** (available or the number unavailable), green when all is well, orange or red otherwise. Click a tile to show its section unfolded; a click elsewhere folds or hides it again. The Home Assistant Core / OS update stays next to the logo. Tiles of hidden or missing sections are left out.
+
+### Status card
+
+The minimal card keeps the header (Core / OS versions and their update badge) and the status row, without gauges or lists. On the right of the header, one button (admins only):
+
+- **Install (n)** when HACS updates are pending: installs them all, one after the other, after a confirmation, with the progress in the button
+- **Check** otherwise: checks every HACS repository for updates through [HACS Refresh](https://github.com/juju35/ha-hacs-refresh), with the progress in the button; hover it for the time of the last check. Without HACS Refresh and no pending update, the button is hidden
+
+A click on the **HACS** tile opens HACS, on the **Integrations** tile the integrations page, and on the **Processes** tile the first stopped process.
 
 ### Processes
 

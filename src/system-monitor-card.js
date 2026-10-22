@@ -78,6 +78,8 @@ const STRINGS = {
     install_all_confirm: "Install {n} HACS updates?",
     installing: "Installing {i}/{n}…",
     install_failed: "Install failed: {e}",
+    btn_install: "Install ({n})",
+    btn_check: "Check",
     procs_ok: "Processes running",
     procs_one: "1 process stopped",
     procs_many: "{n} processes stopped",
@@ -156,6 +158,8 @@ const STRINGS = {
     install_all_confirm: "Installer {n} mises à jour HACS ?",
     installing: "Installation {i}/{n}…",
     install_failed: "Échec de l'installation : {e}",
+    btn_install: "Installer ({n})",
+    btn_check: "Vérifier",
     procs_ok: "Processus en marche",
     procs_one: "1 processus arrêté",
     procs_many: "{n} processus arrêtés",
@@ -767,7 +771,7 @@ class SystemMonitorBase extends HTMLElement {
     }
   }
 
-  _header(sm) {
+  _header(sm, aside = "") {
     const c = this._config;
     const core = this._s(sm.core_update);
     const os = this._s(sm.os_update);
@@ -792,7 +796,7 @@ class SystemMonitorBase extends HTMLElement {
           <div class="name">${esc(c.title || "Home Assistant")}</div>
           <div class="sub">${esc(sub)}</div>
           <div class="chips">${chip}</div>
-        </div>
+        </div>${aside}
       </div>`;
   }
 
@@ -848,9 +852,14 @@ class SystemMonitorBase extends HTMLElement {
 
   /** A status tile of the row under the header: section icon and name, status in its color; a click folds or unfolds that section. */
   _stat(action, icon, label, value, cls, title) {
-    return `<div class="stat clickable ${cls}" data-action="${action}" role="button" tabindex="0" title="${esc(title)}" aria-label="${esc(title)}">
+    return `<div class="stat clickable ${cls}" ${this._statTarget(action)} role="button" tabindex="0" title="${esc(title)}" aria-label="${esc(title)}">
         <div class="k">${svgIcon(icon)}<span>${esc(label)}</span></div><div class="v">${esc(value)}</div>
       </div>`;
+  }
+
+  /** What a click on a status tile does: here, fold or unfold its section. */
+  _statTarget(action) {
+    return `data-action="${action}"`;
   }
 
   /** Overall statuses (HACS, processes, integrations), side by side under the header. */
@@ -878,9 +887,8 @@ const ring = (p) => {
   </svg>`;
 };
 
-const FULL_STYLE = `
-  .logo { height: 44px; width: 44px; }
-  .titles .chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+/** Status tiles and buttons, shared by the full and the status cards. */
+const TILES_STYLE = `
   .stats { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; padding: 0 12px 10px; }
   .stat { display: flex; flex-direction: column; gap: 0; padding: 6px 8px; border-radius: 10px; min-width: 0;
           background: color-mix(in srgb, var(--c, var(--sm-ok)) 12%, var(--secondary-background-color, transparent)); }
@@ -888,6 +896,19 @@ const FULL_STYLE = `
   .stat .k span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .stat .k .icon { width: 16px; height: 16px; color: var(--c, var(--sm-ok)); }
   .stat .v { font-size: 13px; font-weight: 500; color: var(--c, var(--sm-ok)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500; padding: 6px 12px;
+         border: none; border-radius: 10px; cursor: pointer; color: var(--primary-color, #03a9f4);
+         background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); }
+  .btn:disabled, .btn[aria-disabled="true"] { cursor: default; opacity: .8; }
+  .btn .icon { width: 16px; height: 16px; }
+  .spin { animation: sm-spin 1s linear infinite; }
+  @keyframes sm-spin { to { transform: rotate(360deg); } }
+  .err { font-size: 12px; color: var(--sm-crit); }
+`;
+
+const FULL_STYLE = `
+  .logo { height: 44px; width: 44px; }
+  .titles .chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
   .section-title.toggle { cursor: pointer; margin-bottom: 0; user-select: none; }
   .section-title .count { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 400; }
   .section-title .chevron { transition: transform .2s ease; }
@@ -897,15 +918,7 @@ const FULL_STYLE = `
   .section-title .btn-install[aria-disabled="true"] { cursor: default; }
   .section-title .btn-install .icon { width: 14px; height: 14px; }
   .hacs .toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; }
-  .btn { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500; padding: 6px 12px;
-         border: none; border-radius: 10px; cursor: pointer; color: var(--primary-color, #03a9f4);
-         background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); }
-  .btn:disabled, .btn[aria-disabled="true"] { cursor: default; opacity: .8; }
   .section-title .btn-check { text-transform: none; letter-spacing: 0; padding: 4px 8px; margin-left: 6px; margin-right: 16px; font-size: 12px; gap: 4px; }
-  .btn .icon { width: 16px; height: 16px; }
-  .spin { animation: sm-spin 1s linear infinite; }
-  @keyframes sm-spin { to { transform: rotate(360deg); } }
-  .err { font-size: 12px; color: var(--sm-crit); }
   .toolbar .last { font-size: 12px; }
   .toolbar .hint { font-size: 12px; color: var(--secondary-text-color); text-decoration: none; }
   .toolbar .hint:hover { text-decoration: underline; }
@@ -997,7 +1010,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     if (c.show_processes !== false) parts.push(this._processes(sm));
     if (c.show_hacs !== false) parts.push(this._hacs());
     if (c.show_watchdog !== false) parts.push(this._watchdog());
-    return `<style>${BASE_STYLE}${FULL_STYLE}</style>
+    return `<style>${BASE_STYLE}${TILES_STYLE}${FULL_STYLE}</style>
       <ha-card>
         ${this._header(sm)}
         ${this._statusRow(sm)}
@@ -1387,12 +1400,110 @@ class SystemMonitorMiniCard extends SystemMonitorBase {
 }
 
 // ---------------------------------------------------------------------------
+// Status card
+// ---------------------------------------------------------------------------
+
+const STATUS_STYLE = `
+  .header { padding: 12px 12px 8px; }
+  .logo { height: 40px; width: 40px; }
+  .titles .chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .header .btn { flex: none; padding: 6px 10px; font-size: 12px; gap: 4px; white-space: nowrap; }
+  .header .btn.warn { color: var(--sm-warn); background: color-mix(in srgb, var(--sm-warn) 15%, transparent); }
+  .stats { padding-bottom: 12px; }
+  .err { padding: 0 12px 12px; }
+`;
+
+/**
+ * Minimal card: header (Core / OS versions and update), the overall status tiles and a single
+ * button that checks HACS for updates, or installs them when some are pending.
+ */
+class SystemMonitorStatusCard extends SystemMonitorBase {
+  static getConfigElement() {
+    return document.createElement("system-monitor-status-card-editor");
+  }
+
+  static getStubConfig() {
+    return {};
+  }
+
+  getCardSize() {
+    return 2;
+  }
+
+  getGridOptions() {
+    return { columns: 6, min_columns: 6 };
+  }
+
+  /** No sections to unfold here: tiles open the HACS or integrations page, or the first stopped process. */
+  _statTarget(action) {
+    if (action === "hacs") return `data-action="nav" data-path="/hacs/dashboard"`;
+    if (action === "wd") return `data-action="nav" data-path="/config/integrations/dashboard"`;
+    const sm = discover(this._hass);
+    return `data-entity="${this._stopped(sm)[0] || Object.values(sm.procs)[0] || ""}"`;
+  }
+
+  /** Install the pending HACS updates, else check for updates through HACS Refresh. Admins only. */
+  _button() {
+    if (this._config.show_hacs === false || (this._hass.user && !this._hass.user.is_admin)) return "";
+    const ext = discoverHacs(this._hass);
+    if (!ext.length) return "";
+    const n = ext.filter((x) => x.update).length;
+    const btn = (action, cls, icon, spin, label, title, busy) =>
+      `<span class="btn ${cls}" role="button" tabindex="0" data-action="${action}" title="${esc(title)}" aria-label="${esc(title)}" aria-disabled="${busy}">
+          ${svgIcon(icon, spin ? "spin" : "")}<span>${esc(label)}</span>
+        </span>`;
+    const run = this._installing;
+    if (run) {
+      const title = this._t("installing").replace("{i}", run.done).replace("{n}", run.total);
+      return btn("hacs-install-all", "warn", ICONS.refresh, true, `${run.done}/${run.total}`, title, true);
+    }
+    if (n) return btn("hacs-install-all", "warn", ICONS.download, false, this._t("btn_install").replace("{n}", n), this._t("install_all").replace("{n}", n), false);
+    const rf = discoverRefresh(this._hass);
+    if (!rf.button) return "";
+    const st = this._s(rf.status);
+    const running = st?.state === "running";
+    const busy = running || this._s(rf.button)?.state === "unavailable";
+    const last = this._s(rf.lastCheck)?.state;
+    const title = running
+      ? this._t("checking").replace("{i}", st.attributes.done ?? 0).replace("{n}", st.attributes.total || "…")
+      : last && !["unknown", "unavailable"].includes(last)
+        ? `${this._t("check_updates")} · ${this._t("last_check").replace("{t}", relTime(last, lang(this._hass, this._config)))}`
+        : this._t("check_updates");
+    const label = running ? `${st.attributes.done ?? 0}/${st.attributes.total || "…"}` : this._t("btn_check");
+    return btn("hacs-check", "", ICONS.refresh, running, label, title, busy);
+  }
+
+  _render() {
+    const sm = discover(this._hass);
+    if (!sm.found) return this._noSm();
+    const rf = discoverRefresh(this._hass);
+    const st = this._s(rf.status);
+    const error = this._installError
+      ? this._t("install_failed").replace("{e}", this._installError)
+      : this._checkError || st?.state === "error"
+        ? this._t("check_failed").replace("{e}", this._checkError || st.attributes.error)
+        : "";
+    return `<style>${BASE_STYLE}${TILES_STYLE}${STATUS_STYLE}</style>
+      <ha-card>
+        ${this._header(sm, this._button())}
+        ${this._statusRow(sm)}
+        ${error ? `<div class="err">${esc(error)}</div>` : ""}
+      </ha-card>`;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Visual editors (ha-form)
 // ---------------------------------------------------------------------------
 
 class SystemMonitorEditorBase extends HTMLElement {
   static get toggles() {
     return [];
+  }
+
+  /** Whether the card shows network figures, hence the interface choice. */
+  static get withInterface() {
+    return true;
   }
 
   setConfig(config) {
@@ -1421,10 +1532,14 @@ class SystemMonitorEditorBase extends HTMLElement {
           ...this.constructor.toggles.map((name) => ({ name, selector: { boolean: {} } })),
         ],
       },
-      {
-        name: "interface",
-        selector: { select: { mode: "dropdown", custom_value: true, options: [{ value: "", label: tr("lang_auto") }, ...ifOptions] } },
-      },
+      ...(this.constructor.withInterface
+        ? [
+            {
+              name: "interface",
+              selector: { select: { mode: "dropdown", custom_value: true, options: [{ value: "", label: tr("lang_auto") }, ...ifOptions] } },
+            },
+          ]
+        : []),
       {
         name: "language",
         selector: {
@@ -1478,6 +1593,16 @@ class SystemMonitorMiniCardEditor extends SystemMonitorEditorBase {
   }
 }
 
+class SystemMonitorStatusCardEditor extends SystemMonitorEditorBase {
+  static get toggles() {
+    return ["show_hacs", "show_processes", "show_watchdog"];
+  }
+
+  static get withInterface() {
+    return false;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Registration
 // ---------------------------------------------------------------------------
@@ -1489,6 +1614,8 @@ define("system-monitor-card", SystemMonitorCard);
 define("system-monitor-mini-card", SystemMonitorMiniCard);
 define("system-monitor-card-editor", SystemMonitorCardEditor);
 define("system-monitor-mini-card-editor", SystemMonitorMiniCardEditor);
+define("system-monitor-status-card", SystemMonitorStatusCard);
+define("system-monitor-status-card-editor", SystemMonitorStatusCardEditor);
 
 window.customCards = window.customCards || [];
 for (const card of [
@@ -1501,6 +1628,11 @@ for (const card of [
     type: "system-monitor-mini-card",
     name: "System Monitor Mini Card",
     description: "Compact Home Assistant host overview: CPU, RAM, disk, temperature, network and uptime.",
+  },
+  {
+    type: "system-monitor-status-card",
+    name: "System Monitor Status Card",
+    description: "Minimal Home Assistant status: versions, HACS, processes and integrations statuses, and a button to check for or install HACS updates.",
   },
 ]) {
   if (!window.customCards.some((c) => c.type === card.type))

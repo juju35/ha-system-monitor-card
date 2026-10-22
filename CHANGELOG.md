@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.0
+
+### Changes
+- New **System Monitor Status Card** (`custom:system-monitor-status-card`): a minimal card with the header (Core / OS versions and update), the status tiles (HACS, processes, integrations) and one button, **Install (n)** when HACS updates are pending, **Check** otherwise. No gauges, no lists. Tiles open HACS, the integrations page or the stopped process. Visual editor with the HACS, processes and integrations toggles.
+- Screenshots of the status card, and of the HACS list with its install button.
+
 ## 1.10.0
 
 ### Changes
