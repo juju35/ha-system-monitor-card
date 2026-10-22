@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.11.1
+
+### Changes
+- Status card: the status row shows up only while one of the statuses is not good (HACS update, stopped process, unavailable integration); when all is well, only the header is left.
+
 ## 1.11.0
 
 ### Changes

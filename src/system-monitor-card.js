@@ -1442,6 +1442,13 @@ class SystemMonitorStatusCard extends SystemMonitorBase {
     return `data-entity="${this._stopped(sm)[0] || Object.values(sm.procs)[0] || ""}"`;
   }
 
+  /** The status row shows up only while one of the statuses is not good. */
+  _statusRow(sm) {
+    const stats = [this._hacsStat(), this._procsStat(sm), this._wdStat()].filter(Boolean);
+    if (!stats.some((x) => x.startsWith('<div class="stat clickable warn"') || x.startsWith('<div class="stat clickable crit"'))) return "";
+    return super._statusRow(sm);
+  }
+
   /** Install the pending HACS updates, else check for updates through HACS Refresh. Admins only. */
   _button() {
     if (this._config.show_hacs === false || (this._hass.user && !this._hass.user.is_admin)) return "";
