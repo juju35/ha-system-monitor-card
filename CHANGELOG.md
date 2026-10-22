@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.0
+
+### Changes
+- HACS list: a search field at the top of the list filters the extensions as you type (by name or GitHub repository, ignoring case and accents). Escape clears it, and folding the list clears it too.
+
 ## 1.11.2
 
 ### Fixes

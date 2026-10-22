@@ -27,7 +27,7 @@ The cards are built on top of the core [System Monitor integration](https://www.
 - Network download / upload rates and totals, per interface (virtual interfaces such as `docker0` or `hassio` are hidden)
 - Storage: every monitored mount point and the swap, with used space
 - Monitored processes, green when running and red when stopped: hidden while they all run (their status tile shows the list on a click), always shown while one is stopped, with their overall status in the status row
-- **HACS extensions**: a collapsible list of every repository downloaded with HACS, with its logo, version, update status and a GitHub button, plus a **Check for updates** button that runs on the server through [HACS Refresh](https://github.com/juju35/ha-hacs-refresh); its overall status sits in the status row
+- **HACS extensions**: a collapsible list of every repository downloaded with HACS, with its logo, version, update status and a GitHub button, a search field that filters it as you type, plus a **Check for updates** button that runs on the server through [HACS Refresh](https://github.com/juju35/ha-hacs-refresh); its overall status sits in the status row
 - **Unavailable integrations**: with [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog), a collapsible list of the integrations whose entities are all unavailable, with their logo, since when, how many times they were reloaded and whether the watchdog gave up, plus the last reload and a **Check now** button; its overall status sits in the status row
 - Colors turn orange / red when a threshold is crossed (CPU, RAM, disk, temperature)
 - Click any value to open its Home Assistant history (more-info dialog)
@@ -185,7 +185,7 @@ The processes section is hidden while every monitored process runs: the **Proces
 
 ### HACS extensions
 
-HACS creates an update entity for every repository it downloaded. The card lists them with their name and category (from the HACS device), installed and latest version, and the GitHub repository (from the release URL). The list is folded by default: click the **HACS** section, or its tile in the status row, to unfold it. Click a line to open its update dialog (release notes, install), its refresh button to check that extension alone for updates (needs HACS Refresh 0.2.0 or later), or the GitHub button to open the repository.
+HACS creates an update entity for every repository it downloaded. The card lists them with their name and category (from the HACS device), installed and latest version, and the GitHub repository (from the release URL). The list is folded by default: click the **HACS** section, or its tile in the status row, to unfold it. Click a line to open its update dialog (release notes, install), its refresh button to check that extension alone for updates (needs HACS Refresh 0.2.0 or later), or the GitHub button to open the repository. The search field at the top of the unfolded list filters it as you type, by name or GitHub repository (case and accents ignored); Escape clears it, and folding the list clears it too.
 
 Logos are loaded dynamically, best source first:
 
