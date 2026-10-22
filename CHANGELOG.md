@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.10.0
+
+### Changes
+- The number of HACS updates next to the **HACS** section title is now a button: a click installs every pending update, one after the other, after a confirmation. It shows the progress while it runs, and an error in the unfolded section if an install fails. Admins only; other users still see the plain count.
+
 ## 1.9.0
 
 ### Changes

@@ -28,6 +28,7 @@ const ICONS = {
   hacs: "M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L10.11,5.22L16,8.61L17.96,7.5L12,4.15M6.04,7.5L12,10.85L13.96,9.75L8.08,6.35L6.04,7.5M5,15.91L11,19.29V12.58L5,9.21V15.91M19,15.91V9.21L13,12.58V19.29L19,15.91Z",
   github: "M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z",
   refresh: "M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z",
+  download: "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z",
   watchdog: "M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z",
   chevron: "M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z",
   // Fallbacks per HACS category when no logo can be loaded.
@@ -73,6 +74,10 @@ const STRINGS = {
     needs_refresh: "Install HACS Refresh to check every extension for updates from Home Assistant.",
     github: "Open on GitHub",
     check_ext: "Check this extension for updates",
+    install_all: "Install all updates ({n})",
+    install_all_confirm: "Install {n} HACS updates?",
+    installing: "Installing {i}/{n}…",
+    install_failed: "Install failed: {e}",
     procs_ok: "Processes running",
     procs_one: "1 process stopped",
     procs_many: "{n} processes stopped",
@@ -147,6 +152,10 @@ const STRINGS = {
     needs_refresh: "Installez HACS Refresh pour rechercher les mises à jour de toutes les extensions depuis Home Assistant.",
     github: "Ouvrir sur GitHub",
     check_ext: "Rechercher les mises à jour de cette extension",
+    install_all: "Installer toutes les mises à jour ({n})",
+    install_all_confirm: "Installer {n} mises à jour HACS ?",
+    installing: "Installation {i}/{n}…",
+    install_failed: "Échec de l'installation : {e}",
     procs_ok: "Processus en marche",
     procs_one: "1 processus arrêté",
     procs_many: "{n} processus arrêtés",
@@ -562,6 +571,7 @@ class SystemMonitorBase extends HTMLElement {
         const enabled = action.getAttribute("aria-disabled") !== "true";
         if (action.dataset.action === "hacs-check" && enabled) this._checkHacs();
         if (action.dataset.action === "hacs-check-ext" && enabled) this._checkExt(action.dataset.target);
+        if (action.dataset.action === "hacs-install-all" && enabled) this._installAll();
         if (action.dataset.action === "wd-check" && enabled) this._checkWatchdog();
         if (action.dataset.action === "nav") this._navigate(action.dataset.path);
         this._update();
@@ -662,6 +672,31 @@ class SystemMonitorBase extends HTMLElement {
       this._checkError = e?.message || String(e);
     }
     this._extChecking.delete(entityId);
+    this._update();
+  }
+
+  /**
+   * Installs every pending HACS update, one after the other (HACS downloads one repository at a
+   * time), after a confirmation. Integrations then need a Home Assistant restart, which HA raises
+   * as a repair; dashboard cards need a browser reload.
+   */
+  async _installAll() {
+    if (this._installing) return;
+    const ids = discoverHacs(this._hass).filter((x) => x.update && !x.busy).map((x) => x.id);
+    if (!ids.length || !window.confirm(this._t("install_all_confirm").replace("{n}", ids.length))) return;
+    this._installing = { done: 0, total: ids.length };
+    this._installError = null;
+    this._update();
+    for (const id of ids) {
+      try {
+        await this._hass.callService("update", "install", { entity_id: id });
+      } catch (e) {
+        this._installError = `${this._hass.states[id]?.attributes?.friendly_name || id}: ${e?.message || e}`;
+      }
+      this._installing.done++;
+      this._update();
+    }
+    this._installing = null;
     this._update();
   }
 
@@ -858,6 +893,9 @@ const FULL_STYLE = `
   .section-title .chevron { transition: transform .2s ease; }
   .section-title.closed .chevron { transform: rotate(-90deg); }
   .section-title .chip { text-transform: none; letter-spacing: 0; padding: 0 8px; }
+  .section-title .btn-install { cursor: pointer; padding: 2px 8px; }
+  .section-title .btn-install[aria-disabled="true"] { cursor: default; }
+  .section-title .btn-install .icon { width: 14px; height: 14px; }
   .hacs .toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; }
   .btn { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500; padding: 6px 12px;
          border: none; border-radius: 10px; cursor: pointer; color: var(--primary-color, #03a9f4);
@@ -1119,9 +1157,11 @@ class SystemMonitorCard extends SystemMonitorBase {
     } else if (admin) {
       info = `<div class="toolbar"><a class="hint" href="https://github.com/juju35/ha-hacs-refresh" target="_blank" rel="noopener noreferrer">${esc(this._t("needs_refresh"))}</a></div>`;
     }
+    if (this._installError)
+      info += `<div class="toolbar"><span class="err">${esc(this._t("install_failed").replace("{e}", this._installError))}</span></div>`;
     const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="hacs" role="button" aria-expanded="${open}">
         ${svgIcon(ICONS.hacs)}${this._t("hacs")}
-        ${n ? `<span class="chip warn"><span class="dot"></span>${n}</span>` : ""}${check}
+        ${this._installChip(n, admin)}${check}
         <span class="count">${ext.length}</span>${svgIcon(ICONS.chevron, "chevron")}
       </div>`;
     if (!open) return `<div class="hacs">${head}</div>`;
@@ -1149,6 +1189,23 @@ class SystemMonitorCard extends SystemMonitorBase {
         </div>`;
     });
     return `<div class="hacs">${head}${info}<div class="exts">${rows.join("")}</div></div>`;
+  }
+
+  /**
+   * Number of pending HACS updates, next to the section title. For admins it is a button that
+   * installs them all, with its progress while it runs.
+   */
+  _installChip(n, admin) {
+    const run = this._installing;
+    if (!n && !run) return "";
+    if (!admin) return `<span class="chip warn"><span class="dot"></span>${n}</span>`;
+    const title = run
+      ? this._t("installing").replace("{i}", run.done).replace("{n}", run.total)
+      : this._t("install_all").replace("{n}", n);
+    const label = run ? `${run.done}/${run.total}` : n;
+    return `<span class="chip warn btn-install" role="button" tabindex="0" data-action="hacs-install-all" title="${esc(title)}" aria-label="${esc(title)}" aria-disabled="${!!run}">
+        ${run ? svgIcon(ICONS.refresh, "spin") : svgIcon(ICONS.download)}<span>${esc(label)}</span>
+      </span>`;
   }
 
   /** Integrations whose entities are all unavailable, from Integration Watchdog. */
