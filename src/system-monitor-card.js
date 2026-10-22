@@ -226,7 +226,7 @@ const esc = (v) =>
 const fold = (v) => String(v ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 const lang = (hass, config) => {
-  const l = (config && config.language) || (hass && (hass.locale?.language || hass.language)) || "en";
+  const l = (config?.language) || (hass && (hass.locale?.language || hass.language)) || "en";
   return STRINGS[l] ? l : STRINGS[l.split("-")[0]] ? l.split("-")[0] : "en";
 };
 
@@ -444,7 +444,7 @@ const mainIp = (hass, sm, config) => {
   const order = [...interfaces(sm, config), ...Object.keys(sm.nets).filter((i) => !VIRTUAL_IF.test(i))];
   for (const i of order) {
     const s = hass.states[sm.nets[i]?.ipv4_address];
-    if (s && s.state && !["unknown", "unavailable"].includes(s.state)) return s;
+    if (s?.state && !["unknown", "unavailable"].includes(s.state)) return s;
   }
   return null;
 };
@@ -480,7 +480,7 @@ const discoverHacs = (hass) => {
     const s = hass.states[e.entity_id];
     if (!s) continue;
     const a = s.attributes;
-    const dev = (hass.devices || {})[e.device_id];
+    const dev = hass.devices?.[e.device_id];
     const repo = /github\.com\/([^/]+\/[^/]+)/.exec(a.release_url || "")?.[1] || null;
     out.push({
       id: e.entity_id,
@@ -604,7 +604,7 @@ class SystemMonitorBase extends HTMLElement {
       const path = ev.composedPath();
       // Links (GitHub) open on their own, without the more-info dialog.
       if (path.some((n) => n.tagName === "A")) return;
-      const action = path.find((n) => n.dataset && n.dataset.action);
+      const action = path.find((n) => n.dataset?.action);
       // Inside the popup, only its buttons and the backdrop itself act.
       if (this._dialog && action?.dataset.action !== "dialog-ok" && action?.dataset.action !== "dialog-cancel") {
         if (path[0] === action) this._closeDialog();
@@ -641,7 +641,7 @@ class SystemMonitorBase extends HTMLElement {
         this._update();
         return;
       }
-      const el = path.find((n) => n.dataset && n.dataset.entity);
+      const el = path.find((n) => n.dataset?.entity);
       if (el) fireMoreInfo(this, el.dataset.entity);
     });
     // Keyboard: Enter / Space on an element with role="button" (the check button is a span inside the folding header).
@@ -717,7 +717,7 @@ class SystemMonitorBase extends HTMLElement {
     try {
       const res = await this._hass.callWS({ type: "brands/access_token" });
       this._brandsToken = res?.token || null;
-    } catch (e) {
+    } catch (_e) {
       this._brandsToken = null; // older Home Assistant: CDN only
     }
     this._tokenPending = false;

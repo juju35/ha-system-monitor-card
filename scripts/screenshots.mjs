@@ -74,7 +74,7 @@ await page.route(/brands\.home-assistant\.io|github\.com\/[^/]+\.png|avatars\.gi
   try {
     const res = await route.fetch({ url: `https://raw.githubusercontent.com/${brandRepos[domain]}/HEAD/custom_components/${domain}/brand/icon.png` });
     if (res.ok()) return route.fulfill({ response: res });
-  } catch (e) {
+  } catch (_e) {
     /* offline */
   }
   return route.abort();
