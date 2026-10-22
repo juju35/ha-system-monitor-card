@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.13.0
+
+### Changes
+- Install all HACS updates: the browser confirmation is replaced by a popup over the card, like in the IPTV card. It lists each extension with its current and new version, with **Cancel** and **Install** buttons; a click outside the popup or Escape closes it.
+
+![Install confirmation](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/v1.13.0/screenshots/card-install.png)
+
 ## 1.12.0
 
 ### Changes

@@ -49,6 +49,7 @@ const shots = [
   { file: "card-dark", type: "system-monitor-card", theme: "dark", width: 460, config: { language: "fr" }, update: true },
   { file: "card-hacs", type: "system-monitor-card", theme: "light", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true },
   { file: "card-hacs-search", type: "system-monitor-card", theme: "dark", width: 460, config: { language: "fr", show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true, search: "juju" },
+  { file: "card-install", type: "system-monitor-card", theme: "dark", width: 460, config: { language: "fr", show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true, install: true },
   { file: "card-watchdog", type: "system-monitor-card", theme: "light", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false, show_hacs: false }, open: true, action: "wd" },
   { file: "mini-card", type: "system-monitor-mini-card", theme: "light", width: 380, config: {} },
   { file: "mini-card-dark", type: "system-monitor-mini-card", theme: "dark", width: 380, config: { language: "fr" }, update: true },
@@ -83,7 +84,7 @@ for (const s of shots) {
   await page.addScriptTag({ content: HA_CARD });
   await page.addScriptTag({ content: cardJs });
   await page.evaluate(
-    ({ type, config, states, entities, devices, open, action, search }) => {
+    ({ type, config, states, entities, devices, open, action, search, install }) => {
       const el = document.createElement(type);
       el.setConfig({ type: `custom:${type}`, ...config });
       el.hass = {
@@ -92,6 +93,7 @@ for (const s of shots) {
       };
       document.getElementById("root").appendChild(el);
       if (open) el.shadowRoot.querySelector(`.section-title[data-action="${action}"]`).click();
+      if (install) el.shadowRoot.querySelector('[data-action="hacs-install-all"]').click();
       if (search) {
         const field = el.shadowRoot.querySelector("[data-search]");
         field.value = search;
@@ -107,6 +109,7 @@ for (const s of shots) {
       open: s.open,
       action: s.action || "hacs",
       search: s.search,
+      install: s.install,
     }
   );
   await page.waitForTimeout(800);

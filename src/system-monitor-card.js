@@ -81,6 +81,9 @@ const STRINGS = {
     no_match: "No matching extension",
     install_all: "Install all updates ({n})",
     install_all_confirm: "Install {n} HACS updates?",
+    install_title: "Install the updates",
+    install_btn: "Install",
+    cancel: "Cancel",
     installing: "Installing {i}/{n}…",
     install_failed: "Install failed: {e}",
     btn_install: "Install ({n})",
@@ -164,6 +167,9 @@ const STRINGS = {
     no_match: "Aucune extension trouvée",
     install_all: "Installer toutes les mises à jour ({n})",
     install_all_confirm: "Installer {n} mises à jour HACS ?",
+    install_title: "Installer les mises à jour",
+    install_btn: "Installer",
+    cancel: "Annuler",
     installing: "Installation {i}/{n}…",
     install_failed: "Échec de l'installation : {e}",
     btn_install: "Installer ({n})",
@@ -544,9 +550,29 @@ const fireMoreInfo = (node, entityId) => {
 // Shared styles
 // ---------------------------------------------------------------------------
 
+// In-card confirmation popup, as in ha-iptv-card: a backdrop over the card with a small dialog.
+const DIALOG_STYLE = `
+  .backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center;
+              z-index: 9; border-radius: inherit; }
+  .modal { background: var(--card-background-color, #1c1c1c); color: var(--primary-text-color); width: min(92%, 340px); max-height: calc(100% - 24px);
+           box-sizing: border-box; border-radius: 14px; padding: 16px; box-shadow: 0 8px 30px rgba(0,0,0,.4); display: flex; flex-direction: column; gap: 10px; }
+  .modal h3 { margin: 0; font-size: 16px; font-weight: 600; }
+  .modal .hint { font-size: 13px; color: var(--secondary-text-color); }
+  .modal-list { display: flex; flex-direction: column; gap: 4px; overflow: auto; min-height: 0; }
+  .modal-item { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+  .modal-item span:first-child { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .modal-item span:last-child { flex: none; color: var(--secondary-text-color); font-variant-numeric: tabular-nums; }
+  .modal-item b { font-weight: 500; color: var(--sm-warn); }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 2px; }
+  .modal button.act { border: 0; border-radius: 8px; padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .modal button.cancel { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
+  .modal button.primary { background: var(--primary-color, #03a9f4); color: #fff; }
+`;
+
 const BASE_STYLE = `
   :host { --sm-blue: #18bcf2; --sm-ok: var(--success-color, #43a047); --sm-warn: var(--warning-color, #ffa600); --sm-crit: var(--error-color, #db4437); }
-  ha-card { overflow: hidden; }
+  ha-card { overflow: hidden; position: relative; }
+  ha-card.dialog-open { min-height: 220px; }
   .icon { width: 18px; height: 18px; fill: currentColor; flex: none; }
   .muted { color: var(--secondary-text-color); }
   .clickable { cursor: pointer; }
@@ -579,6 +605,18 @@ class SystemMonitorBase extends HTMLElement {
       // Links (GitHub) open on their own, without the more-info dialog.
       if (path.some((n) => n.tagName === "A")) return;
       const action = path.find((n) => n.dataset && n.dataset.action);
+      // Inside the popup, only its buttons and the backdrop itself act.
+      if (this._dialog && action?.dataset.action !== "dialog-ok" && action?.dataset.action !== "dialog-cancel") {
+        if (path[0] === action) this._closeDialog();
+        return;
+      }
+      if (action?.dataset.action === "dialog-cancel") return this._closeDialog();
+      if (action?.dataset.action === "dialog-ok") {
+        const run = this._dialog.onOk;
+        this._closeDialog();
+        run();
+        return;
+      }
       if (action) {
         if (action.dataset.action === "hacs") {
           this._hacsOpen = !this._hacsOpen;
@@ -611,6 +649,13 @@ class SystemMonitorBase extends HTMLElement {
       if ((ev.key === "Enter" || ev.key === " ") && ev.target?.getAttribute?.("role") === "button") {
         ev.preventDefault();
         ev.target.click();
+      }
+    });
+    // Escape closes the popup.
+    this.shadowRoot.addEventListener("keydown", (ev) => {
+      if (ev.key === "Escape" && this._dialog) {
+        ev.stopPropagation();
+        this._closeDialog();
       }
     });
     // HACS search field: filters the list as you type; Escape clears it.
@@ -649,7 +694,8 @@ class SystemMonitorBase extends HTMLElement {
     // A click, not a pointerdown: folding on press would shift the layout under the pointer before the click.
     // The processes list folds too, unless a process is stopped.
     this._onOutside ??= (ev) => {
-      if ((!this._hacsOpen && !this._wdOpen && !this._procsOpen) || ev.composedPath().includes(this)) return;
+      if ((!this._hacsOpen && !this._wdOpen && !this._procsOpen && !this._dialog) || ev.composedPath().includes(this)) return;
+      this._dialog = null;
       this._hacsOpen = false;
       this._hacsQuery = "";
       this._wdOpen = false;
@@ -721,8 +767,48 @@ class SystemMonitorBase extends HTMLElement {
    */
   async _installAll() {
     if (this._installing) return;
-    const ids = discoverHacs(this._hass).filter((x) => x.update && !x.busy).map((x) => x.id);
-    if (!ids.length || !window.confirm(this._t("install_all_confirm").replace("{n}", ids.length))) return;
+    const pending = discoverHacs(this._hass).filter((x) => x.update && !x.busy);
+    if (!pending.length) return;
+    const items = pending
+      .map((x) => `<div class="modal-item"><span>${esc(x.name)}</span><span>${esc(x.installed || "?")} → <b>${esc(x.latest || "?")}</b></span></div>`)
+      .join("");
+    this._openDialog({
+      body: `<h3>${esc(this._t("install_title"))}</h3>
+        <div class="hint">${esc(this._t("install_all_confirm").replace("{n}", pending.length))}</div>
+        <div class="modal-list">${items}</div>`,
+      ok: this._t("install_btn"),
+      onOk: () => this._runInstall(pending.map((x) => x.id)),
+    });
+  }
+
+  /** Opens the in-card popup: body HTML, label of the main button, and what it does. */
+  _openDialog(dialog) {
+    this._dialog = dialog;
+    this._update();
+    this.shadowRoot.querySelector(".modal .primary")?.focus();
+  }
+
+  _closeDialog() {
+    this._dialog = null;
+    this._update();
+  }
+
+  _dialogHtml() {
+    const d = this._dialog;
+    if (!d) return "";
+    return `<style>${DIALOG_STYLE}</style><div class="backdrop" data-action="dialog-backdrop">
+      <div class="modal" role="dialog" aria-modal="true">
+        ${d.body}
+        <div class="modal-actions">
+          <button class="act cancel" data-action="dialog-cancel">${esc(this._t("cancel"))}</button>
+          <button class="act primary" data-action="dialog-ok">${esc(d.ok)}</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  async _runInstall(ids) {
+    if (this._installing) return;
     this._installing = { done: 0, total: ids.length };
     this._installError = null;
     this._update();
@@ -799,7 +885,8 @@ class SystemMonitorBase extends HTMLElement {
 
   _update() {
     if (!this._hass || !this._config) return;
-    const html = this._render();
+    let html = this._render();
+    if (this._dialog) html = html.replace(/<ha-card>([\s\S]*)<\/ha-card>\s*$/, (_, inner) => `<ha-card class="dialog-open">${inner}${this._dialogHtml()}</ha-card>`);
     if (html !== this._html) {
       // Re-rendering replaces the search field: keep its focus and caret.
       const active = this.shadowRoot.activeElement;
