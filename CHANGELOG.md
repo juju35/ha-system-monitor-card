@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.0
+
+### Changes
+- More compact layout with the same information, like the other ha-* cards: 12 px card padding, 36 px header icon, 16 px name and 12 px subtitle, 11 px pills, tighter tiles and sections.
+- Home Assistant logo 64 → 44 px, gauges 84 → 60 px; storage lines show the name and the usage on one line, with the bar underneath; tighter HACS list.
+- The mini card picks up the smaller pills and subtitle.
+
 ## 1.8.5
 
 ### Changes
