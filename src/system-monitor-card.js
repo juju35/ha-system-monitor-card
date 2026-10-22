@@ -1065,6 +1065,7 @@ const FULL_STYLE = `
   .hacs .search input::-webkit-search-cancel-button { display: none; }
   .hacs .search .clear { flex: none; width: 24px; height: 24px; margin-right: -4px; display: flex; align-items: center; justify-content: center;
                          border-radius: 50%; cursor: pointer; color: var(--secondary-text-color); }
+  .hacs .search .clear.empty { opacity: .35; pointer-events: none; }
   .hacs .search .clear:hover { background: var(--divider-color, rgba(127,127,127,.25)); color: var(--primary-text-color); }
   .exts .empty { padding: 8px 0; font-size: 13px; }
   .ext { display: flex; align-items: center; gap: 10px; padding: 4px 0; font-size: 13px; }
@@ -1337,7 +1338,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     )}" placeholder="${esc(this._t("search_ext"))}" aria-label="${esc(this._t("search_ext"))}" autocomplete="off" spellcheck="false">${
       this._hacsQuery
         ? `<span class="clear" role="button" tabindex="0" data-action="hacs-clear" title="${esc(this._t("clear_search"))}" aria-label="${esc(this._t("clear_search"))}">${svgIcon(ICONS.close)}</span>`
-        : ""
+        : `<span class="clear empty" aria-hidden="true">${svgIcon(ICONS.close)}</span>`
     }</label>`;
     const rows = shown.map((x) => {
       const ver = x.update ? `${esc(x.installed || "?")} → <b>${esc(x.latest || "?")}</b>` : esc(x.installed || "—");

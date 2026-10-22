@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.13.1
+
+### Fixes
+- HACS list: the ✕ button of the search field is always shown, dimmed while the field is empty, so it is visible before you type.
+
 ## 1.13.0
 
 ### Changes
