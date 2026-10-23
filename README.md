@@ -197,7 +197,7 @@ Logos are loaded dynamically, best source first:
 
 **Check for updates** (the refresh button next to the HACS section title, visible even while the list is folded) presses the button of the [HACS Refresh](https://github.com/juju35/ha-hacs-refresh) integration: Home Assistant asks HACS to fetch every downloaded repository again from GitHub, in the background, and the card shows the progress and the time of the last check from HACS Refresh's sensors. The check goes on if you leave the page, and HACS Refresh can also check at an interval set in its options. Without HACS Refresh, the button is hidden and the unfolded list shows a link to install it.
 
-**Install all updates**: when updates are pending, their number next to the HACS section title is a button (for admins). A click opens a confirmation popup over the card, listing each extension with its current and new version (**Cancel**, a click outside the popup or Escape closes it), then **Install** installs every pending update one after the other through `update.install`, with the progress in the button. Integrations then need a Home Assistant restart (Home Assistant raises a repair for it), dashboard cards a browser reload.
+**Install all updates**: when updates are pending, their number next to the HACS section title is a button (for admins). A click opens a confirmation popup at the top of the card, listing each extension with its current and new version (**Cancel**, a click outside the popup or Escape closes it), then **Install** installs every pending update one after the other through `update.install`, with the progress in the button. Integrations then need a Home Assistant restart (Home Assistant raises a repair for it), dashboard cards a browser reload.
 
 ### Unavailable integrations
 

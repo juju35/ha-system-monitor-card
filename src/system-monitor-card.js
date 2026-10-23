@@ -550,10 +550,11 @@ const fireMoreInfo = (node, entityId) => {
 // Shared styles
 // ---------------------------------------------------------------------------
 
-// In-card confirmation popup, as in ha-iptv-card: a backdrop over the card with a small dialog.
+// In-card confirmation popup, as in ha-iptv-card: a backdrop over the card with a small dialog,
+// at the top of the card so it stays in view when the card is long.
 const DIALOG_STYLE = `
-  .backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center;
-              z-index: 9; border-radius: inherit; }
+  .backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: flex-start; justify-content: center;
+              padding-top: 12px; box-sizing: border-box; z-index: 9; border-radius: inherit; }
   .modal { background: var(--card-background-color, #1c1c1c); color: var(--primary-text-color); width: min(92%, 340px); max-height: calc(100% - 24px);
            box-sizing: border-box; border-radius: 14px; padding: 16px; box-shadow: 0 8px 30px rgba(0,0,0,.4); display: flex; flex-direction: column; gap: 10px; }
   .modal h3 { margin: 0; font-size: 16px; font-weight: 600; }

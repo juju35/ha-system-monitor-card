@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.13.3
+
+### Fixes
+- The install confirmation popup sits at the top of the card instead of its vertical middle, so it stays in view without scrolling when the HACS list is long.
+
 ## 1.13.2
 
 ### Maintenance
