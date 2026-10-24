@@ -216,7 +216,7 @@ Thresholds:
 ## Development
 
 ```bash
-npm install
+npm ci               # installs the locked dev dependencies (Playwright, for the screenshots)
 npm run build        # bundles src/system-monitor-card.js + images/home-assistant.svg into dist/system-monitor-card.js
 npm run check        # builds and checks the card (run in CI)
 npm run screenshots  # renders the cards with mock data (scripts/mock-states.mjs) into screenshots/
