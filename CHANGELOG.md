@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.14.1
+
+### Fixes
+- Clicking a gauge, tile or row no longer scrolls the page back to the card on every update.
+- HACS extensions: the keyboard focus goes to the extension name, and the check button and the GitHub link next to it are separate controls for the keyboard and screen readers instead of being nested in the row. Clicking anywhere on the row still opens the more-info dialog.
+
+### Changes
+- Keyboard focus is shown with a blue outline on gauges, tiles, rows and buttons. Nothing changes at rest or on a mouse click.
+
+### Maintenance
+- `package-lock.json` committed and installed with `npm ci` in CI; a fresh page per screenshot; duplication check skips the tests; regression tests for the focus restore.
+
 ## 1.14.0
 
 ### Changes
