@@ -557,7 +557,7 @@ const DIALOG_STYLE = `
               padding-top: 12px; box-sizing: border-box; z-index: 9; border-radius: inherit; }
   .modal { background: var(--card-background-color, #1c1c1c); color: var(--primary-text-color); width: min(92%, 340px); max-height: calc(100% - 24px);
            box-sizing: border-box; border-radius: 14px; padding: 16px; box-shadow: 0 8px 30px rgba(0,0,0,.4); display: flex; flex-direction: column; gap: 10px; }
-  .modal h3 { margin: 0; font-size: 16px; font-weight: 600; }
+  .modal h3 { margin: 0; font-size: 16px; font-weight: 500; }
   .modal .hint { font-size: 13px; color: var(--secondary-text-color); }
   .modal-list { display: flex; flex-direction: column; gap: 4px; overflow: auto; min-height: 0; }
   .modal-item { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
