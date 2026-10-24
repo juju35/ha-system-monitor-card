@@ -376,13 +376,29 @@ const FALLBACK = [
 // Virtual interfaces hidden by default from the network section.
 const VIRTUAL_IF = /^(lo|docker\d*|hassio|veth.*|br-.*|virbr\d*|tun\d*|wg\d*)$/;
 
-const _cache = new WeakMap();
+/**
+ * Caches a scan of the entity registry per hass.entities / hass.devices object: Home Assistant
+ * replaces them only when a registry changes, whereas hass.states changes with every state.
+ * `scan(hass, missing)` adds to `missing` the entities it skipped for lack of a state; the
+ * cached result is dropped as soon as one of them gets one. Without the registry (very old
+ * Home Assistant), the scan is cached per hass.states as before.
+ */
+const registryCache = (scan) => {
+  const cache = new WeakMap();
+  return (hass) => {
+    const key = hass.entities || hass.states;
+    const hit = cache.get(key);
+    if (hit && hit.devices === hass.devices && (hit.states === hass.states || !hit.missing.some((id) => hass.states[id])))
+      return hit.value;
+    const missing = [];
+    const value = scan(hass, missing);
+    cache.set(key, { devices: hass.devices, states: hass.states, missing, value });
+    return value;
+  };
+};
 
 /** Map the System Monitor entities to a structured object of entity ids. */
-const discover = (hass) => {
-  const hit = _cache.get(hass.states);
-  if (hit) return hit;
-
+const discover = registryCache((hass, missing) => {
   const sm = { scalars: {}, disks: {}, nets: {}, procs: {}, found: false };
   const add = (key, arg, id) => {
     sm.found = true;
@@ -401,7 +417,11 @@ const discover = (hass) => {
   const registry = hass.entities ? Object.values(hass.entities).filter((e) => e.platform === "systemmonitor") : [];
   if (registry.length) {
     for (const e of registry.sort((a, b) => a.entity_id.localeCompare(b.entity_id))) {
-      if (e.hidden || !hass.states[e.entity_id]) continue;
+      if (e.hidden) continue;
+      if (!hass.states[e.entity_id]) {
+        missing.push(e.entity_id);
+        continue;
+      }
       const key = ALIASES[e.translation_key] || e.translation_key;
       if (ARG_KEYS[key] || SCALAR_KEYS.includes(key)) add(key, null, e.entity_id);
       // The "Last boot" sensor has no translation key (it is named after its "uptime" device class).
@@ -422,14 +442,16 @@ const discover = (hass) => {
   }
 
   // Home Assistant update entities, for the header (Core / OS versions).
-  for (const id of Object.keys(hass.states)) {
-    if (/^update\.home_assistant_core(_|$)/.test(id)) sm.core_update ??= id;
-    else if (/^update\.home_assistant_operating_system(_|$)/.test(id)) sm.os_update ??= id;
+  // From the states as before, and from the registry so that one without a state yet is picked up when it gets one.
+  for (const id of new Set([...Object.keys(hass.states), ...Object.keys(hass.entities || {})])) {
+    const key = /^update\.home_assistant_core(_|$)/.test(id) ? "core_update" : /^update\.home_assistant_operating_system(_|$)/.test(id) ? "os_update" : null;
+    if (!key) continue;
+    if (!hass.states[id]) missing.push(id);
+    else sm[key] ??= id;
   }
 
-  _cache.set(hass.states, sm);
   return sm;
-};
+});
 
 /** Network interfaces to display: the configured one, else the physical ones with a throughput sensor. */
 const interfaces = (sm, config) => {
@@ -473,18 +495,22 @@ const memUsage = (hass, sc, prefix) => {
  * HACS names the device after the repository and stores its category in the device model,
  * and the release URL carries the GitHub "owner/repo".
  */
+const hacsEntities = registryCache((hass) =>
+  Object.values(hass.entities || {})
+    .filter((e) => e.platform === "hacs" && e.entity_id.startsWith("update.") && !e.hidden)
+    .map((e) => ({ id: e.entity_id, dev: hass.devices?.[e.device_id] }))
+);
+
 const discoverHacs = (hass) => {
   const out = [];
-  for (const e of Object.values(hass.entities || {})) {
-    if (e.platform !== "hacs" || !e.entity_id.startsWith("update.") || e.hidden) continue;
-    const s = hass.states[e.entity_id];
+  for (const { id, dev } of hacsEntities(hass)) {
+    const s = hass.states[id];
     if (!s) continue;
     const a = s.attributes;
-    const dev = hass.devices?.[e.device_id];
     const repo = /github\.com\/([^/]+\/[^/]+)/.exec(a.release_url || "")?.[1] || null;
     out.push({
-      id: e.entity_id,
-      name: dev?.name_by_user || dev?.name || String(a.friendly_name || e.entity_id).replace(/ update$/i, ""),
+      id,
+      name: dev?.name_by_user || dev?.name || String(a.friendly_name || id).replace(/ update$/i, ""),
       category: dev?.model || (a.entity_picture ? "integration" : null),
       repo,
       domain: /\/_\/([^/]+)\/icon\.png/.exec(a.entity_picture || "")?.[1] || null,
@@ -498,10 +524,17 @@ const discoverHacs = (hass) => {
 };
 
 /** Entities of the HACS Refresh integration, which checks every HACS repository for updates on the server. */
-const discoverRefresh = (hass) => {
+/** Registry entries of a platform that have a state; the others are listed in `missing`. */
+const platformEntities = (hass, platform, missing) =>
+  Object.values(hass.entities || {}).filter((e) => {
+    if (e.platform !== platform) return false;
+    if (!hass.states[e.entity_id]) missing.push(e.entity_id);
+    return !!hass.states[e.entity_id];
+  });
+
+const discoverRefresh = registryCache((hass, missing) => {
   const out = {};
-  for (const e of Object.values(hass.entities || {})) {
-    if (e.platform !== "hacs_refresh" || !hass.states[e.entity_id]) continue;
+  for (const e of platformEntities(hass, "hacs_refresh", missing)) {
     if (e.entity_id.startsWith("button.")) out.button = e.entity_id;
     else if (e.entity_id.startsWith("sensor.")) {
       const s = hass.states[e.entity_id];
@@ -510,18 +543,17 @@ const discoverRefresh = (hass) => {
     }
   }
   return out;
-};
+});
 
 // ---------------------------------------------------------------------------
 // Integration Watchdog
 // ---------------------------------------------------------------------------
 
 /** Entities of the Integration Watchdog integration, which reloads the integrations whose entities are all unavailable. */
-const discoverWatchdog = (hass) => {
+const discoverWatchdog = registryCache((hass, missing) => {
   const out = {};
   const keys = { unavailable: "unavailable", unavailable_integrations: "unavailable", last_reload: "lastReload", last_check: "lastCheck" };
-  for (const e of Object.values(hass.entities || {})) {
-    if (e.platform !== "integration_watchdog" || !hass.states[e.entity_id]) continue;
+  for (const e of platformEntities(hass, "integration_watchdog", missing)) {
     if (e.entity_id.startsWith("button.")) out.button = e.entity_id;
     else if (e.entity_id.startsWith("sensor.")) {
       // Translation key, else the end of the English entity id.
@@ -530,6 +562,46 @@ const discoverWatchdog = (hass) => {
     }
   }
   return out;
+});
+
+/** Entity ids a card reads its states from: a change of any other state doesn't re-render it. */
+const trackedIds = (hass) => {
+  const sm = discover(hass);
+  const ids = [...Object.values(sm.scalars), ...Object.values(sm.procs), sm.core_update, sm.os_update];
+  for (const group of [sm.disks, sm.nets]) for (const g of Object.values(group)) ids.push(...Object.values(g));
+  ids.push(...hacsEntities(hass).map((x) => x.id), ...Object.values(discoverRefresh(hass)), ...Object.values(discoverWatchdog(hass)));
+  return ids;
+};
+
+/**
+ * What a render depends on besides the card's own state: the tracked states (compared by
+ * identity, Home Assistant replaces a state object when it changes), the registries, the user,
+ * the language, and the current minute for the uptime and the relative times ("2 minutes ago").
+ */
+const renderSignature = (hass) => [
+  hass.entities,
+  hass.devices,
+  hass.user,
+  hass.language,
+  hass.locale,
+  hass.config,
+  Math.floor(Date.now() / 60000),
+  ...trackedIds(hass).map((id) => hass.states[id]),
+];
+
+const sameSignature = (a, b) => !!a && a.length === b.length && a.every((v, i) => v === b[i]);
+
+/** CSS attribute selector matching an attribute value exactly. */
+const attrSel = (name, value) => `[${name}="${String(value).replace(/["\\]/g, "\\$&")}"]`;
+
+/** Selector finding the same clickable element again after a re-render, from its data-* attributes. */
+const focusSelector = (el) => {
+  const d = el?.dataset;
+  if (!d?.action) return null;
+  return ["action", "target", "path", "entity"]
+    .filter((k) => d[k] !== undefined)
+    .map((k) => attrSel(`data-${k}`, d[k]))
+    .join("");
 };
 
 const relTime = (iso, locale) => {
@@ -862,6 +934,10 @@ class SystemMonitorBase extends HTMLElement {
   set hass(hass) {
     this._hass = hass;
     this._fetchBrandsToken();
+    // Home Assistant sets hass on every state change of the instance: render only when one the card shows changed.
+    const sig = renderSignature(hass);
+    if (sameSignature(this._sig, sig)) return;
+    this._sig = sig;
     this._update();
   }
 
@@ -889,10 +965,11 @@ class SystemMonitorBase extends HTMLElement {
     let html = this._render();
     if (this._dialog) html = html.replace(/<ha-card>([\s\S]*)<\/ha-card>\s*$/, (_, inner) => `<ha-card class="dialog-open">${inner}${this._dialogHtml()}</ha-card>`);
     if (html !== this._html) {
-      // Re-rendering replaces the search field: keep its focus and caret.
+      // Re-rendering replaces the search field and the buttons: keep the focus (and the caret).
       const active = this.shadowRoot.activeElement;
       const search = active?.dataset?.search;
       const caret = search ? [active.selectionStart, active.selectionEnd] : null;
+      const focused = search ? null : focusSelector(active);
       this._html = html;
       this.shadowRoot.innerHTML = html;
       if (search) {
@@ -901,7 +978,7 @@ class SystemMonitorBase extends HTMLElement {
           field.focus();
           field.setSelectionRange(...caret);
         }
-      }
+      } else if (focused) this.shadowRoot.querySelector(focused)?.focus();
     }
   }
 
