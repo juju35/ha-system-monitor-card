@@ -99,3 +99,87 @@ test("Core and OS update entities are found from their states, with or without a
   assert.equal(sm.core_update, "update.home_assistant_core_update");
   assert.equal(sm.os_update, "update.home_assistant_operating_system_update");
 });
+
+test("fmtBytes divides by 1024 and says so with binary prefixes", () => {
+  assert.equal(lib.fmtBytes(512), "512 B");
+  assert.equal(lib.fmtBytes(1536), "1.5 KiB");
+  assert.equal(lib.fmtBytes(20 * 1024 ** 3), "20 GiB");
+  assert.equal(lib.fmtBytes(null), "—");
+});
+
+test("focusSelector finds an entity row again, but not a plain clickable span", () => {
+  const row = { dataset: { entity: "update.parcel_update" }, getAttribute: (n) => (n === "role" ? "button" : null) };
+  assert.equal(lib.focusSelector(row), '[role="button"][data-entity="update.parcel_update"]');
+  const span = { dataset: { entity: "sensor.x" }, getAttribute: () => null };
+  assert.equal(lib.focusSelector(span), null);
+});
+
+const statusCard = (hass, config = {}) => {
+  const card = new lib.SystemMonitorStatusCard();
+  card._hass = hass;
+  card._config = config;
+  return card;
+};
+
+test("the status card shows its status row only when a tile is not good", () => {
+  const hass = hassWith();
+  const card = statusCard(hass);
+  const sm = lib.discover(hass);
+  const tiles = card._stats(sm);
+  assert.ok(tiles.length > 0);
+  const bad = tiles.some((x) => x.cls === "warn" || x.cls === "crit");
+  assert.equal(card._statusRow(sm) !== "", bad);
+  // Every tile good: no row.
+  card._stats = () => tiles.map((x) => ({ ...x, cls: "good" }));
+  assert.equal(card._statusRow(sm), "");
+  card._stats = () => [{ ...tiles[0], cls: "warn" }];
+  assert.match(card._statusRow(sm), /class="stats"/);
+});
+
+test("the status card's check button follows the full card's rule: every user may check, only admins install", () => {
+  const hass = hassWith({ user: { is_admin: false } });
+  const id = "update.parcel_update";
+  const s = hass.states[id];
+  const card = statusCard(hass);
+  assert.match(card._button(), /data-action="hacs-check"/);
+  hass.states = { ...hass.states, [id]: { ...s, state: "on", attributes: { ...s.attributes, latest_version: "9.9.9" } } };
+  assert.match(card._button(), /data-action="hacs-check"/);
+  hass.user = { is_admin: true };
+  assert.match(card._button(), /data-action="hacs-install-all"/);
+});
+
+test("restoring the focus after a re-render does not scroll the page to the card", () => {
+  const card = new lib.SystemMonitorCard();
+  card._config = {};
+  card._hass = hassWith();
+  const calls = [];
+  const active = { dataset: { entity: "sensor.system_monitor_processor_use" }, getAttribute: (n) => (n === "role" ? "button" : null) };
+  card.shadowRoot = {
+    activeElement: active,
+    innerHTML: "",
+    querySelector: () => ({ focus: (opts) => calls.push(opts) }),
+  };
+  card._render = () => "<ha-card>v1</ha-card>";
+  card._update();
+  card._render = () => "<ha-card>v2</ha-card>";
+  card._update();
+  assert.ok(calls.length > 0);
+  for (const opts of calls) assert.equal(opts?.preventScroll, true);
+});
+
+test("restoring the focus of the search field does not scroll the page either", () => {
+  const card = new lib.SystemMonitorCard();
+  card._config = {};
+  card._hass = hassWith();
+  const calls = [];
+  const active = { dataset: { search: "hacs" }, selectionStart: 2, selectionEnd: 2 };
+  card.shadowRoot = {
+    activeElement: active,
+    innerHTML: "",
+    querySelector: () => ({ focus: (opts) => calls.push(opts), setSelectionRange() {} }),
+  };
+  card._render = () => "<ha-card>v1</ha-card>";
+  card._update();
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0]?.preventScroll, true);
+});

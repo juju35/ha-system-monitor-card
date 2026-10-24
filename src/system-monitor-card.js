@@ -259,9 +259,10 @@ const toBps = (s) => {
   return v * (SIZE_FACTORS[unit] ?? 1);
 };
 
+/** Sizes in powers of 1024, with binary prefixes as Home Assistant shows them (System Monitor reports MiB and GiB). */
 const fmtBytes = (b) => {
   if (b === null || b === undefined) return "—";
-  const units = ["B", "KB", "MB", "GB", "TB", "PB"];
+  const units = ["B", "KiB", "MiB", "GiB", "TiB", "PiB"];
   let i = 0;
   while (b >= 1024 && i < units.length - 1) {
     b /= 1024;
@@ -597,11 +598,14 @@ const attrSel = (name, value) => `[${name}="${String(value).replace(/["\\]/g, "\
 /** Selector finding the same clickable element again after a re-render, from its data-* attributes. */
 const focusSelector = (el) => {
   const d = el?.dataset;
-  if (!d?.action) return null;
-  return ["action", "target", "path", "entity"]
+  // Buttons, and rows or tiles that open an entity from the keyboard.
+  const entityButton = d?.entity && el.getAttribute?.("role") === "button";
+  if (!d?.action && !entityButton) return null;
+  const sel = ["action", "target", "path", "entity"]
     .filter((k) => d[k] !== undefined)
     .map((k) => attrSel(`data-${k}`, d[k]))
     .join("");
+  return d.action ? sel : `[role="button"]${sel}`;
 };
 
 const relTime = (iso, locale) => {
@@ -649,6 +653,7 @@ const BASE_STYLE = `
   .icon { width: 18px; height: 18px; fill: currentColor; flex: none; }
   .muted { color: var(--secondary-text-color); }
   .clickable { cursor: pointer; }
+  .clickable:focus-visible, [role="button"]:focus-visible { outline: 2px solid var(--sm-blue); outline-offset: -2px; }
   .ok { --c: var(--sm-blue); } .warn { --c: var(--sm-warn); } .crit { --c: var(--sm-crit); } .good { --c: var(--sm-ok); }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c, var(--sm-ok)); flex: none; display: inline-block; }
   .chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
@@ -673,6 +678,8 @@ class SystemMonitorBase extends HTMLElement {
     this._wdOpen = false;
     this._procsOpen = false;
     this._imgFailed = new Set();
+    // Brand logo URL per integration domain, kept once loaded: a new brands token doesn't reload it.
+    this._brandUrls = new Map();
     this.shadowRoot.addEventListener("click", (ev) => {
       const path = ev.composedPath();
       // Links (GitHub) open on their own, without the more-info dialog.
@@ -717,7 +724,8 @@ class SystemMonitorBase extends HTMLElement {
       const el = path.find((n) => n.dataset?.entity);
       if (el) fireMoreInfo(this, el.dataset.entity);
     });
-    // Keyboard: Enter / Space on an element with role="button" (the check button is a span inside the folding header).
+    // Keyboard: Enter / Space on an element with role="button" (the check button is a span inside the folding header,
+    // gauges, tiles and rows open their entity). A real link (GitHub) inside a row keeps its own behaviour.
     this.shadowRoot.addEventListener("keydown", (ev) => {
       if ((ev.key === "Enter" || ev.key === " ") && ev.target?.getAttribute?.("role") === "button") {
         ev.preventDefault();
@@ -750,11 +758,22 @@ class SystemMonitorBase extends HTMLElement {
         const img = ev.target;
         if (img.tagName !== "IMG" || img.dataset.fb === undefined) return;
         this._imgFailed.add(img.getAttribute("src"));
+        // A kept brand URL whose token has expired: the next render uses the current token.
+        if (this._brandUrls.get(img.dataset.domain) === img.getAttribute("src")) this._brandUrls.delete(img.dataset.domain);
         const next = img.dataset.fb.split(" ").filter((u) => u && !this._imgFailed.has(u));
         if (next.length) {
           img.dataset.fb = next.slice(1).join(" ");
           img.src = next[0];
         } else img.replaceWith(Object.assign(document.createElement("span"), { innerHTML: svgIcon(ICONS[img.dataset.cat] || ICONS.hacs) }).firstChild);
+      },
+      true
+    );
+    this.shadowRoot.addEventListener(
+      "load",
+      (ev) => {
+        const img = ev.target;
+        const src = img.tagName === "IMG" ? img.getAttribute("src") : "";
+        if (img.dataset?.domain && src.startsWith("/api/brands/")) this._brandUrls.set(img.dataset.domain, src);
       },
       true
     );
@@ -794,7 +813,7 @@ class SystemMonitorBase extends HTMLElement {
       this._brandsToken = null; // older Home Assistant: CDN only
     }
     this._tokenPending = false;
-    this._html = "";
+    // Renders only if a logo URL changed: logos already loaded keep theirs (see _logoSources).
     this._update();
   }
 
@@ -802,7 +821,9 @@ class SystemMonitorBase extends HTMLElement {
   _logoSources(x) {
     const out = [];
     if (x.domain) {
-      if (this._brandsToken)
+      const kept = this._brandUrls.get(x.domain);
+      if (kept) out.push(kept);
+      else if (this._brandsToken)
         out.push(`/api/brands/integration/${encodeURIComponent(x.domain)}/icon.png?placeholder=no&token=${encodeURIComponent(this._brandsToken)}`);
       out.push(`https://brands.home-assistant.io/_/${encodeURIComponent(x.domain)}/icon.png`);
     }
@@ -814,7 +835,7 @@ class SystemMonitorBase extends HTMLElement {
     const src = this._logoSources(x);
     const cat = ICONS[x.category] ? x.category : "hacs";
     if (!src.length) return `<span class="ext-logo fallback">${svgIcon(ICONS[cat])}</span>`;
-    return `<span class="ext-logo"><img src="${esc(src[0])}" data-fb="${esc(src.slice(1).join(" "))}" data-cat="${cat}" alt="" loading="lazy" referrerpolicy="no-referrer"></span>`;
+    return `<span class="ext-logo"><img src="${esc(src[0])}" data-fb="${esc(src.slice(1).join(" "))}" data-cat="${cat}" data-domain="${esc(x.domain || "")}" alt="" loading="lazy" referrerpolicy="no-referrer"></span>`;
   }
 
   /** Checks one extension through HACS Refresh's check_repository action, which ends with the result. */
@@ -965,7 +986,8 @@ class SystemMonitorBase extends HTMLElement {
     let html = this._render();
     if (this._dialog) html = html.replace(/<ha-card>([\s\S]*)<\/ha-card>\s*$/, (_, inner) => `<ha-card class="dialog-open">${inner}${this._dialogHtml()}</ha-card>`);
     if (html !== this._html) {
-      // Re-rendering replaces the search field and the buttons: keep the focus (and the caret).
+      // Re-rendering replaces the search field and the buttons: keep the focus (and the caret), without scrolling
+      // the page back to the card (a mouse click focuses gauges and rows too).
       const active = this.shadowRoot.activeElement;
       const search = active?.dataset?.search;
       const caret = search ? [active.selectionStart, active.selectionEnd] : null;
@@ -975,10 +997,10 @@ class SystemMonitorBase extends HTMLElement {
       if (search) {
         const field = this.shadowRoot.querySelector(`[data-search="${search}"]`);
         if (field) {
-          field.focus();
+          field.focus({ preventScroll: true });
           field.setSelectionRange(...caret);
         }
-      } else if (focused) this.shadowRoot.querySelector(focused)?.focus();
+      } else if (focused) this.shadowRoot.querySelector(focused)?.focus({ preventScroll: true });
     }
   }
 
@@ -1061,11 +1083,17 @@ class SystemMonitorBase extends HTMLElement {
     return this._stat("wd", ICONS.watchdog, this._t("integrations"), value, n ? "crit" : "good", text);
   }
 
-  /** A status tile of the row under the header: section icon and name, status in its color; a click folds or unfolds that section. */
+  /**
+   * A status tile of the row under the header: section icon and name, status in its color; a click folds or unfolds that section.
+   * Returns its status class with its HTML, so that callers don't have to read the status back from the markup.
+   */
   _stat(action, icon, label, value, cls, title) {
-    return `<div class="stat clickable ${cls}" ${this._statTarget(action)} role="button" tabindex="0" title="${esc(title)}" aria-label="${esc(title)}">
+    return {
+      cls,
+      html: `<div class="stat clickable ${cls}" ${this._statTarget(action)} role="button" tabindex="0" title="${esc(title)}" aria-label="${esc(title)}">
         <div class="k">${svgIcon(icon)}<span>${esc(label)}</span></div><div class="v">${esc(value)}</div>
-      </div>`;
+      </div>`,
+    };
   }
 
   /** What a click on a status tile does: here, fold or unfold its section. */
@@ -1073,10 +1101,15 @@ class SystemMonitorBase extends HTMLElement {
     return `data-action="${action}"`;
   }
 
+  /** Status tiles shown: HACS, processes, integrations. */
+  _stats(sm) {
+    return [this._hacsStat(), this._procsStat(sm), this._wdStat()].filter(Boolean);
+  }
+
   /** Overall statuses (HACS, processes, integrations), side by side under the header. */
   _statusRow(sm) {
-    const stats = [this._hacsStat(), this._procsStat(sm), this._wdStat()].filter(Boolean);
-    return stats.length ? `<div class="stats" style="--n:${stats.length}">${stats.join("")}</div>` : "";
+    const stats = this._stats(sm);
+    return stats.length ? `<div class="stats" style="--n:${stats.length}">${stats.map((x) => x.html).join("")}</div>` : "";
   }
 
   _noSm() {
@@ -1243,7 +1276,7 @@ class SystemMonitorCard extends SystemMonitorBase {
   }
 
   _gauge(id, label, icon, value, display, cls, detail = "") {
-    return `<div class="gauge clickable ${cls}" data-entity="${id || ""}">
+    return `<div class="gauge clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">
       <div class="dial">${ring(value)}<div class="val">${svgIcon(icon)}<b>${display}</b></div></div>
       <div class="lbl">${label}</div>
       ${detail ? `<div class="lbl2">${detail}</div>` : ""}
@@ -1315,7 +1348,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     const tile = (n, rateKey, totalKey, cls, icon, label) => {
       const id = n[rateKey];
       const total = toBytes(this._s(n[totalKey]));
-      return `<div class="tile clickable ${cls}" data-entity="${id || ""}">${svgIcon(icon)}<div style="min-width:0">
+      return `<div class="tile clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">${svgIcon(icon)}<div style="min-width:0">
         <div class="k">${esc(label)}</div>
         <div class="v">${fmtRate(toBps(this._s(id)))}</div>
         ${total !== null ? `<div class="t">${this._t("total")} ${fmtBytes(total)}</div>` : ""}
@@ -1337,7 +1370,7 @@ class SystemMonitorCard extends SystemMonitorBase {
 
   _bar(id, icon, label, u, warn, crit) {
     const cls = level(u.pct, warn, crit);
-    return `<div class="vol clickable ${cls}" data-entity="${id || ""}">
+    return `<div class="vol clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">
       <div class="row">${svgIcon(icon)}<span class="grow">${esc(label)}</span></div>
       <div class="bar"><div style="width:${u.pct === null ? 0 : Math.max(0, Math.min(100, u.pct))}%"></div></div>
       <div class="detail">
@@ -1432,9 +1465,11 @@ class SystemMonitorCard extends SystemMonitorBase {
       const check = canCheckExt
         ? `<span class="gh" role="button" tabindex="0" data-action="hacs-check-ext" data-target="${x.id}" title="${esc(this._t("check_ext"))}" aria-label="${esc(this._t("check_ext"))}" aria-disabled="${checking}">${svgIcon(ICONS.refresh, checking ? "spin" : "")}</span>`
         : "";
+      // The row stays clickable with the mouse; only its name is the keyboard button, so that the check button and
+      // the GitHub link next to it are not nested in a role="button" (their roles would be lost).
       return `<div class="ext clickable" data-entity="${x.id}">
           ${this._logo(x)}
-          <div class="grow"><div class="ext-name">${esc(x.name)}</div><div class="ext-ver">${ver}</div></div>
+          <div class="grow" data-entity="${x.id}" role="button" tabindex="0"><div class="ext-name">${esc(x.name)}</div><div class="ext-ver">${ver}</div></div>
           ${status}${check}${gh}
         </div>`;
     });
@@ -1504,7 +1539,7 @@ class SystemMonitorCard extends SystemMonitorBase {
         ? `<span class="chip crit"><span class="dot"></span>${esc(this._t("wd_gave_up"))}</span>`
         : `<span class="chip warn"><span class="dot"></span>${esc(this._t("wd_unavailable"))}</span>`;
       const path = `/config/integrations/integration/${encodeURIComponent(x.domain)}`;
-      return `<div class="ext clickable" data-action="nav" data-path="${esc(path)}" title="${esc(this._t("wd_open"))}">
+      return `<div class="ext clickable" data-action="nav" data-path="${esc(path)}" role="button" tabindex="0" title="${esc(this._t("wd_open"))}">
           ${this._logo({ domain: x.domain, category: "integration" })}
           <div class="grow"><div class="ext-name">${esc(x.title || x.domain)}</div><div class="ext-ver">${esc(sub)}</div></div>
           ${status}
@@ -1570,7 +1605,7 @@ class SystemMonitorMiniCard extends SystemMonitorBase {
   }
 
   _metric(id, icon, label, p, display, cls) {
-    return `<div class="metric clickable ${cls}" data-entity="${id || ""}">
+    return `<div class="metric clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">
       ${svgIcon(icon)}<span>${label}</span>
       <div class="bar"><div style="width:${p === null ? 0 : Math.max(0, Math.min(100, p))}%"></div></div>
       <span class="v">${display}</span>
@@ -1682,22 +1717,25 @@ class SystemMonitorStatusCard extends SystemMonitorBase {
 
   /** The status row shows up only while one of the statuses is not good. */
   _statusRow(sm) {
-    const stats = [this._hacsStat(), this._procsStat(sm), this._wdStat()].filter(Boolean);
-    if (!stats.some((x) => x.startsWith('<div class="stat clickable warn"') || x.startsWith('<div class="stat clickable crit"'))) return "";
+    if (!this._stats(sm).some((x) => x.cls === "warn" || x.cls === "crit")) return "";
     return super._statusRow(sm);
   }
 
-  /** Install the pending HACS updates, else check for updates through HACS Refresh. Admins only. */
+  /**
+   * Install the pending HACS updates (admins), else check for updates through HACS Refresh (every user,
+   * as in the full card: the check only fetches information).
+   */
   _button() {
-    if (this._config.show_hacs === false || (this._hass.user && !this._hass.user.is_admin)) return "";
+    if (this._config.show_hacs === false) return "";
     const ext = discoverHacs(this._hass);
     if (!ext.length) return "";
-    const n = ext.filter((x) => x.update).length;
+    const admin = !this._hass.user || this._hass.user.is_admin;
+    const n = admin ? ext.filter((x) => x.update).length : 0;
     const btn = (action, cls, icon, spin, label, title, busy) =>
       `<span class="btn ${cls}" role="button" tabindex="0" data-action="${action}" title="${esc(title)}" aria-label="${esc(title)}" aria-disabled="${busy}">
           ${svgIcon(icon, spin ? "spin" : "")}<span>${esc(label)}</span>
         </span>`;
-    const run = this._installing;
+    const run = admin && this._installing;
     if (run) {
       const title = this._t("installing").replace("{i}", run.done).replace("{n}", run.total);
       return btn("hacs-install-all", "warn", ICONS.refresh, true, `${run.done}/${run.total}`, title, true);

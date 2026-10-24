@@ -1,5 +1,30 @@
 # Changelog
 
+## 1.14.1
+
+### Fixes
+- Clicking a gauge, tile or row no longer scrolls the page back to the card on every update.
+- HACS extensions: the keyboard focus goes to the extension name, and the check button and the GitHub link next to it are separate controls for the keyboard and screen readers instead of being nested in the row. Clicking anywhere on the row still opens the more-info dialog.
+
+### Changes
+- Keyboard focus is shown with a blue outline on gauges, tiles, rows and buttons. Nothing changes at rest or on a mouse click.
+
+### Maintenance
+- `package-lock.json` committed and installed with `npm ci` in CI; a fresh page per screenshot; duplication check skips the tests; regression tests for the focus restore.
+
+## 1.14.0
+
+### Changes
+- Sizes are labelled `KiB`, `MiB`, `GiB`, `TiB` instead of `KB`, `MB`, `GB`, `TB`: the values were already computed in powers of 1024, only the labels change.
+- The status card shows the HACS **Check** button to every user, like the full card (HACS Refresh lets every user run the check). **Install** stays admin-only.
+- The card only re-renders when something it shows changes; uptime and relative times keep moving every minute.
+- Keyboard access: gauges, network tiles, volumes, mini card metrics, HACS extensions and Integration Watchdog rows can be reached with Tab and opened with Enter or Space, and a focused button or row keeps its focus across updates.
+- Integration logos are no longer downloaded again each time the brands token is refreshed.
+
+### Maintenance
+- CI hardened: actions pinned by commit SHA, read-only token permissions, Dependabot for action updates, duplication report annotated on pull requests.
+- Unit tests (`npm test`, run in CI); discovery cached on the registries instead of being recomputed on every state change.
+
 ## 1.13.4
 
 ### Changes

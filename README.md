@@ -173,10 +173,10 @@ Under the header, a row of tiles gives the overall status of each section: **HAC
 
 ### Status card
 
-The minimal card keeps the header (Core / OS versions and their update badge) and the status row, without gauges or lists. The status row shows up only while one of the statuses is not good (HACS update, stopped process, unavailable integration); when all is well, the card is just the header. On the right of the header, one button (admins only):
+The minimal card keeps the header (Core / OS versions and their update badge) and the status row, without gauges or lists. The status row shows up only while one of the statuses is not good (HACS update, stopped process, unavailable integration); when all is well, the card is just the header. On the right of the header, one button:
 
-- **Install (n)** when HACS updates are pending: installs them all, one after the other, after a confirmation, with the progress in the button
-- **Check** otherwise: checks every HACS repository for updates through [HACS Refresh](https://github.com/juju35/ha-hacs-refresh), with the progress in the button; hover it for the time of the last check. Without HACS Refresh and no pending update, the button is hidden
+- **Install (n)** when HACS updates are pending (admins only): installs them all, one after the other, after a confirmation, with the progress in the button
+- **Check** otherwise, for every user as in the full card: checks every HACS repository for updates through [HACS Refresh](https://github.com/juju35/ha-hacs-refresh), with the progress in the button; hover it for the time of the last check. Without HACS Refresh and no pending update, the button is hidden
 
 A click on the **HACS** tile opens HACS, on the **Integrations** tile the integrations page, and on the **Processes** tile the first stopped process.
 
@@ -216,7 +216,7 @@ Thresholds:
 ## Development
 
 ```bash
-npm install
+npm ci               # installs the locked dev dependencies (Playwright, for the screenshots)
 npm run build        # bundles src/system-monitor-card.js + images/home-assistant.svg into dist/system-monitor-card.js
 npm run check        # builds and checks the card (run in CI)
 npm run screenshots  # renders the cards with mock data (scripts/mock-states.mjs) into screenshots/
