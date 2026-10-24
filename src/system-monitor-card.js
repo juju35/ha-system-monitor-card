@@ -653,6 +653,7 @@ const BASE_STYLE = `
   .icon { width: 18px; height: 18px; fill: currentColor; flex: none; }
   .muted { color: var(--secondary-text-color); }
   .clickable { cursor: pointer; }
+  .clickable:focus-visible, [role="button"]:focus-visible { outline: 2px solid var(--sm-blue); outline-offset: -2px; }
   .ok { --c: var(--sm-blue); } .warn { --c: var(--sm-warn); } .crit { --c: var(--sm-crit); } .good { --c: var(--sm-ok); }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c, var(--sm-ok)); flex: none; display: inline-block; }
   .chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
@@ -985,7 +986,8 @@ class SystemMonitorBase extends HTMLElement {
     let html = this._render();
     if (this._dialog) html = html.replace(/<ha-card>([\s\S]*)<\/ha-card>\s*$/, (_, inner) => `<ha-card class="dialog-open">${inner}${this._dialogHtml()}</ha-card>`);
     if (html !== this._html) {
-      // Re-rendering replaces the search field and the buttons: keep the focus (and the caret).
+      // Re-rendering replaces the search field and the buttons: keep the focus (and the caret), without scrolling
+      // the page back to the card (a mouse click focuses gauges and rows too).
       const active = this.shadowRoot.activeElement;
       const search = active?.dataset?.search;
       const caret = search ? [active.selectionStart, active.selectionEnd] : null;
@@ -995,10 +997,10 @@ class SystemMonitorBase extends HTMLElement {
       if (search) {
         const field = this.shadowRoot.querySelector(`[data-search="${search}"]`);
         if (field) {
-          field.focus();
+          field.focus({ preventScroll: true });
           field.setSelectionRange(...caret);
         }
-      } else if (focused) this.shadowRoot.querySelector(focused)?.focus();
+      } else if (focused) this.shadowRoot.querySelector(focused)?.focus({ preventScroll: true });
     }
   }
 
@@ -1463,9 +1465,11 @@ class SystemMonitorCard extends SystemMonitorBase {
       const check = canCheckExt
         ? `<span class="gh" role="button" tabindex="0" data-action="hacs-check-ext" data-target="${x.id}" title="${esc(this._t("check_ext"))}" aria-label="${esc(this._t("check_ext"))}" aria-disabled="${checking}">${svgIcon(ICONS.refresh, checking ? "spin" : "")}</span>`
         : "";
-      return `<div class="ext clickable" data-entity="${x.id}" role="button" tabindex="0">
+      // The row stays clickable with the mouse; only its name is the keyboard button, so that the check button and
+      // the GitHub link next to it are not nested in a role="button" (their roles would be lost).
+      return `<div class="ext clickable" data-entity="${x.id}">
           ${this._logo(x)}
-          <div class="grow"><div class="ext-name">${esc(x.name)}</div><div class="ext-ver">${ver}</div></div>
+          <div class="grow" data-entity="${x.id}" role="button" tabindex="0"><div class="ext-name">${esc(x.name)}</div><div class="ext-ver">${ver}</div></div>
           ${status}${check}${gh}
         </div>`;
     });
