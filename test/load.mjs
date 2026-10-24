@@ -12,7 +12,9 @@ const NAMES = [
   "renderSignature",
   "sameSignature",
   "focusSelector",
+  "fmtBytes",
   "SystemMonitorCard",
+  "SystemMonitorStatusCard",
 ];
 
 export const load = () => {
