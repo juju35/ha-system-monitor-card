@@ -147,3 +147,39 @@ test("the status card's check button follows the full card's rule: every user ma
   hass.user = { is_admin: true };
   assert.match(card._button(), /data-action="hacs-install-all"/);
 });
+
+test("restoring the focus after a re-render does not scroll the page to the card", () => {
+  const card = new lib.SystemMonitorCard();
+  card._config = {};
+  card._hass = hassWith();
+  const calls = [];
+  const active = { dataset: { entity: "sensor.system_monitor_processor_use" }, getAttribute: (n) => (n === "role" ? "button" : null) };
+  card.shadowRoot = {
+    activeElement: active,
+    innerHTML: "",
+    querySelector: () => ({ focus: (opts) => calls.push(opts) }),
+  };
+  card._render = () => "<ha-card>v1</ha-card>";
+  card._update();
+  card._render = () => "<ha-card>v2</ha-card>";
+  card._update();
+  assert.ok(calls.length > 0);
+  for (const opts of calls) assert.equal(opts?.preventScroll, true);
+});
+
+test("restoring the focus of the search field does not scroll the page either", () => {
+  const card = new lib.SystemMonitorCard();
+  card._config = {};
+  card._hass = hassWith();
+  const calls = [];
+  const active = { dataset: { search: "hacs" }, selectionStart: 2, selectionEnd: 2 };
+  card.shadowRoot = {
+    activeElement: active,
+    innerHTML: "",
+    querySelector: () => ({ focus: (opts) => calls.push(opts), setSelectionRange() {} }),
+  };
+  card._render = () => "<ha-card>v1</ha-card>";
+  card._update();
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0]?.preventScroll, true);
+});

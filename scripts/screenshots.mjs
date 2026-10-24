@@ -60,7 +60,6 @@ const shots = [
 const browser = await chromium.launch(
   process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}
 );
-const page = await browser.newPage({ deviceScaleFactor: 2, viewport: { width: 1000, height: 2000 } });
 // Logos are loaded dynamically by the card. Offline, serve each integration's own brand/icon.png from its
 // repository (what Home Assistant's brands proxy does for custom integrations); other logos fall back to icons.
 const brandRepos = Object.fromEntries(
@@ -68,18 +67,23 @@ const brandRepos = Object.fromEntries(
     .filter((s) => s.attributes.entity_picture && s.attributes.release_url)
     .map((s) => [/\/_\/([^/]+)\//.exec(s.attributes.entity_picture)[1], /github\.com\/([^/]+\/[^/]+)/.exec(s.attributes.release_url)[1]])
 );
-await page.route(/brands\.home-assistant\.io|github\.com\/[^/]+\.png|avatars\.githubusercontent/, async (route) => {
-  const domain = /\/_\/([^/]+)\/icon\.png/.exec(route.request().url())?.[1];
-  if (!domain || !brandRepos[domain]) return route.abort();
-  try {
-    const res = await route.fetch({ url: `https://raw.githubusercontent.com/${brandRepos[domain]}/HEAD/custom_components/${domain}/brand/icon.png` });
-    if (res.ok()) return route.fulfill({ response: res });
-  } catch (_e) {
-    /* offline */
-  }
-  return route.abort();
-});
+const routeLogos = (page) =>
+  page.route(/brands\.home-assistant\.io|github\.com\/[^/]+\.png|avatars\.githubusercontent/, async (route) => {
+    const domain = /\/_\/([^/]+)\/icon\.png/.exec(route.request().url())?.[1];
+    if (!domain || !brandRepos[domain]) return route.abort();
+    try {
+      const res = await route.fetch({ url: `https://raw.githubusercontent.com/${brandRepos[domain]}/HEAD/custom_components/${domain}/brand/icon.png` });
+      if (res.ok()) return route.fulfill({ response: res });
+    } catch (_e) {
+      /* offline */
+    }
+    return route.abort();
+  });
 for (const s of shots) {
+  // A fresh page for each capture: the card's script declares classes and custom elements once per page.
+  const page = await browser.newPage({ deviceScaleFactor: 2, viewport: { width: 1000, height: 2000 } });
+  page.on("pageerror", (err) => console.error(`${s.file}: ${err.message}`));
+  await routeLogos(page);
   await page.setContent(page_html(s.theme, s.width));
   await page.addScriptTag({ content: HA_CARD });
   await page.addScriptTag({ content: cardJs });
@@ -120,5 +124,6 @@ for (const s of shots) {
     animations: "disabled",
   });
   console.log(`screenshots/${s.file}.png`);
+  await page.close();
 }
 await browser.close();
