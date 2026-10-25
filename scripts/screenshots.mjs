@@ -117,6 +117,12 @@ for (const s of shots) {
     }
   );
   await page.waitForTimeout(800);
+  // No focus ring in the screenshots: the install popup focuses its button, which draws the :focus-visible outline.
+  await page.evaluate(() => {
+    let el = document.activeElement;
+    while (el?.shadowRoot?.activeElement) el = el.shadowRoot.activeElement;
+    el?.blur?.();
+  });
   const box = await page.locator("#root").boundingBox();
   await page.screenshot({
     path: `${root}screenshots/${s.file}.png`,
