@@ -55,6 +55,8 @@ const shots = [
   { file: "mini-card-dark", type: "system-monitor-mini-card", theme: "dark", width: 380, config: { language: "fr" }, update: true },
   { file: "status-card", type: "system-monitor-status-card", theme: "light", width: 380, config: {}, procsOk: true },
   { file: "status-card-dark", type: "system-monitor-status-card", theme: "dark", width: 380, config: { language: "fr" }, update: true },
+  { file: "status-card-zoom", type: "system-monitor-status-card", theme: "light", width: 460, config: {}, procsOk: true, zoom: true },
+  { file: "status-card-zoom-dark", type: "system-monitor-status-card", theme: "dark", width: 460, config: { language: "fr" }, update: true, zoom: true },
 ];
 
 const browser = await chromium.launch(
@@ -88,7 +90,7 @@ for (const s of shots) {
   await page.addScriptTag({ content: HA_CARD });
   await page.addScriptTag({ content: cardJs });
   await page.evaluate(
-    ({ type, config, states, entities, devices, open, action, search, install }) => {
+    ({ type, config, states, entities, devices, open, action, search, install, zoom }) => {
       const el = document.createElement(type);
       el.setConfig({ type: `custom:${type}`, ...config });
       el.hass = {
@@ -96,6 +98,8 @@ for (const s of shots) {
         user: { is_admin: true }, services: { hacs_refresh: { check_updates: {}, check_repository: {} } }, callWS: async () => { throw new Error("offline"); },
       };
       document.getElementById("root").appendChild(el);
+      // A mouse click (detail 1): a keyboard one would focus the new button and draw its focus ring.
+      if (zoom) el.shadowRoot.querySelector(".zoom").dispatchEvent(new MouseEvent("click", { bubbles: true, composed: true, detail: 1 }));
       if (open) el.shadowRoot.querySelector(`.section-title[data-action="${action}"]`).click();
       if (install) el.shadowRoot.querySelector('[data-action="hacs-install-all"]').click();
       if (search) {
@@ -114,6 +118,7 @@ for (const s of shots) {
       action: s.action || "hacs",
       search: s.search,
       install: s.install,
+      zoom: s.zoom,
     }
   );
   await page.waitForTimeout(800);

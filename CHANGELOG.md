@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.15.0
+
+### Changes
+- Status card: a zoom button at the top right of the header switches it to the full System Monitor card (same options: gauges, network, storage, processes, HACS and integrations lists) and back. A click anywhere outside the card brings the status view back, except in a dialog opened from it or while the install confirmation is open. The new `zoom` option (on by default, in the visual editor) removes the button.
+
+![Status card zoomed in](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/v1.15.0/screenshots/status-card-zoom.png)
+
+### Maintenance
+- Tests for the zoom (in, out, outside click, dialogs, install confirmation, `zoom: false`); screenshots of the zoomed-in status card.
+
 ## 1.14.1
 
 ### Fixes

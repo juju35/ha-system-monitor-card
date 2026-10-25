@@ -183,3 +183,91 @@ test("restoring the focus of the search field does not scroll the page either", 
   assert.equal(calls.length, 1);
   assert.equal(calls[0]?.preventScroll, true);
 });
+
+// ── Status card zoom ─────────────────────────────────────────────────────────
+
+/** A connected status card with a recording document listener and a shadow root that keeps its HTML. */
+const zoomCard = (config = {}) => {
+  const listeners = [];
+  lib.document.addEventListener = (type, fn, capture) => listeners.push({ type, fn, capture });
+  lib.document.removeEventListener = (type, fn) => {
+    const i = listeners.findIndex((l) => l.type === type && l.fn === fn);
+    if (i >= 0) listeners.splice(i, 1);
+  };
+  const card = new lib.SystemMonitorStatusCard();
+  card._fetchBrandsToken = () => {};
+  const focused = [];
+  card.shadowRoot.querySelector = (sel) => (sel === ".zoom" ? { focus: () => focused.push(sel) } : null);
+  card.setConfig(config);
+  card.hass = hassWith();
+  card.connectedCallback();
+  return { card, listeners, focused };
+};
+const click = (path, detail = 1) => ({ detail, composedPath: () => path, stopPropagation() {} });
+const outside = (card, listeners, path = [{ localName: "div" }]) => {
+  for (const l of listeners.filter((x) => x.type === "click")) l.fn(click(path));
+  return card;
+};
+
+test("the status card's zoom button shows the full card, then the status view again", () => {
+  const { card } = zoomCard();
+  assert.match(card._html, /class="zoom" data-action="zoom"[^>]*title="Show the full card"/);
+  assert.doesNotMatch(card._html, /class="gauges"/);
+  let stopped = false;
+  card._zoomClick({ detail: 1, stopPropagation: () => (stopped = true) });
+  assert.ok(stopped);
+  assert.ok(card._zoomed);
+  // Everything the full card shows, with the same config and the collapse button.
+  for (const part of ['class="gauges"', 'class="net"', 'class="vol', 'class="hacs"', 'class="stats"'])
+    assert.ok(card._html.includes(part), part);
+  assert.match(card._html, /title="Back to the compact view"/);
+  assert.equal(card.getCardSize(), 7);
+  assert.equal(card.getGridOptions().columns, 12);
+  card._zoomClick(click([]));
+  assert.ok(!card._zoomed);
+  assert.doesNotMatch(card._html, /class="gauges"/);
+  assert.equal(card.getCardSize(), 2);
+  assert.equal(card.getGridOptions().columns, 6);
+});
+
+test("the zoom button keeps the keyboard focus, not the mouse one", () => {
+  const { card, focused } = zoomCard();
+  card._zoomClick(click([], 1));
+  assert.equal(focused.length, 0);
+  card._zoomClick(click([], 0));
+  assert.equal(focused.length, 1);
+});
+
+test("a click outside the zoomed status card brings it back, a click inside or in a dialog does not", () => {
+  const { card, listeners } = zoomCard();
+  assert.ok(listeners.some((l) => l.type === "click" && l.capture === true));
+  card._zoomClick(click([]));
+  outside(card, listeners, [{ localName: "button" }, card]);
+  assert.ok(card._zoomed, "inside the card");
+  for (const localName of ["ha-more-info-dialog", "ha-dialog", "dialog"]) {
+    outside(card, listeners, [{ localName: "div" }, { localName }]);
+    assert.ok(card._zoomed, localName);
+  }
+  outside(card, listeners);
+  assert.ok(!card._zoomed);
+  card.disconnectedCallback();
+  assert.equal(listeners.filter((l) => l.type === "click").length, 0);
+});
+
+test("the zoomed status card does not fold back while the install confirmation is open", () => {
+  const { card, listeners } = zoomCard();
+  card._zoomClick(click([]));
+  card._openDialog({ body: "", ok: "Install", onOk() {} });
+  assert.match(card._html, /class="backdrop"/);
+  // A click outside closes the confirmation only; the next one folds the card back.
+  outside(card, listeners);
+  assert.ok(card._zoomed);
+  assert.equal(card._dialog, null);
+  outside(card, listeners);
+  assert.ok(!card._zoomed);
+});
+
+test("zoom: false removes the status card's zoom button", () => {
+  const { card } = zoomCard({ zoom: false });
+  assert.doesNotMatch(card._html, /data-action="zoom"/);
+});

@@ -33,6 +33,9 @@ const ICONS = {
   download: "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z",
   watchdog: "M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z",
   chevron: "M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z",
+  // mdi:arrow-expand and mdi:arrow-collapse, for the status card's zoom button.
+  expand: "M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z",
+  collapse: "M19.5,3.09L15,7.59V4H13V11H20V9H16.41L20.91,4.5L19.5,3.09M4,13V15H7.59L3.09,19.5L4.5,20.91L9,16.41V20H11V13H4Z",
   // Fallbacks per HACS category when no logo can be loaded.
   integration: "M22,13.5C22,15.26 20.7,16.72 19,16.96V20A2,2 0 0,1 17,22H13.2V21.7A2.7,2.7 0 0,0 10.5,19C9,19 7.8,20.21 7.8,21.7V22H4A2,2 0 0,1 2,20V16.2H2.3C3.79,16.2 5,15 5,13.5C5,12 3.79,10.8 2.3,10.8H2V7A2,2 0 0,1 4,5H7.04C7.28,3.3 8.74,2 10.5,2C12.26,2 13.72,3.3 13.96,5H17A2,2 0 0,1 19,7V10.04C20.7,10.28 22,11.74 22,13.5M17,15H18.5A1.5,1.5 0 0,0 20,13.5A1.5,1.5 0 0,0 18.5,12H17V7H12V5.5A1.5,1.5 0 0,0 10.5,4A1.5,1.5 0 0,0 9,5.5V7H4V9.12C5.76,9.8 7,11.5 7,13.5C7,15.5 5.75,17.2 4,17.88V20H6.12C6.8,18.25 8.5,17 10.5,17C12.5,17 14.2,18.25 14.88,20H17V15Z",
   plugin: "M19,5V7H15V5H19M9,5V11H5V5H9M19,13V19H15V13H19M9,17V19H5V17H9M21,3H13V9H21V3M11,3H3V13H11V3M21,11H13V21H21V11M11,15H3V21H11V15Z",
@@ -115,6 +118,8 @@ const STRINGS = {
     wd_last_reload_failed: "Last reload failed: {name} {t}",
     wd_last_check: "Checked {t}",
     wd_open: "Open the integration",
+    zoom_in: "Show the full card",
+    zoom_out: "Back to the compact view",
     // Editor
     title: "Title (optional, defaults to Home Assistant)",
     show_image: "Show Home Assistant logo",
@@ -124,6 +129,8 @@ const STRINGS = {
     show_processes: "Show processes",
     show_hacs: "Show HACS extensions",
     show_watchdog: "Show unavailable integrations (Integration Watchdog)",
+    zoom: "Zoom button",
+    zoom_helper: "Switches the status card to the full card and back",
     interface: "Network interface (optional, all by default)",
     language: "Language",
     lang_auto: "Automatic",
@@ -201,6 +208,8 @@ const STRINGS = {
     wd_last_reload_failed: "Échec du dernier rechargement : {name} {t}",
     wd_last_check: "Vérifié {t}",
     wd_open: "Ouvrir l'intégration",
+    zoom_in: "Afficher la carte complète",
+    zoom_out: "Revenir à la vue compacte",
     title: "Titre (facultatif, Home Assistant par défaut)",
     show_image: "Afficher le logo Home Assistant",
     show_system: "Afficher le système (CPU, RAM, disque, température)",
@@ -209,6 +218,8 @@ const STRINGS = {
     show_processes: "Afficher les processus",
     show_hacs: "Afficher les extensions HACS",
     show_watchdog: "Afficher les intégrations indisponibles (Integration Watchdog)",
+    zoom: "Bouton zoom",
+    zoom_helper: "Bascule la carte de statut en carte complète, et inversement",
     interface: "Interface réseau (facultatif, toutes par défaut)",
     language: "Langue",
     lang_auto: "Automatique",
@@ -697,6 +708,7 @@ class SystemMonitorBase extends HTMLElement {
         run();
         return;
       }
+      if (action?.dataset.action === "zoom") return this._zoomClick(ev);
       if (action) {
         if (action.dataset.action === "hacs") {
           this._hacsOpen = !this._hacsOpen;
@@ -1148,6 +1160,11 @@ const TILES_STYLE = `
   .spin { animation: sm-spin 1s linear infinite; }
   @keyframes sm-spin { to { transform: rotate(360deg); } }
   .err { font-size: 12px; color: var(--sm-crit); }
+  .zoom { all: unset; flex: none; align-self: flex-start; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px 0 0; border-radius: 50%;
+          display: grid; place-items: center; color: var(--secondary-text-color); }
+  .zoom .icon { width: 16px; height: 16px; }
+  .zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }
+  .zoom:focus-visible { outline: 2px solid var(--sm-blue); outline-offset: 1px; }
 `;
 
 const FULL_STYLE = `
@@ -1686,29 +1703,78 @@ const STATUS_STYLE = `
   .err { padding: 0 12px 12px; }
 `;
 
+/** A click inside a dialog (more-info opened from the card, say) is not a click outside the card. */
+const inDialog = (ev) => ev.composedPath().some((n) => ["ha-more-info-dialog", "ha-dialog", "dialog"].includes(n.localName));
+
 /**
  * Minimal card: header (Core / OS versions and update), the overall status tiles and a single
  * button that checks HACS for updates, or installs them when some are pending.
+ * Its zoom button (top right, `zoom: false` removes it) switches it to the full card, with the same
+ * config, and back; a click anywhere outside the card brings it back too.
  */
-class SystemMonitorStatusCard extends SystemMonitorBase {
+class SystemMonitorStatusCard extends SystemMonitorCard {
   static getConfigElement() {
     return document.createElement("system-monitor-status-card-editor");
   }
 
-  static getStubConfig() {
-    return {};
+  constructor() {
+    super();
+    // A click outside the card (or a dialog opened from it) brings it back to the status view,
+    // never while the install confirmation is open.
+    this._onUnzoom = (ev) => {
+      if (this._zoomed && !this._dialog && !ev.composedPath().includes(this) && !inDialog(ev)) this._setZoom(false);
+    };
+  }
+
+  connectedCallback() {
+    // Before the base listener, which closes the confirmation on the same click.
+    document.addEventListener("click", this._onUnzoom, true);
+    super.connectedCallback();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener("click", this._onUnzoom, true);
   }
 
   getCardSize() {
-    return 2;
+    return this._zoomed ? super.getCardSize() : 2;
   }
 
   getGridOptions() {
-    return { columns: 6, min_columns: 6 };
+    return this._zoomed ? super.getGridOptions() : { columns: 6, min_columns: 6 };
+  }
+
+  /** Full card, or back to the status view (its sections folded again). */
+  _setZoom(zoomed) {
+    this._zoomed = zoomed;
+    if (!zoomed) {
+      this._hacsOpen = false;
+      this._hacsQuery = "";
+      this._wdOpen = false;
+      this._procsOpen = false;
+    }
+    this._update();
+  }
+
+  _zoomClick(ev) {
+    ev.stopPropagation(); // no other action of the header
+    this._setZoom(!this._zoomed);
+    // Keyboard use (Enter / Space: no click count) keeps the focus on the button that replaced this one.
+    if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus();
+  }
+
+  /** The header of both views, with the zoom button at its far right. */
+  _header(sm, aside = "") {
+    if (this._config.zoom === false) return super._header(sm, aside);
+    const title = esc(this._t(this._zoomed ? "zoom_out" : "zoom_in"));
+    const button = `<button class="zoom" data-action="zoom" title="${title}" aria-label="${title}">${svgIcon(this._zoomed ? ICONS.collapse : ICONS.expand)}</button>`;
+    return super._header(sm, aside + button);
   }
 
   /** No sections to unfold here: tiles open the HACS or integrations page, or the first stopped process. */
   _statTarget(action) {
+    if (this._zoomed) return super._statTarget(action);
     if (action === "hacs") return `data-action="nav" data-path="/hacs/dashboard"`;
     if (action === "wd") return `data-action="nav" data-path="/config/integrations/dashboard"`;
     const sm = discover(this._hass);
@@ -1717,6 +1783,7 @@ class SystemMonitorStatusCard extends SystemMonitorBase {
 
   /** The status row shows up only while one of the statuses is not good. */
   _statusRow(sm) {
+    if (this._zoomed) return super._statusRow(sm);
     if (!this._stats(sm).some((x) => x.cls === "warn" || x.cls === "crit")) return "";
     return super._statusRow(sm);
   }
@@ -1757,6 +1824,7 @@ class SystemMonitorStatusCard extends SystemMonitorBase {
   }
 
   _render() {
+    if (this._zoomed) return super._render();
     const sm = discover(this._hass);
     if (!sm.found) return this._noSm();
     const rf = discoverRefresh(this._hass);
@@ -1789,6 +1857,11 @@ class SystemMonitorEditorBase extends HTMLElement {
     return true;
   }
 
+  /** Boolean options, all on by default. */
+  _booleans() {
+    return ["show_image", ...this.constructor.toggles];
+  }
+
   setConfig(config) {
     this._config = { ...config };
     this._render();
@@ -1811,8 +1884,7 @@ class SystemMonitorEditorBase extends HTMLElement {
         type: "grid",
         name: "",
         schema: [
-          { name: "show_image", selector: { boolean: {} } },
-          ...this.constructor.toggles.map((name) => ({ name, selector: { boolean: {} } })),
+          ...this._booleans().map((name) => ({ name, selector: { boolean: {} } })),
         ],
       },
       ...(this.constructor.withInterface
@@ -1844,12 +1916,17 @@ class SystemMonitorEditorBase extends HTMLElement {
     if (!this._form) {
       this._form = document.createElement("ha-form");
       this._form.computeLabel = (s) => t(this._hass, this._config, s.name);
+      this._form.computeHelper = (s) => {
+        const key = `${s.name}_helper`;
+        const text = t(this._hass, this._config, key);
+        return text === key ? undefined : text;
+      };
       this._form.addEventListener("value-changed", (ev) => {
         ev.stopPropagation();
         const config = { ...ev.detail.value };
         for (const [k, v] of Object.entries(config)) {
           // Keep the YAML minimal: drop empty values and toggles left at their default (true).
-          if (v === "" || v === undefined || v === null || (k.startsWith("show_") && v === true)) delete config[k];
+          if (v === "" || v === undefined || v === null || (this._booleans().includes(k) && v === true)) delete config[k];
         }
         this._config = config;
         this.dispatchEvent(new CustomEvent("config-changed", { detail: { config }, bubbles: true, composed: true }));
@@ -1857,7 +1934,7 @@ class SystemMonitorEditorBase extends HTMLElement {
       this.appendChild(this._form);
     }
     const data = { ...this._config };
-    for (const name of ["show_image", ...this.constructor.toggles]) if (data[name] === undefined) data[name] = true;
+    for (const name of this._booleans()) if (data[name] === undefined) data[name] = true;
     this._form.hass = this._hass;
     this._form.data = data;
     this._form.schema = this._schema();
@@ -1878,7 +1955,7 @@ class SystemMonitorMiniCardEditor extends SystemMonitorEditorBase {
 
 class SystemMonitorStatusCardEditor extends SystemMonitorEditorBase {
   static get toggles() {
-    return ["show_hacs", "show_processes", "show_watchdog"];
+    return ["show_hacs", "show_processes", "show_watchdog", "zoom"];
   }
 
   static get withInterface() {

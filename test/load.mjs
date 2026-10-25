@@ -15,6 +15,7 @@ const NAMES = [
   "fmtBytes",
   "SystemMonitorCard",
   "SystemMonitorStatusCard",
+  "document",
 ];
 
 export const load = () => {
@@ -34,6 +35,8 @@ export const load = () => {
     history: { pushState() {} },
     Intl,
     Date,
+    setInterval: () => 0,
+    clearInterval() {},
   };
   context.window = context;
   vm.createContext(context);

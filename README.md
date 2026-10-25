@@ -21,6 +21,7 @@ The cards are built on top of the core [System Monitor integration](https://www.
 ## Features
 
 - Three cards: a full **System Monitor Card**, a compact **System Monitor Mini Card** and a minimal **System Monitor Status Card** (versions, overall statuses and one HACS update button)
+- **Zoom** on the status card: a button at the top right switches it to the full System Monitor card (same options) and back; a click anywhere outside the card brings it back too
 - Automatic discovery of the System Monitor entities through the entity registry (any language)
 - CPU, RAM, disk and CPU temperature gauges, uptime, load average and IP address
 - Home Assistant Core and OS versions, with an orange badge when an update is available
@@ -133,6 +134,7 @@ show_image: true
 show_hacs: true
 show_processes: true
 show_watchdog: true
+zoom: true
 language: fr
 ```
 
@@ -148,6 +150,7 @@ language: fr
 | `show_processes` | full, status | `true` | Monitored processes and their status tile |
 | `show_hacs` | full, status | `true` | HACS extensions list (status card: update button) and their status tile |
 | `show_watchdog` | full, status | `true` | Unavailable integrations list and their status tile (needs Integration Watchdog) |
+| `zoom` | status | `true` | Zoom button at the top right: shows the full card, and back to the status view |
 | `interface` | full, mini | All physical interfaces | Network interface to display (e.g. `eth0`, `enp0s3`) |
 | `language` | all | Auto | Force language: `fr` or `en` (auto-detects from HA settings) |
 
@@ -158,6 +161,7 @@ language: fr
 | ![card](screenshots/card.png) | ![card dark](screenshots/card-dark.png) |
 | ![mini card](screenshots/mini-card.png) | ![mini card dark](screenshots/mini-card-dark.png) |
 | ![status card](screenshots/status-card.png) | ![status card dark](screenshots/status-card-dark.png) |
+| ![status card zoomed in](screenshots/status-card-zoom.png) | ![status card zoomed in dark](screenshots/status-card-zoom-dark.png) |
 | ![HACS extensions](screenshots/card-hacs.png) | ![Unavailable integrations](screenshots/card-watchdog.png) |
 | ![HACS search (French)](screenshots/card-hacs-search.png) | ![Install confirmation (French)](screenshots/card-install.png) |
 
@@ -179,6 +183,8 @@ The minimal card keeps the header (Core / OS versions and their update badge) an
 - **Check** otherwise, for every user as in the full card: checks every HACS repository for updates through [HACS Refresh](https://github.com/juju35/ha-hacs-refresh), with the progress in the button; hover it for the time of the last check. Without HACS Refresh and no pending update, the button is hidden
 
 A click on the **HACS** tile opens HACS, on the **Integrations** tile the integrations page, and on the **Processes** tile the first stopped process.
+
+At the far right of the header, a small round button (`mdi:arrow-expand`) shows the full card in its place: gauges, network, storage, processes, HACS and integrations lists, with the same options, exactly as the **System Monitor Card** shows them. The button turns into `mdi:arrow-collapse` and brings the status view back; a click anywhere outside the card does too, but not a click in a dialog opened from it (more-info), nor while the install confirmation is open. `zoom: false` removes the button.
 
 ### Processes
 
