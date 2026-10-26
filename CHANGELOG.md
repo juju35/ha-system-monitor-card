@@ -7,6 +7,7 @@
 - The status pill ("Up to date", "Update 2026.10.3") sits in the header row, right of the title and before the buttons, instead of on its own line under the title (full card, zoomed-in status card and status card). On the compact status card it reads just "Update" (the new version is in its tooltip, and in full once zoomed in), and the header spacing is a little tighter, so the title and subtitle keep their room at 380 px.
 - The Install button of the in-card confirmation is tinted with the primary color instead of filled, like the other card buttons.
 - Header geometry: the body starts 8 px below the header on every card (was 4 px); the logo of the mini and status cards is top-aligned, 12 px from the card's top edge.
+- The status pill is centred on the title's line (it sits in a row with the title, above the subtitle) instead of on the whole title block, on the full card and on both views of the status card. The logo and the header buttons keep their place.
 
 ### Maintenance
 - Test for the status pill position.

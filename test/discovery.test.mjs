@@ -278,9 +278,9 @@ test("the status pill sits in the header row, the status card's one without the 
   const full = new lib.SystemMonitorCard();
   full._hass = hass;
   full._config = {};
-  // Right of the title block (closed before it), never inside it.
+  // On the title's line, right of the title, above the subtitle.
   const head = full._header(sm);
-  assert.match(head, /<\/div>\s*<\/div>\s*<span class="chip clickable warn"[^>]*title="Update 2026.10.3"><span class="dot"><\/span>Update 2026.10.3<\/span>/);
+  assert.match(head, /<div class="title-row"><div class="name">[^<]*<\/div><span class="chip clickable warn"[^>]*title="Update 2026.10.3"><span class="dot"><\/span>Update 2026.10.3<\/span>/);
   assert.doesNotMatch(head, /class="chips"/);
   const status = statusCard(hass);
   assert.match(status._header(sm), /title="Update 2026.10.3"><span class="dot"><\/span>Update<\/span>/);

@@ -675,10 +675,13 @@ const BASE_STYLE = `
   .bar > div { height: 100%; border-radius: 3px; background: var(--c, var(--sm-blue)); transition: width .6s ease; }
   .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 8px; }
   .titles { flex: 1; min-width: 0; }
+  /* The status pill shares the title's line, centred on it whatever the subtitle or the logo size. */
+  .title-row { display: flex; align-items: center; gap: 8px; }
+  .title-row > .name { flex: 1; min-width: 0; }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .logo { flex: none; object-fit: contain; filter: drop-shadow(0 3px 5px rgba(0,0,0,.2)); }
-  .header > .chip { flex: none; white-space: nowrap; }
+  .title-row > .chip { flex: none; white-space: nowrap; }
   .warning { padding: 16px; color: var(--sm-warn); }
 `;
 
@@ -1044,10 +1047,10 @@ class SystemMonitorBase extends HTMLElement {
       <div class="header">
         ${c.show_image !== false ? `<img class="logo" src="${IMG_LOGO}" alt="Home Assistant">` : ""}
         <div class="titles">
-          <div class="name">${esc(c.title || "Home Assistant")}</div>
+          <div class="title-row"><div class="name">${esc(c.title || "Home Assistant")}</div>${chip}</div>
           <div class="sub">${esc(sub)}</div>
         </div>
-        ${chip}${aside}
+        ${aside}
       </div>`;
   }
 
@@ -1603,7 +1606,7 @@ class SystemMonitorCard extends SystemMonitorBase {
 const MINI_STYLE = `
   .logo { height: 32px; width: 32px; align-self: flex-start; }
   /* The status shows in the footer. */
-  .header > .chip { display: none; }
+  .title-row > .chip { display: none; }
   .name { font-size: 16px; }
   .content { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 8px; }
   .metric { display: grid; grid-template-columns: 18px 64px 1fr 56px; align-items: center; gap: 8px; font-size: 13px; }
@@ -1707,7 +1710,8 @@ const STATUS_STYLE = `
   /* Tighter than the other headers: the status pill, the HACS button and the zoom button share the title row. */
   .header { gap: 4px; }
   .logo { height: 32px; width: 32px; align-self: flex-start; margin-right: 6px; }
-  .header > .chip { padding: 1px 6px; }
+  .title-row { gap: 4px; }
+  .title-row > .chip { padding: 1px 6px; }
   .header .btn { flex: none; padding: 6px; font-size: 12px; gap: 4px; white-space: nowrap; }
   .zoom { margin-left: -4px; }
   .header .btn.warn { color: var(--sm-warn); background: color-mix(in srgb, var(--sm-warn) 15%, transparent); }
