@@ -157,7 +157,7 @@ language: fr
 
 ## Screenshots
 
-While HACS checks for updates, the card animates: the check button spins as the repositories are scanned. It settles to a still card when the check finishes (and honours `prefers-reduced-motion`).
+While HACS checks for updates, the card animates: the check button spins as the repositories are scanned. It settles to a still card when the check finishes.
 
 ![HACS check animation](screenshots/hacs-checking.gif)
 
