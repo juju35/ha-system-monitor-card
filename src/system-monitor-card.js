@@ -703,7 +703,7 @@ const BASE_STYLE = `
   .title-row > .chip { flex: none; white-space: nowrap; }
   .warning { padding: 16px; color: var(--sm-warn); }
   /* Zoom button of the mini and status cards: rightmost in the header, 8 px from the card's right edge. */
-  .zoom { all: unset; flex: none; align-self: flex-start; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px 0 0; border-radius: 50%;
+  .zoom { all: unset; flex: none; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;
           display: grid; place-items: center; color: var(--secondary-text-color); }
   .zoom .icon { width: 16px; height: 16px; }
   .zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }
@@ -1813,7 +1813,8 @@ const STATUS_STYLE = `
   .title-row { gap: 4px; }
   .title-row > .chip { padding: 1px 6px; }
   .header .btn { flex: none; padding: 6px; font-size: 12px; gap: 4px; white-space: nowrap; }
-  .zoom { margin-left: -4px; }
+  /* The tight status row keeps the zoom pinned to the top line, snug to the HACS button. */
+  .zoom { align-self: flex-start; margin: -4px -4px 0 -4px; }
   .header .btn.warn { color: var(--sm-warn); background: color-mix(in srgb, var(--sm-warn) 15%, transparent); }
   .stats { padding-bottom: 12px; }
   .err { padding: 0 12px 12px; }
