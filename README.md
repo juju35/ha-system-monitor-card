@@ -229,7 +229,9 @@ Logos are loaded dynamically, best source first:
 
 When the [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog) integration is set up, the card reads its sensors: its tile in the status row says whether every integration is available, and the **Integrations** section lists those whose entities are all unavailable, with the time they became unavailable, the number of reloads done by the watchdog, and **Given up** once it stopped reloading one. The section shows the last reload (in red when it failed) and the time of the last check. Click a line to open the integration page, the refresh button next to the title to check the integrations now (it presses the watchdog's **Check now** button), or the last reload to open its history. Like the HACS list, the section is folded by default and folds again on a click elsewhere. The section is hidden while every integration is available: a click on the **Integrations** tile of the status row shows it unfolded (last reload, last check, **Check now** button), and a click elsewhere hides it again.
 
-Thresholds:
+### Thresholds
+
+Gauges and bars turn orange, then red, when a value crosses these thresholds:
 
 | Value | Orange | Red |
 |---|---|---|
