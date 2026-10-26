@@ -654,7 +654,9 @@ const DIALOG_STYLE = `
   .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 2px; }
   .modal button.act { border: 0; border-radius: 8px; padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
   .modal button.cancel { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
-  .modal button.primary { background: var(--primary-color, #03a9f4); color: #fff; }
+  .modal button.primary { background: color-mix(in srgb, var(--primary-color, #03a9f4) 16%, transparent); color: var(--primary-color, #03a9f4); }
+  .modal button.cancel:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, var(--secondary-background-color, transparent)); }
+  .modal button.primary:hover { background: color-mix(in srgb, var(--primary-color, #03a9f4) 24%, transparent); }
 `;
 
 const BASE_STYLE = `
@@ -671,11 +673,12 @@ const BASE_STYLE = `
           background: color-mix(in srgb, var(--c, var(--sm-ok)) 15%, transparent); color: var(--c, var(--sm-ok)); }
   .bar { height: 4px; border-radius: 3px; background: var(--divider-color, rgba(127,127,127,.25)); overflow: hidden; }
   .bar > div { height: 100%; border-radius: 3px; background: var(--c, var(--sm-blue)); transition: width .6s ease; }
-  .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 4px; }
+  .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 8px; }
   .titles { flex: 1; min-width: 0; }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .logo { flex: none; object-fit: contain; filter: drop-shadow(0 3px 5px rgba(0,0,0,.2)); }
+  .header > .chip { flex: none; white-space: nowrap; }
   .warning { padding: 16px; color: var(--sm-warn); }
 `;
 
@@ -1026,10 +1029,13 @@ class SystemMonitorBase extends HTMLElement {
     // Status chip: pending Core / OS update, else "up to date" (or "running" without update entities).
     const pending = [core, os].find((s) => s && s.state === "on");
     let chip;
-    if (pending)
-      chip = `<span class="chip clickable warn" data-entity="${pending.entity_id}"><span class="dot"></span>${esc(
-        `${this._t("update")} ${pending.attributes.latest_version || ""}`.trim()
+    if (pending) {
+      // The status card's compact header shows the new version as a tooltip only, leaving the title its room.
+      const text = `${this._t("update")} ${pending.attributes.latest_version || ""}`.trim();
+      chip = `<span class="chip clickable warn" data-entity="${pending.entity_id}" title="${esc(text)}"><span class="dot"></span>${esc(
+        this._compactHeader() ? this._t("update") : text
       )}</span>`;
+    }
     else
       chip = `<span class="chip good ${core ? "clickable" : ""}" data-entity="${core?.entity_id || ""}"><span class="dot"></span>${this._t(
         core ? "up_to_date" : "running"
@@ -1040,9 +1046,14 @@ class SystemMonitorBase extends HTMLElement {
         <div class="titles">
           <div class="name">${esc(c.title || "Home Assistant")}</div>
           <div class="sub">${esc(sub)}</div>
-          <div class="chips">${chip}</div>
-        </div>${aside}
+        </div>
+        ${chip}${aside}
       </div>`;
+  }
+
+  /** Whether the header is the status card's compact one (status pill without the version). */
+  _compactHeader() {
+    return false;
   }
 
   /** HACS status tile: all extensions up to date, or how many have an update. */
@@ -1169,7 +1180,6 @@ const TILES_STYLE = `
 
 const FULL_STYLE = `
   .logo { height: 40px; width: 40px; }
-  .titles .chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
   .section-title.toggle { cursor: pointer; margin-bottom: 0; user-select: none; }
   .section-title .count { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 400; }
   .section-title .chevron { transition: transform .2s ease; }
@@ -1591,11 +1601,11 @@ class SystemMonitorCard extends SystemMonitorBase {
 // ---------------------------------------------------------------------------
 
 const MINI_STYLE = `
-  .header { padding: 12px 12px 4px; }
-  .logo { height: 32px; width: 32px; }
-  .titles .chips { display: none; }
+  .logo { height: 32px; width: 32px; align-self: flex-start; }
+  /* The status shows in the footer. */
+  .header > .chip { display: none; }
   .name { font-size: 16px; }
-  .content { padding: 4px 12px 12px; display: flex; flex-direction: column; gap: 8px; }
+  .content { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 8px; }
   .metric { display: grid; grid-template-columns: 18px 64px 1fr 56px; align-items: center; gap: 8px; font-size: 13px; }
   .metric .icon { color: var(--secondary-text-color); }
   .metric .v { text-align: right; font-weight: 500; }
@@ -1694,10 +1704,12 @@ class SystemMonitorMiniCard extends SystemMonitorBase {
 // ---------------------------------------------------------------------------
 
 const STATUS_STYLE = `
-  .header { padding: 12px 12px 8px; }
-  .logo { height: 32px; width: 32px; }
-  .titles .chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
-  .header .btn { flex: none; padding: 6px 10px; font-size: 12px; gap: 4px; white-space: nowrap; }
+  /* Tighter than the other headers: the status pill, the HACS button and the zoom button share the title row. */
+  .header { gap: 4px; }
+  .logo { height: 32px; width: 32px; align-self: flex-start; margin-right: 6px; }
+  .header > .chip { padding: 1px 6px; }
+  .header .btn { flex: none; padding: 6px; font-size: 12px; gap: 4px; white-space: nowrap; }
+  .zoom { margin-left: -4px; }
   .header .btn.warn { color: var(--sm-warn); background: color-mix(in srgb, var(--sm-warn) 15%, transparent); }
   .stats { padding-bottom: 12px; }
   .err { padding: 0 12px 12px; }
@@ -1762,6 +1774,10 @@ class SystemMonitorStatusCard extends SystemMonitorCard {
     this._setZoom(!this._zoomed);
     // Keyboard use (Enter / Space: no click count) keeps the focus on the button that replaced this one.
     if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus();
+  }
+
+  _compactHeader() {
+    return !this._zoomed;
   }
 
   /** The header of both views, with the zoom button at its far right. */

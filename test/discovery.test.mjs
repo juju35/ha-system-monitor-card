@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { devices, entities, states } from "../scripts/mock-states.mjs";
+import { devices, entities, states, updateAvailable } from "../scripts/mock-states.mjs";
 import { load } from "./load.mjs";
 
 const lib = load();
@@ -270,4 +270,20 @@ test("the zoomed status card does not fold back while the install confirmation i
 test("zoom: false removes the status card's zoom button", () => {
   const { card } = zoomCard({ zoom: false });
   assert.doesNotMatch(card._html, /data-action="zoom"/);
+});
+
+test("the status pill sits in the header row, the status card's one without the new version", () => {
+  const hass = hassWith({ states: { ...states, ...updateAvailable } });
+  const sm = lib.discover(hass);
+  const full = new lib.SystemMonitorCard();
+  full._hass = hass;
+  full._config = {};
+  // Right of the title block (closed before it), never inside it.
+  const head = full._header(sm);
+  assert.match(head, /<\/div>\s*<\/div>\s*<span class="chip clickable warn"[^>]*title="Update 2026.10.3"><span class="dot"><\/span>Update 2026.10.3<\/span>/);
+  assert.doesNotMatch(head, /class="chips"/);
+  const status = statusCard(hass);
+  assert.match(status._header(sm), /title="Update 2026.10.3"><span class="dot"><\/span>Update<\/span>/);
+  status._zoomed = true;
+  assert.match(status._header(sm), /<\/span>Update 2026.10.3<\/span>/);
 });
