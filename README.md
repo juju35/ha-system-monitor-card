@@ -157,6 +157,10 @@ language: fr
 
 ## Screenshots
 
+While HACS checks for updates, the card animates: the check button spins as the repositories are scanned. It settles to a still card when the check finishes (and honours `prefers-reduced-motion`).
+
+![HACS check animation](screenshots/hacs-checking.gif)
+
 | Light | Dark (French, update available) |
 |---|---|
 | ![card](screenshots/card.png) | ![card dark](screenshots/card-dark.png) |
@@ -247,7 +251,7 @@ Gauges and bars turn orange, then red, when a value crosses these thresholds:
 npm ci               # installs the locked dev dependencies (Playwright, for the screenshots)
 npm run build        # bundles src/system-monitor-card.js + images/home-assistant.svg into dist/system-monitor-card.js
 npm run check        # builds and checks the card (run in CI)
-npm run screenshots  # renders the cards with mock data (scripts/mock-states.mjs) into screenshots/
+npm run screenshots  # renders the cards (and hacs-checking.gif, needs ffmpeg) with mock data into screenshots/
 ```
 
 `dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where HACS downloads it from.

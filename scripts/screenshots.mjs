@@ -1,8 +1,11 @@
 // Renders the cards with mock System Monitor data and saves the README screenshots.
 // Usage: npm run build && npm run screenshots
-import { chromium } from "playwright";
-import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { chromium } from "playwright";
 import { states, entities, devices, updateAvailable, hacsUpdates, procsRunning } from "./mock-states.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -83,8 +86,18 @@ const routeLogos = (page) =>
     }
     return route.abort();
   });
-for (const s of shots) {
-  // A fresh page for each capture: the card's script declares classes and custom elements once per page.
+// The HACS check in progress: the refresh status sensor reads "running", a few repositories still to go.
+const hacsRunning = {
+  "sensor.hacs_refresh_status": {
+    ...states["sensor.hacs_refresh_status"],
+    state: "running",
+    attributes: { ...states["sensor.hacs_refresh_status"].attributes, done: 3, total: 6 },
+  },
+};
+
+// Mounts shot `s` on a fresh page (the card's script declares classes and custom elements once per page), settles
+// it and clears the focus ring; returns the page ready to capture.
+async function openCard(s) {
   const page = await browser.newPage({ deviceScaleFactor: 2, viewport: { width: 1000, height: 2000 } });
   page.on("pageerror", (err) => console.error(`${s.file}: ${err.message}`));
   await routeLogos(page);
@@ -113,7 +126,7 @@ for (const s of shots) {
     {
       type: s.type,
       config: s.config,
-      states: { ...states, ...(s.update ? updateAvailable : {}), ...(s.update || s.hacs ? hacsUpdates : {}), ...(s.procsOk ? procsRunning : {}) },
+      states: { ...states, ...(s.update ? updateAvailable : {}), ...(s.update || s.hacs ? hacsUpdates : {}), ...(s.procsOk ? procsRunning : {}), ...(s.running ? hacsRunning : {}) },
       entities,
       devices,
       open: s.open,
@@ -124,12 +137,17 @@ for (const s of shots) {
     }
   );
   await page.waitForTimeout(800);
-  // No focus ring in the screenshots: the install popup focuses its button, which draws the :focus-visible outline.
+  // No focus ring in the captures: the install popup focuses its button, which draws the :focus-visible outline.
   await page.evaluate(() => {
     let el = document.activeElement;
     while (el?.shadowRoot?.activeElement) el = el.shadowRoot.activeElement;
     el?.blur?.();
   });
+  return page;
+}
+
+for (const s of shots) {
+  const page = await openCard(s);
   const box = await page.locator("#root").boundingBox();
   await page.screenshot({
     path: `${root}screenshots/${s.file}.png`,
@@ -138,5 +156,41 @@ for (const s of shots) {
   });
   console.log(`screenshots/${s.file}.png`);
   await page.close();
+}
+
+// The HACS section mid-check (its status sensor is "running"), recorded as a looping GIF — needs ffmpeg on PATH.
+// Every animation is paused and stepped frame by frame, so the GIF is identical whatever the machine's speed.
+const gif = {
+  file: "hacs-checking", type: "system-monitor-card", theme: "light", width: 460,
+  config: { show_system: false, show_network: false, show_storage: false, show_processes: false },
+  hacs: true, open: true, running: true,
+};
+const FPS = 20;
+const SECONDS = 2;
+{
+  const page = await openCard(gif);
+  const box = await page.locator("#root").boundingBox();
+  const clip = { x: 0, y: 0, width: gif.width + 32, height: Math.ceil(box.height) + 32 };
+  const dir = mkdtempSync(join(tmpdir(), "sm-frames-"));
+  const frames = Math.round(FPS * SECONDS);
+  for (let i = 0; i < frames; i++) {
+    await page.evaluate((t) => {
+      for (const a of document.getAnimations()) {
+        a.pause();
+        a.currentTime = t;
+      }
+    }, (i * 1000) / FPS);
+    await page.screenshot({ path: join(dir, `f${String(i).padStart(3, "0")}.png`), clip });
+  }
+  await page.close();
+  const out = `${root}screenshots/${gif.file}.gif`;
+  // Halve the retina capture and build a per-clip palette: the colours stay clean and the file stays small.
+  execFileSync("ffmpeg", [
+    "-y", "-loglevel", "error", "-framerate", String(FPS), "-i", join(dir, "f%03d.png"),
+    "-vf", `scale=${clip.width}:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128[p];[b][p]paletteuse=dither=bayer:bayer_scale=4`,
+    "-loop", "0", out,
+  ]);
+  rmSync(dir, { recursive: true });
+  console.log(`screenshots/${gif.file}.gif`);
 }
 await browser.close();
