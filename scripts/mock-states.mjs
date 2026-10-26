@@ -102,6 +102,16 @@ for (const [id, state, attributes] of [
   entities[id] = { entity_id: id, platform: "hacs_refresh", device_id: "hacs_refresh" };
 }
 
+// File Size integration watching the Home Assistant database.
+devices.filesize_db = { id: "filesize_db", name: "home-assistant_v2.db" };
+for (const [id, key, state, attributes] of [
+  ["sensor.home_assistant_v2_db_size", "size", "2056.34", { unit_of_measurement: "MB", device_class: "data_size" }],
+  ["sensor.home_assistant_v2_db_last_updated", "last_updated", new Date().toISOString(), { device_class: "timestamp" }],
+]) {
+  states[id] = { entity_id: id, state, attributes };
+  entities[id] = { entity_id: id, platform: "filesize", device_id: "filesize_db", translation_key: key };
+}
+
 // Integration Watchdog: integrations whose entities are all unavailable.
 const ago = (min) => new Date(Date.now() - min * 60 * 1000).toISOString();
 for (const [id, key, state, attributes] of [

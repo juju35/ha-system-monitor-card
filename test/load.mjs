@@ -8,6 +8,7 @@ const NAMES = [
   "discoverHacs",
   "discoverRefresh",
   "discoverWatchdog",
+  "discoverDatabase",
   "trackedIds",
   "renderSignature",
   "sameSignature",

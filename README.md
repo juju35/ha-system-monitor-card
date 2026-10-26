@@ -26,7 +26,7 @@ The cards are built on top of the core [System Monitor integration](https://www.
 - CPU, RAM, disk and CPU temperature gauges, uptime, load average and IP address
 - Home Assistant Core and OS versions, with an orange badge when an update is available
 - Network download / upload rates and totals, per interface (virtual interfaces such as `docker0` or `hassio` are hidden)
-- Storage: every monitored mount point and the swap, with used space
+- Storage: every monitored mount point and the swap, with used space, and the size of the Home Assistant database
 - Monitored processes, green when running and red when stopped: hidden while they all run (their status tile shows the list on a click), always shown while one is stopped, with their overall status in the status row
 - **HACS extensions**: a collapsible list of every repository downloaded with HACS, with its logo, version, update status and a GitHub button, a search field that filters it as you type, plus a **Check for updates** button that runs on the server through [HACS Refresh](https://github.com/juju35/ha-hacs-refresh); its overall status sits in the status row
 - **Unavailable integrations**: with [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog), a collapsible list of the integrations whose entities are all unavailable, with their logo, since when, how many times they were reloaded and whether the watchdog gave up, plus the last reload and a **Check now** button; its overall status sits in the status row
@@ -48,7 +48,7 @@ Most of its sensors are disabled by default: open the **System Monitor** device 
 |---|---|
 | System | Processor use, Memory usage (or Memory use + Memory free), Disk usage / Disk use + Disk free, Processor temperature, Last boot (called Uptime in recent versions), Load (1m/5m/15m), IPv4 address |
 | Network | Network throughput in / out, Network in / out (totals) |
-| Storage | Disk use + Disk free for each mount point, Swap use + Swap free |
+| Storage | Disk use + Disk free for each mount point, Swap use + Swap free. For the database size, the [File Size](https://www.home-assistant.io/integrations/filesize/) integration on `/config/home-assistant_v2.db` (see below) |
 | Processes | Process binary sensors (configured in the integration options) |
 | Integrations | The [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog) integration. Without it the section is not shown |
 | HACS | Nothing for the list: the update entities HACS creates for downloaded repositories are used as is. The **Check for updates** button needs the [HACS Refresh](https://github.com/juju35/ha-hacs-refresh) integration |
@@ -147,7 +147,7 @@ language: fr
 | `show_image` | all | `true` | Show the Home Assistant logo |
 | `show_system` | full | `true` | CPU, RAM, disk and temperature gauges, uptime, load, IP address |
 | `show_network` | full, mini | `true` | Network download / upload |
-| `show_storage` | full, mini | `true` | Full card: mount points and swap. Mini card: disk bar |
+| `show_storage` | full, mini | `true` | Full card: mount points, swap and database size. Mini card: disk bar |
 | `show_processes` | full, status | `true` | Monitored processes and their status tile |
 | `show_hacs` | full, status | `true` | HACS extensions list (status card: update button) and their status tile |
 | `show_watchdog` | full, status | `true` | Unavailable integrations list and their status tile (needs Integration Watchdog) |
@@ -195,6 +195,20 @@ The compact card shows CPU, RAM, disk and temperature bars, then the Core / OS s
 ### Processes
 
 The processes section is hidden while every monitored process runs: the **Processes** tile of the status row says "Running", and a click on it shows the list, which hides again on a click on its title or elsewhere. As soon as a process is stopped, the section shows up by itself and stays, whatever you click, until every process runs again. Its title shows the number of processes, and the number stopped in red.
+
+### Database size
+
+The **Storage** section ends with the size of the Home Assistant database (the default SQLite one, `home-assistant_v2.db`), read from the [File Size](https://www.home-assistant.io/integrations/filesize/) integration. To get it:
+
+1. Allow Home Assistant to read the file, in `configuration.yaml`, then restart:
+   ```yaml
+   homeassistant:
+     allowlist_external_dirs:
+       - /config
+   ```
+2. **Settings → Devices & services → Add integration → File Size**, with the path `/config/home-assistant_v2.db`.
+
+The card finds its size sensor by itself (platform `filesize`, a file named `home-assistant_v2.db`); a click on the row opens its history. Without it, the row is not shown. An external database (MariaDB, PostgreSQL) is not a file and isn't supported.
 
 ### HACS extensions
 

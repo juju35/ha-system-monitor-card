@@ -341,3 +341,15 @@ test("the status pill sits in the header row, the status card's one without the 
   status._zoomed = true;
   assert.match(status._header(sm), /<\/span>Update 2026.10.3<\/span>/);
 });
+
+test("the Home Assistant database size comes from the File Size integration", () => {
+  const hass = hassWith();
+  const id = "sensor.home_assistant_v2_db_size";
+  assert.equal(lib.discoverDatabase(hass), id);
+  assert.ok(lib.trackedIds(hass).includes(id));
+  // Another file watched by File Size: not the database.
+  const other = Object.fromEntries(Object.entries(entities).filter(([k]) => !k.startsWith("sensor.home_assistant_v2_db")));
+  other["sensor.notes_txt_size"] = { entity_id: "sensor.notes_txt_size", platform: "filesize", translation_key: "size" };
+  const states2 = { ...states, "sensor.notes_txt_size": { state: "1", attributes: { unit_of_measurement: "MB", device_class: "data_size" } } };
+  assert.equal(lib.discoverDatabase({ states: states2, entities: other, devices }), null);
+});

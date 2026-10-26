@@ -51,6 +51,7 @@ const STRINGS = {
     disk: "Disk",
     temperature: "Temp.",
     swap: "Swap",
+    database: "Database",
     network: "Network",
     storage: "Storage",
     processes: "Processes",
@@ -141,6 +142,7 @@ const STRINGS = {
     disk: "Disque",
     temperature: "Temp.",
     swap: "Swap",
+    database: "Base de données",
     network: "Réseau",
     storage: "Stockage",
     processes: "Processus",
@@ -557,6 +559,23 @@ const discoverRefresh = registryCache((hass, missing) => {
   return out;
 });
 
+/**
+ * Size of the Home Assistant database (recorder), from the File Size integration
+ * (platform "filesize") watching the "home-assistant_v2.db" file: its size sensor, in MB.
+ */
+const discoverDatabase = registryCache((hass, missing) => {
+  for (const e of platformEntities(hass, "filesize", missing)) {
+    if (!e.entity_id.startsWith("sensor.") || e.hidden) continue;
+    const s = hass.states[e.entity_id];
+    // The size sensor ("size"), not the one in bytes ("size_bytes") nor the timestamps.
+    if (e.translation_key ? e.translation_key !== "size" : s.attributes.device_class !== "data_size" || s.attributes.unit_of_measurement === "B") continue;
+    const dev = hass.devices?.[e.device_id];
+    const name = `${dev?.name || ""} ${e.entity_id} ${s.attributes.friendly_name || ""}`;
+    if (/home.assistant_v2[._]db/i.test(name)) return e.entity_id;
+  }
+  return null;
+});
+
 // ---------------------------------------------------------------------------
 // Integration Watchdog
 // ---------------------------------------------------------------------------
@@ -581,7 +600,7 @@ const trackedIds = (hass) => {
   const sm = discover(hass);
   const ids = [...Object.values(sm.scalars), ...Object.values(sm.procs), sm.core_update, sm.os_update];
   for (const group of [sm.disks, sm.nets]) for (const g of Object.values(group)) ids.push(...Object.values(g));
-  ids.push(...hacsEntities(hass).map((x) => x.id), ...Object.values(discoverRefresh(hass)), ...Object.values(discoverWatchdog(hass)));
+  ids.push(discoverDatabase(hass), ...hacsEntities(hass).map((x) => x.id), ...Object.values(discoverRefresh(hass)), ...Object.values(discoverWatchdog(hass)));
   return ids;
 };
 
@@ -1420,6 +1439,12 @@ class SystemMonitorCard extends SystemMonitorBase {
       const u = memUsage(this._hass, sc, "swap");
       if (u.total !== 0) rows.push(this._bar(sc.swap_use_percent || sc.swap_use, ICONS.swap, this._t("swap"), u, 50, 80));
     }
+    const db = discoverDatabase(this._hass);
+    if (db)
+      rows.push(`<div class="vol clickable" data-entity="${db}" role="button" tabindex="0">
+        <div class="row">${svgIcon(ICONS.database)}<span class="grow">${this._t("database")}</span></div>
+        <div class="detail"><span>${fmtBytes(toBytes(this._s(db)))}</span></div>
+      </div>`);
     if (!rows.length) return "";
     return `<div><div class="section-title">${svgIcon(ICONS.database)}${this._t("storage")}</div>${rows.join("")}</div>`;
   }

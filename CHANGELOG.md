@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.18.0
+
+### Changes
+- Full card: the Storage section shows the size of the Home Assistant database (`home-assistant_v2.db`), from the [File Size](https://www.home-assistant.io/integrations/filesize/) integration, found by itself through the entity registry (#24). A click opens its history. Without a File Size sensor on that file, nothing changes.
+
+### Maintenance
+- Test for the database discovery; the mock states and the screenshots have the database row.
+
 ## 1.17.0
 
 ### Changes
