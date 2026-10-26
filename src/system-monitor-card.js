@@ -1168,7 +1168,7 @@ const TILES_STYLE = `
 `;
 
 const FULL_STYLE = `
-  .logo { height: 44px; width: 44px; }
+  .logo { height: 40px; width: 40px; }
   .titles .chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
   .section-title.toggle { cursor: pointer; margin-bottom: 0; user-select: none; }
   .section-title .count { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 400; }
@@ -1592,7 +1592,7 @@ class SystemMonitorCard extends SystemMonitorBase {
 
 const MINI_STYLE = `
   .header { padding: 12px 12px 4px; }
-  .logo { height: 40px; width: 40px; }
+  .logo { height: 32px; width: 32px; }
   .titles .chips { display: none; }
   .name { font-size: 16px; }
   .content { padding: 4px 12px 12px; display: flex; flex-direction: column; gap: 8px; }
@@ -1695,7 +1695,7 @@ class SystemMonitorMiniCard extends SystemMonitorBase {
 
 const STATUS_STYLE = `
   .header { padding: 12px 12px 8px; }
-  .logo { height: 40px; width: 40px; }
+  .logo { height: 32px; width: 32px; }
   .titles .chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
   .header .btn { flex: none; padding: 6px 10px; font-size: 12px; gap: 4px; white-space: nowrap; }
   .header .btn.warn { color: var(--sm-warn); background: color-mix(in srgb, var(--sm-warn) 15%, transparent); }

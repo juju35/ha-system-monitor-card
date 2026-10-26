@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Changes
+- The Home Assistant logo in the header fits a 40 × 40 px box on the full card (was 44 px) and a 32 × 32 px box on the mini and status cards (was 40 px), like the header icon of the other cards. Zoomed in, the status card shows the full card's 40 px logo.
+
 ## 1.15.0
 
 ### Changes
