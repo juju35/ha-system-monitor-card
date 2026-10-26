@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Changes
+- Mini card: a zoom button at the far right of the header, as on the status card, switches it to the full System Monitor card (same options) and back. A click anywhere outside the card brings the compact view back, except in a dialog opened from it or while the install confirmation is open. The `zoom` option (on by default, in the visual editor) removes the button.
+
+### Maintenance
+- The zoom of the mini and status cards is shared in one base class (`SystemMonitorZoomCard`); its tests run on both cards; screenshots of the zoomed-in mini card.
+
 ## 1.16.0
 ### Changes
 - The Home Assistant logo in the header fits a 40 × 40 px box on the full card (was 44 px) and a 32 × 32 px box on the mini and status cards (was 40 px), like the header icon of the other cards. Zoomed in, the status card shows the full card's 40 px logo.

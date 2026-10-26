@@ -33,7 +33,7 @@ const ICONS = {
   download: "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z",
   watchdog: "M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z",
   chevron: "M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z",
-  // mdi:arrow-expand and mdi:arrow-collapse, for the status card's zoom button.
+  // mdi:arrow-expand and mdi:arrow-collapse, for the zoom button of the mini and status cards.
   expand: "M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z",
   collapse: "M19.5,3.09L15,7.59V4H13V11H20V9H16.41L20.91,4.5L19.5,3.09M4,13V15H7.59L3.09,19.5L4.5,20.91L9,16.41V20H11V13H4Z",
   // Fallbacks per HACS category when no logo can be loaded.
@@ -130,7 +130,7 @@ const STRINGS = {
     show_hacs: "Show HACS extensions",
     show_watchdog: "Show unavailable integrations (Integration Watchdog)",
     zoom: "Zoom button",
-    zoom_helper: "Switches the status card to the full card and back",
+    zoom_helper: "Switches the card to the full card and back",
     interface: "Network interface (optional, all by default)",
     language: "Language",
     lang_auto: "Automatic",
@@ -219,7 +219,7 @@ const STRINGS = {
     show_hacs: "Afficher les extensions HACS",
     show_watchdog: "Afficher les intégrations indisponibles (Integration Watchdog)",
     zoom: "Bouton zoom",
-    zoom_helper: "Bascule la carte de statut en carte complète, et inversement",
+    zoom_helper: "Bascule la carte en carte complète, et inversement",
     interface: "Interface réseau (facultatif, toutes par défaut)",
     language: "Langue",
     lang_auto: "Automatique",
@@ -683,6 +683,12 @@ const BASE_STYLE = `
   .logo { flex: none; object-fit: contain; filter: drop-shadow(0 3px 5px rgba(0,0,0,.2)); }
   .title-row > .chip { flex: none; white-space: nowrap; }
   .warning { padding: 16px; color: var(--sm-warn); }
+  /* Zoom button of the mini and status cards: rightmost in the header, 8 px from the card's right edge. */
+  .zoom { all: unset; flex: none; align-self: flex-start; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px 0 0; border-radius: 50%;
+          display: grid; place-items: center; color: var(--secondary-text-color); }
+  .zoom .icon { width: 16px; height: 16px; }
+  .zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }
+  .zoom:focus-visible { outline: 2px solid var(--sm-blue); outline-offset: 1px; }
 `;
 
 class SystemMonitorBase extends HTMLElement {
@@ -1174,11 +1180,6 @@ const TILES_STYLE = `
   .spin { animation: sm-spin 1s linear infinite; }
   @keyframes sm-spin { to { transform: rotate(360deg); } }
   .err { font-size: 12px; color: var(--sm-crit); }
-  .zoom { all: unset; flex: none; align-self: flex-start; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px 0 0; border-radius: 50%;
-          display: grid; place-items: center; color: var(--secondary-text-color); }
-  .zoom .icon { width: 16px; height: 16px; }
-  .zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }
-  .zoom:focus-visible { outline: 2px solid var(--sm-blue); outline-offset: 1px; }
 `;
 
 const FULL_STYLE = `
@@ -1600,6 +1601,84 @@ class SystemMonitorCard extends SystemMonitorBase {
 }
 
 // ---------------------------------------------------------------------------
+// Zoomable compact cards (mini and status)
+// ---------------------------------------------------------------------------
+
+/** A click inside a dialog (more-info opened from the card, say) is not a click outside the card. */
+const inDialog = (ev) => ev.composedPath().some((n) => ["ha-more-info-dialog", "ha-dialog", "dialog"].includes(n.localName));
+
+/**
+ * A compact card with a zoom button at the far right of its header (`zoom: false` removes it): the
+ * button switches it to the full card, with the same config, and back; a click anywhere outside the
+ * card brings the compact view back too. Subclasses render their compact view in `_compactRender()`
+ * and give its size in `_compactSize()`.
+ */
+class SystemMonitorZoomCard extends SystemMonitorCard {
+  constructor() {
+    super();
+    // A click outside the card (or a dialog opened from it) brings it back to the compact view,
+    // never while the install confirmation is open.
+    this._onUnzoom = (ev) => {
+      if (this._zoomed && !this._dialog && !ev.composedPath().includes(this) && !inDialog(ev)) this._setZoom(false);
+    };
+  }
+
+  connectedCallback() {
+    // Before the base listener, which closes the confirmation on the same click.
+    document.addEventListener("click", this._onUnzoom, true);
+    super.connectedCallback();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener("click", this._onUnzoom, true);
+  }
+
+  getCardSize() {
+    return this._zoomed ? super.getCardSize() : this._compactSize();
+  }
+
+  getGridOptions() {
+    return this._zoomed ? super.getGridOptions() : { columns: 6, min_columns: 6 };
+  }
+
+  /** Full card, or back to the compact view (its sections folded again). */
+  _setZoom(zoomed) {
+    this._zoomed = zoomed;
+    if (!zoomed) {
+      this._hacsOpen = false;
+      this._hacsQuery = "";
+      this._wdOpen = false;
+      this._procsOpen = false;
+    }
+    this._update();
+  }
+
+  _zoomClick(ev) {
+    ev.stopPropagation(); // no other action of the header
+    this._setZoom(!this._zoomed);
+    // Keyboard use (Enter / Space: no click count) keeps the focus on the button that replaced this one.
+    if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus();
+  }
+
+  _compactHeader() {
+    return !this._zoomed;
+  }
+
+  /** The header of both views, with the zoom button at its far right. */
+  _header(sm, aside = "") {
+    if (this._config.zoom === false) return super._header(sm, aside);
+    const title = esc(this._t(this._zoomed ? "zoom_out" : "zoom_in"));
+    const button = `<button class="zoom" data-action="zoom" title="${title}" aria-label="${title}">${svgIcon(this._zoomed ? ICONS.collapse : ICONS.expand)}</button>`;
+    return super._header(sm, aside + button);
+  }
+
+  _render() {
+    return this._zoomed ? super._render() : this._compactRender();
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Mini card
 // ---------------------------------------------------------------------------
 
@@ -1617,21 +1696,17 @@ const MINI_STYLE = `
   .foot .icon { width: 14px; height: 14px; }
 `;
 
-class SystemMonitorMiniCard extends SystemMonitorBase {
+/**
+ * Compact card: CPU, RAM, disk and temperature bars, Core / OS status, network and uptime.
+ * Its zoom button (top right, `zoom: false` removes it) switches it to the full card and back.
+ */
+class SystemMonitorMiniCard extends SystemMonitorZoomCard {
   static getConfigElement() {
     return document.createElement("system-monitor-mini-card-editor");
   }
 
-  static getStubConfig() {
-    return {};
-  }
-
-  getCardSize() {
+  _compactSize() {
     return 3;
-  }
-
-  getGridOptions() {
-    return { columns: 6, min_columns: 6 };
   }
 
   _metric(id, icon, label, p, display, cls) {
@@ -1642,7 +1717,7 @@ class SystemMonitorMiniCard extends SystemMonitorBase {
     </div>`;
   }
 
-  _render() {
+  _compactRender() {
     const sm = discover(this._hass);
     if (!sm.found) return this._noSm();
     const c = this._config;
@@ -1719,77 +1794,19 @@ const STATUS_STYLE = `
   .err { padding: 0 12px 12px; }
 `;
 
-/** A click inside a dialog (more-info opened from the card, say) is not a click outside the card. */
-const inDialog = (ev) => ev.composedPath().some((n) => ["ha-more-info-dialog", "ha-dialog", "dialog"].includes(n.localName));
-
 /**
  * Minimal card: header (Core / OS versions and update), the overall status tiles and a single
  * button that checks HACS for updates, or installs them when some are pending.
  * Its zoom button (top right, `zoom: false` removes it) switches it to the full card, with the same
  * config, and back; a click anywhere outside the card brings it back too.
  */
-class SystemMonitorStatusCard extends SystemMonitorCard {
+class SystemMonitorStatusCard extends SystemMonitorZoomCard {
   static getConfigElement() {
     return document.createElement("system-monitor-status-card-editor");
   }
 
-  constructor() {
-    super();
-    // A click outside the card (or a dialog opened from it) brings it back to the status view,
-    // never while the install confirmation is open.
-    this._onUnzoom = (ev) => {
-      if (this._zoomed && !this._dialog && !ev.composedPath().includes(this) && !inDialog(ev)) this._setZoom(false);
-    };
-  }
-
-  connectedCallback() {
-    // Before the base listener, which closes the confirmation on the same click.
-    document.addEventListener("click", this._onUnzoom, true);
-    super.connectedCallback();
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    document.removeEventListener("click", this._onUnzoom, true);
-  }
-
-  getCardSize() {
-    return this._zoomed ? super.getCardSize() : 2;
-  }
-
-  getGridOptions() {
-    return this._zoomed ? super.getGridOptions() : { columns: 6, min_columns: 6 };
-  }
-
-  /** Full card, or back to the status view (its sections folded again). */
-  _setZoom(zoomed) {
-    this._zoomed = zoomed;
-    if (!zoomed) {
-      this._hacsOpen = false;
-      this._hacsQuery = "";
-      this._wdOpen = false;
-      this._procsOpen = false;
-    }
-    this._update();
-  }
-
-  _zoomClick(ev) {
-    ev.stopPropagation(); // no other action of the header
-    this._setZoom(!this._zoomed);
-    // Keyboard use (Enter / Space: no click count) keeps the focus on the button that replaced this one.
-    if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus();
-  }
-
-  _compactHeader() {
-    return !this._zoomed;
-  }
-
-  /** The header of both views, with the zoom button at its far right. */
-  _header(sm, aside = "") {
-    if (this._config.zoom === false) return super._header(sm, aside);
-    const title = esc(this._t(this._zoomed ? "zoom_out" : "zoom_in"));
-    const button = `<button class="zoom" data-action="zoom" title="${title}" aria-label="${title}">${svgIcon(this._zoomed ? ICONS.collapse : ICONS.expand)}</button>`;
-    return super._header(sm, aside + button);
+  _compactSize() {
+    return 2;
   }
 
   /** No sections to unfold here: tiles open the HACS or integrations page, or the first stopped process. */
@@ -1843,8 +1860,7 @@ class SystemMonitorStatusCard extends SystemMonitorCard {
     return btn("hacs-check", "", ICONS.refresh, running, label, title, busy);
   }
 
-  _render() {
-    if (this._zoomed) return super._render();
+  _compactRender() {
     const sm = discover(this._hass);
     if (!sm.found) return this._noSm();
     const rf = discoverRefresh(this._hass);
@@ -1969,7 +1985,7 @@ class SystemMonitorCardEditor extends SystemMonitorEditorBase {
 
 class SystemMonitorMiniCardEditor extends SystemMonitorEditorBase {
   static get toggles() {
-    return ["show_storage", "show_network"];
+    return ["show_storage", "show_network", "zoom"];
   }
 }
 

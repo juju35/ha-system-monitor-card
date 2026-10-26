@@ -14,7 +14,10 @@ const NAMES = [
   "focusSelector",
   "fmtBytes",
   "SystemMonitorCard",
+  "SystemMonitorMiniCard",
   "SystemMonitorStatusCard",
+  "SystemMonitorMiniCardEditor",
+  "SystemMonitorStatusCardEditor",
   "document",
 ];
 
