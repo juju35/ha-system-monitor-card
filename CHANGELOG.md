@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.20.0 - 2026-10-26
+
+### Fixes
+- **Mini card**: the detail button now sits flush top-right and vertically centred on the header, matching the other cards. The compact status card keeps its own tighter placement.
+
 ## 1.19.0 - 2026-10-26
 
 ### Documentation
