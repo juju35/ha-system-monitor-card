@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.19.0 - 2026-10-26
+
+### Documentation
+- README: the colour threshold table (CPU, RAM, disk, temperature, swap) now has its own `### Thresholds` heading and a short introduction, instead of trailing the "Unavailable integrations" section it did not belong to (#28).
+
 ## 1.18.0
 
 ### Changes
