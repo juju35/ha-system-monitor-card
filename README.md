@@ -161,7 +161,15 @@ While HACS checks for updates, the card animates: the check button spins as the 
 
 ![HACS check animation](screenshots/hacs-checking.gif)
 
-| Light | Dark (French, update available) |
+While **Install all** runs, its chip spins with the progress of the installs (here 1 of 2 done).
+
+![Install all animation](screenshots/hacs-installing.gif)
+
+While Integration Watchdog checks the integrations, its check button spins until the result comes back.
+
+![Watchdog check animation](screenshots/wd-checking.gif)
+
+| Light | Dark (update available) |
 |---|---|
 | ![card](screenshots/card.png) | ![card dark](screenshots/card-dark.png) |
 | ![mini card](screenshots/mini-card.png) | ![mini card dark](screenshots/mini-card-dark.png) |
@@ -169,7 +177,7 @@ While HACS checks for updates, the card animates: the check button spins as the 
 | ![status card](screenshots/status-card.png) | ![status card dark](screenshots/status-card-dark.png) |
 | ![status card zoomed in](screenshots/status-card-zoom.png) | ![status card zoomed in dark](screenshots/status-card-zoom-dark.png) |
 | ![HACS extensions](screenshots/card-hacs.png) | ![Unavailable integrations](screenshots/card-watchdog.png) |
-| ![HACS search (French)](screenshots/card-hacs-search.png) | ![Install confirmation (French)](screenshots/card-install.png) |
+| ![HACS search](screenshots/card-hacs-search.png) | ![Install confirmation](screenshots/card-install.png) |
 
 ## How it works
 

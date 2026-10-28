@@ -94,6 +94,10 @@ const hacsRunning = {
     attributes: { ...states["sensor.hacs_refresh_status"].attributes, done: 3, total: 6 },
   },
 };
+// The Integration Watchdog check in progress: its button goes unavailable while it runs.
+const wdChecking = {
+  "button.integration_watchdog_check_now": { ...states["button.integration_watchdog_check_now"], state: "unavailable" },
+};
 
 // Mounts shot `s` on a fresh page (the card's script declares classes and custom elements once per page), settles
 // it and clears the focus ring; returns the page ready to capture.
@@ -105,7 +109,7 @@ async function openCard(s) {
   await page.addScriptTag({ content: HA_CARD });
   await page.addScriptTag({ content: cardJs });
   await page.evaluate(
-    ({ type, config, states, entities, devices, open, action, search, install, zoom }) => {
+    ({ type, config, states, entities, devices, open, action, search, install, installing, zoom }) => {
       const el = document.createElement(type);
       el.setConfig({ type: `custom:${type}`, ...config });
       el.hass = {
@@ -122,17 +126,30 @@ async function openCard(s) {
         field.value = search;
         field.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
       }
+      // "Install all" mid-run: the state _runInstall holds between two update.install calls.
+      if (installing) {
+        el._installing = { done: 1, total: 2 };
+        el._update();
+      }
     },
     {
       type: s.type,
       config: s.config,
-      states: { ...states, ...(s.update ? updateAvailable : {}), ...(s.update || s.hacs ? hacsUpdates : {}), ...(s.procsOk ? procsRunning : {}), ...(s.running ? hacsRunning : {}) },
+      states: {
+        ...states,
+        ...(s.update ? updateAvailable : {}),
+        ...(s.update || s.hacs ? hacsUpdates : {}),
+        ...(s.procsOk ? procsRunning : {}),
+        ...(s.running ? hacsRunning : {}),
+        ...(s.wdBusy ? wdChecking : {}),
+      },
       entities,
       devices,
       open: s.open,
       action: s.action || "hacs",
       search: s.search,
       install: s.install,
+      installing: s.installing,
       zoom: s.zoom,
     }
   );
@@ -158,16 +175,20 @@ for (const s of shots) {
   await page.close();
 }
 
-// The HACS section mid-check (its status sensor is "running"), recorded as a looping GIF — needs ffmpeg on PATH.
-// Every animation is paused and stepped frame by frame, so the GIF is identical whatever the machine's speed.
-const gif = {
-  file: "hacs-checking", type: "system-monitor-card", theme: "light", width: 460,
-  config: { show_system: false, show_network: false, show_storage: false, show_processes: false },
-  hacs: true, open: true, running: true,
-};
+// Animated states, recorded as looping GIFs — needs ffmpeg on PATH. Every animation is paused and
+// stepped frame by frame, so the GIFs are identical whatever the machine's speed.
+const SECTIONS_OFF = { show_system: false, show_network: false, show_storage: false, show_processes: false };
+const gifs = [
+  // The HACS section mid-check: its status sensor is "running".
+  { file: "hacs-checking", type: "system-monitor-card", theme: "light", width: 460, config: SECTIONS_OFF, hacs: true, open: true, running: true },
+  // "Install all" mid-run: the chip spins with the progress of the installs.
+  { file: "hacs-installing", type: "system-monitor-card", theme: "light", width: 460, config: SECTIONS_OFF, hacs: true, open: true, installing: true },
+  // The Integration Watchdog "check now" button mid-check: unavailable while it runs, so it spins.
+  { file: "wd-checking", type: "system-monitor-card", theme: "light", width: 460, config: { ...SECTIONS_OFF, show_hacs: false }, open: true, action: "wd", wdBusy: true },
+];
 const FPS = 20;
 const SECONDS = 2;
-{
+for (const gif of gifs) {
   const page = await openCard(gif);
   const box = await page.locator("#root").boundingBox();
   const clip = { x: 0, y: 0, width: gif.width + 32, height: Math.ceil(box.height) + 32 };
