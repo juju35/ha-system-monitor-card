@@ -388,7 +388,7 @@ const FALLBACK = [
 ];
 
 // Virtual interfaces hidden by default from the network section.
-const VIRTUAL_IF = /^(lo|docker\d*|hassio|veth.*|br-.*|virbr\d*|tun\d*|wg\d*)$/;
+const VIRTUAL_IF = /^(lo|docker\d*|hassio|veth.*|br-.*|virbr\d*|tun\d*|tap\d*|wg\d*|vlan.*|dummy\d*|tailscale.*)$/;
 
 /**
  * Caches a scan of the entity registry per hass.entities / hass.devices object: Home Assistant
@@ -573,7 +573,6 @@ const discoverHacs = (hass) => {
   return out.sort((x, y) => y.update - x.update || x.name.localeCompare(y.name));
 };
 
-/** Entities of the HACS Refresh integration, which checks every HACS repository for updates on the server. */
 /** Registry entries of a platform that have a state; the others are listed in `missing`. */
 const platformEntities = (hass, platform, missing) =>
   Object.values(hass.entities || {}).filter((e) => {
@@ -582,6 +581,7 @@ const platformEntities = (hass, platform, missing) =>
     return !!hass.states[e.entity_id];
   });
 
+/** Entities of the HACS Refresh integration, which checks every HACS repository for updates on the server. */
 const discoverRefresh = registryCache((hass, missing) => {
   const out = {};
   for (const e of platformEntities(hass, "hacs_refresh", missing)) {
@@ -657,6 +657,12 @@ const renderSignature = (hass) => [
 ];
 
 const sameSignature = (a, b) => !!a && a.length === b.length && a.every((v, i) => v === b[i]);
+
+/**
+ * URL without its brands access token, the stable identity of a logo source: the token rotates
+ * every few minutes, so keying failures on the full URL would grow the failed set without bound.
+ */
+const untokened = (u) => u.replace(/([?&])token=[^&]*&?/, "$1").replace(/[?&]$/, "");
 
 /** CSS attribute selector matching an attribute value exactly. */
 const attrSel = (name, value) => `[${name}="${String(value).replace(/["\\]/g, "\\$&")}"]`;
@@ -775,7 +781,7 @@ class SystemMonitorBase extends HTMLElement {
         run();
         return;
       }
-      if (action?.dataset.action === "zoom") return this._zoomClick(ev);
+      if (action?.dataset.action === "zoom") return this._zoomClick?.(ev);
       if (action) {
         if (action.dataset.action === "hacs") {
           this._hacsOpen = !this._hacsOpen;
@@ -836,10 +842,10 @@ class SystemMonitorBase extends HTMLElement {
       (ev) => {
         const img = ev.target;
         if (img.tagName !== "IMG" || img.dataset.fb === undefined) return;
-        this._imgFailed.add(img.getAttribute("src"));
+        this._imgFailed.add(untokened(img.getAttribute("src")));
         // A kept brand URL whose token has expired: the next render uses the current token.
         if (this._brandUrls.get(img.dataset.domain) === img.getAttribute("src")) this._brandUrls.delete(img.dataset.domain);
-        const next = img.dataset.fb.split(" ").filter((u) => u && !this._imgFailed.has(u));
+        const next = img.dataset.fb.split(" ").filter((u) => u && !this._imgFailed.has(untokened(u)));
         if (next.length) {
           img.dataset.fb = next.slice(1).join(" ");
           img.src = next[0];
@@ -859,8 +865,14 @@ class SystemMonitorBase extends HTMLElement {
   }
 
   connectedCallback() {
-    // The brands access token rotates: refresh it before it expires.
-    this._tokenTimer = setInterval(() => this._fetchBrandsToken(true), 20 * 60 * 1000);
+    // The brands access token rotates: refresh it before it expires — only once a logo needed it
+    // (the token is fetched lazily by _logoSources, so a card without logos never calls the API).
+    this._tokenTimer = setInterval(() => {
+      if (this._brandsToken !== undefined) this._fetchBrandsToken(true);
+    }, 20 * 60 * 1000);
+    // The uptime and the relative times ("2 minutes ago") depend on the current minute: without a
+    // state change, `set hass` doesn't come, so check the render signature (it includes the minute).
+    this._minuteTimer = setInterval(() => this._maybeRender(), 30 * 1000);
     // A click elsewhere on the page folds the HACS and integrations lists (as in ha-carburants-france).
     // A click, not a pointerdown: folding on press would shift the layout under the pointer before the click.
     // The processes list folds too, unless a process is stopped.
@@ -878,6 +890,7 @@ class SystemMonitorBase extends HTMLElement {
 
   disconnectedCallback() {
     clearInterval(this._tokenTimer);
+    clearInterval(this._minuteTimer);
     document.removeEventListener("click", this._onOutside, true);
   }
 
@@ -904,10 +917,12 @@ class SystemMonitorBase extends HTMLElement {
       if (kept) out.push(kept);
       else if (this._brandsToken)
         out.push(`/api/brands/integration/${encodeURIComponent(x.domain)}/icon.png?placeholder=no&token=${encodeURIComponent(this._brandsToken)}`);
+      // First logo rendered: fetch the token now (the render that follows adds the local source).
+      else if (this._brandsToken === undefined) this._fetchBrandsToken();
       out.push(`https://brands.home-assistant.io/_/${encodeURIComponent(x.domain)}/icon.png`);
     }
     if (x.repo) out.push(`https://github.com/${x.repo.split("/")[0]}.png?size=64`);
-    return out.filter((u) => !this._imgFailed.has(u));
+    return out.filter((u) => !this._imgFailed.has(untokened(u)));
   }
 
   _logo(x) {
@@ -1033,9 +1048,13 @@ class SystemMonitorBase extends HTMLElement {
 
   set hass(hass) {
     this._hass = hass;
-    this._fetchBrandsToken();
-    // Home Assistant sets hass on every state change of the instance: render only when one the card shows changed.
-    const sig = renderSignature(hass);
+    this._maybeRender();
+  }
+
+  /** Home Assistant sets hass on every state change of the instance: render only when one the card shows changed. */
+  _maybeRender() {
+    if (!this._hass) return;
+    const sig = renderSignature(this._hass);
     if (sameSignature(this._sig, sig)) return;
     this._sig = sig;
     this._update();
@@ -1818,10 +1837,13 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
     const ifs = interfaces(sm, c);
     if (c.show_network !== false && ifs.length) {
       const n = sm.nets[ifs[0]];
+      // One span per direction: each rate opens its own sensor.
       foot.push(
-        `<span class="clickable" data-entity="${n.throughput_network_in || ""}">${svgIcon(ICONS.down)}${fmtRate(
+        `<span><span class="clickable" data-entity="${n.throughput_network_in || ""}">${svgIcon(ICONS.down)}${fmtRate(
           toBps(this._s(n.throughput_network_in))
-        )}&nbsp;&nbsp;${svgIcon(ICONS.up)}${fmtRate(toBps(this._s(n.throughput_network_out)))}</span>`
+        )}</span>&nbsp;&nbsp;<span class="clickable" data-entity="${n.throughput_network_out || ""}">${svgIcon(ICONS.up)}${fmtRate(
+          toBps(this._s(n.throughput_network_out))
+        )}</span></span>`
       );
     }
     const up = uptimeSec(this._s(sc.last_boot));
