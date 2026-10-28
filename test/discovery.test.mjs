@@ -33,6 +33,48 @@ test("an entity of the registry that gets its state later is picked up", () => {
   assert.equal(later.scalars.processor_use, id);
 });
 
+const argHass = (sensors) => {
+  const h = { states: {}, entities: {}, devices: {} };
+  for (const [obj, translation_key, name] of sensors) {
+    const id = `${translation_key === "process" ? "binary_sensor" : "sensor"}.system_monitor_${obj}`;
+    h.states[id] = { entity_id: id, state: "1", attributes: { friendly_name: `System Monitor ${name}` } };
+    h.entities[id] = { entity_id: id, platform: "systemmonitor", translation_key };
+  }
+  return h;
+};
+
+test("arguments with spaces are kept whole and alike endings do not collide", () => {
+  const sm = lib.discover(
+    argHass([
+      ["disk_use", "disk_use", "Disk use /"],
+      ["disk_free", "disk_free", "Disk free /"],
+      ["disk_use_passport", "disk_use", "Disk use /mnt/My Passport"],
+      ["disk_free_passport", "disk_free", "Disk free /mnt/My Passport"],
+      ["disk_use_passport2", "disk_use", "Disk use /backup/My Passport"],
+      ["process_a", "process", "Process home assistant"],
+      ["process_b", "process", "Process node red"],
+    ])
+  );
+  assert.deepEqual(Object.keys(sm.disks).sort(), ["/", "/backup/My Passport", "/mnt/My Passport"]);
+  assert.equal(sm.disks["/mnt/My Passport"].disk_free, "sensor.system_monitor_disk_free_passport");
+  assert.deepEqual(Object.keys(sm.procs).sort(), ["home assistant", "node red"]);
+});
+
+test("a single mount with spaces is recovered from its sibling sensors", () => {
+  const sm = lib.discover(
+    argHass([
+      ["disk_use", "disk_use", "Disk use /mnt/My Passport"],
+      ["disk_free", "disk_free", "Disk free /mnt/My Passport"],
+      ["network_in_eth0", "network_in", "Network in eth0"],
+      ["network_throughput_in_eth0", "throughput_network_in", "Network throughput in eth0"],
+      ["network_throughput_out_eth0", "throughput_network_out", "Network throughput out eth0"],
+    ])
+  );
+  assert.deepEqual(Object.keys(sm.disks), ["/mnt/My Passport"]);
+  assert.deepEqual(Object.keys(sm.nets), ["eth0"]);
+  assert.equal(sm.nets.eth0.network_in, "sensor.system_monitor_network_in_eth0");
+});
+
 test("HACS extensions follow their states while their registry entries are cached", () => {
   const hass = hassWith();
   const before = lib.discoverHacs(hass);

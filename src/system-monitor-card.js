@@ -411,9 +411,42 @@ const registryCache = (scan) => {
   };
 };
 
+/** Words shared at the start (resp. end) of two friendly names: the label (resp. the argument). */
+const commonPrefix = (a, b) => {
+  let n = 0;
+  while (n < a.length && n < b.length && a[n] === b[n]) n++;
+  return n;
+};
+const commonSuffix = (a, b) => {
+  let n = 0;
+  while (n < a.length && n < b.length && a[a.length - 1 - n] === b[b.length - 1 - n]) n++;
+  return n;
+};
+
+/**
+ * Argument of a sensor (mount point, interface or process name): the friendly name ends with it
+ * ("Disk free /", "Réseau entrant eth0") but it may contain spaces ("/mnt/My Passport"), so the
+ * last word truncates it and collides two mounts ending alike. The label is instead what the
+ * names of the other sensors reveal: sensors of the same translation key share it as a prefix,
+ * and sensors of the same argument leave it as a common suffix.
+ */
+const argOf = (e, all) => {
+  const others = all.filter((o) => o.group === e.group && o.id !== e.id);
+  const sameKey = others.filter((o) => o.key === e.key && o.tokens.join(" ") !== e.tokens.join(" "));
+  if (sameKey.length) {
+    const label = Math.min(...sameKey.map((o) => commonPrefix(e.tokens, o.tokens)));
+    const a = e.tokens.slice(label).join(" ");
+    if (a) return a;
+  }
+  const suffixes = others.filter((o) => o.key !== e.key).map((o) => commonSuffix(e.tokens, o.tokens)).filter((n) => n > 0);
+  if (suffixes.length) return e.tokens.slice(-Math.min(...suffixes)).join(" ");
+  return e.tokens[e.tokens.length - 1] || e.arg || "";
+};
+
 /** Map the System Monitor entities to a structured object of entity ids. */
 const discover = registryCache((hass, missing) => {
   const sm = { scalars: {}, disks: {}, nets: {}, procs: {}, found: false };
+  const args = []; // Sensors with an argument, resolved once all the names are known.
   const add = (key, arg, id) => {
     sm.found = true;
     const group = ARG_KEYS[key];
@@ -421,11 +454,8 @@ const discover = registryCache((hass, missing) => {
       sm.scalars[key] ??= id;
       return;
     }
-    // The argument ends the friendly name ("Disk free /", "Réseau entrant via eth0").
     const name = hass.states[id]?.attributes?.friendly_name || "";
-    const a = name.split(" ").pop() || arg || "";
-    if (group === "proc") sm.procs[a] ??= id;
-    else ((group === "disk" ? sm.disks : sm.nets)[a] ??= {})[key] ??= id;
+    args.push({ key, group, id, arg, tokens: name.split(" ") });
   };
 
   const registry = hass.entities ? Object.values(hass.entities).filter((e) => e.platform === "systemmonitor") : [];
@@ -453,6 +483,12 @@ const discover = registryCache((hass, missing) => {
         }
       }
     }
+  }
+
+  for (const e of args) {
+    const a = argOf(e, args);
+    if (e.group === "proc") sm.procs[a] ??= e.id;
+    else ((e.group === "disk" ? sm.disks : sm.nets)[a] ??= {})[e.key] ??= e.id;
   }
 
   // Home Assistant update entities, for the header (Core / OS versions).
