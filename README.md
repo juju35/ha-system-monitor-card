@@ -33,7 +33,7 @@ The cards are built on top of the core [System Monitor integration](https://www.
 - Colors turn orange / red when a threshold is crossed (CPU, RAM, disk, temperature)
 - Click any value to open its Home Assistant history (more-info dialog)
 - Visual editor in the dashboard UI for every card (no YAML needed)
-- Light and dark mode, English and French
+- Light and dark mode, English, French, German and Spanish
 - Single file, no external dependency, the Home Assistant logo is embedded
 
 ## Prerequisites
@@ -153,7 +153,7 @@ language: fr
 | `show_watchdog` | full, status | `true` | Unavailable integrations list and their status tile (needs Integration Watchdog) |
 | `zoom` | mini, status | `true` | Zoom button at the top right: shows the full card, and back to the compact view |
 | `interface` | full, mini | All physical interfaces | Network interface to display (e.g. `eth0`, `enp0s3`) |
-| `language` | all | Auto | Force language: `fr` or `en` (auto-detects from HA settings) |
+| `language` | all | Auto | Force language: `en`, `fr`, `de` or `es` (auto-detects from HA settings) |
 
 ## Screenshots
 
@@ -278,6 +278,8 @@ The cards auto-detect the language from your Home Assistant settings. Currently 
 |---|---|
 | English | `en` |
 | Français | `fr` |
+| Deutsch | `de` |
+| Español | `es` |
 
 Contributions for additional languages are welcome!
 
