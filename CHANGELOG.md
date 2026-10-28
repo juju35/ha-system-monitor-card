@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.20.1 - 2026-10-28
+
+### Fixes
+- **Discovery**: disk, network and process sensors whose argument contains spaces (e.g. the mount point `/mnt/My Passport`) are no longer truncated to their last word, and two mounts ending with the same word no longer collide.
+- **Mini card**: the network footer has one clickable rate per direction; the upload rate now opens its own sensor instead of the download one.
+- **Network**: `tap*`, `vlan*`, `dummy*` and `tailscale*` interfaces are treated as virtual and hidden by default, like `docker*` or `veth*`.
+- Uptime and relative times ("2 minutes ago") keep updating on a quiet instance, without waiting for a state change.
+- The brands access token is fetched only when a logo is first shown (no periodic API call on a card without logos), and failed logo URLs no longer pile up as the token rotates.
+
+### Documentation
+- README: animation GIFs of the "Install all" progress and of the watchdog "Check now" spinner; screenshot captions no longer say "(French)".
+
+### Maintenance
+- CI: the release is gated on the tests, screenshot commits are guarded against forks and manual runs, unused ruff tooling removed.
+
 ## 1.20.0 - 2026-10-26
 
 ### Fixes
