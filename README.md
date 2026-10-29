@@ -181,7 +181,7 @@ While Integration Watchdog checks the integrations, its check button spins until
 
 ## How it works
 
-The cards read the entity registry of Home Assistant and keep the entities of the `systemmonitor` platform. Each sensor is recognized by its translation key (`processor_use`, `memory_use_percent`, `disk_free`, `throughput_network_in`…), so entity ids translated in another language (for example `sensor.system_monitor_utilisation_du_processeur`) and renamed entities are supported. Mount points, interfaces and process names are read from the end of the sensor name. When the registry is not available, English entity ids (`sensor.system_monitor_processor_use`…) are used as a fallback.
+The cards read the entity registry of Home Assistant and keep the entities of the `systemmonitor` platform. Each sensor is recognized by its translation key (`processor_use`, `memory_use_percent`, `disk_free`, `throughput_network_in`…), so entity ids translated in another language (for example `sensor.system_monitor_utilisation_du_processeur`) and renamed entities are supported. Mount points, interfaces and process names are read from the end of the sensor name: the words it shares with the other sensors of the same kind (for example `System Monitor Disk free`) are the label, the rest is the argument, so names with spaces (`/mnt/My Passport`) are kept whole. When the registry is not available, English entity ids (`sensor.system_monitor_processor_use`…) are used as a fallback.
 
 The Core and OS versions come from the `update.home_assistant_core_*` and `update.home_assistant_operating_system_*` entities when they exist, otherwise from the running Home Assistant version.
 
@@ -259,7 +259,7 @@ Gauges and bars turn orange, then red, when a value crosses these thresholds:
 npm ci               # installs the locked dev dependencies (Playwright, for the screenshots)
 npm run build        # bundles src/system-monitor-card.js + images/home-assistant.svg into dist/system-monitor-card.js
 npm run check        # builds and checks the card (run in CI)
-npm run screenshots  # renders the cards (and hacs-checking.gif, needs ffmpeg) with mock data into screenshots/
+npm run screenshots  # renders the cards (and the hacs-checking, hacs-installing and wd-checking GIFs, needs ffmpeg) with mock data into screenshots/
 ```
 
 `dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where HACS downloads it from.
