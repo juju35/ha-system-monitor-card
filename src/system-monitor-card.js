@@ -899,6 +899,15 @@ const hacsEntities = registryCache((hass) =>
 /** A state that tells nothing: the entity is unavailable (integration failed or unloaded) or not reported yet. */
 const isUnknown = (s) => !s || s.state === "unavailable" || s.state === "unknown";
 
+/**
+ * Core / OS update status: the update entity with a pending update, else the first one that is unavailable
+ * (Supervisor unreachable, for example), which tells nothing: neither "up to date" nor "running".
+ */
+const updateStatus = (core, os) => {
+  const pending = [core, os].find((s) => s && s.state === "on");
+  return { pending, unknown: !pending && [core, os].find((s) => s && isUnknown(s)) };
+};
+
 const discoverHacs = (hass) => {
   const out = [];
   for (const { id, dev } of hacsEntities(hass)) {
@@ -1468,9 +1477,7 @@ class SystemMonitorBase extends HTMLElement {
     const osVersion = os?.attributes.installed_version;
     const sub = [coreVersion ? `Core ${coreVersion}` : null, osVersion ? `OS ${osVersion}` : null].filter(Boolean).join(" · ");
     // Status chip: pending Core / OS update, else "up to date" (or "running" without update entities).
-    const pending = [core, os].find((s) => s && s.state === "on");
-    // An unavailable update entity (Supervisor unreachable, for example) tells nothing: neither "up to date" nor "running".
-    const unknown = !pending && [core, os].find((s) => s && isUnknown(s));
+    const { pending, unknown } = updateStatus(core, os);
     let chip;
     if (pending) {
       // The status card's compact header shows the new version as a tooltip only, leaving the title its room.
@@ -2196,9 +2203,7 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
 
     const foot = [];
     const core = this._s(sm.core_update);
-    const os = this._s(sm.os_update);
-    const pending = [core, os].find((s) => s && s.state === "on");
-    const unknown = !pending && [core, os].find((s) => s && isUnknown(s));
+    const { pending, unknown } = updateStatus(core, this._s(sm.os_update));
     foot.push(
       `<span class="clickable ${pending ? "warn" : unknown ? "muted" : "good"}" data-entity="${(pending || unknown || core)?.entity_id || ""}"><span class="dot"></span>&nbsp;${esc(
         pending
