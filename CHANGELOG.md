@@ -14,6 +14,7 @@
 
 ### Maintenance
 - CI: the screenshots workflow checks out fork pull requests safely, fails explicitly when apt fails three times, and uses `actions/upload-artifact` v7. Playwright range raised to `^1.64.1`.
+- CI: after committing refreshed screenshots to a pull request, the screenshots workflow re-runs Lint, Validate and HACS on that commit (`workflow_dispatch`), since a `GITHUB_TOKEN` push does not trigger them.
 
 ## 1.21.0 - 2026-10-28
 
