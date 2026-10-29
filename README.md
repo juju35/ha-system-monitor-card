@@ -187,11 +187,11 @@ The Core and OS versions come from the `update.home_assistant_core_*` and `updat
 
 ### Status row
 
-Under the header, a row of tiles gives the overall status of each section: **HACS** (up to date or the number of updates), **Processes** (running or the number stopped) and **Integrations** (available or the number unavailable), green when all is well, orange or red otherwise. Click a tile to show its section unfolded; a click elsewhere folds or hides it again. The Home Assistant Core / OS update stays next to the logo. Tiles of hidden or missing sections are left out.
+Under the header, a row of tiles gives the overall status of each section: **HACS** (up to date or the number of updates), **Processes** (running or the number stopped) and **Integrations** (available or the number unavailable), green when all is well, orange or red otherwise, and grey "Unknown" when its source is unavailable (HACS failed to start, Integration Watchdog unloaded). The same goes for the Core / OS update badge when the update entity is unavailable. Click a tile to show its section unfolded; a click elsewhere folds or hides it again. The Home Assistant Core / OS update stays next to the logo. Tiles of hidden or missing sections are left out.
 
 ### Status card
 
-The minimal card keeps the header (Core / OS versions and their update badge) and the status row, without gauges or lists. The status row shows up only while one of the statuses is not good (HACS update, stopped process, unavailable integration); when all is well, the card is just the header. On the right of the header, one button:
+The minimal card keeps the header (Core / OS versions and their update badge) and the status row, without gauges or lists. The status row shows up only while one of the statuses is not good (HACS update, stopped process, unavailable integration, or an unavailable HACS or Integration Watchdog); when all is well, the card is just the header. On the right of the header, one button:
 
 - **Install (n)** when HACS updates are pending (admins only): installs them all, one after the other, after a confirmation, with the progress in the button
 - **Check** otherwise, for every user as in the full card: checks every HACS repository for updates through [HACS Refresh](https://github.com/juju35/ha-hacs-refresh), with the progress in the button; hover it for the time of the last check. Without HACS Refresh and no pending update, the button is hidden

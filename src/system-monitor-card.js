@@ -97,6 +97,7 @@ const STRINGS = {
     procs_many: "{n} processes stopped",
     integrations: "Integrations",
     st_up_to_date: "Up to date",
+    st_unknown: "Unknown",
     st_update_one: "1 update",
     st_updates: "{n} updates",
     st_running: "Running",
@@ -188,6 +189,7 @@ const STRINGS = {
     procs_many: "{n} processus arrêtés",
     integrations: "Intégrations",
     st_up_to_date: "À jour",
+    st_unknown: "Inconnu",
     st_update_one: "1 mise à jour",
     st_updates: "{n} mises à jour",
     st_running: "En marche",
@@ -278,6 +280,7 @@ const STRINGS = {
     procs_many: "{n} Prozesse gestoppt",
     integrations: "Integrationen",
     st_up_to_date: "Aktuell",
+    st_unknown: "Unbekannt",
     st_update_one: "1 Update",
     st_updates: "{n} Updates",
     st_running: "Läuft",
@@ -368,6 +371,7 @@ const STRINGS = {
     procs_many: "{n} procesos detenidos",
     integrations: "Integraciones",
     st_up_to_date: "Actualizado",
+    st_unknown: "Desconocido",
     st_update_one: "1 actualización",
     st_updates: "{n} actualizaciones",
     st_running: "En ejecución",
@@ -892,6 +896,9 @@ const hacsEntities = registryCache((hass) =>
     .map((e) => ({ id: e.entity_id, dev: hass.devices?.[e.device_id] }))
 );
 
+/** A state that tells nothing: the entity is unavailable (integration failed or unloaded) or not reported yet. */
+const isUnknown = (s) => !s || s.state === "unavailable" || s.state === "unknown";
+
 const discoverHacs = (hass) => {
   const out = [];
   for (const { id, dev } of hacsEntities(hass)) {
@@ -908,6 +915,7 @@ const discoverHacs = (hass) => {
       installed: a.installed_version,
       latest: a.latest_version,
       update: s.state === "on",
+      unknown: isUnknown(s),
       busy: !!a.in_progress,
     });
   }
@@ -1066,7 +1074,7 @@ const BASE_STYLE = `
   ha-card { overflow: hidden; position: relative; }
   ha-card.dialog-open { min-height: 220px; }
   .icon { width: 18px; height: 18px; fill: currentColor; flex: none; }
-  .muted { color: var(--secondary-text-color); }
+  .muted { color: var(--secondary-text-color); --c: var(--secondary-text-color); }
   .clickable { cursor: pointer; }
   .clickable:focus-visible, [role="button"]:focus-visible { outline: 2px solid var(--sm-blue); outline-offset: -2px; }
   .ok { --c: var(--sm-blue); } .warn { --c: var(--sm-warn); } .crit { --c: var(--sm-crit); } .good { --c: var(--sm-ok); }
@@ -1461,6 +1469,8 @@ class SystemMonitorBase extends HTMLElement {
     const sub = [coreVersion ? `Core ${coreVersion}` : null, osVersion ? `OS ${osVersion}` : null].filter(Boolean).join(" · ");
     // Status chip: pending Core / OS update, else "up to date" (or "running" without update entities).
     const pending = [core, os].find((s) => s && s.state === "on");
+    // An unavailable update entity (Supervisor unreachable, for example) tells nothing: neither "up to date" nor "running".
+    const unknown = !pending && [core, os].find((s) => s && isUnknown(s));
     let chip;
     if (pending) {
       // The status card's compact header shows the new version as a tooltip only, leaving the title its room.
@@ -1468,7 +1478,8 @@ class SystemMonitorBase extends HTMLElement {
       chip = `<span class="chip clickable warn" data-entity="${pending.entity_id}" title="${esc(text)}"><span class="dot"></span>${esc(
         this._compactHeader() ? this._t("update") : text
       )}</span>`;
-    }
+    } else if (unknown)
+      chip = `<span class="chip clickable muted" data-entity="${unknown.entity_id}"><span class="dot"></span>${esc(this._t("st_unknown"))}</span>`;
     else
       chip = `<span class="chip good ${core ? "clickable" : ""}" data-entity="${core?.entity_id || ""}"><span class="dot"></span>${this._t(
         core ? "up_to_date" : "running"
@@ -1495,6 +1506,9 @@ class SystemMonitorBase extends HTMLElement {
     const ext = discoverHacs(this._hass);
     if (!ext.length) return "";
     const n = ext.filter((x) => x.update).length;
+    // Every extension unavailable (HACS failed to start, for example): nothing is known, so nothing is "up to date".
+    if (!n && ext.every((x) => x.unknown))
+      return this._stat("hacs", ICONS.hacs, this._t("hacs"), this._t("st_unknown"), "muted", `${this._t("hacs")} · ${this._t("st_unknown")}`);
     const text = n === 0 ? this._t("hacs_ok") : n === 1 ? this._t("hacs_updates_one") : this._t("hacs_updates").replace("{n}", n);
     const value = n === 0 ? this._t("st_up_to_date") : this._t(n === 1 ? "st_update_one" : "st_updates").replace("{n}", n);
     return this._stat("hacs", ICONS.hacs, this._t("hacs"), value, n ? "warn" : "good", text);
@@ -1533,6 +1547,9 @@ class SystemMonitorBase extends HTMLElement {
     const wd = discoverWatchdog(this._hass);
     const st = this._s(wd.unavailable);
     if (!st) return "";
+    // Watchdog unloaded or failed: its sensor is unavailable, without the list of integrations.
+    if (isUnknown(st))
+      return this._stat("wd", ICONS.watchdog, this._t("integrations"), this._t("st_unknown"), "muted", `${this._t("integrations")} · ${this._t("st_unknown")}`);
     const n = (st.attributes.integrations || []).length;
     const text = n === 0 ? this._t("wd_ok") : n === 1 ? this._t("wd_one") : this._t("wd_many").replace("{n}", n);
     const value = n === 0 ? this._t("st_available") : this._t(n === 1 ? "st_unavailable_one" : "st_unavailable").replace("{n}", n);
@@ -1916,7 +1933,9 @@ class SystemMonitorCard extends SystemMonitorBase {
       const ver = x.update ? `${esc(x.installed || "?")} → <b>${esc(x.latest || "?")}</b>` : esc(x.installed || "—");
       const status = x.update
         ? `<span class="chip warn"><span class="dot"></span>${esc(this._t("update"))}</span>`
-        : `<span class="chip good"><span class="dot"></span>${esc(this._t("up_to_date"))}</span>`;
+        : x.unknown
+          ? `<span class="chip muted"><span class="dot"></span>${esc(this._t("st_unknown"))}</span>`
+          : `<span class="chip good"><span class="dot"></span>${esc(this._t("up_to_date"))}</span>`;
       const gh = x.repo
         ? `<a class="gh" href="https://github.com/${esc(x.repo)}" target="_blank" rel="noopener noreferrer" title="${esc(this._t("github"))}" aria-label="${esc(this._t("github"))}">${svgIcon(ICONS.github)}</a>`
         : hasRepo
@@ -2006,7 +2025,7 @@ class SystemMonitorCard extends SystemMonitorBase {
           ${status}
         </div>`;
     });
-    const body = rows.length ? `<div class="exts">${rows.join("")}</div>` : `<div class="toolbar"><span class="muted last">${esc(this._t("wd_none"))}</span></div>`;
+    const body = rows.length ? `<div class="exts">${rows.join("")}</div>` : `<div class="toolbar"><span class="muted last">${esc(this._t(isUnknown(st) ? "st_unknown" : "wd_none"))}</span></div>`;
     return `<div class="hacs wd">${head}${info.length ? `<div class="toolbar">${info.join("")}</div>` : ""}${body}</div>`;
   }
 
@@ -2179,9 +2198,12 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
     const core = this._s(sm.core_update);
     const os = this._s(sm.os_update);
     const pending = [core, os].find((s) => s && s.state === "on");
+    const unknown = !pending && [core, os].find((s) => s && isUnknown(s));
     foot.push(
-      `<span class="clickable ${pending ? "warn" : "good"}" data-entity="${(pending || core)?.entity_id || ""}"><span class="dot"></span>&nbsp;${esc(
-        pending ? `${this._t("update")} ${pending.attributes.latest_version || ""}`.trim() : this._t(core ? "up_to_date" : "running")
+      `<span class="clickable ${pending ? "warn" : unknown ? "muted" : "good"}" data-entity="${(pending || unknown || core)?.entity_id || ""}"><span class="dot"></span>&nbsp;${esc(
+        pending
+          ? `${this._t("update")} ${pending.attributes.latest_version || ""}`.trim()
+          : this._t(unknown ? "st_unknown" : core ? "up_to_date" : "running")
       )}</span>`
     );
     const ifs = interfaces(sm, c);
@@ -2252,10 +2274,10 @@ class SystemMonitorStatusCard extends SystemMonitorZoomCard {
     return `data-entity="${this._stopped(sm)[0] || Object.values(sm.procs)[0] || ""}"`;
   }
 
-  /** The status row shows up only while one of the statuses is not good. */
+  /** The status row shows up only while one of the statuses is not good (an update, a failure, or an unavailable source). */
   _statusRow(sm) {
     if (this._zoomed) return super._statusRow(sm);
-    if (!this._stats(sm).some((x) => x.cls === "warn" || x.cls === "crit")) return "";
+    if (this._stats(sm).every((x) => x.cls === "good")) return "";
     return super._statusRow(sm);
   }
 
