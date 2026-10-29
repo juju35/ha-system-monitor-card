@@ -75,6 +75,57 @@ test("a single mount with spaces is recovered from its sibling sensors", () => {
   assert.equal(sm.nets.eth0.network_in, "sensor.system_monitor_network_in_eth0");
 });
 
+test("a renamed sensor does not change the arguments of the others of its key", () => {
+  const h = argHass([
+    ["disk_free", "disk_free", "Disk free /"],
+    ["disk_free_data", "disk_free", "Disk free /data"],
+    ["disk_free_boot", "disk_free", "Disk free /boot"],
+    ["disk_use", "disk_use", "Disk use /"],
+    ["disk_use_data", "disk_use", "Disk use /data"],
+    ["disk_use_boot", "disk_use", "Disk use /boot"],
+    ["network_throughput_out_eth0", "throughput_network_out", "Network throughput out eth0"],
+    ["network_throughput_out_wlan0", "throughput_network_out", "Network throughput out wlan0"],
+    ["network_throughput_out_lo", "throughput_network_out", "Network throughput out lo"],
+    ["network_throughput_in_eth0", "throughput_network_in", "Network throughput in eth0"],
+    ["network_throughput_in_wlan0", "throughput_network_in", "Network throughput in wlan0"],
+  ]);
+  h.states["sensor.system_monitor_disk_free"].attributes.friendly_name = "Root free";
+  h.states["sensor.system_monitor_network_throughput_out_eth0"].attributes.friendly_name = "WAN up";
+  const sm = lib.discover(h);
+  assert.equal(sm.disks["/data"].disk_free, "sensor.system_monitor_disk_free_data");
+  assert.equal(sm.disks["/boot"].disk_free, "sensor.system_monitor_disk_free_boot");
+  assert.ok(!Object.keys(sm.disks).some((k) => k.startsWith("System Monitor")));
+  assert.equal(sm.nets.wlan0.throughput_network_out, "sensor.system_monitor_network_throughput_out_wlan0");
+  assert.ok(!Object.keys(sm.nets).some((k) => k.startsWith("System Monitor")));
+});
+
+test("arguments starting alike keep their first words", () => {
+  const sm = lib.discover(
+    argHass([
+      ["disk_use_passport", "disk_use", "Disk use /mnt/My Passport"],
+      ["disk_use_book", "disk_use", "Disk use /mnt/My Book"],
+      ["disk_free_passport", "disk_free", "Disk free /mnt/My Passport"],
+      ["disk_free_book", "disk_free", "Disk free /mnt/My Book"],
+      ["process_a", "process", "Process Plex Media Server"],
+      ["process_b", "process", "Process Plex Tuner Service"],
+    ])
+  );
+  assert.deepEqual(Object.keys(sm.disks).sort(), ["/mnt/My Book", "/mnt/My Passport"]);
+  assert.deepEqual(Object.keys(sm.procs).sort(), ["Plex Media Server", "Plex Tuner Service"]);
+});
+
+test("a new brands token retries the local logos that failed with the previous one", async () => {
+  const card = new lib.SystemMonitorCard();
+  card._hass = { callWS: async () => ({ token: "new" }) };
+  card._update = () => {};
+  card._brandsToken = "old";
+  card._imgFailed.add("/api/brands/integration/parcel/icon.png?placeholder=no");
+  card._imgFailed.add("https://brands.home-assistant.io/_/parcel/icon.png");
+  await card._fetchBrandsToken(true);
+  assert.deepEqual([...card._imgFailed], ["https://brands.home-assistant.io/_/parcel/icon.png"]);
+  assert.ok(card._logoSources({ domain: "parcel" })[0].startsWith("/api/brands/integration/parcel/icon.png"));
+});
+
 test("HACS extensions follow their states while their registry entries are cached", () => {
   const hass = hassWith();
   const before = lib.discoverHacs(hass);

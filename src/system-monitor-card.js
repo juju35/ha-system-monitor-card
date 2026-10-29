@@ -603,22 +603,45 @@ const commonSuffix = (a, b) => {
   return n;
 };
 
+/** Most frequent of non-zero lengths (the smallest on a tie), or 0 when there is none. */
+const modeOf = (lengths) => {
+  const count = new Map();
+  for (const n of lengths) if (n > 0) count.set(n, (count.get(n) || 0) + 1);
+  let best = 0;
+  for (const [n, c] of count) if (!best || c > count.get(best) || (c === count.get(best) && n < best)) best = n;
+  return best;
+};
+
 /**
  * Argument of a sensor (mount point, interface or process name): the friendly name ends with it
  * ("Disk free /", "Réseau entrant eth0") but it may contain spaces ("/mnt/My Passport"), so the
  * last word truncates it and collides two mounts ending alike. The label is instead what the
  * names of the other sensors reveal: sensors of the same translation key share it as a prefix,
  * and sensors of the same argument leave it as a common suffix.
+ * The label is the prefix most of them share, so that a renamed sensor sharing none (or less)
+ * does not shorten it for the others. When all the arguments of a key start alike, that prefix
+ * also takes their shared first words: a mount point starts at its first "/" word, and a process
+ * label is the device name (the prefix shared with the sensors of the other groups) and one word.
  */
 const argOf = (e, all) => {
-  const others = all.filter((o) => o.group === e.group && o.id !== e.id);
-  const sameKey = others.filter((o) => o.key === e.key && o.tokens.join(" ") !== e.tokens.join(" "));
-  if (sameKey.length) {
-    const label = Math.min(...sameKey.map((o) => commonPrefix(e.tokens, o.tokens)));
+  const others = all.filter((o) => o.id !== e.id);
+  const sameKey = others.filter((o) => o.group === e.group && o.key === e.key && o.tokens.join(" ") !== e.tokens.join(" "));
+  let label = modeOf(sameKey.map((o) => commonPrefix(e.tokens, o.tokens)));
+  if (label) {
+    if (e.group === "disk") {
+      const slash = e.tokens.findIndex((t, i) => i > 0 && t.startsWith("/"));
+      if (slash > 0 && slash < label) label = slash;
+    } else if (e.group === "proc") {
+      const device = modeOf(others.filter((o) => o.group !== e.group).map((o) => commonPrefix(e.tokens, o.tokens)));
+      if (device && device + 1 < label) label = device + 1;
+    }
     const a = e.tokens.slice(label).join(" ");
     if (a) return a;
   }
-  const suffixes = others.filter((o) => o.key !== e.key).map((o) => commonSuffix(e.tokens, o.tokens)).filter((n) => n > 0);
+  const suffixes = others
+    .filter((o) => o.group === e.group && o.key !== e.key)
+    .map((o) => commonSuffix(e.tokens, o.tokens))
+    .filter((n) => n > 0);
   if (suffixes.length) return e.tokens.slice(-Math.min(...suffixes)).join(" ");
   return e.tokens[e.tokens.length - 1] || e.arg || "";
 };
@@ -1048,7 +1071,8 @@ class SystemMonitorBase extends HTMLElement {
     // The brands access token rotates: refresh it before it expires — only once a logo needed it
     // (the token is fetched lazily by _logoSources, so a card without logos never calls the API).
     this._tokenTimer = setInterval(() => {
-      if (this._brandsToken !== undefined) this._fetchBrandsToken(true);
+      // Not after a failure (null): an older Home Assistant would fail again every time.
+      if (this._brandsToken) this._fetchBrandsToken(true);
     }, 20 * 60 * 1000);
     // The uptime and the relative times ("2 minutes ago") depend on the current minute: without a
     // state change, `set hass` doesn't come, so check the render signature (it includes the minute).
@@ -1081,6 +1105,8 @@ class SystemMonitorBase extends HTMLElement {
     try {
       const res = await this._hass.callWS({ type: "brands/access_token" });
       this._brandsToken = res?.token || null;
+      // A local logo that failed with the previous token may load with this one: retry it.
+      if (this._brandsToken) for (const u of this._imgFailed) if (u.startsWith("/api/brands/")) this._imgFailed.delete(u);
     } catch (_e) {
       this._brandsToken = null; // older Home Assistant: CDN only
     }
