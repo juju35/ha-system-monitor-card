@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.21.3 - 2026-10-29
+
+### Fixes
+- **Discovery**: a disk sensor that is the only one of its kind keeps its mount point instead of being shown under `/`. With only `Disk usage /config` enabled, `Disk free /` next to `Disk usage /config`, or `Disk free /data` next to `Disk use /config`, each mount point gets its own row again and no longer replaces the values of `/`. Translated entity ids too (`Utilisation du disque /mnt/data`).
+- **Discovery**: a process alone with a name with spaces keeps its full name (`Plex Media Server` instead of `Server`).
+- **Discovery**: a renamed sensor stays with its mount point or interface in more cases: every sensor of `/mnt/a` and `/mnt/b` renamed (no more `/a`, `/b`), every sensor of `eth0.100` renamed next to `eth0` (no more `100` interface), the only sensor of an interface renamed, a renamed `Disk usage /config` next to `Disk free /`, a name customized while keeping the device name, and a customized `WAN up` that is the only network sensor on an older Home Assistant without the entity registry.
+
+### Maintenance
+- Tests: a reference table of 231 discovery cases (languages, renamed sensors, shared prefixes, renamed device, no registry, processes).
+
 ## 1.21.2 - 2026-10-29
 
 ### Fixes
