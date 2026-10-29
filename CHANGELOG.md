@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.21.1 - 2026-10-29
+
+### Fixes
+- **Discovery**: a renamed disk, network or process sensor no longer makes the other sensors of the same kind show their full name; `/data` keeps its free space and `wlan0` its upload rate when `/` or `eth0` is renamed.
+- **Discovery**: mount points and process names that start with the same words keep them (`/mnt/My Passport` and `/mnt/My Book`, `Plex Media Server` and `Plex Tuner Service` instead of `Passport`, `Media Server`…).
+- **HACS logos**: a local logo that failed because its access token expired is retried with the new token instead of falling back to the CDN or the GitHub avatar for good.
+- On an older Home Assistant without brands tokens, the card no longer asks for one every 20 minutes.
+- **German**: "Datenträger" instead of "Festplatte" for the disk, and "Tg." instead of "T" for days.
+
+### Documentation
+- README: how mount points, interfaces and process names are read from the sensor names; the three generated GIFs are listed.
+
+### Maintenance
+- CI: the screenshots workflow checks out fork pull requests safely, fails explicitly when apt fails three times, and uses `actions/upload-artifact` v7. Playwright range raised to `^1.64.1`.
+
 ## 1.21.0 - 2026-10-28
 
 ### Changes
