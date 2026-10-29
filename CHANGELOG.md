@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.21.4 - 2026-10-29
+
+### Fixes
+- **Status**: an unavailable source is no longer shown in green as healthy. When HACS fails to start, its tile and every extension line say "Unknown" in grey instead of "Up to date"; when Integration Watchdog is unloaded or in error, its tile says "Unknown" instead of "Available" and its section no longer claims every integration is available; when the Core or OS update entity is unavailable (Supervisor unreachable), the header badge and the minimal card's footer say "Unknown" instead of "Up to date".
+- **Status card**: its status row now also shows up while HACS or Integration Watchdog is unavailable, so the outage is no longer hidden.
+
+### Maintenance
+- Tests: unavailable and unknown HACS, Integration Watchdog and update entities.
+
 ## 1.21.3 - 2026-10-29
 
 ### Fixes
