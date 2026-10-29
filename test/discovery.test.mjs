@@ -33,15 +33,34 @@ test("an entity of the registry that gets its state later is picked up", () => {
   assert.equal(later.scalars.processor_use, id);
 });
 
+/** Registry and states of System Monitor sensors: [object id, translation key, name, name given by the user]. */
 const argHass = (sensors) => {
   const h = { states: {}, entities: {}, devices: {} };
-  for (const [obj, translation_key, name] of sensors) {
+  for (const [obj, translation_key, name, renamed] of sensors) {
     const id = `${translation_key === "process" ? "binary_sensor" : "sensor"}.system_monitor_${obj}`;
-    h.states[id] = { entity_id: id, state: "1", attributes: { friendly_name: `System Monitor ${name}` } };
-    h.entities[id] = { entity_id: id, platform: "systemmonitor", translation_key };
+    // A name set in the entity settings is stored in the registry and follows the device name.
+    const friendly_name = `System Monitor ${renamed ?? name}`;
+    h.states[id] = { entity_id: id, state: "1", attributes: { friendly_name } };
+    h.entities[id] = { entity_id: id, platform: "systemmonitor", translation_key, ...(renamed ? { name: renamed } : {}) };
   }
   return h;
 };
+/** The usual sensors of a mount point / an interface. */
+const diskSensors = (slug, mount, rename = {}) =>
+  [
+    ["disk_use", "disk_use", "Disk use"],
+    ["disk_free", "disk_free", "Disk free"],
+    ["disk_usage", "disk_use_percent", "Disk usage"],
+  ].map(([obj, key, label]) => [slug ? `${obj}_${slug}` : obj, key, `${label} ${mount}`, rename[key]]);
+const netSensors = (iface, rename = {}) =>
+  [
+    ["network_in", "network_in", "Network in"],
+    ["network_out", "network_out", "Network out"],
+    ["network_throughput_in", "throughput_network_in", "Network throughput in"],
+    ["network_throughput_out", "throughput_network_out", "Network throughput out"],
+    ["ipv4_address", "ipv4_address", "IPv4 address"],
+  ].map(([obj, key, label]) => [`${obj}_${iface.replace(/\W/g, "_").toLowerCase()}`, key, `${label} ${iface}`, rename[key]]);
+const sorted = (o) => Object.keys(o).sort();
 
 test("arguments with spaces are kept whole and alike endings do not collide", () => {
   const sm = lib.discover(
@@ -97,6 +116,195 @@ test("a renamed sensor does not change the arguments of the others of its key", 
   assert.ok(!Object.keys(sm.disks).some((k) => k.startsWith("System Monitor")));
   assert.equal(sm.nets.wlan0.throughput_network_out, "sensor.system_monitor_network_throughput_out_wlan0");
   assert.ok(!Object.keys(sm.nets).some((k) => k.startsWith("System Monitor")));
+  // The renamed sensors themselves stay with their mount point / interface: no "free" disk, no "up" interface.
+  assert.deepEqual(sorted(sm.disks), ["/", "/boot", "/data"]);
+  assert.equal(sm.disks["/"].disk_free, "sensor.system_monitor_disk_free");
+  assert.deepEqual(sorted(sm.nets), ["eth0", "lo", "wlan0"]);
+  assert.equal(sm.nets.eth0.throughput_network_out, "sensor.system_monitor_network_throughput_out_eth0");
+});
+
+test("a sensor renamed in its entity settings stays with its mount point or interface", () => {
+  const sm = lib.discover(
+    argHass([
+      ...diskSensors("", "/", { disk_free: "Root free" }),
+      ...diskSensors("data", "/data"),
+      ...netSensors("eth0", { throughput_network_out: "WAN up" }),
+      ...netSensors("wlan0"),
+    ])
+  );
+  assert.deepEqual(sorted(sm.disks), ["/", "/data"]);
+  assert.equal(sm.disks["/"].disk_free, "sensor.system_monitor_disk_free");
+  assert.equal(sm.disks["/data"].disk_free, "sensor.system_monitor_disk_free_data");
+  assert.deepEqual(sorted(sm.nets), ["eth0", "wlan0"]);
+  assert.equal(sm.nets.eth0.throughput_network_out, "sensor.system_monitor_network_throughput_out_eth0");
+  assert.equal(sm.nets.wlan0.throughput_network_out, "sensor.system_monitor_network_throughput_out_wlan0");
+});
+
+test("a renamed sensor of the only mount point / interface stays with it", () => {
+  const sm = lib.discover(
+    argHass([...diskSensors("", "/", { disk_free: "Root free" }), ...netSensors("eth0", { throughput_network_out: "WAN up" })])
+  );
+  assert.deepEqual(sorted(sm.disks), ["/"]);
+  assert.equal(sm.disks["/"].disk_free, "sensor.system_monitor_disk_free");
+  assert.deepEqual(sorted(sm.nets), ["eth0"]);
+  assert.equal(sm.nets.eth0.throughput_network_out, "sensor.system_monitor_network_throughput_out_eth0");
+});
+
+test("every sensor of a kind renamed: the arguments come from the entity ids", () => {
+  const all = { disk_use: "Used", disk_free: "Free", disk_use_percent: "Usage" };
+  const sm = lib.discover(
+    argHass([
+      ...diskSensors("", "/", { disk_free: "Root free" }),
+      ...diskSensors("data", "/data", { disk_free: "Data free" }),
+      ...netSensors("eth0", { throughput_network_out: "WAN up", throughput_network_in: "WAN down" }),
+      ...netSensors("wlan0", { throughput_network_out: "WiFi up", throughput_network_in: "WiFi down" }),
+    ])
+  );
+  assert.deepEqual(sorted(sm.disks), ["/", "/data"]);
+  assert.equal(sm.disks["/data"].disk_free, "sensor.system_monitor_disk_free_data");
+  assert.equal(sm.disks["/"].disk_free, "sensor.system_monitor_disk_free");
+  assert.deepEqual(sorted(sm.nets), ["eth0", "wlan0"]);
+  assert.equal(sm.nets.eth0.throughput_network_in, "sensor.system_monitor_network_throughput_in_eth0");
+  assert.equal(sm.nets.wlan0.throughput_network_out, "sensor.system_monitor_network_throughput_out_wlan0");
+  // All the sensors renamed, a single mount point and interface.
+  const one = lib.discover(argHass([...diskSensors("", "/", all), ...netSensors("eth0", { throughput_network_out: "Up", throughput_network_in: "Down", network_in: "In", network_out: "Out", ipv4_address: "IP" })]));
+  assert.deepEqual(sorted(one.disks), ["/"]);
+  assert.equal(one.disks["/"].disk_use_percent, "sensor.system_monitor_disk_usage");
+  assert.deepEqual(sorted(one.nets), ["eth0"]);
+  assert.equal(one.nets.eth0.ipv4_address, "sensor.system_monitor_ipv4_address_eth0");
+});
+
+test("a renamed sensor keeps an argument with spaces or sharing its start with another one", () => {
+  const sm = lib.discover(
+    argHass([
+      ...diskSensors("", "/"),
+      ...diskSensors("data", "/data", { disk_free: "Data free" }),
+      ...diskSensors("mnt_data", "/mnt/data", { disk_use: "Backup used" }),
+      ...diskSensors("mnt_my_passport", "/mnt/My Passport", { disk_free: "Passport free", disk_use: "My Passport" }),
+      ...netSensors("eth0", { throughput_network_out: "WAN up" }),
+      ...netSensors("eth0.100", { throughput_network_out: "VLAN up" }),
+      ...netSensors("veth0", { throughput_network_in: "eth0 in" }),
+    ])
+  );
+  assert.deepEqual(sorted(sm.disks), ["/", "/data", "/mnt/My Passport", "/mnt/data"]);
+  assert.equal(sm.disks["/data"].disk_free, "sensor.system_monitor_disk_free_data");
+  assert.equal(sm.disks["/mnt/data"].disk_use, "sensor.system_monitor_disk_use_mnt_data");
+  assert.equal(sm.disks["/mnt/My Passport"].disk_free, "sensor.system_monitor_disk_free_mnt_my_passport");
+  assert.equal(sm.disks["/mnt/My Passport"].disk_use, "sensor.system_monitor_disk_use_mnt_my_passport");
+  assert.deepEqual(sorted(sm.nets), ["eth0", "eth0.100", "veth0"]);
+  assert.equal(sm.nets.eth0.throughput_network_out, "sensor.system_monitor_network_throughput_out_eth0");
+  assert.equal(sm.nets["eth0.100"].throughput_network_out, "sensor.system_monitor_network_throughput_out_eth0_100");
+  assert.equal(sm.nets.veth0.throughput_network_in, "sensor.system_monitor_network_throughput_in_veth0");
+});
+
+test("any single renamed sensor, or all the sensors of a kind renamed, keep every mount point and interface", () => {
+  const setup = (rename) => [
+    ...diskSensors("", "/", rename("/")),
+    ...diskSensors("data", "/data", rename("/data")),
+    ...diskSensors("mnt_data", "/mnt/data", rename("/mnt/data")),
+    ...diskSensors("mnt_my_passport", "/mnt/My Passport", rename("/mnt/My Passport")),
+    ...netSensors("eth0", rename("eth0")),
+    ...netSensors("eth0.100", rename("eth0.100")),
+    ...netSensors("veth0", rename("veth0")),
+    ...netSensors("wlan0", rename("wlan0")),
+  ];
+  const expected = (sensors) => {
+    const out = { disks: {}, nets: {} };
+    for (const [obj, key, name] of sensors) {
+      const group = key.startsWith("disk") ? out.disks : out.nets;
+      const arg = name.split(" ").slice(key === "disk_use_percent" || key.startsWith("disk") ? 2 : key.startsWith("throughput") ? 3 : 2).join(" ");
+      (group[arg] ??= {})[key] = `sensor.system_monitor_${obj}`;
+    }
+    return out;
+  };
+  const check = (rename, what) => {
+    const sensors = setup(rename);
+    const sm = lib.discover(argHass(sensors));
+    const want = expected(sensors);
+    assert.equal(JSON.stringify({ disks: sm.disks, nets: sm.nets }, Object.keys(sm.disks).sort()), JSON.stringify(want, Object.keys(want.disks).sort()), what);
+    for (const [g, all] of [["disks", want.disks], ["nets", want.nets]])
+      assert.deepEqual(JSON.parse(JSON.stringify(sm[g])), all, `${what} (${g})`);
+  };
+  const base = setup(() => ({}));
+  for (const [, key, name] of base) {
+    const arg = expected([["x", key, name]]);
+    const target = Object.keys(arg.disks)[0] ?? Object.keys(arg.nets)[0];
+    check((a) => (a === target ? { [key]: "Renamed" } : {}), `${name} renamed`);
+  }
+  for (const key of new Set(base.map((x) => x[1]))) check(() => ({ [key]: "Renamed" }), `every ${key} renamed`);
+  const everything = Object.fromEntries(base.map((x) => [x[1], "Renamed"]));
+  check((a) => (a === "/mnt/My Passport" || a === "eth0.100" ? {} : everything), "everything renamed but one mount point and interface");
+  // Everything renamed: the slug of the entity ids is all that is left of "/mnt/My Passport" and "eth0.100".
+  const sm = lib.discover(argHass(setup(() => everything)));
+  assert.deepEqual(sorted(sm.disks), ["/", "/data", "/mnt/data", "/mnt/my/passport"]);
+  assert.equal(sm.disks["/mnt/my/passport"].disk_free, "sensor.system_monitor_disk_free_mnt_my_passport");
+  for (const d of Object.values(sm.disks)) assert.equal(Object.keys(d).length, 3);
+  assert.deepEqual(sorted(sm.nets), ["eth0", "eth0_100", "veth0", "wlan0"]);
+  for (const n of Object.values(sm.nets)) assert.equal(Object.keys(n).length, 5);
+});
+
+test("a renamed sensor with French entity ids and a renamed device", () => {
+  const h = argHass([
+    ["disque_libre", "disk_free", "Disque libre /", "Racine libre"],
+    ["disque_libre_data", "disk_free", "Disque libre /data"],
+    ["disque_utilise", "disk_use", "Disque utilisé /"],
+    ["disque_utilise_data", "disk_use", "Disque utilisé /data"],
+    ["debit_reseau_sortant_eth0", "throughput_network_out", "Débit réseau sortant eth0", "Montant box"],
+    ["debit_reseau_sortant_wlan0", "throughput_network_out", "Débit réseau sortant wlan0"],
+    ["debit_reseau_entrant_eth0", "throughput_network_in", "Débit réseau entrant eth0"],
+    ["debit_reseau_entrant_wlan0", "throughput_network_in", "Débit réseau entrant wlan0"],
+  ]);
+  // Device renamed "NAS" with its entity ids.
+  const moved = { states: {}, entities: {}, devices: {} };
+  for (const [id, st] of Object.entries(h.states)) {
+    const to = id.replace("system_monitor_", "nas_");
+    moved.states[to] = { ...st, entity_id: to, attributes: { friendly_name: st.attributes.friendly_name.replace("System Monitor", "NAS") } };
+    moved.entities[to] = { ...h.entities[id], entity_id: to };
+  }
+  const sm = lib.discover(moved);
+  assert.deepEqual(sorted(sm.disks), ["/", "/data"]);
+  assert.equal(sm.disks["/"].disk_free, "sensor.nas_disque_libre");
+  assert.deepEqual(sorted(sm.nets), ["eth0", "wlan0"]);
+  assert.equal(sm.nets.eth0.throughput_network_out, "sensor.nas_debit_reseau_sortant_eth0");
+});
+
+test("without the registry (older Home Assistant), a renamed sensor still stays with its interface", () => {
+  const h = argHass([...diskSensors("", "/"), ...diskSensors("data", "/data"), ...netSensors("eth0"), ...netSensors("wlan0")]);
+  h.states["sensor.system_monitor_network_throughput_out_eth0"].attributes.friendly_name = "WAN up";
+  const sm = lib.discover({ states: h.states });
+  assert.deepEqual(sorted(sm.nets), ["eth0", "wlan0"]);
+  assert.equal(sm.nets.eth0.throughput_network_out, "sensor.system_monitor_network_throughput_out_eth0");
+  assert.deepEqual(sorted(sm.disks), ["/", "/data"]);
+});
+
+test("a renamed process does not change the name of the others", () => {
+  const sm = lib.discover(
+    argHass([
+      ["process_python3", "process", "Process python3", "My Python"],
+      ["process_home_assistant", "process", "Process home assistant"],
+      ["process_node", "process", "Process node"],
+    ])
+  );
+  assert.deepEqual(sorted(sm.procs), ["home assistant", "node", "python3"]);
+  assert.equal(sm.procs.python3, "binary_sensor.system_monitor_process_python3");
+});
+
+test("a name changed outside the registry (customize) or a changed entity id are handled too", () => {
+  const h = argHass([...diskSensors("", "/"), ...diskSensors("data", "/data"), ...netSensors("eth0"), ...netSensors("wlan0")]);
+  // friendly_name customized (customize.yaml), so no name in the registry.
+  h.states["sensor.system_monitor_network_throughput_out_eth0"].attributes.friendly_name = "WAN up";
+  // A new entity id but the original name: the name is right.
+  const id = "sensor.system_monitor_disk_free_data";
+  const moved = "sensor.data_free_space";
+  h.states[moved] = { ...h.states[id], entity_id: moved };
+  h.entities[moved] = { ...h.entities[id], entity_id: moved };
+  delete h.states[id];
+  delete h.entities[id];
+  const sm = lib.discover(h);
+  assert.deepEqual(sorted(sm.nets), ["eth0", "wlan0"]);
+  assert.equal(sm.nets.eth0.throughput_network_out, "sensor.system_monitor_network_throughput_out_eth0");
+  assert.deepEqual(sorted(sm.disks), ["/", "/data"]);
+  assert.equal(sm.disks["/data"].disk_free, moved);
 });
 
 test("arguments starting alike keep their first words", () => {
