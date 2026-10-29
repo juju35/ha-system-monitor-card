@@ -22,6 +22,7 @@ const NAMES = [
   "SystemMonitorMiniCardEditor",
   "SystemMonitorStatusCardEditor",
   "document",
+  "window",
 ];
 
 export const load = () => {

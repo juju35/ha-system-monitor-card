@@ -1187,8 +1187,9 @@ class SystemMonitorBase extends HTMLElement {
     // The brands access token rotates: refresh it before it expires — only once a logo needed it
     // (the token is fetched lazily by _logoSources, so a card without logos never calls the API).
     this._tokenTimer = setInterval(() => {
-      // Not after a failure (null): an older Home Assistant would fail again every time.
-      if (this._brandsToken) this._fetchBrandsToken(true);
+      // Once a token was asked for, unless Home Assistant does not know the command (older version):
+      // a failure (connection lost while Home Assistant restarts, timeout) is tried again.
+      if (this._brandsToken !== undefined && !this._brandsUnsupported) this._fetchBrandsToken(true);
     }, 20 * 60 * 1000);
     // The uptime and the relative times ("2 minutes ago") depend on the current minute: without a
     // state change, `set hass` doesn't come, so check the render signature (it includes the minute).
@@ -1223,8 +1224,13 @@ class SystemMonitorBase extends HTMLElement {
       this._brandsToken = res?.token || null;
       // A local logo that failed with the previous token may load with this one: retry it.
       if (this._brandsToken) for (const u of this._imgFailed) if (u.startsWith("/api/brands/")) this._imgFailed.delete(u);
-    } catch (_e) {
-      this._brandsToken = null; // older Home Assistant: CDN only
+    } catch (err) {
+      // Older Home Assistant: CDN only, for good. Any other failure keeps the current token
+      // (CDN until the next try if there was none yet).
+      if (err?.code === "unknown_command") {
+        this._brandsUnsupported = true;
+        this._brandsToken = null;
+      } else if (!this._brandsToken) this._brandsToken = null;
     }
     this._tokenPending = false;
     // Renders only if a logo URL changed: logos already loaded keep theirs (see _logoSources).

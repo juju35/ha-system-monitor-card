@@ -334,6 +334,76 @@ test("a new brands token retries the local logos that failed with the previous o
   assert.ok(card._logoSources({ domain: "parcel" })[0].startsWith("/api/brands/integration/parcel/icon.png"));
 });
 
+/** A card with a recording interval timer and a brands/access_token answer chosen by the test. */
+const tokenCard = (answer) => {
+  const timers = [];
+  const set = lib.window.setInterval;
+  lib.window.setInterval = (fn, ms) => timers.push({ fn, ms });
+  const card = new lib.SystemMonitorCard();
+  card._update = () => {};
+  card._onOutside = () => {};
+  let calls = 0;
+  card._hass = {
+    callWS: async () => {
+      calls++;
+      return answer(calls);
+    },
+  };
+  try {
+    card.connectedCallback();
+  } finally {
+    lib.window.setInterval = set;
+  }
+  const refresh = timers.find((t) => t.ms === 20 * 60 * 1000).fn;
+  return { card, refresh, calls: () => calls };
+};
+const settle = () => new Promise((r) => setTimeout(r, 0));
+
+test("a failed brands token refresh keeps the current token and the timer tries again", async () => {
+  const fail = Object.assign(new Error("Connection lost"), { code: 3 });
+  const { card, refresh, calls } = tokenCard((n) => {
+    if (n === 2) throw fail;
+    return { token: `t${n}` };
+  });
+  await card._fetchBrandsToken();
+  assert.equal(card._brandsToken, "t1");
+  refresh();
+  await settle();
+  assert.equal(calls(), 2);
+  assert.equal(card._brandsToken, "t1");
+  assert.ok(card._logoSources({ domain: "parcel" })[0].includes("token=t1"));
+  refresh();
+  await settle();
+  assert.equal(calls(), 3);
+  assert.equal(card._brandsToken, "t3");
+});
+
+test("a first brands token request that fails for a while is tried again by the timer", async () => {
+  const { card, refresh, calls } = tokenCard((n) => {
+    if (n === 1) throw Object.assign(new Error("timeout"), { code: "timeout" });
+    return { token: "ok" };
+  });
+  await card._fetchBrandsToken();
+  assert.equal(card._brandsToken, null);
+  refresh();
+  await settle();
+  assert.equal(calls(), 2);
+  assert.equal(card._brandsToken, "ok");
+});
+
+test("an older Home Assistant without brands tokens is not asked again", async () => {
+  const { card, refresh, calls } = tokenCard(() => {
+    throw Object.assign(new Error("Unknown command."), { code: "unknown_command" });
+  });
+  await card._fetchBrandsToken();
+  assert.equal(card._brandsToken, null);
+  refresh();
+  await settle();
+  assert.equal(calls(), 1);
+  assert.ok(!card._logoSources({ domain: "parcel" }).some((u) => u.startsWith("/api/brands/")));
+  assert.equal(calls(), 1);
+});
+
 test("HACS extensions follow their states while their registry entries are cached", () => {
   const hass = hassWith();
   const before = lib.discoverHacs(hass);
