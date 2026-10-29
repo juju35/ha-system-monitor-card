@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.21.2 - 2026-10-29
+
+### Fixes
+- **Discovery**: a renamed disk, network or process sensor (`WAN up`, `Root free`) now stays with its mount point or interface: no more fake `up` interface in the network section or `free` row in Storage, and `eth0` keeps its upload rate, `/` its free space. The argument is read from the entity id, which keeps the original name, so this works with one, several or all the sensors renamed.
+- **HACS logos**: a failed refresh of the brands access token (Home Assistant restarting, connection lost, timeout) no longer disables the local logos until the page is reloaded; the current token is kept and the card tries again 20 minutes later. Only an older Home Assistant without brands tokens stops asking.
+
+### Documentation
+- README: how the mount point or interface of a renamed sensor is found.
+
 ## 1.21.1 - 2026-10-29
 
 ### Fixes
