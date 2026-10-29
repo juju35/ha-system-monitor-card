@@ -307,6 +307,25 @@ test("a name changed outside the registry (customize) or a changed entity id are
   assert.equal(sm.disks["/data"].disk_free, moved);
 });
 
+test("a disk sensor alone of its key keeps its mount point instead of falling back to /", () => {
+  // The only disk sensor enabled.
+  const one = lib.discover(argHass([["disk_usage_config", "disk_use_percent", "Disk usage /config"]]));
+  assert.deepEqual(sorted(one.disks), ["/config"]);
+  // Next to the free space of "/": two mount points, nothing merged under "/".
+  const two = lib.discover(
+    argHass([
+      ["disk_free", "disk_free", "Disk free /"],
+      ["disk_usage_config", "disk_use_percent", "Disk usage /config"],
+    ])
+  );
+  assert.deepEqual(sorted(two.disks), ["/", "/config"]);
+  assert.equal(two.disks["/"].disk_free, "sensor.system_monitor_disk_free");
+  assert.equal(two.disks["/config"].disk_use_percent, "sensor.system_monitor_disk_usage_config");
+  // Translated entity ids.
+  const fr = lib.discover(argHass([["utilisation_du_disque_mnt_data", "disk_use_percent", "Utilisation du disque /mnt/data"]]));
+  assert.deepEqual(sorted(fr.disks), ["/mnt/data"]);
+});
+
 test("arguments starting alike keep their first words", () => {
   const sm = lib.discover(
     argHass([
