@@ -591,7 +591,7 @@ const registryCache = (scan) => {
   };
 };
 
-/** Words shared at the start (resp. end) of two friendly names: the label (resp. the argument). */
+/** Words shared at the start (resp. end) of two lists of words. */
 const commonPrefix = (a, b) => {
   let n = 0;
   while (n < a.length && n < b.length && a[n] === b[n]) n++;
@@ -612,71 +612,77 @@ const modeOf = (lengths) => {
   return best;
 };
 
-/**
- * Argument of a sensor (mount point, interface or process name) read from its name, and whether
- * the names of the other sensors confirm it (`strong`): the friendly name ends with it
- * ("Disk free /", "Réseau entrant eth0") but it may contain spaces ("/mnt/My Passport"), so the
- * last word truncates it and collides two mounts ending alike. The label is instead what the
- * names of the other sensors reveal: sensors of the same translation key share it as a prefix,
- * and sensors of the same argument leave it as a common suffix.
- * The label is the prefix most of them share, so that a renamed sensor sharing none (or less)
- * does not shorten it for the others. When all the arguments of a key start alike, that prefix
- * also takes their shared first words: a mount point starts at its first "/" word, and a process
- * label is the device name (the prefix shared with the sensors of the other groups) and one word.
- * Without label nor suffix, the last word is only a guess (`strong` false).
- */
-const argOf = (e, all) => {
-  const others = all.filter((o) => o.id !== e.id);
-  const sameKey = others.filter((o) => o.group === e.group && o.key === e.key && o.tokens.join(" ") !== e.tokens.join(" "));
-  let label = modeOf(sameKey.map((o) => commonPrefix(e.tokens, o.tokens)));
-  if (label) {
-    if (e.group === "disk") {
-      const slash = e.tokens.findIndex((t, i) => i > 0 && t.startsWith("/"));
-      if (slash > 0 && slash < label) label = slash;
-    } else if (e.group === "proc") {
-      const device = modeOf(others.filter((o) => o.group !== e.group).map((o) => commonPrefix(e.tokens, o.tokens)));
-      if (device && device + 1 < label) label = device + 1;
-    }
-    const a = e.tokens.slice(label).join(" ");
-    if (a) return [a, true];
-  }
-  const suffixes = others
-    .filter((o) => o.group === e.group && o.key !== e.key)
-    .map((o) => commonSuffix(e.tokens, o.tokens))
-    .filter((n) => n > 0);
-  if (suffixes.length) return [e.tokens.slice(-Math.min(...suffixes)).join(" "), true];
-  return [e.tokens[e.tokens.length - 1] || e.arg || "", false];
-};
-
 /** Home Assistant's slugify, which entity ids are made of: lowercase ASCII words joined by "_". */
 const slugify = (s) =>
   String(s)
     .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[̀-ͯ]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_+|_+$/g, "");
 const objectId = (id) => id.slice(id.indexOf(".") + 1);
 
+// The English entity ids of the sensors with an argument, wherever the device name puts them.
+const ENGLISH_IDS = Object.fromEntries(
+  FALLBACK.filter(([key]) => ARG_KEYS[key]).map(([key, re]) => [key, new RegExp(`(?:^|_)${re.source.slice(1)}`)])
+);
+
 /**
- * Arguments of all the sensors (entity id → argument). A renamed sensor no longer says its
- * argument in its name ("WAN up", "Root free"), but its entity id still does: Home Assistant made
- * it from the original name, `<base>_<slug of the argument>` ("…_throughput_out_eth0"; the base
- * alone for "/"). So the names are checked against the entity ids: the sensors whose name and id
- * agree give the base of their key and the known arguments of their group; a sensor renamed in
- * its entity settings (registry `name`), whose name is only a guess or whose id disagrees with
- * its name takes the argument its entity id points to, mapped back to the known argument of that
- * slug (the slug is lossy: "/mnt/My Passport" → "mnt_my_passport"). A sensor whose entity id was
- * changed but not its name keeps the argument of its name unless the id points to a known one.
+ * Arguments (mount point, interface, process name) of the System Monitor sensors: entity id → argument.
+ * `args` are the sensors with an argument ({key, group, id, tokens: words of the friendly name,
+ * renamed: a name given in the entity settings}), `plain` the other ones ({id, tokens, renamed}).
+ *
+ * 1. The name. A friendly name is "<device> <label> <argument>", and the device name is what it
+ *    shares with the sensors of the other groups. A mount point starts at the first word starting
+ *    with "/" (it may contain spaces: "/mnt/My Passport"), an interface is the last word (Linux
+ *    forbids spaces in them), a process is what follows the one-word label ("Process") or the
+ *    label the other processes share. A name renamed in the entity settings is not read, nor one
+ *    that does not start with the device name (customized: "WAN up").
+ * 2. The entity id. Home Assistant made it from the original name, "<base>_<slug of the argument>"
+ *    (the base alone for "/"), and renaming a sensor keeps it. The names whose slug ends their id
+ *    give the base of their key and the known arguments of their group, by slug.
+ * 3. A name is kept unless its id names another known argument: the base of its key followed by
+ *    that slug, or, without a base, an id ending with it. So an entity id changed by the user
+ *    does not override a right name.
+ * 4. A sensor without a name to read takes the argument of its id, mapped back to the known
+ *    argument of that slug (the slug is lossy: "/mnt/My Passport" → "mnt_my_passport", "eth0.100"
+ *    → "eth0_100"): the rest after the base of its key; without a base (every sensor of the key
+ *    renamed), the English id, else the base that makes the most ids of the key end with a known
+ *    argument, else the structure of the ids (the words they do not share with the other ids of
+ *    the key, or share at their end with the ids of the other keys), else "/" for a mount point,
+ *    the last word for an interface, what follows the device and the label for a process.
  */
-const resolveArgs = (args) => {
-  const named = args.filter((e) => !e.renamed);
-  for (const e of args) [e.nameArg, e.strong] = argOf(e, e.renamed ? [...named, e] : named);
-  // Base of each key: the one most of its sensors with a confirmed name agree on (the shortest on a tie).
+const resolveArgs = (args, plain = []) => {
+  const named = [...args, ...plain].filter((e) => !e.renamed);
+  for (const e of args) e.words = objectId(e.id).split("_");
+
+  /** The argument read from the name, or null. */
+  const fromName = (e) => {
+    if (e.renamed) return null;
+    const t = e.tokens;
+    const others = named.filter((o) => o.id !== e.id && o.group !== e.group);
+    const mates = named.filter((o) => o.id !== e.id && o.group === e.group && o.key !== e.key);
+    const device = modeOf(others.map((o) => commonPrefix(t, o.tokens)));
+    // A name that does not start like the others was customized ("WAN up"): it says nothing.
+    if (!device && (others.length || (mates.length && !modeOf(mates.map((o) => commonPrefix(t, o.tokens)))))) return null;
+    const start = device ? device + 1 : 1;
+    if (e.group === "disk") {
+      const i = t.findIndex((w, j) => j >= start && w.startsWith("/"));
+      return i < 0 ? null : t.slice(i).join(" ");
+    }
+    if (e.group === "net") return t.length > start ? t[t.length - 1] : null;
+    const procs = named.filter((o) => o.group === "proc" && o.id !== e.id && o.tokens.join(" ") !== t.join(" "));
+    let label = modeOf(procs.map((o) => commonPrefix(t, o.tokens)));
+    if (device && (!label || device + 1 < label)) label = device + 1;
+    return label && label < t.length ? t.slice(label).join(" ") : null;
+  };
+  for (const e of args) e.name = fromName(e);
+
+  // Base of each key: the one most of its names agree on (the shortest on a tie).
   const votes = {};
-  for (const e of named) {
-    if (!e.strong) continue;
-    const s = slugify(e.nameArg);
+  for (const e of args) {
+    if (e.name === null) continue;
+    const s = slugify(e.name);
     const o = objectId(e.id);
     const base = !s ? o : o.endsWith(`_${s}`) ? o.slice(0, -s.length - 1) : null;
     if (base === null) continue;
@@ -690,71 +696,85 @@ const resolveArgs = (args) => {
     const b = bases[e.key];
     const o = objectId(e.id);
     if (b === undefined) return null;
-    return o === b ? "" : o.startsWith(`${b}_`) ? o.slice(b.length + 1) : null;
+    const r = o === b ? "" : o.startsWith(`${b}_`) ? o.slice(b.length + 1) : null;
+    return r === "" && e.group !== "disk" ? null : r;
   };
-  const agrees = (e) => {
-    const r = restOf(e);
-    return r === null || r === slugify(e.nameArg);
-  };
-  // Known arguments of each group, by slug: those of the strong names that the ids confirm, then the guesses they name.
+  // Known arguments of each group, by slug: the names that their id confirms.
   const known = {};
-  const learn = (e) => {
+  for (const e of args) {
+    if (e.name === null || restOf(e) !== slugify(e.name)) continue;
     const k = (known[e.group] ??= new Map());
-    const s = slugify(e.nameArg);
-    if (!k.has(s)) k.set(s, e.nameArg);
-  };
-  for (const e of named) if (e.strong && agrees(e)) learn(e);
-  const ok = new Set(named.filter((e) => agrees(e) && (e.strong || known[e.group]?.get(slugify(e.nameArg)) === e.nameArg)));
-  for (const e of ok) if (!e.strong) learn(e);
+    if (!k.has(slugify(e.name))) k.set(slugify(e.name), e.name);
+  }
+  const isKnown = (e, r) => !!known[e.group]?.has(r) && (r !== "" || e.group === "disk");
 
-  /**
-   * An argument from the slug of the entity id: the known one, else the end of the sensor's own name
-   * of that slug, else the slug itself ("/" and its words for a mount). Only a known one overrides
-   * a name the other names confirm (`sure`).
-   */
+  /** An argument from its slug: the known one, else the end of the sensor's own name of that slug, else the slug itself ("/" and its words for a mount). */
   const fromSlug = (e, r) => {
     const a = known[e.group]?.get(r);
-    if (a !== undefined) return { arg: a, sure: true };
-    for (let i = e.tokens.length - 1; i >= 0; i--) {
+    if (a !== undefined) return a;
+    // A name given in the entity settings is not the original one.
+    for (let i = e.tokens.length - 1; i >= 0 && !e.renamed; i--) {
       const tail = e.tokens.slice(i).join(" ");
-      if (slugify(tail) === r && (r || tail === "/")) return { arg: tail, sure: false };
+      if (slugify(tail) === r && (e.group !== "disk" || tail.startsWith("/"))) return tail;
     }
-    return { arg: e.group === "disk" ? `/${r.replace(/_/g, "/")}` : r, sure: false };
+    return e.group === "disk" ? `/${r.replace(/_/g, "/")}` : r;
   };
-  const fromId = (e) => {
-    const o = objectId(e.id);
-    const words = o.split("_");
-    const r = restOf(e);
-    if (r !== null) return fromSlug(e, r);
-    // A known argument the id ends with (the longest: "eth0_100" rather than "100").
+
+  /** The slug of the argument in an id without the base of its key that only an English id or a known argument tells for sure, or null. */
+  const sureSlug = (e) => {
+    const m = objectId(e.id).match(ENGLISH_IDS[e.key]);
+    if (m) return m[1] ?? "";
+    // The base (a start of this id) that makes the most ids of the key end with a known argument; on a tie, the longest argument.
+    const ids = args.filter((x) => x.key === e.key);
     let best = null;
-    for (const [s, a] of known[e.group] || []) if (s && o.endsWith(`_${s}`) && (!best || s.length > best[0].length)) best = [s, a];
-    if (best) return { arg: best[1], sure: true };
-    // Every sensor of the key renamed: the words the id does not share with the ids of the same key
-    // (none for "/", the only argument without slug).
-    const p = args
-      .filter((x) => x.key === e.key && x.id !== e.id)
-      .map((x) => commonPrefix(words, objectId(x.id).split("_")))
-      .filter((x) => x > 0);
-    if (p.length && (Math.min(...p) < words.length || e.group === "disk")) return fromSlug(e, words.slice(Math.min(...p)).join("_"));
-    // The only sensor of its key: the words its id shares at its end with the ids of the other keys of the group.
-    const n = args
-      .filter((x) => x.group === e.group && x.key !== e.key)
-      .map((x) => commonSuffix(words, objectId(x.id).split("_")))
-      .filter((x) => x > 0);
-    if (n.length) return fromSlug(e, words.slice(-Math.min(...n)).join("_"));
-    // No argument in the id: the mount point without slug, "/".
-    if (e.group === "disk") return fromSlug(e, "");
-    return null;
+    for (let n = 0; n <= e.words.length; n++) {
+      const base = e.words.slice(0, n);
+      const r = e.words.slice(n).join("_");
+      if (!isKnown(e, r)) continue;
+      const score = ids.filter((x) => commonPrefix(x.words, base) === n && isKnown(e, x.words.slice(n).join("_"))).length;
+      if (!best || score > best.score || (score === best.score && r.length > best.r.length)) best = { score, r };
+    }
+    return best ? best.r : null;
+  };
+
+  /** The slug of the argument read from the structure of the ids, or null. */
+  const shapeSlug = (e) => {
+    const w = e.words;
+    // The words the id does not share with the other ids of its key ("" for "/", the only argument without slug).
+    const p = args.filter((x) => x.key === e.key && x.id !== e.id).map((x) => commonPrefix(w, x.words));
+    let r1 = null;
+    if (p.length && Math.min(...p) > 0) {
+      const n = Math.min(...p);
+      if (n < w.length || e.group === "disk") r1 = w.slice(n).join("_");
+    }
+    // The words it shares at its end with the ids of the other keys of its group, the most of them agree on.
+    const n2 = modeOf(
+      [...new Set(args.filter((x) => x.group === e.group && x.key !== e.key).map((x) => x.key))].map((k) =>
+        Math.max(0, ...args.filter((x) => x.key === k).map((x) => commonSuffix(w, x.words)))
+      )
+    );
+    const r2 = n2 && n2 < w.length ? w.slice(-n2).join("_") : null;
+    if (r1 === null) return r2;
+    return r2 !== null && r2.length > r1.length ? r2 : r1;
+  };
+
+  /** The last resort: "/" for a mount, the last word for an interface, what follows the device and the label for a process. */
+  const lastSlug = (e) => {
+    if (e.group === "disk") return "";
+    if (e.group === "net") return e.words[e.words.length - 1];
+    const device = modeOf([...args, ...plain].filter((o) => o.group !== "proc").map((o) => commonPrefix(e.words, objectId(o.id).split("_"))));
+    return device && device + 1 < e.words.length ? e.words.slice(device + 1).join("_") : e.words[e.words.length - 1];
   };
 
   const out = new Map();
   for (const e of args) {
-    let arg = e.nameArg;
-    if (!ok.has(e)) {
-      const id = fromId(e);
-      if (id && (e.renamed || !e.strong || id.sure)) arg = id.arg;
-    }
+    const r = restOf(e);
+    let arg;
+    if (e.name !== null) {
+      // The name, unless its id names another known argument (the name was customized but still reads like one).
+      const id = r ?? (bases[e.key] === undefined ? sureSlug(e) : null);
+      arg = id !== null && id !== slugify(e.name) && isKnown(e, id) ? fromSlug(e, id) : e.name;
+    } else arg = fromSlug(e, r ?? sureSlug(e) ?? shapeSlug(e) ?? lastSlug(e));
     out.set(e.id, arg);
   }
   return out;
@@ -764,16 +784,18 @@ const resolveArgs = (args) => {
 const discover = registryCache((hass, missing) => {
   const sm = { scalars: {}, disks: {}, nets: {}, procs: {}, found: false };
   const args = []; // Sensors with an argument, resolved once all the names are known.
-  const add = (key, arg, id) => {
+  const plain = []; // The other ones, whose names tell the device name.
+  const add = (key, id) => {
     sm.found = true;
     const group = ARG_KEYS[key];
-    if (!group) {
-      sm.scalars[key] ??= id;
-      return;
-    }
     const name = hass.states[id]?.attributes?.friendly_name || "";
     // A name given in the entity settings: it no longer says the argument.
-    args.push({ key, group, id, arg, tokens: name.split(" "), renamed: !!hass.entities?.[id]?.name });
+    const sensor = { key, group: group || "scalar", id, tokens: name.split(" "), renamed: !!hass.entities?.[id]?.name };
+    if (group) args.push(sensor);
+    else {
+      sm.scalars[key] ??= id;
+      plain.push(sensor);
+    }
   };
 
   const registry = hass.entities ? Object.values(hass.entities).filter((e) => e.platform === "systemmonitor") : [];
@@ -785,9 +807,9 @@ const discover = registryCache((hass, missing) => {
         continue;
       }
       const key = ALIASES[e.translation_key] || e.translation_key;
-      if (ARG_KEYS[key] || SCALAR_KEYS.includes(key)) add(key, null, e.entity_id);
+      if (ARG_KEYS[key] || SCALAR_KEYS.includes(key)) add(key, e.entity_id);
       // The "Last boot" sensor has no translation key (it is named after its "uptime" device class).
-      else if (!e.translation_key && hass.states[e.entity_id].attributes.device_class === "uptime") add("last_boot", null, e.entity_id);
+      else if (!e.translation_key && hass.states[e.entity_id].attributes.device_class === "uptime") add("last_boot", e.entity_id);
     }
   } else {
     for (const id of Object.keys(hass.states).sort()) {
@@ -796,14 +818,14 @@ const discover = registryCache((hass, missing) => {
       for (const [key, re] of FALLBACK) {
         const f = m[1].match(re);
         if (f) {
-          add(key, f[1] ?? "/", id);
+          add(key, id);
           break;
         }
       }
     }
   }
 
-  const resolved = resolveArgs(args);
+  const resolved = resolveArgs(args, plain);
   for (const e of args) {
     const a = resolved.get(e.id);
     if (e.group === "proc") sm.procs[a] ??= e.id;
