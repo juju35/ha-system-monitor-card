@@ -159,15 +159,21 @@ language: fr
 
 While HACS checks for updates, the card animates: the check button spins as the repositories are scanned. It settles to a still card when the check finishes.
 
-![HACS check animation](screenshots/hacs-checking.gif)
+| Light | Dark |
+|---|---|
+| ![HACS check animation](screenshots/hacs-checking.gif) | ![HACS check animation dark](screenshots/hacs-checking-dark.gif) |
 
 While **Install all** runs, its chip spins with the progress of the installs (here 1 of 2 done).
 
-![Install all animation](screenshots/hacs-installing.gif)
+| Light | Dark |
+|---|---|
+| ![Install all animation](screenshots/hacs-installing.gif) | ![Install all animation dark](screenshots/hacs-installing-dark.gif) |
 
 While Integration Watchdog checks the integrations, its check button spins until the result comes back.
 
-![Watchdog check animation](screenshots/wd-checking.gif)
+| Light | Dark |
+|---|---|
+| ![Watchdog check animation](screenshots/wd-checking.gif) | ![Watchdog check animation dark](screenshots/wd-checking-dark.gif) |
 
 | Light | Dark (update available) |
 |---|---|
