@@ -175,7 +175,7 @@ While Integration Watchdog checks the integrations, its check button spins until
 |---|---|
 | ![Watchdog check animation](screenshots/wd-checking.gif) | ![Watchdog check animation dark](screenshots/wd-checking-dark.gif) |
 
-| Light | Dark (update available) |
+| Light | Dark |
 |---|---|
 | ![card](screenshots/card.png) | ![card dark](screenshots/card-dark.png) |
 | ![mini card](screenshots/mini-card.png) | ![mini card dark](screenshots/mini-card-dark.png) |
