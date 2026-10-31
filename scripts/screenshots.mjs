@@ -7,6 +7,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import { states, entities, devices, updateAvailable, hacsUpdates, procsRunning } from "./mock-states.mjs";
+import { shots } from "./screenshot-shots.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const cardJs = readFileSync(`${root}dist/system-monitor-card.js`, "utf8");
@@ -47,26 +48,6 @@ const page_html = (theme, width) => `<!doctype html><html><head><meta charset="u
          font-family: Roboto, "Segoe UI", Helvetica, Arial, sans-serif; width: ${width}px; }
 </style></head><body><div id="root"></div></body></html>`;
 
-const shots = [
-  { file: "card", type: "system-monitor-card", theme: "light", width: 460, config: {}, procsOk: true },
-  { file: "card-dark", type: "system-monitor-card", theme: "dark", width: 460, config: {}, update: true },
-  { file: "card-hacs", type: "system-monitor-card", theme: "light", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true },
-  { file: "card-hacs-dark", type: "system-monitor-card", theme: "dark", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true },
-  { file: "card-hacs-search", type: "system-monitor-card", theme: "dark", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true, search: "juju" },
-  { file: "card-hacs-search-light", type: "system-monitor-card", theme: "light", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true, search: "juju" },
-  { file: "card-install", type: "system-monitor-card", theme: "dark", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true, install: true },
-  { file: "card-install-light", type: "system-monitor-card", theme: "light", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true, install: true },
-  { file: "card-watchdog", type: "system-monitor-card", theme: "light", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false, show_hacs: false }, open: true, action: "wd" },
-  { file: "card-watchdog-dark", type: "system-monitor-card", theme: "dark", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false, show_hacs: false }, open: true, action: "wd" },
-  { file: "mini-card", type: "system-monitor-mini-card", theme: "light", width: 380, config: {} },
-  { file: "mini-card-dark", type: "system-monitor-mini-card", theme: "dark", width: 380, config: {}, update: true },
-  { file: "mini-card-zoom", type: "system-monitor-mini-card", theme: "light", width: 460, config: {}, procsOk: true, zoom: true },
-  { file: "mini-card-zoom-dark", type: "system-monitor-mini-card", theme: "dark", width: 460, config: {}, update: true, zoom: true },
-  { file: "status-card", type: "system-monitor-status-card", theme: "light", width: 380, config: {}, procsOk: true },
-  { file: "status-card-dark", type: "system-monitor-status-card", theme: "dark", width: 380, config: {}, update: true },
-  { file: "status-card-zoom", type: "system-monitor-status-card", theme: "light", width: 460, config: {}, procsOk: true, zoom: true },
-  { file: "status-card-zoom-dark", type: "system-monitor-status-card", theme: "dark", width: 460, config: {}, update: true, zoom: true },
-];
 
 const browser = await chromium.launch(
   process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}
