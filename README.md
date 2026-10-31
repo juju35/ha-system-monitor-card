@@ -176,8 +176,10 @@ While Integration Watchdog checks the integrations, its check button spins until
 | ![mini card zoomed in](screenshots/mini-card-zoom.png) | ![mini card zoomed in dark](screenshots/mini-card-zoom-dark.png) |
 | ![status card](screenshots/status-card.png) | ![status card dark](screenshots/status-card-dark.png) |
 | ![status card zoomed in](screenshots/status-card-zoom.png) | ![status card zoomed in dark](screenshots/status-card-zoom-dark.png) |
-| ![HACS extensions](screenshots/card-hacs.png) | ![Unavailable integrations](screenshots/card-watchdog.png) |
-| ![HACS search](screenshots/card-hacs-search.png) | ![Install confirmation](screenshots/card-install.png) |
+| ![HACS extensions](screenshots/card-hacs.png) | ![HACS extensions dark](screenshots/card-hacs-dark.png) |
+| ![HACS search](screenshots/card-hacs-search-light.png) | ![HACS search dark](screenshots/card-hacs-search.png) |
+| ![Install confirmation](screenshots/card-install-light.png) | ![Install confirmation dark](screenshots/card-install.png) |
+| ![Unavailable integrations](screenshots/card-watchdog.png) | ![Unavailable integrations dark](screenshots/card-watchdog-dark.png) |
 
 ## How it works
 
