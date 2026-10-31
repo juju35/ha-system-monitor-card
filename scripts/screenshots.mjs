@@ -181,8 +181,9 @@ for (const s of shots) {
 
 // Animated states, recorded as looping GIFs — needs ffmpeg on PATH. Every animation is paused and
 // stepped frame by frame, so the GIFs are identical whatever the machine's speed.
+// Every animation is recorded in both themes: each light GIF gets a `-dark` twin with the exact same setup.
 const SECTIONS_OFF = { show_system: false, show_network: false, show_storage: false, show_processes: false };
-const gifs = [
+const lightGifs = [
   // The HACS section mid-check: its status sensor is "running".
   { file: "hacs-checking", type: "system-monitor-card", theme: "light", width: 460, config: SECTIONS_OFF, hacs: true, open: true, running: true },
   // "Install all" mid-run: the chip spins with the progress of the installs.
@@ -190,6 +191,7 @@ const gifs = [
   // The Integration Watchdog "check now" button mid-check: unavailable while it runs, so it spins.
   { file: "wd-checking", type: "system-monitor-card", theme: "light", width: 460, config: { ...SECTIONS_OFF, show_hacs: false }, open: true, action: "wd", wdBusy: true },
 ];
+const gifs = [...lightGifs, ...lightGifs.map((g) => ({ ...g, file: `${g.file}-dark`, theme: "dark" }))];
 const FPS = 20;
 const SECONDS = 2;
 for (const gif of gifs) {
