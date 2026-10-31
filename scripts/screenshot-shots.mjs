@@ -1,21 +1,56 @@
 // The README screenshots rendered by scripts/screenshots.mjs: one entry per PNG in screenshots/.
-export const shots = [
-  { file: "card", type: "system-monitor-card", theme: "light", width: 460, config: {}, procsOk: true },
-  { file: "card-dark", type: "system-monitor-card", theme: "dark", width: 460, config: {}, update: true },
-  { file: "card-hacs", type: "system-monitor-card", theme: "light", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true },
-  { file: "card-hacs-dark", type: "system-monitor-card", theme: "dark", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true },
-  { file: "card-hacs-search", type: "system-monitor-card", theme: "dark", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true, search: "juju" },
-  { file: "card-hacs-search-light", type: "system-monitor-card", theme: "light", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true, search: "juju" },
-  { file: "card-install", type: "system-monitor-card", theme: "dark", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true, install: true },
-  { file: "card-install-light", type: "system-monitor-card", theme: "light", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false }, hacs: true, open: true, install: true },
-  { file: "card-watchdog", type: "system-monitor-card", theme: "light", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false, show_hacs: false }, open: true, action: "wd" },
-  { file: "card-watchdog-dark", type: "system-monitor-card", theme: "dark", width: 460, config: { show_system: false, show_network: false, show_storage: false, show_processes: false, show_hacs: false }, open: true, action: "wd" },
-  { file: "mini-card", type: "system-monitor-mini-card", theme: "light", width: 380, config: {} },
-  { file: "mini-card-dark", type: "system-monitor-mini-card", theme: "dark", width: 380, config: {}, update: true },
-  { file: "mini-card-zoom", type: "system-monitor-mini-card", theme: "light", width: 460, config: {}, procsOk: true, zoom: true },
-  { file: "mini-card-zoom-dark", type: "system-monitor-mini-card", theme: "dark", width: 460, config: {}, update: true, zoom: true },
-  { file: "status-card", type: "system-monitor-status-card", theme: "light", width: 380, config: {}, procsOk: true },
-  { file: "status-card-dark", type: "system-monitor-status-card", theme: "dark", width: 380, config: {}, update: true },
-  { file: "status-card-zoom", type: "system-monitor-status-card", theme: "light", width: 460, config: {}, procsOk: true, zoom: true },
-  { file: "status-card-zoom-dark", type: "system-monitor-status-card", theme: "dark", width: 460, config: {}, update: true, zoom: true },
+// Every screenshot is rendered in both themes from one setup, so a light/dark pair shows exactly the
+// same state and only the theme changes. `light` / `dark` are the file names (two older pairs use the
+// bare name for the dark one, kept so the README links do not move).
+const SECTIONS_OFF = { show_system: false, show_network: false, show_storage: false, show_processes: false };
+
+const pairs = [
+  { light: "card", dark: "card-dark", type: "system-monitor-card", width: 460, config: {}, procsOk: true },
+  { light: "card-hacs", dark: "card-hacs-dark", type: "system-monitor-card", width: 460, config: SECTIONS_OFF, hacs: true, open: true },
+  {
+    light: "card-hacs-search-light",
+    dark: "card-hacs-search",
+    type: "system-monitor-card",
+    width: 460,
+    config: SECTIONS_OFF,
+    hacs: true,
+    open: true,
+    search: "juju",
+  },
+  {
+    light: "card-install-light",
+    dark: "card-install",
+    type: "system-monitor-card",
+    width: 460,
+    config: SECTIONS_OFF,
+    hacs: true,
+    open: true,
+    install: true,
+  },
+  {
+    light: "card-watchdog",
+    dark: "card-watchdog-dark",
+    type: "system-monitor-card",
+    width: 460,
+    config: { ...SECTIONS_OFF, show_hacs: false },
+    open: true,
+    action: "wd",
+  },
+  { light: "mini-card", dark: "mini-card-dark", type: "system-monitor-mini-card", width: 380, config: {} },
+  { light: "mini-card-zoom", dark: "mini-card-zoom-dark", type: "system-monitor-mini-card", width: 460, config: {}, procsOk: true, zoom: true },
+  { light: "status-card", dark: "status-card-dark", type: "system-monitor-status-card", width: 380, config: {}, procsOk: true },
+  {
+    light: "status-card-zoom",
+    dark: "status-card-zoom-dark",
+    type: "system-monitor-status-card",
+    width: 460,
+    config: {},
+    procsOk: true,
+    zoom: true,
+  },
 ];
+
+export const shots = pairs.flatMap(({ light, dark, ...setup }) => [
+  { file: light, theme: "light", ...setup },
+  { file: dark, theme: "dark", ...setup },
+]);
