@@ -128,7 +128,7 @@ test("section titles: the name is cut with an ellipsis (full text in title), the
 
 test("mini card: the metric labels share one column wide enough for the longest one", () => {
   const css = styleOf(card(lib.SystemMonitorMiniCard, hassWith())._render());
-  assert.match(rulesFor(css, ".content"), /grid-template-columns:\s*18px minmax\(64px, max-content\)/);
+  assert.match(rulesFor(css, ".content"), /grid-template-columns:\s*18px minmax\(min\(64px, 30%\), max-content\)/);
   assert.match(rulesFor(css, ".metric"), /grid-template-columns:\s*subgrid/);
 });
 

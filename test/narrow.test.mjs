@@ -48,17 +48,26 @@ const renders = () => {
 for (const [name, html] of Object.entries(renders())) {
   test(`${name}: the header title keeps a few letters, the pill gives way, the buttons keep their size`, () => {
     const css = styleOf(html);
-    assert.match(rulesFor(css, ".titles"), /min-width:\s*0/);
-    assert.match(rulesFor(css, ".title-row > .name"), /min-width:\s*min\(\d+ch, 100%\)/);
+    // The title block grows from 0 (it never takes the pill's room first) and keeps 4 letters or more.
+    const titles = rulesFor(css, ".titles");
+    assert.match(titles, /flex:\s*1 1 0(?:;|\s|$)/);
+    assert.ok(Number(titles.match(/min-width:\s*(\d+)ch/)?.[1]) >= 4, titles);
+    const nameRule = rulesFor(css, ".title-row > .name");
+    assert.match(nameRule, /flex:\s*1 1 0(?:;|\s|$)/);
+    assert.ok(Number(nameRule.match(/min-width:\s*min\((\d+)ch, 100%\)/)?.[1]) >= 4, nameRule);
     assert.match(rulesFor(css, ".name"), /text-overflow:\s*ellipsis/);
+    // The pill is cut only when the room really lacks: no cap at half the line.
     const chip = rulesFor(css, ".title-row > .chip");
     assert.match(chip, /flex:\s*0 1 auto/);
     assert.match(chip, /min-width:\s*0/);
-    assert.match(chip, /max-width:\s*50%/);
+    assert.doesNotMatch(chip, /max-width/);
     assert.match(rulesFor(css, ".title-row > .chip > .chip-text"), /text-overflow:\s*ellipsis/);
     assert.match(rulesFor(css, ".header"), /container:\s*sm-header \/ inline-size/);
     const narrow = containerBlocks(css, "sm-header");
     assert.ok(narrow.some((b) => /\.title-row > \.chip > \.chip-text\s*\{[^}]*display:\s*none/.test(b.body)), "the pill never drops to its dot");
+    // A 245 px card (221 px inside its header) still shows the pill's text: only a phone-width header drops it.
+    for (const b of narrow.filter((x) => /\.chip-text\s*\{[^}]*display:\s*none/.test(x.body)))
+      assert.ok(b.max < 221, `@container sm-header (max-width: ${b.max}px)`);
     assert.match(rulesFor(css, ".zoom"), /flex:\s*none/);
   });
 
@@ -93,8 +102,8 @@ test("status card: a narrow header shows the pill's dot, never the title cut let
 test("storage: on a narrow card the used / total size goes under the bar, the mount point keeps the line", () => {
   const css = styleOf(card(lib.SystemMonitorCard, hassWith())._render());
   assert.match(rulesFor(css, ".content"), /container:\s*sm-content \/ inline-size/);
-  const narrow = containerBlocks(css, "sm-content");
-  assert.ok(narrow.length, "no @container sm-content block");
+  const narrow = containerBlocks(css, "sm-content").filter((b) => /\.vol/.test(b.body));
+  assert.ok(narrow.length, "no @container sm-content block for the volumes");
   const body = narrow.map((b) => b.body).join("");
   assert.match(body, /\.vol \.detail\s*\{[^}]*grid-column:\s*1 \/ -1[^}]*grid-row:\s*3/);
   assert.match(body, /\.vol \.row\s*\{[^}]*grid-column:\s*1 \/ -1/);
@@ -156,4 +165,111 @@ test("focus rings use the theme's primary colour, like the other cards", () => {
   const outlines = [...css.matchAll(/outline:\s*2px solid ([^;}]+)/g)].map((m) => m[1].trim());
   assert.ok(outlines.length >= 3);
   for (const o of outlines) assert.equal(o, "var(--sm-focus)");
+});
+
+// Phone width: 6 columns of a Sections view on a 320 px screen make a 156 px card, 132 px inside its 12 px padding.
+const PHONE = 132;
+
+test("status card: the title gives way before the pill, which drops to its dot only when its own text is cut", () => {
+  const c = new lib.SystemMonitorStatusCard();
+  c._zoomed = false;
+  const classes = new Set();
+  const el = (scroll, client) => ({ scrollWidth: scroll, clientWidth: client });
+  const name = el(115, 51);
+  let text = el(50, 50);
+  const header = {
+    clientWidth: 221,
+    classList: { add: (x) => classes.add(x), remove: (...x) => {
+      for (const y of x) classes.delete(y);
+    } },
+    querySelector: (sel) => (sel === ".name" ? name : sel === ".title-row > .chip > .chip-text" ? text : null),
+  };
+  c.shadowRoot = { querySelector: (sel) => (sel === ".header" ? header : null), querySelectorAll: () => [] };
+  c._fit();
+  assert.deepEqual([...classes], ["tight"], "the pill keeps its text while it fits");
+  text = el(80, 40);
+  c._fit();
+  assert.deepEqual([...classes].sort(), ["tight", "tighter"]);
+  name.scrollWidth = 40;
+  name.clientWidth = 40;
+  c._fit();
+  assert.deepEqual([...classes], [], "nothing cut: nothing hidden");
+});
+
+test("full card under ~255 px: the logo and the title row's gap give 12 px to the pill, so that it keeps its text at 245 px", () => {
+  const css = styleOf(card(lib.SystemMonitorCard, hassWith(updateAvailable))._render());
+  // "Aktualizacja 2026.10.3" lacked 12 px at 245 px (221 px inside the header) beside 4 letters of the title.
+  const blocks = containerBlocks(css, "sm-header").filter((b) => b.max >= 221 && /\.logo\s*\{/.test(b.body));
+  assert.ok(blocks.length, "no @container sm-header block for a 245 px card");
+  const body = blocks.map((b) => b.body).join("");
+  const logo = Number(body.match(/\.logo\s*\{[^}]*width:\s*(\d+)px/)?.[1]);
+  const gap = Number(body.match(/\.title-row\s*\{[^}]*gap:\s*(\d+)px/)?.[1]);
+  const full = Number(rulesFor(css, ".logo").match(/width:\s*(\d+)px/g).pop().match(/\d+/)[0]);
+  const fullGap = Number(rulesFor(css, ".title-row").match(/gap:\s*(\d+)px/)[1]);
+  assert.ok(full - logo + fullGap - gap >= 12, `${full}->${logo} px, gap ${fullGap}->${gap} px`);
+  // The pill still drops its text only on a phone-width header.
+  for (const b of blocks) assert.doesNotMatch(b.body, /chip-text/);
+});
+
+test("status card at phone width: the logo shrinks so that 4 letters and the pill's dot fit beside the HACS and zoom buttons", () => {
+  const css = styleOf(card(lib.SystemMonitorStatusCard, hassWith(updateAvailable))._render());
+  // 132 px inside the header: 12 px gaps, HACS icon button 28 px, zoom 24 - 8 px of negative margins, then the title
+  // row (4 letters of a 16 px title ~36 px, 4 px gap, 12 px dot pill) needs 52 px: 132 - 12 - 28 - 16 - 52 = 24 px.
+  const phone = containerBlocks(css, "sm-header").filter((b) => b.max >= PHONE && /\.logo\s*\{/.test(b.body));
+  assert.ok(phone.length, "no phone-width @container sm-header block for the logo");
+  const logo = phone.map((b) => b.body.match(/\.logo\s*\{([^}]*)\}/)[1]).join(";");
+  assert.ok(Number(logo.match(/width:\s*(\d+)px/)?.[1]) <= 24, logo);
+  assert.match(logo, /margin-right:\s*0/);
+  // A 170 px card (146 px inside) still shows the full-size logo: the rule stops below that.
+  for (const b of phone) assert.ok(b.max < 146, `@container sm-header (max-width: ${b.max}px)`);
+});
+
+test("full card at phone width: the section titles drop their icon and tighten so that the chevron stays inside", () => {
+  const html = card(lib.SystemMonitorCard, hassWith({ ...updateAvailable, ...hacsUpdates }))._render();
+  const css = styleOf(html);
+  const phone = containerBlocks(css, "sm-content").filter((b) => b.max >= PHONE && /\.section-title/.test(b.body));
+  assert.ok(phone.length, "no phone-width @container sm-content block");
+  const body = phone.map((b) => b.body).join("");
+  assert.match(body, /\.section-title\s*\{[^}]*gap:\s*4px/);
+  assert.match(body, /\.section-title > \.icon:first-child\s*\{[^}]*display:\s*none/);
+  assert.match(body, /\.section-title \.btn-check\s*\{[^}]*margin:\s*0/);
+});
+
+/** Smallest width of one grid track size at this container width, `max-content` counting as `value` px. */
+const trackPx = (x, width, value) => {
+  x = x.trim();
+  let m = x.match(/^min\((\d+)px,\s*(\d+)%\)$/);
+  if (m) return Math.min(Number(m[1]), (Number(m[2]) * width) / 100);
+  if ((m = x.match(/^(\d+)px$/))) return Number(m[1]);
+  if (x === "0" || x.endsWith("fr")) return 0;
+  if (/^(max-content|auto|min-content)$/.test(x)) return value;
+  throw new Error(`track ${x}`);
+};
+/** Smallest width of a grid track list: the sum of its tracks' floors. */
+const trackMin = (list, width, value) =>
+  [...list.matchAll(/minmax\((min\([^)]*\)|[^,]+),[^)]*\)|\S+/g)].reduce((a, m) => a + trackPx(m[1] ?? m[0], width, value), 0);
+
+test("mini card at phone width: the metric grid fits inside the card with the whole value (130°F) and 4 letters of label", () => {
+  const css = styleOf(card(lib.SystemMonitorMiniCard, hassWith(updateAvailable))._render());
+  const content = rulesFor(css, ".content");
+  const list = content.match(/grid-template-columns:\s*([^;]+)/)[1];
+  const gap = content.match(/(?:^|;)\s*gap:\s*([^;]+)/)[1].trim();
+  const column = gap.match(/^\S+\s+(min\(\d+px,\s*\d+%\)|\S+)$/)?.[1] || gap;
+  const colGap = trackPx(column, PHONE, 0);
+  const VALUE = 40; // "130°F", 13 px bold
+  const need = trackMin(list, PHONE, VALUE) + 3 * colGap;
+  assert.ok(need <= PHONE, `${need} px needed in ${PHONE} px: ${list} / gap ${gap}`);
+  // The label column's floor still shows 4 letters (13 px text, about 7.5 px each).
+  const label = list.match(/^\S+\s+minmax\((min\([^)]*\)|[^,]+),/)[1];
+  assert.ok(trackPx(label, PHONE, 0) >= 30, label);
+  // The label gives way with an ellipsis, the value never wraps.
+  assert.match(rulesFor(css, ".metric > span:not(.v)"), /text-overflow:\s*ellipsis/);
+  assert.match(rulesFor(css, ".metric .v"), /white-space:\s*nowrap/);
+});
+
+test("mini card footer: the two network rates wrap rather than run out of a narrow card", () => {
+  const html = card(lib.SystemMonitorMiniCard, hassWith())._render();
+  assert.match(html, /<span class="rates"><span class="clickable"[^>]*>[\s\S]*?<\/span><span class="clickable"/);
+  assert.doesNotMatch(html, /&nbsp;&nbsp;<span class="clickable"/);
+  assert.match(rulesFor(styleOf(html), ".foot .rates"), /flex-wrap:\s*wrap/);
 });

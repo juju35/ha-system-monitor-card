@@ -1697,18 +1697,19 @@ const BASE_STYLE = `
   .bar { height: 4px; border-radius: 3px; background: var(--divider-color, rgba(127,127,127,.25)); overflow: hidden; }
   .bar > div { height: 100%; border-radius: 3px; background: var(--c, var(--sm-blue)); }
   .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 8px; container: sm-header / inline-size; }
-  .titles { flex: 1 1 auto; min-width: 0; }
-  /* The status pill shares the title's line, centred on it whatever the subtitle or the logo size. On a narrow card
-     the title keeps at least a few letters (then an ellipsis), the pill is cut first (half the line at most), then
-     shows its dot only (its text stays in title and aria-label); the buttons never shrink. */
+  .titles { flex: 1 1 0; min-width: 4ch; }
+  /* The status pill shares the title's line, centred on it whatever the subtitle or the logo size. The title grows
+     from 0 (flex-basis 0): the pill keeps its whole text while the title can still give way, down to a few letters
+     (then an ellipsis); only then is the pill cut, and on a narrow header it shows its dot only (its text stays in
+     title and aria-label). The buttons never shrink. */
   .title-row { display: flex; align-items: center; gap: 8px; }
-  .title-row > .name { flex: 1 1 auto; min-width: min(5ch, 100%); }
+  .title-row > .name { flex: 1 1 0; min-width: min(4ch, 100%); }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .logo { flex: none; object-fit: contain; filter: drop-shadow(0 3px 5px rgba(0,0,0,.2)); }
-  .title-row > .chip { flex: 0 1 auto; min-width: 0; max-width: 50%; white-space: nowrap; }
+  .title-row > .chip { flex: 0 1 auto; min-width: 0; white-space: nowrap; }
   .title-row > .chip > .chip-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-  @container sm-header (max-width: 230px) {
+  @container sm-header (max-width: 180px) {
     .title-row > .chip { padding: 4px; }
     .title-row > .chip > .chip-text { display: none; }
   }
@@ -1761,7 +1762,7 @@ class SystemMonitorBase extends HTMLElement {
         if (action.dataset.action === "hacs-clear") {
           this._hacsQuery = "";
           this._update();
-          this.shadowRoot.querySelector('[data-search="hacs"]')?.focus();
+          this.shadowRoot.querySelector('[data-search="hacs"]')?.focus({ preventScroll: true });
           return;
         }
         // With a process stopped, the list stays unfolded.
@@ -1951,7 +1952,9 @@ class SystemMonitorBase extends HTMLElement {
   _openDialog(dialog) {
     this._dialog = dialog;
     this._update();
-    this.shadowRoot.querySelector(".modal .primary")?.focus();
+    // Focus without scrolling (the page stays put), then bring the popup into view only if it is off screen.
+    this.shadowRoot.querySelector(".modal .primary")?.focus({ preventScroll: true });
+    this.shadowRoot.querySelector(".modal")?.scrollIntoView?.({ block: "nearest" });
   }
 
   _closeDialog() {
@@ -2251,6 +2254,12 @@ const TILES_STYLE = `
 
 const FULL_STYLE = `
   .logo { height: 40px; width: 40px; }
+  /* A narrow card (under ~255 px) gives the pill the logo's last 8 px and 4 px of its gap: "Aktualizacja 2026.10.3"
+     keeps its whole text at 245 px, beside 4 letters of the title. */
+  @container sm-header (max-width: 230px) {
+    .logo { height: 32px; width: 32px; }
+    .title-row { gap: 4px; }
+  }
   .section-title.toggle { cursor: pointer; margin-bottom: 0; user-select: none; }
   .section-title .count { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 400; }
   .section-title.closed .chevron { transform: rotate(-90deg); }
@@ -2306,6 +2315,14 @@ const FULL_STYLE = `
   .section-title > * { flex: none; }
   .section-title > .label, .section-title > .arg { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .section-title.tight .btn-check > span { display: none; }
+  /* Phone width (6 columns of a 320 px screen, 132 px inside): the section icon goes, the gaps and the check button's
+     margins shrink, so that the pills, the buttons, the count and the chevron stay inside the card with the name. */
+  @container sm-content (max-width: 160px) {
+    .section-title { gap: 4px; }
+    .section-title > .icon:first-child { display: none; }
+    .section-title .btn-check { margin: 0; padding: 4px; }
+    .section-title .btn-install { padding: 2px 6px; }
+  }
   .gauges { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; container-type: inline-size; }
   .gauge { display: flex; flex-direction: column; align-items: center; min-width: 0; }
   .dial { position: relative; width: 100%; max-width: 60px; aspect-ratio: 1; }
@@ -2780,7 +2797,7 @@ class SystemMonitorZoomCard extends SystemMonitorCard {
     ev.stopPropagation(); // no other action of the header
     this._setZoom(!this._zoomed);
     // Keyboard use (Enter / Space: no click count) keeps the focus on the button that replaced this one.
-    if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus();
+    if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus({ preventScroll: true });
   }
 
   _compactHeader() {
@@ -2809,15 +2826,20 @@ const MINI_STYLE = `
   /* The status shows in the footer. */
   .title-row > .chip { display: none; }
   .name { font-size: 16px; }
-  /* One grid for every metric: the label column widens for the longest label (Datenträger), the same for all rows. */
-  .content { padding: 0 12px 12px; display: grid; grid-template-columns: 18px minmax(64px, max-content) 1fr 56px; gap: 8px; }
+  /* One grid for every metric: the label column widens for the longest label (Datenträger), the same for all rows.
+     At phone width (6 columns of a 320 px screen, 132 px inside) the gaps and the label give way (ellipsis), the bar
+     keeps a few pixels and the value its whole text ("130°F"): no container query, the grid itself is the card. */
+  .content { padding: 0 12px 12px; display: grid; gap: 8px min(8px, 3%);
+             grid-template-columns: 18px minmax(min(64px, 30%), max-content) minmax(16px, 1fr) minmax(max-content, 56px); }
   .content > * { grid-column: 1 / -1; }
   .metric { display: grid; grid-template-columns: subgrid; align-items: center; font-size: 13px; }
   .metric .icon { color: var(--secondary-text-color); }
-  .metric .v { text-align: right; font-weight: 500; }
+  .metric .v { text-align: right; font-weight: 500; white-space: nowrap; }
+  .metric > span:not(.v) { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--secondary-text-color); margin-top: 2px; }
   .foot span { display: inline-flex; align-items: center; gap: 2px; }
   .foot .icon { width: 14px; height: 14px; }
+  .foot .rates { flex-wrap: wrap; column-gap: 8px; }
 `;
 
 /**
@@ -2884,9 +2906,9 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
       const n = sm.nets[ifs[0]];
       // One span per direction: each rate opens its own sensor.
       foot.push(
-        `<span><span class="clickable" data-entity="${n.throughput_network_in || ""}">${svgIcon(ICONS.down)}${fmtRate(
+        `<span class="rates"><span class="clickable" data-entity="${n.throughput_network_in || ""}">${svgIcon(ICONS.down)}${fmtRate(
           toBps(this._s(n.throughput_network_in))
-        )}</span>&nbsp;&nbsp;<span class="clickable" data-entity="${n.throughput_network_out || ""}">${svgIcon(ICONS.up)}${fmtRate(
+        )}</span><span class="clickable" data-entity="${n.throughput_network_out || ""}">${svgIcon(ICONS.up)}${fmtRate(
           toBps(this._s(n.throughput_network_out))
         )}</span></span>`
       );
@@ -2925,6 +2947,11 @@ const STATUS_STYLE = `
   .header.tight .btn > span { display: none; }
   .header.tighter .title-row > .chip { padding: 4px; }
   .header.tighter .title-row > .chip > .chip-text { display: none; }
+  /* Phone width (6 columns of a 320 px screen, 132 px inside the header): the logo shrinks so that 4 letters of the
+     title and the pill's dot keep their room next to the HACS and zoom buttons, without running under them. */
+  @container sm-header (max-width: 145px) {
+    .logo { height: 24px; width: 24px; margin-right: 0; }
+  }
   .stats { padding-bottom: 12px; }
   .err { padding: 0 12px 12px; }
 `;
@@ -2942,18 +2969,19 @@ class SystemMonitorStatusCard extends SystemMonitorZoomCard {
 
   /**
    * Compact header: when the title is cut (longer labels in some languages, narrow cards), the HACS
-   * button shows its icon only, then the status pill its dot only. The buttons never shrink.
+   * button shows its icon only; the status pill shows its dot only when its own text no longer fits
+   * (the title has then given way down to a few letters). The buttons never shrink.
    */
   _fit() {
     super._fit();
     const header = this._zoomed ? null : this.shadowRoot.querySelector(".header");
     const name = header?.querySelector(".name");
     if (!name || !header.clientWidth) return;
+    const cut = (el) => !!el && el.scrollWidth > el.clientWidth;
     header.classList.remove("tight", "tighter");
-    for (const cls of ["tight", "tighter"]) {
-      if (name.scrollWidth <= name.clientWidth) return;
-      header.classList.add(cls);
-    }
+    if (!cut(name)) return;
+    header.classList.add("tight");
+    if (cut(header.querySelector(".title-row > .chip > .chip-text"))) header.classList.add("tighter");
   }
 
   _compactSize() {
