@@ -410,6 +410,558 @@ const STRINGS = {
     language: "Idioma",
     lang_auto: "Automático",
   },
+  sr: {
+    cpu: "CPU",
+    ram: "RAM",
+    disk: "Диск",
+    temperature: "Темп.",
+    swap: "Swap",
+    database: "База података",
+    network: "Мрежа",
+    storage: "Складиште",
+    processes: "Процеси",
+    uptime: "Време рада:",
+    load: "Оптерећење:",
+    download: "Преузимање",
+    upload: "Слање",
+    total: "Укупно",
+    used: "искоришћено",
+    of: "од",
+    hours: "h",
+    days: "d",
+    minutes: "min",
+    running: "Покренуто",
+    up_to_date: "Ажурирано",
+    update: "Ажурирај",
+    no_sm: "Нису пронађени ентитети за System Monitor. Да ли је интеграција System Monitor инсталирана и да ли су њени сензори омогућени?",
+    hacs: "HACS",
+    hacs_ok: "HACS је ажуриран",
+    hacs_updates_one: "1 HACS ажурирање",
+    hacs_updates: "{n} HACS ажурирања",
+    check_updates: "Провери ажурирања",
+    checking: "Проверавање {i}/{n}…",
+    check_failed: "Провера није успела: {e}",
+    last_check: "Последња провера {t}",
+    needs_refresh: "Инсталирајте HACS Refresh да бисте проверили ажурирања за свако проширење из Home Assistant-а.",
+    github: "Отвори на GitHub-у",
+    check_ext: "Провери ажурирања за ово проширење",
+    search_ext: "Претражи проширења",
+    clear_search: "Очисти претрагу",
+    no_match: "Нема подударних проширења",
+    install_all: "Инсталирај сва ажурирања ({n})",
+    install_all_confirm: "Инсталирати {n} HACS ажурирања?",
+    install_title: "Инсталирај ажурирања",
+    install_btn: "Инсталирај",
+    cancel: "Откажи",
+    installing: "Инсталирање {i}/{n}…",
+    install_failed: "Инсталација није успела: {e}",
+    btn_install: "Инсталирај ({n})",
+    btn_check: "Провери",
+    procs_ok: "Процеси покренути",
+    procs_one: "1 процес заустављен",
+    procs_many: "{n} процеса заустављено",
+    integrations: "Интеграције",
+    st_up_to_date: "Ажурирано",
+    st_unknown: "Непознато",
+    st_update_one: "1 ажурирање",
+    st_updates: "{n} ажурирања",
+    st_running: "Покренуто",
+    st_stopped_one: "1 заустављен",
+    st_stopped: "{n} заустављено",
+    st_available: "Доступно",
+    st_unavailable_one: "1 недоступан",
+    st_unavailable: "{n} недоступно",
+    wd_ok: "Интеграције доступне",
+    wd_one: "1 интеграција недоступна",
+    wd_many: "{n} интеграција недоступно",
+    wd_check: "Провери интеграције сада",
+    wd_none: "Свака интеграција је доступна.",
+    wd_since: "Недоступно од {t}",
+    wd_reloads_one: "1 поновно учитавање",
+    wd_reloads: "{n} поновних учитавања",
+    wd_unavailable: "Недоступно",
+    wd_gave_up: "Одустао",
+    wd_last_reload: "Последње поновно учитавање: {name} {t}",
+    wd_last_reload_failed: "Последње поновно учитавање није успело: {name} {t}",
+    wd_last_check: "Проверено {t}",
+    wd_open: "Отвори интеграцију",
+    zoom_in: "Прикажи целу картицу",
+    zoom_out: "Назад на компактни приказ",
+    // Editor
+    title: "Наслов (опционо, подразумевано је Home Assistant)",
+    show_image: "Прикажи Home Assistant лого",
+    show_system: "Прикажи систем (CPU, RAM, диск, температура)",
+    show_network: "Прикажи мрежу",
+    show_storage: "Прикажи складиште",
+    show_processes: "Прикажи процесе",
+    show_hacs: "Прикажи HACS проширења",
+    show_watchdog: "Прикажи недоступне интеграције (Integration Watchdog)",
+    zoom: "Дугме за увећање",
+    zoom_helper: "Пребацује картицу на пун приказ и назад",
+    interface: "Мрежни интерфејс (опционо, подразумевано сви)",
+    language: "Језик",
+    lang_auto: "Аутоматски",
+  },
+  "sr-Latn": {
+    cpu: "CPU",
+    ram: "RAM",
+    disk: "Disk",
+    temperature: "Temp.",
+    swap: "Swap",
+    database: "Baza podataka",
+    network: "Mreža",
+    storage: "Skladište",
+    processes: "Procesi",
+    uptime: "Vreme rada:",
+    load: "Opterećenje:",
+    download: "Preuzimanje",
+    upload: "Slanje",
+    total: "Ukupno",
+    used: "iskorišćeno",
+    of: "od",
+    hours: "h",
+    days: "d",
+    minutes: "min",
+    running: "Pokrenuto",
+    up_to_date: "Ažurirano",
+    update: "Ažuriraj",
+    no_sm: "Nisu pronađeni entiteti za System Monitor. Da li je integracija System Monitor instalirana i da li su njeni senzori omogućeni?",
+    hacs: "HACS",
+    hacs_ok: "HACS je ažuriran",
+    hacs_updates_one: "1 HACS ažuriranje",
+    hacs_updates: "{n} HACS ažuriranja",
+    check_updates: "Proveri ažuriranja",
+    checking: "Proveravanje {i}/{n}…",
+    check_failed: "Provera nije uspela: {e}",
+    last_check: "Poslednja provera {t}",
+    needs_refresh: "Instalirajte HACS Refresh da biste proverili ažuriranja za svako proširenje iz Home Assistant-a.",
+    github: "Otvori na GitHub-u",
+    check_ext: "Proveri ažuriranja za ovo proširenje",
+    search_ext: "Pretraži proširenja",
+    clear_search: "Očisti pretragu",
+    no_match: "Nema podudarnih proširenja",
+    install_all: "Instaliraj sva ažuriranja ({n})",
+    install_all_confirm: "Instalirati {n} HACS ažuriranja?",
+    install_title: "Instaliraj ažuriranja",
+    install_btn: "Instaliraj",
+    cancel: "Otkaži",
+    installing: "Instaliranje {i}/{n}…",
+    install_failed: "Instalacija nije uspela: {e}",
+    btn_install: "Instaliraj ({n})",
+    btn_check: "Proveri",
+    procs_ok: "Procesi pokrenuti",
+    procs_one: "1 proces zaustavljen",
+    procs_many: "{n} procesa zaustavljeno",
+    integrations: "Integracije",
+    st_up_to_date: "Ažurirano",
+    st_unknown: "Nepoznato",
+    st_update_one: "1 ažuriranje",
+    st_updates: "{n} ažuriranja",
+    st_running: "Pokrenuto",
+    st_stopped_one: "1 zaustavljen",
+    st_stopped: "{n} zaustavljeno",
+    st_available: "Dostupno",
+    st_unavailable_one: "1 nedostupan",
+    st_unavailable: "{n} nedostupno",
+    wd_ok: "Integracije dostupne",
+    wd_one: "1 integracija nedostupna",
+    wd_many: "{n} integracija nedostupno",
+    wd_check: "Proveri integracije sada",
+    wd_none: "Svaka integracija je dostupna.",
+    wd_since: "Nedostupno od {t}",
+    wd_reloads_one: "1 ponovno učitavanje",
+    wd_reloads: "{n} ponovnih učitavanja",
+    wd_unavailable: "Nedostupno",
+    wd_gave_up: "Odustao",
+    wd_last_reload: "Poslednje ponovno učitavanje: {name} {t}",
+    wd_last_reload_failed: "Poslednje ponovno učitavanje nije uspelo: {name} {t}",
+    wd_last_check: "Provereno {t}",
+    wd_open: "Otvori integraciju",
+    zoom_in: "Prikaži celu karticu",
+    zoom_out: "Nazad na kompaktni prikaz",
+    // Editor
+    title: "Naslov (opciono, podrazumevano je Home Assistant)",
+    show_image: "Prikaži Home Assistant logo",
+    show_system: "Prikaži sistem (CPU, RAM, disk, temperatura)",
+    show_network: "Prikaži mrežu",
+    show_storage: "Prikaži skladište",
+    show_processes: "Prikaži procese",
+    show_hacs: "Prikaži HACS proširenja",
+    show_watchdog: "Prikaži nedostupne integracije (Integration Watchdog)",
+    zoom: "Dugme za uvećanje",
+    zoom_helper: "Prebacuje karticu na pun prikaz i nazad",
+    interface: "Mrežni interfejs (opciono, podrazumevano svi)",
+    language: "Jezik",
+    lang_auto: "Automatski",
+  },
+  it: {
+    cpu: "CPU",
+    ram: "RAM",
+    disk: "Disco",
+    temperature: "Temp.",
+    swap: "Swap",
+    database: "Database",
+    network: "Rete",
+    storage: "Archiviazione",
+    processes: "Processi",
+    uptime: "Tempo di attività:",
+    load: "Carico:",
+    download: "Download",
+    upload: "Upload",
+    total: "Totale",
+    used: "usati",
+    of: "di",
+    hours: "h",
+    days: "g",
+    minutes: "min",
+    running: "In esecuzione",
+    up_to_date: "Aggiornato",
+    update: "Update",
+    no_sm: "Nessuna entità System Monitor trovata. L'integrazione System Monitor è installata e i suoi sensori sono abilitati?",
+    hacs: "HACS",
+    hacs_ok: "HACS aggiornato",
+    hacs_updates_one: "1 aggiornamento HACS",
+    hacs_updates: "{n} aggiornamenti HACS",
+    check_updates: "Controlla aggiornamenti",
+    checking: "Controllo {i}/{n}…",
+    check_failed: "Controllo non riuscito: {e}",
+    last_check: "Ultimo controllo {t}",
+    needs_refresh: "Installa HACS Refresh per controllare gli aggiornamenti di tutte le estensioni da Home Assistant.",
+    github: "Apri su GitHub",
+    check_ext: "Controlla gli aggiornamenti di questa estensione",
+    search_ext: "Cerca estensioni",
+    clear_search: "Cancella la ricerca",
+    no_match: "Nessuna estensione corrispondente",
+    install_all: "Installa tutti gli aggiornamenti ({n})",
+    install_all_confirm: "Installare {n} aggiornamenti HACS?",
+    install_title: "Installa gli aggiornamenti",
+    install_btn: "Installa",
+    cancel: "Annulla",
+    installing: "Installazione {i}/{n}…",
+    install_failed: "Installazione non riuscita: {e}",
+    btn_install: "Installa ({n})",
+    btn_check: "Controlla",
+    procs_ok: "Processi in esecuzione",
+    procs_one: "1 processo arrestato",
+    procs_many: "{n} processi arrestati",
+    integrations: "Integrazioni",
+    st_up_to_date: "Aggiornato",
+    st_unknown: "Sconosciuto",
+    st_update_one: "1 aggiornamento",
+    st_updates: "{n} aggiorn.",
+    st_running: "In esecuzione",
+    st_stopped_one: "1 arrestato",
+    st_stopped: "{n} arrestati",
+    st_available: "Disponibili",
+    st_unavailable_one: "1 non disponibile",
+    st_unavailable: "{n} offline",
+    wd_ok: "Integrazioni disponibili",
+    wd_one: "1 integrazione non disponibile",
+    wd_many: "{n} integrazioni non disponibili",
+    wd_check: "Controlla le integrazioni ora",
+    wd_none: "Tutte le integrazioni sono disponibili.",
+    wd_since: "Non disponibile {t}",
+    wd_reloads_one: "1 ricaricamento",
+    wd_reloads: "{n} ricaricamenti",
+    wd_unavailable: "Non disponibile",
+    wd_gave_up: "Abbandonata",
+    wd_last_reload: "Ultimo ricaricamento: {name} {t}",
+    wd_last_reload_failed: "Ultimo ricaricamento non riuscito: {name} {t}",
+    wd_last_check: "Controllato {t}",
+    wd_open: "Apri l'integrazione",
+    zoom_in: "Mostra la scheda completa",
+    zoom_out: "Torna alla vista compatta",
+    // Editor
+    title: "Titolo (facoltativo, predefinito: Home Assistant)",
+    show_image: "Mostra il logo di Home Assistant",
+    show_system: "Mostra il sistema (CPU, RAM, disco, temperatura)",
+    show_network: "Mostra la rete",
+    show_storage: "Mostra l'archiviazione",
+    show_processes: "Mostra i processi",
+    show_hacs: "Mostra le estensioni HACS",
+    show_watchdog: "Mostra le integrazioni non disponibili (Integration Watchdog)",
+    zoom: "Pulsante zoom",
+    zoom_helper: "Passa alla scheda completa e viceversa",
+    interface: "Interfaccia di rete (facoltativa, predefinito: tutte)",
+    language: "Lingua",
+    lang_auto: "Automatico",
+  },
+  nl: {
+    cpu: "CPU",
+    ram: "RAM",
+    disk: "Schijf",
+    temperature: "Temp.",
+    swap: "Swap",
+    database: "Database",
+    network: "Netwerk",
+    storage: "Opslag",
+    processes: "Processen",
+    uptime: "Uptime:",
+    load: "Belasting:",
+    download: "Download",
+    upload: "Upload",
+    total: "Totaal",
+    used: "gebruikt",
+    of: "van",
+    hours: "u",
+    days: "d",
+    minutes: "min",
+    running: "Actief",
+    up_to_date: "Up-to-date",
+    update: "Update",
+    no_sm: "Geen System Monitor-entiteiten gevonden. Is de System Monitor-integratie geïnstalleerd en zijn de sensoren ingeschakeld?",
+    hacs: "HACS",
+    hacs_ok: "HACS up-to-date",
+    hacs_updates_one: "1 HACS-update",
+    hacs_updates: "{n} HACS-updates",
+    check_updates: "Controleren op updates",
+    checking: "Controleren {i}/{n}…",
+    check_failed: "Controle mislukt: {e}",
+    last_check: "Laatste controle {t}",
+    needs_refresh: "Installeer HACS Refresh om vanuit Home Assistant alle extensies op updates te controleren.",
+    github: "Openen op GitHub",
+    check_ext: "Deze extensie op updates controleren",
+    search_ext: "Extensies zoeken",
+    clear_search: "Zoekopdracht wissen",
+    no_match: "Geen overeenkomende extensie",
+    install_all: "Alle updates installeren ({n})",
+    install_all_confirm: "{n} HACS-updates installeren?",
+    install_title: "Updates installeren",
+    install_btn: "Installeren",
+    cancel: "Annuleren",
+    installing: "Installeren {i}/{n}…",
+    install_failed: "Installatie mislukt: {e}",
+    btn_install: "Installeren ({n})",
+    btn_check: "Controleer",
+    procs_ok: "Processen actief",
+    procs_one: "1 proces gestopt",
+    procs_many: "{n} processen gestopt",
+    integrations: "Integraties",
+    st_up_to_date: "Up-to-date",
+    st_unknown: "Onbekend",
+    st_update_one: "1 update",
+    st_updates: "{n} updates",
+    st_running: "Actief",
+    st_stopped_one: "1 gestopt",
+    st_stopped: "{n} gestopt",
+    st_available: "Beschikbaar",
+    st_unavailable_one: "1 niet beschikbaar",
+    st_unavailable: "{n} offline",
+    wd_ok: "Integraties beschikbaar",
+    wd_one: "1 integratie niet beschikbaar",
+    wd_many: "{n} integraties niet beschikbaar",
+    wd_check: "Integraties nu controleren",
+    wd_none: "Alle integraties zijn beschikbaar.",
+    wd_since: "Niet beschikbaar {t}",
+    wd_reloads_one: "1 keer herladen",
+    wd_reloads: "{n} keer herladen",
+    wd_unavailable: "Niet beschikbaar",
+    wd_gave_up: "Opgegeven",
+    wd_last_reload: "Laatst herladen: {name} {t}",
+    wd_last_reload_failed: "Laatste herlaadpoging mislukt: {name} {t}",
+    wd_last_check: "Gecontroleerd {t}",
+    wd_open: "Integratie openen",
+    zoom_in: "Volledige kaart tonen",
+    zoom_out: "Terug naar de compacte weergave",
+    // Editor
+    title: "Titel (optioneel, standaard Home Assistant)",
+    show_image: "Home Assistant-logo tonen",
+    show_system: "Systeem tonen (CPU, RAM, schijf, temperatuur)",
+    show_network: "Netwerk tonen",
+    show_storage: "Opslag tonen",
+    show_processes: "Processen tonen",
+    show_hacs: "HACS-extensies tonen",
+    show_watchdog: "Niet-beschikbare integraties tonen (Integration Watchdog)",
+    zoom: "Zoomknop",
+    zoom_helper: "Schakelt tussen de volledige kaart en de compacte weergave",
+    interface: "Netwerkinterface (optioneel, standaard alle)",
+    language: "Taal",
+    lang_auto: "Automatisch",
+  },
+  pt: {
+    cpu: "CPU",
+    ram: "RAM",
+    disk: "Disco",
+    temperature: "Temp.",
+    swap: "Swap",
+    database: "Base de dados",
+    network: "Rede",
+    storage: "Armazenamento",
+    processes: "Processos",
+    uptime: "Tempo de atividade:",
+    load: "Carga:",
+    download: "Transferência",
+    upload: "Envio",
+    total: "Total",
+    used: "usados",
+    of: "de",
+    hours: "h",
+    days: "d",
+    minutes: "min",
+    running: "Em execução",
+    up_to_date: "Atualizado",
+    update: "Atualização",
+    no_sm: "Nenhuma entidade do System Monitor encontrada. A integração System Monitor está instalada e os respetivos sensores estão ativados?",
+    hacs: "HACS",
+    hacs_ok: "HACS atualizado",
+    hacs_updates_one: "1 atualização HACS",
+    hacs_updates: "{n} atualizações HACS",
+    check_updates: "Procurar atualizações",
+    checking: "A verificar {i}/{n}…",
+    check_failed: "Falha na verificação: {e}",
+    last_check: "Última verificação {t}",
+    needs_refresh: "Instale o HACS Refresh para procurar atualizações de todas as extensões a partir do Home Assistant.",
+    github: "Abrir no GitHub",
+    check_ext: "Procurar atualizações desta extensão",
+    search_ext: "Pesquisar extensões",
+    clear_search: "Limpar a pesquisa",
+    no_match: "Nenhuma extensão correspondente",
+    install_all: "Instalar todas as atualizações ({n})",
+    install_all_confirm: "Instalar {n} atualizações HACS?",
+    install_title: "Instalar as atualizações",
+    install_btn: "Instalar",
+    cancel: "Cancelar",
+    installing: "A instalar {i}/{n}…",
+    install_failed: "Falha na instalação: {e}",
+    btn_install: "Instalar ({n})",
+    btn_check: "Verificar",
+    procs_ok: "Processos em execução",
+    procs_one: "1 processo parado",
+    procs_many: "{n} processos parados",
+    integrations: "Integrações",
+    st_up_to_date: "Atualizado",
+    st_unknown: "Desconhecido",
+    st_update_one: "1 atualização",
+    st_updates: "{n} atualizações",
+    st_running: "Em execução",
+    st_stopped_one: "1 parado",
+    st_stopped: "{n} parados",
+    st_available: "Disponíveis",
+    st_unavailable_one: "1 indisponível",
+    st_unavailable: "{n} indisponíveis",
+    wd_ok: "Integrações disponíveis",
+    wd_one: "1 integração indisponível",
+    wd_many: "{n} integrações indisponíveis",
+    wd_check: "Verificar as integrações agora",
+    wd_none: "Todas as integrações estão disponíveis.",
+    wd_since: "Indisponível {t}",
+    wd_reloads_one: "1 recarregamento",
+    wd_reloads: "{n} recarregamentos",
+    wd_unavailable: "Indisponível",
+    wd_gave_up: "Abandonada",
+    wd_last_reload: "Último recarregamento: {name} {t}",
+    wd_last_reload_failed: "Falha no último recarregamento: {name} {t}",
+    wd_last_check: "Verificado {t}",
+    wd_open: "Abrir a integração",
+    zoom_in: "Mostrar o cartão completo",
+    zoom_out: "Voltar à vista compacta",
+    // Editor
+    title: "Título (opcional, Home Assistant por predefinição)",
+    show_image: "Mostrar o logótipo do Home Assistant",
+    show_system: "Mostrar o sistema (CPU, RAM, disco, temperatura)",
+    show_network: "Mostrar a rede",
+    show_storage: "Mostrar o armazenamento",
+    show_processes: "Mostrar os processos",
+    show_hacs: "Mostrar as extensões HACS",
+    show_watchdog: "Mostrar as integrações indisponíveis (Integration Watchdog)",
+    zoom: "Botão de zoom",
+    zoom_helper: "Alterna entre o cartão completo e a vista compacta",
+    interface: "Interface de rede (opcional, todas por predefinição)",
+    language: "Idioma",
+    lang_auto: "Automático",
+  },
+  pl: {
+    cpu: "CPU",
+    ram: "RAM",
+    disk: "Dysk",
+    temperature: "Temp.",
+    swap: "Swap",
+    database: "Baza danych",
+    network: "Sieć",
+    storage: "Pamięć masowa",
+    processes: "Procesy",
+    uptime: "Czas pracy:",
+    load: "Obciążenie:",
+    download: "Pobieranie",
+    upload: "Wysyłanie",
+    total: "Łącznie",
+    used: "użyte",
+    of: "z",
+    hours: "godz.",
+    days: "d",
+    minutes: "min",
+    running: "Działa",
+    up_to_date: "Aktualne",
+    update: "Aktualizacja",
+    no_sm: "Nie znaleziono encji System Monitor. Czy integracja System Monitor jest zainstalowana, a jej sensory włączone?",
+    hacs: "HACS",
+    hacs_ok: "HACS aktualny",
+    hacs_updates_one: "1 aktualizacja HACS",
+    hacs_updates: "Aktualizacje HACS: {n}",
+    check_updates: "Sprawdź aktualizacje",
+    checking: "Sprawdzanie {i}/{n}…",
+    check_failed: "Sprawdzanie nie powiodło się: {e}",
+    last_check: "Ostatnie sprawdzenie {t}",
+    needs_refresh: "Zainstaluj HACS Refresh, aby sprawdzać aktualizacje wszystkich rozszerzeń z poziomu Home Assistant.",
+    github: "Otwórz w GitHubie",
+    check_ext: "Sprawdź aktualizacje tego rozszerzenia",
+    search_ext: "Szukaj rozszerzeń",
+    clear_search: "Wyczyść wyszukiwanie",
+    no_match: "Brak pasujących rozszerzeń",
+    install_all: "Zainstaluj wszystkie aktualizacje ({n})",
+    install_all_confirm: "Zainstalować aktualizacje HACS ({n})?",
+    install_title: "Zainstaluj aktualizacje",
+    install_btn: "Zainstaluj",
+    cancel: "Anuluj",
+    installing: "Instalowanie {i}/{n}…",
+    install_failed: "Instalacja nie powiodła się: {e}",
+    btn_install: "Zainstaluj ({n})",
+    btn_check: "Sprawdź",
+    procs_ok: "Procesy działają",
+    procs_one: "1 proces zatrzymany",
+    procs_many: "Zatrzymane procesy: {n}",
+    integrations: "Integracje",
+    st_up_to_date: "Aktualne",
+    st_unknown: "Nieznany",
+    st_update_one: "1 aktualizacja",
+    st_updates: "Aktualizacje: {n}",
+    st_running: "Działa",
+    st_stopped_one: "1 zatrzymany",
+    st_stopped: "Zatrzymane: {n}",
+    st_available: "Dostępne",
+    st_unavailable_one: "1 niedostępna",
+    st_unavailable: "Niedostępne: {n}",
+    wd_ok: "Integracje dostępne",
+    wd_one: "1 integracja niedostępna",
+    wd_many: "Niedostępne integracje: {n}",
+    wd_check: "Sprawdź integracje teraz",
+    wd_none: "Wszystkie integracje są dostępne.",
+    wd_since: "Niedostępna {t}",
+    wd_reloads_one: "1 przeładowanie",
+    wd_reloads: "Przeładowania: {n}",
+    wd_unavailable: "Niedostępna",
+    wd_gave_up: "Porzucona",
+    wd_last_reload: "Ostatnie przeładowanie: {name} {t}",
+    wd_last_reload_failed: "Ostatnie przeładowanie nie powiodło się: {name} {t}",
+    wd_last_check: "Sprawdzono {t}",
+    wd_open: "Otwórz integrację",
+    zoom_in: "Pokaż pełną kartę",
+    zoom_out: "Wróć do widoku kompaktowego",
+    // Editor
+    title: "Tytuł (opcjonalny, domyślnie Home Assistant)",
+    show_image: "Pokaż logo Home Assistant",
+    show_system: "Pokaż system (CPU, RAM, dysk, temperatura)",
+    show_network: "Pokaż sieć",
+    show_storage: "Pokaż pamięć masową",
+    show_processes: "Pokaż procesy",
+    show_hacs: "Pokaż rozszerzenia HACS",
+    show_watchdog: "Pokaż niedostępne integracje (Integration Watchdog)",
+    zoom: "Przycisk powiększenia",
+    zoom_helper: "Przełącza między pełną kartą a widokiem kompaktowym",
+    interface: "Interfejs sieciowy (opcjonalny, domyślnie wszystkie)",
+    language: "Język",
+    lang_auto: "Automatycznie",
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -425,6 +977,19 @@ const fold = (v) => String(v ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g,
 const lang = (hass, config) => {
   const l = (config?.language) || (hass && (hass.locale?.language || hass.language)) || "en";
   return STRINGS[l] ? l : STRINGS[l.split("-")[0]] ? l.split("-")[0] : "en";
+};
+
+/**
+ * Locale for Intl: Home Assistant's full locale when its base matches the card's language (so
+ * regional formats are kept), otherwise the card's language. Home Assistant's "pt" is European
+ * Portuguese, but Intl reads "pt" as Brazilian, hence pt-PT.
+ */
+const intlLocale = (hass, config) => {
+  const l = lang(hass, config);
+  const ha = (hass && (hass.locale?.language || hass.language)) || "";
+  const base = (v) => v.split("-")[0];
+  const out = !config?.language && ha && base(ha) === base(l) && (l !== "sr-Latn" || ha === "sr-Latn") ? ha : l;
+  return out === "pt" ? "pt-PT" : out;
 };
 
 const t = (hass, config, key) => STRINGS[lang(hass, config)][key] ?? STRINGS.en[key] ?? key;
@@ -502,6 +1067,19 @@ const uptimeSec = (s) => {
 const level = (v, warn, crit) => (v === null ? "" : v >= crit ? "crit" : v >= warn ? "warn" : "ok");
 
 const svgIcon = (path, cls = "") => `<svg class="icon ${cls}" viewBox="0 0 24 24"><path d="${path}"/></svg>`;
+
+/**
+ * Each render recreates the spinners: anchored to the start of the document timeline, they all turn in step and a
+ * re-render (a HACS check progressing from 1 to 2 done) carries on from the same angle instead of jumping to 0°.
+ * Without the Web Animations API, a negative delay taken from the clock does nearly the same.
+ */
+const SPIN_PERIOD = 1000;
+const syncSpinners = (root) => {
+  for (const el of root?.querySelectorAll?.(".spin") || []) {
+    if (typeof el.getAnimations === "function") for (const a of el.getAnimations()) a.startTime = 0;
+    else el.style.animationDelay = `-${Date.now() % SPIN_PERIOD}ms`;
+  }
+};
 
 const pct = (used, free) => (used !== null && free !== null && used + free > 0 ? (used / (used + free)) * 100 : null);
 
@@ -1091,7 +1669,7 @@ const BASE_STYLE = `
   .chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
           background: color-mix(in srgb, var(--c, var(--sm-ok)) 15%, transparent); color: var(--c, var(--sm-ok)); }
   .bar { height: 4px; border-radius: 3px; background: var(--divider-color, rgba(127,127,127,.25)); overflow: hidden; }
-  .bar > div { height: 100%; border-radius: 3px; background: var(--c, var(--sm-blue)); transition: width .6s ease; }
+  .bar > div { height: 100%; border-radius: 3px; background: var(--c, var(--sm-blue)); }
   .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 8px; }
   .titles { flex: 1; min-width: 0; }
   /* The status pill shares the title's line, centred on it whatever the subtitle or the logo size. */
@@ -1459,6 +2037,7 @@ class SystemMonitorBase extends HTMLElement {
       const focused = search ? null : focusSelector(active);
       this._html = html;
       this.shadowRoot.innerHTML = html;
+      syncSpinners(this.shadowRoot);
       if (search) {
         const field = this.shadowRoot.querySelector(`[data-search="${search}"]`);
         if (field) {
@@ -1613,20 +2192,26 @@ const ring = (p) => {
 
 /** Status tiles and buttons, shared by the full and the status cards. */
 const TILES_STYLE = `
-  .stats { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; padding: 0 12px 10px; }
-  .stat { display: flex; flex-direction: column; gap: 0; padding: 6px 8px; border-radius: 10px; min-width: 0;
-          background: color-mix(in srgb, var(--c, var(--sm-ok)) 12%, var(--secondary-background-color, transparent)); }
+  /* Tiles of equal width side by side while they fit. A label or a status takes two lines (never a cut word) before its
+     tile goes down to a second row, whose tiles share its width; the tiles of a row keep the same height. */
+  .stats { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 10px; }
+  .stat { flex: 1 1 0; display: flex; flex-direction: column; gap: 0; padding: 6px 8px; border-radius: 10px; min-width: min-content; max-width: 100%;
+          box-sizing: border-box; background: color-mix(in srgb, var(--c, var(--sm-ok)) 12%, var(--secondary-background-color, transparent)); }
   .stat .k { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); min-width: 0; }
-  .stat .k span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stat .k span, .stat .v { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: normal; }
   .stat .k .icon { width: 16px; height: 16px; color: var(--c, var(--sm-ok)); }
-  .stat .v { font-size: 13px; font-weight: 500; color: var(--c, var(--sm-ok)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stat .v { font-size: 13px; font-weight: 500; color: var(--c, var(--sm-ok)); }
   .btn { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500; padding: 6px 12px;
          border: none; border-radius: 10px; cursor: pointer; color: var(--primary-color, #03a9f4);
          background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); }
-  .btn:disabled, .btn[aria-disabled="true"] { cursor: default; opacity: .8; }
+  /* currentColor: the orange Install button of the status card keeps its own tint on hover. */
+  .btn:not(:disabled):not([aria-disabled="true"]):hover { background: color-mix(in srgb, currentColor 24%, transparent); }
+  .btn:disabled, .btn[aria-disabled="true"] { cursor: default; opacity: .5; }
   .btn .icon { width: 16px; height: 16px; }
-  .spin { animation: sm-spin 1s linear infinite; }
+  .spin { animation: sm-spin ${SPIN_PERIOD}ms linear infinite; }
   @keyframes sm-spin { to { transform: rotate(360deg); } }
+  /* Spinners (HACS check, installs, watchdog check) are decorative: the label already says what runs. After .spin, to win. */
+  @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
   .err { font-size: 12px; color: var(--sm-crit); }
 `;
 
@@ -1634,7 +2219,6 @@ const FULL_STYLE = `
   .logo { height: 40px; width: 40px; }
   .section-title.toggle { cursor: pointer; margin-bottom: 0; user-select: none; }
   .section-title .count { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 400; }
-  .section-title .chevron { transition: transform .2s ease; }
   .section-title.closed .chevron { transform: rotate(-90deg); }
   .section-title .chip { text-transform: none; letter-spacing: 0; padding: 0 8px; }
   .section-title .btn-install { cursor: pointer; padding: 2px 8px; }
@@ -1678,18 +2262,26 @@ const FULL_STYLE = `
   .section-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; text-transform: uppercase;
                    letter-spacing: .04em; color: var(--secondary-text-color); margin-bottom: 6px; }
   .section-title .icon { width: 16px; height: 16px; }
-  .gauges { display: grid; grid-template-columns: repeat(var(--n, 3), 1fr); gap: 6px; }
+  /* Narrow cards, long names (Integrationen): the name gives way with an ellipsis (full text in title); the pills,
+     the buttons, the count and the chevron keep their size, and the check button drops its text (.tight, see _fit). */
+  .section-title > * { flex: none; }
+  .section-title > .label, .section-title > .arg { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .section-title.tight .btn-check > span { display: none; }
+  .gauges { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; container-type: inline-size; }
   .gauge { display: flex; flex-direction: column; align-items: center; min-width: 0; }
   .dial { position: relative; width: 100%; max-width: 60px; aspect-ratio: 1; }
   .ring { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
   .ring circle { fill: none; stroke-width: 6; }
   .ring .track { stroke: var(--divider-color, rgba(127,127,127,.25)); }
-  .ring .value { stroke: var(--c, var(--sm-blue)); stroke-linecap: round; transition: stroke-dasharray .6s ease; }
+  .ring .value { stroke: var(--c, var(--sm-blue)); stroke-linecap: round; }
   .dial .val { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .dial .val b { font-size: 14px; font-weight: 500; }
   .dial .val .icon { width: 12px; height: 12px; color: var(--secondary-text-color); }
-  .gauge .lbl { font-size: 12px; color: var(--secondary-text-color); margin-top: 0; text-align: center; }
-  .gauge .lbl2 { font-size: 11px; color: var(--secondary-text-color); opacity: .8; text-align: center; white-space: nowrap; }
+  .gauge .lbl { font-size: 12px; color: var(--secondary-text-color); margin-top: 0; text-align: center; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+  /* Used / total: on two lines (at the slash) rather than over the next gauge. */
+  .gauge .lbl2 { font-size: 11px; color: var(--secondary-text-color); text-align: center; }
+  /* Four gauges on a narrow card: a size smaller, so that the longest labels (Datenträger) still fit. */
+  @container (max-width: 300px) { .gauge .lbl { font-size: 11px; } .gauge .lbl2 { font-size: 10px; } }
   .section-title .arg { text-transform: none; letter-spacing: 0; }
   .facts { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; margin-top: 6px; }
   .facts > span { display: inline-flex; align-items: center; gap: 4px; }
@@ -1754,10 +2346,48 @@ class SystemMonitorCard extends SystemMonitorBase {
       </ha-card>`;
   }
 
+  /** Name of a section title: cut with an ellipsis when the card is too narrow, its full text in title. */
+  _label(key) {
+    const text = esc(this._t(key));
+    return `<span class="label" title="${text}">${text}</span>`;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // The room left for the section names (and the status card's title) depends on the card's width: fit them again
+    // when it changes, in the next frame (resizing the card from the observer's callback would loop).
+    if (typeof ResizeObserver === "undefined") return;
+    this._resizeObserver ??= new ResizeObserver(() => requestAnimationFrame(() => this._fit()));
+    this._resizeObserver.observe(this);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._resizeObserver?.disconnect();
+  }
+
+  _update() {
+    super._update();
+    this._fit();
+  }
+
+  /**
+   * Section titles: when a name is cut (longer names in some languages, narrow cards), the check button shows its
+   * icon only (its text stays in title and aria-label). Same mechanism as the status card's header.
+   */
+  _fit() {
+    for (const head of this.shadowRoot.querySelectorAll?.(".section-title") || []) {
+      const name = head.querySelector(".label");
+      if (!name || !head.clientWidth || !head.querySelector(".btn-check > span")) continue;
+      head.classList.remove("tight");
+      if (name.scrollWidth > name.clientWidth) head.classList.add("tight");
+    }
+  }
+
   _gauge(id, label, icon, value, display, cls, detail = "") {
     return `<div class="gauge clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">
       <div class="dial">${ring(value)}<div class="val">${svgIcon(icon)}<b>${display}</b></div></div>
-      <div class="lbl">${label}</div>
+      <div class="lbl" title="${label}">${label}</div>
       ${detail ? `<div class="lbl2">${detail}</div>` : ""}
     </div>`;
   }
@@ -1784,7 +2414,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       const u = diskUsage(this._hass, d);
       const detail = u.used !== null && u.total !== null ? `${fmtBytes(u.used).split(" ")[0]} / ${fmtBytes(u.total)}` : "";
       gauges.push(
-        this._gauge(d.disk_use_percent || d.disk_use || d.disk_free, `${this._t("disk")} ${esc(mount)}`, ICONS.database, u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, level(u.pct, 80, 90), detail)
+        this._gauge(d.disk_use_percent || d.disk_use || d.disk_free, `${this._t("disk")} ${esc(mount)}`, ICONS.disk, u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, level(u.pct, 80, 90), detail)
       );
     }
 
@@ -1828,7 +2458,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       const id = n[rateKey];
       const total = toBytes(this._s(n[totalKey]));
       return `<div class="tile clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">${svgIcon(icon)}<div style="min-width:0">
-        <div class="k">${esc(label)}</div>
+        <div class="k" title="${esc(label)}">${esc(label)}</div>
         <div class="v">${fmtRate(toBps(this._s(id)))}</div>
         ${total !== null ? `<div class="t">${this._t("total")} ${fmtBytes(total)}</div>` : ""}
       </div></div>`;
@@ -1842,7 +2472,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       </div>`;
     });
     return `<div>
-      <div class="section-title">${svgIcon(ICONS.network)}${this._t("network")}${multi ? "" : `<span class="arg">· ${esc(ifs[0])}</span>`}</div>
+      <div class="section-title">${svgIcon(ICONS.network)}${this._label("network")}${multi ? "" : `<span class="arg" title="${esc(ifs[0])}">· ${esc(ifs[0])}</span>`}</div>
       ${rows.join("")}
     </div>`;
   }
@@ -1875,7 +2505,7 @@ class SystemMonitorCard extends SystemMonitorBase {
         <div class="detail"><span>${fmtBytes(toBytes(this._s(db)))}</span></div>
       </div>`);
     if (!rows.length) return "";
-    return `<div><div class="section-title">${svgIcon(ICONS.database)}${this._t("storage")}</div>${rows.join("")}</div>`;
+    return `<div><div class="section-title">${svgIcon(ICONS.database)}${this._label("storage")}</div>${rows.join("")}</div>`;
   }
 
   _hacs() {
@@ -1902,7 +2532,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       const error = this._checkError || (st?.state === "error" ? st.attributes.error : null);
       const last = this._s(rf.lastCheck)?.state;
       const lastText = !running && last && !["unknown", "unavailable"].includes(last)
-        ? this._t("last_check").replace("{t}", relTime(last, lang(this._hass, this._config)))
+        ? this._t("last_check").replace("{t}", relTime(last, intlLocale(this._hass, this._config)))
         : "";
       if (lastText || error)
         info = `<div class="toolbar">
@@ -1915,7 +2545,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     if (this._installError)
       info += `<div class="toolbar"><span class="err">${esc(this._t("install_failed").replace("{e}", this._installError))}</span></div>`;
     const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="hacs" role="button" aria-expanded="${open}">
-        ${svgIcon(ICONS.hacs)}${this._t("hacs")}
+        ${svgIcon(ICONS.hacs)}${this._label("hacs")}
         ${this._installChip(n, admin)}${check}
         <span class="count">${ext.length}</span>${svgIcon(ICONS.chevron, "chevron")}
       </div>`;
@@ -1991,7 +2621,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     // until a click elsewhere).
     if (!items.length && !this._wdOpen) return "";
     const open = this._wdOpen;
-    const locale = lang(this._hass, this._config);
+    const locale = intlLocale(this._hass, this._config);
     let check = "";
     if (wd.button) {
       const busy = this._s(wd.button)?.state === "unavailable";
@@ -2001,7 +2631,7 @@ class SystemMonitorCard extends SystemMonitorBase {
         </span>`;
     }
     const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="wd" role="button" aria-expanded="${open}">
-        ${svgIcon(ICONS.watchdog)}${this._t("integrations")}
+        ${svgIcon(ICONS.watchdog)}${this._label("integrations")}
         ${items.length ? `<span class="chip crit"><span class="dot"></span>${items.length}</span>` : ""}${check}
         <span class="count"></span>${svgIcon(ICONS.chevron, "chevron")}
       </div>`;
@@ -2042,7 +2672,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     const n = this._stopped(sm).length;
     const open = this._procsUnfolded();
     const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="procs" role="button" aria-expanded="${open}">
-        ${svgIcon(ICONS.process)}${this._t("processes")}
+        ${svgIcon(ICONS.process)}${this._label("processes")}
         ${n ? `<span class="chip crit"><span class="dot"></span>${n}</span>` : ""}
         <span class="count">${entries.length}</span>${svgIcon(ICONS.chevron, "chevron")}
       </div>`;
@@ -2143,8 +2773,10 @@ const MINI_STYLE = `
   /* The status shows in the footer. */
   .title-row > .chip { display: none; }
   .name { font-size: 16px; }
-  .content { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 8px; }
-  .metric { display: grid; grid-template-columns: 18px 64px 1fr 56px; align-items: center; gap: 8px; font-size: 13px; }
+  /* One grid for every metric: the label column widens for the longest label (Datenträger), the same for all rows. */
+  .content { padding: 0 12px 12px; display: grid; grid-template-columns: 18px minmax(64px, max-content) 1fr 56px; gap: 8px; }
+  .content > * { grid-column: 1 / -1; }
+  .metric { display: grid; grid-template-columns: subgrid; align-items: center; font-size: 13px; }
   .metric .icon { color: var(--secondary-text-color); }
   .metric .v { text-align: right; font-weight: 500; }
   .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--secondary-text-color); margin-top: 2px; }
@@ -2193,7 +2825,7 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
         const d = sm.disks[mount];
         const u = diskUsage(this._hass, d);
         rows.push(
-          this._metric(d.disk_use_percent || d.disk_use || d.disk_free, ICONS.database, this._t("disk"), u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, level(u.pct, 80, 90))
+          this._metric(d.disk_use_percent || d.disk_use || d.disk_free, ICONS.disk, this._t("disk"), u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, level(u.pct, 80, 90))
         );
       }
     }
@@ -2251,6 +2883,10 @@ const STATUS_STYLE = `
   /* The tight status row keeps the zoom pinned to the top line, snug to the HACS button. */
   .zoom { align-self: flex-start; margin: -4px -4px 0 -4px; }
   .header .btn.warn { color: var(--sm-warn); background: color-mix(in srgb, var(--sm-warn) 15%, transparent); }
+  /* No room left for the title (measured by _fit): the HACS button shows its icon only (its text stays in
+     title and aria-label), then the title takes two lines. */
+  .header.tight .btn > span { display: none; }
+  .header.tighter .name { white-space: normal; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
   .stats { padding-bottom: 12px; }
   .err { padding: 0 12px 12px; }
 `;
@@ -2264,6 +2900,22 @@ const STATUS_STYLE = `
 class SystemMonitorStatusCard extends SystemMonitorZoomCard {
   static getConfigElement() {
     return document.createElement("system-monitor-status-card-editor");
+  }
+
+  /**
+   * Compact header: when the title is cut (longer labels in some languages, narrow cards), the HACS
+   * button shows its icon only, then the title takes two lines. The status pill and the buttons stay put.
+   */
+  _fit() {
+    super._fit();
+    const header = this._zoomed ? null : this.shadowRoot.querySelector(".header");
+    const name = header?.querySelector(".name");
+    if (!name || !header.clientWidth) return;
+    header.classList.remove("tight", "tighter");
+    for (const cls of ["tight", "tighter"]) {
+      if (name.scrollWidth <= name.clientWidth) return;
+      header.classList.add(cls);
+    }
   }
 
   _compactSize() {
@@ -2315,7 +2967,7 @@ class SystemMonitorStatusCard extends SystemMonitorZoomCard {
     const title = running
       ? this._t("checking").replace("{i}", st.attributes.done ?? 0).replace("{n}", st.attributes.total || "…")
       : last && !["unknown", "unavailable"].includes(last)
-        ? `${this._t("check_updates")} · ${this._t("last_check").replace("{t}", relTime(last, lang(this._hass, this._config)))}`
+        ? `${this._t("check_updates")} · ${this._t("last_check").replace("{t}", relTime(last, intlLocale(this._hass, this._config)))}`
         : this._t("check_updates");
     const label = running ? `${st.attributes.done ?? 0}/${st.attributes.total || "…"}` : this._t("btn_check");
     return btn("hacs-check", "", ICONS.refresh, running, label, title, busy);
@@ -2403,6 +3055,12 @@ class SystemMonitorEditorBase extends HTMLElement {
               { value: "fr", label: "Français" },
               { value: "de", label: "Deutsch" },
               { value: "es", label: "Español" },
+              { value: "sr", label: "Српски" },
+              { value: "sr-Latn", label: "Srpski (latinica)" },
+              { value: "it", label: "Italiano" },
+              { value: "nl", label: "Nederlands" },
+              { value: "pt", label: "Português (Portugal)" },
+              { value: "pl", label: "Polski" },
             ],
           },
         },

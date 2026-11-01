@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.21.7 - 2026-11-01
+
+### Features
+- **Translations**: Added Italian, Dutch, European Portuguese and Polish translations (`it`, `nl`, `pt`, `pl`), chosen automatically from the Home Assistant language (`pt-BR` uses European Portuguese) and offered in the editor's language list. Polish counts use the "label: {n}" form to avoid wrong plural forms.
+
+### Maintenance
+- Tests: key, key-path and placeholder parity and non-empty values for every language, language resolution (`it-IT` → `it`, `nl-BE` → `nl`, `pt` and `pt-BR` → `pt`, `pl-PL` → `pl`, `ja` → `en`) and the editor's language options.
+
+## 1.21.6 - 2026-11-01
+
+### Features
+- **Translations**: Serbian, in Cyrillic (`sr`) and Latin (`sr-Latn`) script, chosen automatically when Home Assistant uses either of them and offered in the editor's language list. Serbian translations by @cpmarexel2f (#42).
+
+### Maintenance
+- Tests: `sr` and `sr-Latn` key parity with English, and language resolution (`fr-FR` → `fr`, `sr-Latn` → `sr-Latn`, `sr` → `sr`, `pt-BR` → `en`).
+
+## 1.21.5 - 2026-10-29
+
+### Fixes
+- **Spinners**: the spinning icon of a running HACS check, an install or an Integration Watchdog check no longer jumps back to its start each time the progress moves on (1/6 to 2/6); it keeps turning smoothly, in the full card as on the status card's button.
+- **Accessibility**: with "reduce motion" turned on in the system, the spinners stay still (the label still shows the progress).
+- **Icons**: the disk gauge of the full card and the disk bar of the mini card use the disk icon, like the disk rows of Storage, instead of the database one.
+- **Readability**: the used / total size under the RAM and disk gauges (`3.02 / 7.81 GiB`) is no longer faded, so it is as readable as the other secondary text (contrast 4.8:1 in light themes, 6.1:1 in dark ones, instead of 3.3:1 and 4.4:1).
+- **Buttons**: the Check, Install and Check now buttons get a hover state, in their own colour, and look clearly dimmed while unavailable.
+
+### Maintenance
+- Removed the bar, ring and chevron transitions, which never played (each render rebuilds the card).
+- Lint: the Biome version is read from `.pre-commit-config.yaml`, and the check fails if the hook and `biome.json` disagree.
+- Tests: reduced motion, spinner phase, icons, gauge detail contrast and button states.
+
 ## 1.21.4 - 2026-10-29
 
 ### Fixes
