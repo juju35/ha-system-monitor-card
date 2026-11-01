@@ -11,6 +11,9 @@ import { shots } from "./screenshot-shots.mjs";
 import { writeIfChanged } from "./screenshot-write.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
+// The mock states are dated from the moment they were imported ("10 minutes ago"): every page reads that same moment,
+// so a slow run (or the last GIF of a long one) never shows "12 minutes ago" and rewrites an unchanged capture.
+const NOW = Date.now();
 const cardJs = readFileSync(`${root}dist/system-monitor-card.js`, "utf8");
 
 const THEMES = {
@@ -89,11 +92,27 @@ const wdChecking = {
 // it and clears the focus ring; returns the page ready to capture.
 async function openCard(s) {
   const page = await browser.newPage({ deviceScaleFactor: 2, viewport: { width: 1000, height: 2000 } });
+  await page.clock.setFixedTime(NOW);
   page.on("pageerror", (err) => console.error(`${s.file}: ${err.message}`));
   await routeLogos(page);
   await page.setContent(page_html(s.theme, s.width));
   await page.addScriptTag({ content: HA_CARD });
   await page.addScriptTag({ content: cardJs });
+  // document.getAnimations() leaves out the shadow roots, where the cards' spinners turn: the GIFs walk them all.
+  await page.evaluate(() => {
+    window.allAnimations = () => {
+      const out = [...document.getAnimations()];
+      const walk = (root) => {
+        for (const el of root.querySelectorAll("*")) {
+          if (!el.shadowRoot) continue;
+          out.push(...el.shadowRoot.getAnimations());
+          walk(el.shadowRoot);
+        }
+      };
+      walk(document);
+      return out;
+    };
+  });
   await page.evaluate(
     ({ type, config, states, entities, devices, open, action, search, install, installing, zoom }) => {
       const el = document.createElement(type);
@@ -184,13 +203,24 @@ for (const gif of gifs) {
   const dir = mkdtempSync(join(tmpdir(), "sm-frames-"));
   const frames = Math.round(FPS * SECONDS);
   for (let i = 0; i < frames; i++) {
-    await page.evaluate((t) => {
-      for (const a of document.getAnimations()) {
-        a.pause();
-        a.currentTime = t;
-      }
-    }, (i * 1000) / FPS);
-    await page.screenshot({ path: join(dir, `f${String(i).padStart(3, "0")}.png`), clip });
+    const t = (i * 1000) / FPS;
+    // A re-render during the capture (a logo falling back) recreates the spinners, which then run from the wall
+    // clock: the frame is taken again until every animation is still paused at `t` after the capture.
+    for (let attempt = 0; ; attempt++) {
+      await page.evaluate((t) => {
+        for (const a of window.allAnimations()) {
+          a.pause();
+          a.currentTime = t;
+        }
+      }, t);
+      await page.screenshot({ path: join(dir, `f${String(i).padStart(3, "0")}.png`), clip });
+      const still = await page.evaluate((t) => {
+        const list = window.allAnimations();
+        return list.length > 0 && list.every((a) => a.playState === "paused" && Math.abs(a.currentTime - t) < 0.5);
+      }, t);
+      if (still) break;
+      if (attempt === 4) throw new Error(`${gif.file}: the animations keep restarting (frame ${i})`);
+    }
   }
   await page.close();
   const out = join(dir, "out.gif");
