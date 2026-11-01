@@ -2192,13 +2192,15 @@ const ring = (p) => {
 
 /** Status tiles and buttons, shared by the full and the status cards. */
 const TILES_STYLE = `
-  .stats { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; padding: 0 12px 10px; }
-  .stat { display: flex; flex-direction: column; gap: 0; padding: 6px 8px; border-radius: 10px; min-width: 0;
-          background: color-mix(in srgb, var(--c, var(--sm-ok)) 12%, var(--secondary-background-color, transparent)); }
+  /* Tiles of equal width side by side while they fit. A label or a status takes two lines (never a cut word) before its
+     tile goes down to a second row, whose tiles share its width; the tiles of a row keep the same height. */
+  .stats { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 10px; }
+  .stat { flex: 1 1 0; display: flex; flex-direction: column; gap: 0; padding: 6px 8px; border-radius: 10px; min-width: min-content; max-width: 100%;
+          box-sizing: border-box; background: color-mix(in srgb, var(--c, var(--sm-ok)) 12%, var(--secondary-background-color, transparent)); }
   .stat .k { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); min-width: 0; }
-  .stat .k span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stat .k span, .stat .v { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: normal; }
   .stat .k .icon { width: 16px; height: 16px; color: var(--c, var(--sm-ok)); }
-  .stat .v { font-size: 13px; font-weight: 500; color: var(--c, var(--sm-ok)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stat .v { font-size: 13px; font-weight: 500; color: var(--c, var(--sm-ok)); }
   .btn { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500; padding: 6px 12px;
          border: none; border-radius: 10px; cursor: pointer; color: var(--primary-color, #03a9f4);
          background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); }
@@ -2260,7 +2262,12 @@ const FULL_STYLE = `
   .section-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; text-transform: uppercase;
                    letter-spacing: .04em; color: var(--secondary-text-color); margin-bottom: 6px; }
   .section-title .icon { width: 16px; height: 16px; }
-  .gauges { display: grid; grid-template-columns: repeat(var(--n, 3), 1fr); gap: 6px; }
+  /* Narrow cards, long names (Integrationen): the name gives way with an ellipsis (full text in title); the pills,
+     the buttons, the count and the chevron keep their size, and the check button drops its text (.tight, see _fit). */
+  .section-title > * { flex: none; }
+  .section-title > .label, .section-title > .arg { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .section-title.tight .btn-check > span { display: none; }
+  .gauges { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; container-type: inline-size; }
   .gauge { display: flex; flex-direction: column; align-items: center; min-width: 0; }
   .dial { position: relative; width: 100%; max-width: 60px; aspect-ratio: 1; }
   .ring { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
@@ -2270,8 +2277,11 @@ const FULL_STYLE = `
   .dial .val { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .dial .val b { font-size: 14px; font-weight: 500; }
   .dial .val .icon { width: 12px; height: 12px; color: var(--secondary-text-color); }
-  .gauge .lbl { font-size: 12px; color: var(--secondary-text-color); margin-top: 0; text-align: center; }
-  .gauge .lbl2 { font-size: 11px; color: var(--secondary-text-color); text-align: center; white-space: nowrap; }
+  .gauge .lbl { font-size: 12px; color: var(--secondary-text-color); margin-top: 0; text-align: center; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+  /* Used / total: on two lines (at the slash) rather than over the next gauge. */
+  .gauge .lbl2 { font-size: 11px; color: var(--secondary-text-color); text-align: center; }
+  /* Four gauges on a narrow card: a size smaller, so that the longest labels (Datenträger) still fit. */
+  @container (max-width: 300px) { .gauge .lbl { font-size: 11px; } .gauge .lbl2 { font-size: 10px; } }
   .section-title .arg { text-transform: none; letter-spacing: 0; }
   .facts { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; margin-top: 6px; }
   .facts > span { display: inline-flex; align-items: center; gap: 4px; }
@@ -2336,10 +2346,48 @@ class SystemMonitorCard extends SystemMonitorBase {
       </ha-card>`;
   }
 
+  /** Name of a section title: cut with an ellipsis when the card is too narrow, its full text in title. */
+  _label(key) {
+    const text = esc(this._t(key));
+    return `<span class="label" title="${text}">${text}</span>`;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // The room left for the section names (and the status card's title) depends on the card's width: fit them again
+    // when it changes, in the next frame (resizing the card from the observer's callback would loop).
+    if (typeof ResizeObserver === "undefined") return;
+    this._resizeObserver ??= new ResizeObserver(() => requestAnimationFrame(() => this._fit()));
+    this._resizeObserver.observe(this);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._resizeObserver?.disconnect();
+  }
+
+  _update() {
+    super._update();
+    this._fit();
+  }
+
+  /**
+   * Section titles: when a name is cut (longer names in some languages, narrow cards), the check button shows its
+   * icon only (its text stays in title and aria-label). Same mechanism as the status card's header.
+   */
+  _fit() {
+    for (const head of this.shadowRoot.querySelectorAll?.(".section-title") || []) {
+      const name = head.querySelector(".label");
+      if (!name || !head.clientWidth || !head.querySelector(".btn-check > span")) continue;
+      head.classList.remove("tight");
+      if (name.scrollWidth > name.clientWidth) head.classList.add("tight");
+    }
+  }
+
   _gauge(id, label, icon, value, display, cls, detail = "") {
     return `<div class="gauge clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">
       <div class="dial">${ring(value)}<div class="val">${svgIcon(icon)}<b>${display}</b></div></div>
-      <div class="lbl">${label}</div>
+      <div class="lbl" title="${label}">${label}</div>
       ${detail ? `<div class="lbl2">${detail}</div>` : ""}
     </div>`;
   }
@@ -2410,7 +2458,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       const id = n[rateKey];
       const total = toBytes(this._s(n[totalKey]));
       return `<div class="tile clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">${svgIcon(icon)}<div style="min-width:0">
-        <div class="k">${esc(label)}</div>
+        <div class="k" title="${esc(label)}">${esc(label)}</div>
         <div class="v">${fmtRate(toBps(this._s(id)))}</div>
         ${total !== null ? `<div class="t">${this._t("total")} ${fmtBytes(total)}</div>` : ""}
       </div></div>`;
@@ -2424,7 +2472,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       </div>`;
     });
     return `<div>
-      <div class="section-title">${svgIcon(ICONS.network)}${this._t("network")}${multi ? "" : `<span class="arg">· ${esc(ifs[0])}</span>`}</div>
+      <div class="section-title">${svgIcon(ICONS.network)}${this._label("network")}${multi ? "" : `<span class="arg" title="${esc(ifs[0])}">· ${esc(ifs[0])}</span>`}</div>
       ${rows.join("")}
     </div>`;
   }
@@ -2457,7 +2505,7 @@ class SystemMonitorCard extends SystemMonitorBase {
         <div class="detail"><span>${fmtBytes(toBytes(this._s(db)))}</span></div>
       </div>`);
     if (!rows.length) return "";
-    return `<div><div class="section-title">${svgIcon(ICONS.database)}${this._t("storage")}</div>${rows.join("")}</div>`;
+    return `<div><div class="section-title">${svgIcon(ICONS.database)}${this._label("storage")}</div>${rows.join("")}</div>`;
   }
 
   _hacs() {
@@ -2497,7 +2545,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     if (this._installError)
       info += `<div class="toolbar"><span class="err">${esc(this._t("install_failed").replace("{e}", this._installError))}</span></div>`;
     const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="hacs" role="button" aria-expanded="${open}">
-        ${svgIcon(ICONS.hacs)}${this._t("hacs")}
+        ${svgIcon(ICONS.hacs)}${this._label("hacs")}
         ${this._installChip(n, admin)}${check}
         <span class="count">${ext.length}</span>${svgIcon(ICONS.chevron, "chevron")}
       </div>`;
@@ -2583,7 +2631,7 @@ class SystemMonitorCard extends SystemMonitorBase {
         </span>`;
     }
     const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="wd" role="button" aria-expanded="${open}">
-        ${svgIcon(ICONS.watchdog)}${this._t("integrations")}
+        ${svgIcon(ICONS.watchdog)}${this._label("integrations")}
         ${items.length ? `<span class="chip crit"><span class="dot"></span>${items.length}</span>` : ""}${check}
         <span class="count"></span>${svgIcon(ICONS.chevron, "chevron")}
       </div>`;
@@ -2624,7 +2672,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     const n = this._stopped(sm).length;
     const open = this._procsUnfolded();
     const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="procs" role="button" aria-expanded="${open}">
-        ${svgIcon(ICONS.process)}${this._t("processes")}
+        ${svgIcon(ICONS.process)}${this._label("processes")}
         ${n ? `<span class="chip crit"><span class="dot"></span>${n}</span>` : ""}
         <span class="count">${entries.length}</span>${svgIcon(ICONS.chevron, "chevron")}
       </div>`;
@@ -2725,8 +2773,10 @@ const MINI_STYLE = `
   /* The status shows in the footer. */
   .title-row > .chip { display: none; }
   .name { font-size: 16px; }
-  .content { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 8px; }
-  .metric { display: grid; grid-template-columns: 18px 64px 1fr 56px; align-items: center; gap: 8px; font-size: 13px; }
+  /* One grid for every metric: the label column widens for the longest label (Datenträger), the same for all rows. */
+  .content { padding: 0 12px 12px; display: grid; grid-template-columns: 18px minmax(64px, max-content) 1fr 56px; gap: 8px; }
+  .content > * { grid-column: 1 / -1; }
+  .metric { display: grid; grid-template-columns: subgrid; align-items: center; font-size: 13px; }
   .metric .icon { color: var(--secondary-text-color); }
   .metric .v { text-align: right; font-weight: 500; }
   .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--secondary-text-color); margin-top: 2px; }
@@ -2852,30 +2902,12 @@ class SystemMonitorStatusCard extends SystemMonitorZoomCard {
     return document.createElement("system-monitor-status-card-editor");
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    // The room left for the title depends on the card's width: fit the header again when it changes,
-    // in the next frame (resizing the card from the observer's callback would loop).
-    if (typeof ResizeObserver === "undefined") return;
-    this._resizeObserver ??= new ResizeObserver(() => requestAnimationFrame(() => this._fit()));
-    this._resizeObserver.observe(this);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this._resizeObserver?.disconnect();
-  }
-
-  _update() {
-    super._update();
-    this._fit();
-  }
-
   /**
    * Compact header: when the title is cut (longer labels in some languages, narrow cards), the HACS
    * button shows its icon only, then the title takes two lines. The status pill and the buttons stay put.
    */
   _fit() {
+    super._fit();
     const header = this._zoomed ? null : this.shadowRoot.querySelector(".header");
     const name = header?.querySelector(".name");
     if (!name || !header.clientWidth) return;
