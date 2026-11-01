@@ -5,7 +5,9 @@
 ### Fixes
 - **Temperature**: with US customary units, or °F chosen as the display unit of the sensor, the CPU temperature is shown in °F (`130°F`) instead of being labelled °C (`130°C`), and the orange / red thresholds apply to the real temperature: a 54 °C CPU no longer shows red in the full and mini cards. Kelvin is handled too.
 - **Narrow cards**: the labels of the tiles, gauges, network tiles, mini card and section titles are no longer cut or overflowing (wrapped on two lines, or an ellipsis with the full text as a tooltip).
-- **Narrow cards, header**: the title always keeps a few letters (`Home As…` instead of nothing); the status pill is cut first, then shows its coloured dot only (its text stays in the tooltip); the zoom and HACS buttons keep their size. On the status card, the title is no longer cut letter by letter on two lines.
+- **Narrow cards, header**: the title always keeps a few letters (`Home As…` instead of nothing); the title gives way before the status pill, which keeps its whole text at usual widths (`Aktualizacja 2026.10.3` at 245 px) and is cut only when the room really lacks, then shows its coloured dot only on a phone (its text stays in the tooltip); the zoom and HACS buttons keep their size. On the status card, the title is no longer cut letter by letter on two lines.
+- **Phone width** (6 columns of a phone screen, ~156 px): the HACS and Integrations section headers of the full card no longer run out of the card (their chevron stuck out by 19 px); the mini card's values are no longer cut (`23%` instead of `2`), its labels give way with an ellipsis and its two network rates wrap; on the status card, the status pill no longer runs under the HACS button (the logo shrinks a little).
+- **Focus**: clearing the HACS search, opening the install popup and toggling the zoom from the keyboard no longer scroll the page.
 - **Narrow cards, Storage**: the mount point (`/media`, `Swap`) keeps its line; the used / total size goes under the bar.
 - **Narrow cards, HACS and integrations lists**: the status pills show their dot only, so the extension names stay readable and the GitHub links stay in the card.
 - **Readability**: the status texts (tiles such as "2 updates", pills such as "Up to date", the Install and Check buttons, errors) are darkened in light themes and lightened in dark ones: 4.7:1 contrast or more instead of 1.55:1 for orange in light themes.
@@ -16,7 +18,8 @@
 
 ### Maintenance
 - Biome 2.6.4.
-- Tests: CPU temperature in °C, °F and K (thresholds, gauge, unavailable), counts of 1, 2, 5, 21 and 22 in every language, narrow-card CSS rules, status text contrast and the editor's form.
+- Tests: CPU temperature in °C, °F and K (thresholds, gauge, unavailable), counts of 1, 2, 5, 21 and 22 in every language, narrow-card and phone-width CSS rules, focus without scrolling, status text contrast and the editor's form.
+- Screenshots: a capture is rewritten only when its decoded pixels change.
 
 ## 1.21.7 - 2026-11-01
 
