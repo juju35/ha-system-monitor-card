@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import { states, entities, devices, updateAvailable, hacsUpdates, procsRunning } from "./mock-states.mjs";
 import { shots } from "./screenshot-shots.mjs";
+import { writeIfChanged } from "./screenshot-write.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const cardJs = readFileSync(`${root}dist/system-monitor-card.js`, "utf8");
@@ -151,12 +152,13 @@ async function openCard(s) {
 for (const s of shots) {
   const page = await openCard(s);
   const box = await page.locator("#root").boundingBox();
-  await page.screenshot({
-    path: `${root}screenshots/${s.file}.png`,
+  const png = await page.screenshot({
     clip: { x: 0, y: 0, width: s.width + 32, height: Math.ceil(box.height) + 32 },
     animations: "disabled",
   });
-  console.log(`screenshots/${s.file}.png`);
+  // Rewritten only when the pixels change: an identical picture never shows up as a modified file.
+  const written = writeIfChanged(`${root}screenshots/${s.file}.png`, png);
+  console.log(`screenshots/${s.file}.png${written ? "" : " (unchanged)"}`);
   await page.close();
 }
 
@@ -191,14 +193,16 @@ for (const gif of gifs) {
     await page.screenshot({ path: join(dir, `f${String(i).padStart(3, "0")}.png`), clip });
   }
   await page.close();
-  const out = `${root}screenshots/${gif.file}.gif`;
+  const out = join(dir, "out.gif");
   // Halve the retina capture and build a per-clip palette: the colours stay clean and the file stays small.
   execFileSync("ffmpeg", [
     "-y", "-loglevel", "error", "-framerate", String(FPS), "-i", join(dir, "f%03d.png"),
     "-vf", `scale=${clip.width}:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128[p];[b][p]paletteuse=dither=bayer:bayer_scale=4`,
     "-loop", "0", out,
   ]);
+  // Same frames, same palette (built from them), ordered dithering: the same GIF; kept unless its frames differ.
+  const written = writeIfChanged(`${root}screenshots/${gif.file}.gif`, readFileSync(out));
   rmSync(dir, { recursive: true });
-  console.log(`screenshots/${gif.file}.gif`);
+  console.log(`screenshots/${gif.file}.gif${written ? "" : " (unchanged)"}`);
 }
 await browser.close();
