@@ -724,12 +724,12 @@ test("the status pill sits in the header row, the status card's one without the 
   full._config = {};
   // On the title's line, right of the title, above the subtitle.
   const head = full._header(sm);
-  assert.match(head, /<div class="title-row"><div class="name">[^<]*<\/div><span class="chip clickable warn"[^>]*title="Update 2026.10.3"><span class="dot"><\/span>Update 2026.10.3<\/span>/);
+  assert.match(head, /<div class="title-row"><div class="name">[^<]*<\/div><span class="chip clickable warn"[^>]*title="Update 2026.10.3"[^>]*><span class="dot"><\/span><span class="chip-text">Update 2026.10.3<\/span><\/span>/);
   assert.doesNotMatch(head, /class="chips"/);
   const status = statusCard(hass);
-  assert.match(status._header(sm), /title="Update 2026.10.3"><span class="dot"><\/span>Update<\/span>/);
+  assert.match(status._header(sm), /title="Update 2026.10.3"[^>]*><span class="dot"><\/span><span class="chip-text">Update<\/span>/);
   status._zoomed = true;
-  assert.match(status._header(sm), /<\/span>Update 2026.10.3<\/span>/);
+  assert.match(status._header(sm), /<span class="chip-text">Update 2026.10.3<\/span>/);
 });
 
 test("the Home Assistant database size comes from the File Size integration", () => {

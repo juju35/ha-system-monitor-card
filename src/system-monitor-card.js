@@ -1670,45 +1670,55 @@ const DIALOG_STYLE = `
   .modal-item { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
   .modal-item span:first-child { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .modal-item span:last-child { flex: none; color: var(--secondary-text-color); font-variant-numeric: tabular-nums; }
-  .modal-item b { font-weight: 500; color: var(--sm-warn); }
+  .modal-item b { font-weight: 500; color: color-mix(in srgb, var(--sm-warn) 45%, var(--primary-text-color)); }
   .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 2px; }
   .modal button.act { border: 0; border-radius: 8px; padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
   .modal button.cancel { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
-  .modal button.primary { background: color-mix(in srgb, var(--primary-color, #03a9f4) 16%, transparent); color: var(--primary-color, #03a9f4); }
+  .modal button.primary { background: color-mix(in srgb, var(--primary-color, #03a9f4) 16%, transparent); color: color-mix(in srgb, var(--primary-color, #03a9f4) 45%, var(--primary-text-color)); }
   .modal button.cancel:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, var(--secondary-background-color, transparent)); }
   .modal button.primary:hover { background: color-mix(in srgb, var(--primary-color, #03a9f4) 24%, transparent); }
 `;
 
 const BASE_STYLE = `
-  :host { --sm-blue: #18bcf2; --sm-ok: var(--success-color, #43a047); --sm-warn: var(--warning-color, #ffa600); --sm-crit: var(--error-color, #db4437); }
+  :host { --sm-blue: #18bcf2; --sm-ok: var(--success-color, #43a047); --sm-warn: var(--warning-color, #ffa600); --sm-crit: var(--error-color, #db4437);
+          --sm-focus: var(--primary-color, #03a9f4); }
+  /* Status colours tint pills, dots, bars, rings and icons; text in a status colour is mixed with the text colour
+     (45 %), so that it reads at 4.5:1 or more on its tinted background in light and dark themes alike. */
   ha-card { overflow: hidden; position: relative; }
   ha-card.dialog-open { min-height: 220px; }
   .icon { width: 18px; height: 18px; fill: currentColor; flex: none; }
   .muted { color: var(--secondary-text-color); --c: var(--secondary-text-color); }
   .clickable { cursor: pointer; }
-  .clickable:focus-visible, [role="button"]:focus-visible { outline: 2px solid var(--sm-blue); outline-offset: -2px; }
+  .clickable:focus-visible, [role="button"]:focus-visible { outline: 2px solid var(--sm-focus); outline-offset: -2px; }
   .ok { --c: var(--sm-blue); } .warn { --c: var(--sm-warn); } .crit { --c: var(--sm-crit); } .good { --c: var(--sm-ok); }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c, var(--sm-ok)); flex: none; display: inline-block; }
   .chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
-          background: color-mix(in srgb, var(--c, var(--sm-ok)) 15%, transparent); color: var(--c, var(--sm-ok)); }
+          background: color-mix(in srgb, var(--c, var(--sm-ok)) 15%, transparent); color: color-mix(in srgb, var(--c, var(--sm-ok)) 45%, var(--primary-text-color)); }
   .bar { height: 4px; border-radius: 3px; background: var(--divider-color, rgba(127,127,127,.25)); overflow: hidden; }
   .bar > div { height: 100%; border-radius: 3px; background: var(--c, var(--sm-blue)); }
-  .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 8px; }
-  .titles { flex: 1; min-width: 0; }
-  /* The status pill shares the title's line, centred on it whatever the subtitle or the logo size. */
+  .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 8px; container: sm-header / inline-size; }
+  .titles { flex: 1 1 auto; min-width: 0; }
+  /* The status pill shares the title's line, centred on it whatever the subtitle or the logo size. On a narrow card
+     the title keeps at least a few letters (then an ellipsis), the pill is cut first (half the line at most), then
+     shows its dot only (its text stays in title and aria-label); the buttons never shrink. */
   .title-row { display: flex; align-items: center; gap: 8px; }
-  .title-row > .name { flex: 1; min-width: 0; }
+  .title-row > .name { flex: 1 1 auto; min-width: min(5ch, 100%); }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .logo { flex: none; object-fit: contain; filter: drop-shadow(0 3px 5px rgba(0,0,0,.2)); }
-  .title-row > .chip { flex: none; white-space: nowrap; }
-  .warning { padding: 16px; color: var(--sm-warn); }
+  .title-row > .chip { flex: 0 1 auto; min-width: 0; max-width: 50%; white-space: nowrap; }
+  .title-row > .chip > .chip-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  @container sm-header (max-width: 230px) {
+    .title-row > .chip { padding: 4px; }
+    .title-row > .chip > .chip-text { display: none; }
+  }
+  .warning { padding: 16px; color: color-mix(in srgb, var(--sm-warn) 45%, var(--primary-text-color)); }
   /* Zoom button of the mini and status cards: rightmost in the header, 8 px from the card's right edge. */
   .zoom { all: unset; flex: none; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;
           display: grid; place-items: center; color: var(--secondary-text-color); }
   .zoom .icon { width: 16px; height: 16px; }
   .zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }
-  .zoom:focus-visible { outline: 2px solid var(--sm-blue); outline-offset: 1px; }
+  .zoom:focus-visible { outline: 2px solid var(--sm-focus); outline-offset: 1px; }
 `;
 
 class SystemMonitorBase extends HTMLElement {
@@ -2080,19 +2090,16 @@ class SystemMonitorBase extends HTMLElement {
     const sub = [coreVersion ? `Core ${coreVersion}` : null, osVersion ? `OS ${osVersion}` : null].filter(Boolean).join(" · ");
     // Status chip: pending Core / OS update, else "up to date" (or "running" without update entities).
     const { pending, unknown } = updateStatus(core, os);
+    // Its full text stays in title and aria-label: on a narrow header the pill is cut, then shows its dot only.
+    const pill = (cls, entity, text, shown = text) =>
+      `<span class="chip ${cls}" data-entity="${entity || ""}" title="${esc(text)}" aria-label="${esc(text)}"><span class="dot"></span><span class="chip-text">${esc(shown)}</span></span>`;
     let chip;
     if (pending) {
       // The status card's compact header shows the new version as a tooltip only, leaving the title its room.
       const text = `${this._t("update")} ${pending.attributes.latest_version || ""}`.trim();
-      chip = `<span class="chip clickable warn" data-entity="${pending.entity_id}" title="${esc(text)}"><span class="dot"></span>${esc(
-        this._compactHeader() ? this._t("update") : text
-      )}</span>`;
-    } else if (unknown)
-      chip = `<span class="chip clickable muted" data-entity="${unknown.entity_id}"><span class="dot"></span>${esc(this._t("st_unknown"))}</span>`;
-    else
-      chip = `<span class="chip good ${core ? "clickable" : ""}" data-entity="${core?.entity_id || ""}"><span class="dot"></span>${this._t(
-        core ? "up_to_date" : "running"
-      )}</span>`;
+      chip = pill("clickable warn", pending.entity_id, text, this._compactHeader() ? this._t("update") : text);
+    } else if (unknown) chip = pill("clickable muted", unknown.entity_id, this._t("st_unknown"));
+    else chip = pill(`good ${core ? "clickable" : ""}`, core?.entity_id, this._t(core ? "up_to_date" : "running"));
     return `
       <div class="header">
         ${c.show_image !== false ? `<img class="logo" src="${IMG_LOGO}" alt="Home Assistant">` : ""}
@@ -2203,6 +2210,10 @@ class SystemMonitorBase extends HTMLElement {
 // Full card
 // ---------------------------------------------------------------------------
 
+/** Status pill of a HACS or Integration Watchdog row: on a narrow list, its dot only (the text stays in title and aria-label). */
+const listPill = (cls, text) =>
+  `<span class="chip ${cls}" title="${esc(text)}" aria-label="${esc(text)}"><span class="dot"></span><span class="chip-text">${esc(text)}</span></span>`;
+
 const ring = (p) => {
   const r = 26;
   const c = 2 * Math.PI * r;
@@ -2223,19 +2234,19 @@ const TILES_STYLE = `
   .stat .k { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); min-width: 0; }
   .stat .k span, .stat .v { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: normal; }
   .stat .k .icon { width: 16px; height: 16px; color: var(--c, var(--sm-ok)); }
-  .stat .v { font-size: 13px; font-weight: 500; color: var(--c, var(--sm-ok)); }
-  .btn { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500; padding: 6px 12px;
-         border: none; border-radius: 10px; cursor: pointer; color: var(--primary-color, #03a9f4);
-         background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); }
-  /* currentColor: the orange Install button of the status card keeps its own tint on hover. */
-  .btn:not(:disabled):not([aria-disabled="true"]):hover { background: color-mix(in srgb, currentColor 24%, transparent); }
+  .stat .v { font-size: 13px; font-weight: 500; color: color-mix(in srgb, var(--c, var(--sm-ok)) 45%, var(--primary-text-color)); }
+  .btn { --btn-c: var(--primary-color, #03a9f4); display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500;
+         padding: 6px 12px; border: none; border-radius: 10px; cursor: pointer; color: color-mix(in srgb, var(--btn-c) 45%, var(--primary-text-color));
+         background: color-mix(in srgb, var(--btn-c) 15%, transparent); }
+  /* --btn-c: the orange Install button of the status card keeps its own tint on hover. */
+  .btn:not(:disabled):not([aria-disabled="true"]):hover { background: color-mix(in srgb, var(--btn-c) 24%, transparent); }
   .btn:disabled, .btn[aria-disabled="true"] { cursor: default; opacity: .5; }
   .btn .icon { width: 16px; height: 16px; }
   .spin { animation: sm-spin ${SPIN_PERIOD}ms linear infinite; }
   @keyframes sm-spin { to { transform: rotate(360deg); } }
   /* Spinners (HACS check, installs, watchdog check) are decorative: the label already says what runs. After .spin, to win. */
   @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
-  .err { font-size: 12px; color: var(--sm-crit); }
+  .err { font-size: 12px; color: color-mix(in srgb, var(--sm-crit) 45%, var(--primary-text-color)); }
 `;
 
 const FULL_STYLE = `
@@ -2252,10 +2263,10 @@ const FULL_STYLE = `
   .toolbar .last { font-size: 12px; }
   .toolbar .hint { font-size: 12px; color: var(--secondary-text-color); text-decoration: none; }
   .toolbar .hint:hover { text-decoration: underline; }
-  .exts { margin-top: 4px; }
+  .exts { margin-top: 4px; container: sm-list / inline-size; }
   .hacs .search { display: flex; align-items: center; gap: 6px; margin: 8px 0 4px; padding: 0 10px; height: 34px; border-radius: 10px;
                   background: var(--secondary-background-color, rgba(127,127,127,.08)); color: var(--secondary-text-color); cursor: text; }
-  .hacs .search:focus-within { outline: 2px solid var(--sm-blue); outline-offset: -2px; }
+  .hacs .search:focus-within { outline: 2px solid var(--sm-focus); outline-offset: -2px; }
   .hacs .search .icon { width: 16px; height: 16px; }
   .hacs .search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font: inherit; font-size: 13px; color: var(--primary-text-color); }
   .hacs .search input::placeholder { color: var(--secondary-text-color); }
@@ -2270,18 +2281,23 @@ const FULL_STYLE = `
   .ext .grow { flex: 1; min-width: 0; }
   .ext-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ext-ver { font-size: 12px; color: var(--secondary-text-color); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .ext-ver b { font-weight: 500; color: var(--sm-warn); }
+  .ext-ver b { font-weight: 500; color: color-mix(in srgb, var(--sm-warn) 45%, var(--primary-text-color)); }
   .ext-logo { width: 28px; height: 28px; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 8px; overflow: hidden; }
   .ext-logo img { width: 100%; height: 100%; object-fit: contain; }
   .ext-logo.fallback, .ext-logo:has(> svg) { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--secondary-text-color); }
   .ext .chip { flex: none; }
+  /* Narrow list: the name comes first, the status pills show their dot only. */
+  @container sm-list (max-width: 300px) {
+    .ext .chip { padding: 4px; }
+    .ext .chip > .chip-text { display: none; }
+  }
   .gh { flex: none; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
         color: var(--secondary-text-color); }
   .gh[role="button"] { cursor: pointer; }
   .gh[aria-disabled="true"] { cursor: default; }
   .gh:hover { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
   .gh.placeholder { visibility: hidden; }
-  .content { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 12px; }
+  .content { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 12px; container: sm-content / inline-size; }
   .section-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; text-transform: uppercase;
                    letter-spacing: .04em; color: var(--secondary-text-color); margin-bottom: 6px; }
   .section-title .icon { width: 16px; height: 16px; }
@@ -2329,6 +2345,11 @@ const FULL_STYLE = `
               color: var(--secondary-text-color); }
   .vol .bar { margin: 4px 0 0; grid-column: 1 / -1; grid-row: 2; }
   .vol .detail { font-size: 11px; color: var(--secondary-text-color); display: flex; justify-content: flex-end; grid-column: 2; grid-row: 1; gap: 8px; }
+  /* Narrow card: the mount point (the main information) keeps the whole line, the used / total size goes under the bar. */
+  @container sm-content (max-width: 300px) {
+    .vol .row { grid-column: 1 / -1; }
+    .vol .detail { grid-column: 1 / -1; grid-row: 3; margin-top: 2px; }
+  }
   .procs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   .procs .chip { font-weight: 400; }
 `;
@@ -2589,11 +2610,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     }</label>`;
     const rows = shown.map((x) => {
       const ver = x.update ? `${esc(x.installed || "?")} → <b>${esc(x.latest || "?")}</b>` : esc(x.installed || "—");
-      const status = x.update
-        ? `<span class="chip warn"><span class="dot"></span>${esc(this._t("update"))}</span>`
-        : x.unknown
-          ? `<span class="chip muted"><span class="dot"></span>${esc(this._t("st_unknown"))}</span>`
-          : `<span class="chip good"><span class="dot"></span>${esc(this._t("up_to_date"))}</span>`;
+      const status = x.update ? listPill("warn", this._t("update")) : listPill(x.unknown ? "muted" : "good", this._t(x.unknown ? "st_unknown" : "up_to_date"));
       const gh = x.repo
         ? `<a class="gh" href="https://github.com/${esc(x.repo)}" target="_blank" rel="noopener noreferrer" title="${esc(this._t("github"))}" aria-label="${esc(this._t("github"))}">${svgIcon(ICONS.github)}</a>`
         : hasRepo
@@ -2673,9 +2690,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       // The domain only when the title doesn't already say it.
       const domain = String(x.title || "").toLowerCase().replace(/[^a-z0-9]/g, "") === String(x.domain).replace(/_/g, "") ? "" : x.domain;
       const sub = [domain, x.since ? this._t("wd_since").replace("{t}", relTime(x.since, locale)) : "", reloads].filter(Boolean).join(" · ");
-      const status = x.gave_up
-        ? `<span class="chip crit"><span class="dot"></span>${esc(this._t("wd_gave_up"))}</span>`
-        : `<span class="chip warn"><span class="dot"></span>${esc(this._t("wd_unavailable"))}</span>`;
+      const status = listPill(x.gave_up ? "crit" : "warn", this._t(x.gave_up ? "wd_gave_up" : "wd_unavailable"));
       const path = `/config/integrations/integration/${encodeURIComponent(x.domain)}`;
       return `<div class="ext clickable" data-action="nav" data-path="${esc(path)}" role="button" tabindex="0" title="${esc(this._t("wd_open"))}">
           ${this._logo({ domain: x.domain, category: "integration" })}
@@ -2903,11 +2918,13 @@ const STATUS_STYLE = `
   .header .btn { flex: none; padding: 6px; font-size: 12px; gap: 4px; white-space: nowrap; }
   /* The tight status row keeps the zoom pinned to the top line, snug to the HACS button. */
   .zoom { align-self: flex-start; margin: -4px -4px 0 -4px; }
-  .header .btn.warn { color: var(--sm-warn); background: color-mix(in srgb, var(--sm-warn) 15%, transparent); }
-  /* No room left for the title (measured by _fit): the HACS button shows its icon only (its text stays in
-     title and aria-label), then the title takes two lines. */
+  .header .btn.warn { --btn-c: var(--sm-warn); }
+  /* No room left for the title (measured by _fit): the HACS button shows its icon only, then the status pill its dot
+     only (their text stays in title and aria-label). The title stays on one line, with an ellipsis: cutting it into
+     two lines broke "Home Assistant" letter by letter on a narrow card. */
   .header.tight .btn > span { display: none; }
-  .header.tighter .name { white-space: normal; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .header.tighter .title-row > .chip { padding: 4px; }
+  .header.tighter .title-row > .chip > .chip-text { display: none; }
   .stats { padding-bottom: 12px; }
   .err { padding: 0 12px 12px; }
 `;
@@ -2925,7 +2942,7 @@ class SystemMonitorStatusCard extends SystemMonitorZoomCard {
 
   /**
    * Compact header: when the title is cut (longer labels in some languages, narrow cards), the HACS
-   * button shows its icon only, then the title takes two lines. The status pill and the buttons stay put.
+   * button shows its icon only, then the status pill its dot only. The buttons never shrink.
    */
   _fit() {
     super._fit();
