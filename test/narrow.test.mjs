@@ -48,13 +48,16 @@ const renders = () => {
 for (const [name, html] of Object.entries(renders())) {
   test(`${name}: the header title keeps a few letters, the pill gives way, the buttons keep their size`, () => {
     const css = styleOf(html);
-    // The title block grows from 0 (it never takes the pill's room first) and keeps 4 letters or more.
+    // The title block grows from 0 (it never takes the pill's room first) and keeps 4 letters and the ellipsis
+    // ("Home…" is 6.1ch of the 16 px title: 4ch kept "Ho…"), measured in the title's font.
     const titles = rulesFor(css, ".titles");
     assert.match(titles, /flex:\s*1 1 0(?:;|\s|$)/);
-    assert.ok(Number(titles.match(/min-width:\s*(\d+)ch/)?.[1]) >= 4, titles);
+    assert.ok(Number(titles.match(/min-width:\s*([\d.]+)ch/)?.[1]) >= 6.5, titles);
+    assert.match(titles, /font-size:\s*16px/);
+    assert.match(rulesFor(css, ".name"), /font-size:\s*16px/);
     const nameRule = rulesFor(css, ".title-row > .name");
     assert.match(nameRule, /flex:\s*1 1 0(?:;|\s|$)/);
-    assert.ok(Number(nameRule.match(/min-width:\s*min\((\d+)ch, 100%\)/)?.[1]) >= 4, nameRule);
+    assert.ok(Number(nameRule.match(/min-width:\s*min\(([\d.]+)ch, 100%\)/)?.[1]) >= 6.5, nameRule);
     assert.match(rulesFor(css, ".name"), /text-overflow:\s*ellipsis/);
     // The pill is cut only when the room really lacks: no cap at half the line.
     const chip = rulesFor(css, ".title-row > .chip");
@@ -179,10 +182,16 @@ test("status card: the title gives way before the pill, which drops to its dot o
   let text = el(50, 50);
   const header = {
     clientWidth: 221,
-    classList: { add: (x) => classes.add(x), remove: (...x) => {
-      for (const y of x) classes.delete(y);
-    } },
-    querySelector: (sel) => (sel === ".name" ? name : sel === ".title-row > .chip > .chip-text" ? text : null),
+    scrollWidth: 221,
+    classList: {
+      add: (x) => classes.add(x),
+      remove: (...x) => {
+        for (const y of x) classes.delete(y);
+      },
+      replace: (a, b) => classes.delete(a) && classes.add(b),
+    },
+    // A hidden pill text (.tighter) measures 0.
+    querySelector: (sel) => (sel === ".name" ? name : sel === ".title-row > .chip > .chip-text" && !classes.has("tighter") ? text : null),
   };
   c.shadowRoot = { querySelector: (sel) => (sel === ".header" ? header : null), querySelectorAll: () => [] };
   c._fit();
@@ -196,9 +205,54 @@ test("status card: the title gives way before the pill, which drops to its dot o
   assert.deepEqual([...classes], [], "nothing cut: nothing hidden");
 });
 
+// A header whose measures follow its classes: the logo (42 px with its gap) gives its room with .bare, the pill's text
+// (dropped with .tighter) needs `pill` px, the title keeps its minimum (4 letters) and the title row overflows (the pill under the HACS button).
+const fakeStatusHeader = ({ room, pill, logo = 42 }) => {
+  const classes = new Set();
+  const left = () => room + (classes.has("bare") ? logo : 0);
+  const text = { get scrollWidth() { return pill; }, get clientWidth() { return Math.max(0, Math.min(pill, left())); } };
+  const name = { scrollWidth: 115, clientWidth: 57 };
+  const row = { clientWidth: 100, get scrollWidth() { return 100 + Math.max(0, (classes.has("tighter") ? 12 : 0) - left()); } };
+  const header = {
+    clientWidth: 221,
+    classList: {
+      add: (x) => classes.add(x),
+      remove: (...x) => {
+        for (const y of x) classes.delete(y);
+      },
+      replace: (a, b) => classes.delete(a) && classes.add(b),
+    },
+    querySelector: (sel) =>
+      sel === ".name" ? name : sel === ".title-row" ? row : sel === ".title-row > .chip > .chip-text" && !classes.has("tighter") ? text : null,
+  };
+  const c = new lib.SystemMonitorStatusCard();
+  c._zoomed = false;
+  c.shadowRoot = { querySelector: (sel) => (sel === ".header" ? header : null), querySelectorAll: () => [] };
+  c._fit();
+  return [...classes].sort();
+};
+
+test("status card: the title keeps 4 letters; the logo gives its room before the pill drops its text", () => {
+  // "Aktualizacja" at 245 px: 30 px short beside 4 letters, the logo's 42 px are enough.
+  assert.deepEqual(fakeStatusHeader({ room: 50, pill: 80 }), ["bare", "tight"]);
+  // Even without the logo the text does not fit: the pill shows its dot and the logo comes back.
+  assert.deepEqual(fakeStatusHeader({ room: 20, pill: 80 }), ["tight", "tighter"]);
+  // Phone width: not even room for the dot beside the logo and 4 letters: both give way.
+  assert.deepEqual(fakeStatusHeader({ room: 4, pill: 80 }), ["bare", "tight", "tighter"]);
+});
+
+test("full card and zoomed cards: a pill that does not fit beside 4 letters of the title goes under it, whole", () => {
+  for (const [name, html] of Object.entries(renders())) {
+    if (name === "status") continue;
+    assert.match(rulesFor(styleOf(html), ".title-row"), /flex-wrap:\s*wrap/, name);
+  }
+  // The status card keeps one line: its pill drops to its dot (see _fit).
+  assert.doesNotMatch(rulesFor(styleOf(renders().status), ".title-row"), /flex-wrap:\s*wrap/);
+});
+
 test("full card under ~255 px: the logo and the title row's gap give 12 px to the pill, so that it keeps its text at 245 px", () => {
   const css = styleOf(card(lib.SystemMonitorCard, hassWith(updateAvailable))._render());
-  // "Aktualizacja 2026.10.3" lacked 12 px at 245 px (221 px inside the header) beside 4 letters of the title.
+  // At 245 px (221 px inside the header) the pill keeps 12 px more beside the title; a longer one wraps under it.
   const blocks = containerBlocks(css, "sm-header").filter((b) => b.max >= 221 && /\.logo\s*\{/.test(b.body));
   assert.ok(blocks.length, "no @container sm-header block for a 245 px card");
   const body = blocks.map((b) => b.body).join("");
@@ -211,17 +265,22 @@ test("full card under ~255 px: the logo and the title row's gap give 12 px to th
   for (const b of blocks) assert.doesNotMatch(b.body, /chip-text/);
 });
 
-test("status card at phone width: the logo shrinks so that 4 letters and the pill's dot fit beside the HACS and zoom buttons", () => {
+test("status card at phone width: the logo gives its room (class bare) so that 4 letters and the pill fit beside the buttons", () => {
   const css = styleOf(card(lib.SystemMonitorStatusCard, hassWith(updateAvailable))._render());
-  // 132 px inside the header: 12 px gaps, HACS icon button 28 px, zoom 24 - 8 px of negative margins, then the title
-  // row (4 letters of a 16 px title ~36 px, 4 px gap, 12 px dot pill) needs 52 px: 132 - 12 - 28 - 16 - 52 = 24 px.
-  const phone = containerBlocks(css, "sm-header").filter((b) => b.max >= PHONE && /\.logo\s*\{/.test(b.body));
-  assert.ok(phone.length, "no phone-width @container sm-header block for the logo");
-  const logo = phone.map((b) => b.body.match(/\.logo\s*\{([^}]*)\}/)[1]).join(";");
-  assert.ok(Number(logo.match(/width:\s*(\d+)px/)?.[1]) <= 24, logo);
-  assert.match(logo, /margin-right:\s*0/);
-  // A 170 px card (146 px inside) still shows the full-size logo: the rule stops below that.
-  for (const b of phone) assert.ok(b.max < 146, `@container sm-header (max-width: ${b.max}px)`);
+  assert.match(rulesFor(css, ".header.bare .logo"), /display:\s*none/);
+  // No container rule hides the logo of a 6-column phone card (132 px inside the header) on its own: _fit decides.
+  for (const b of containerBlocks(css, "sm-header").filter((x) => /\.logo\s*\{[^}]*display:\s*none/.test(x.body)))
+    assert.ok(b.max < PHONE, `@container sm-header (max-width: ${b.max}px)`);
+});
+
+test("every card under its minimum width (flex row of two cards): the logo gives its room to the title", () => {
+  const hass = hassWith(updateAvailable);
+  for (const Cls of [lib.SystemMonitorCard, lib.SystemMonitorMiniCard, lib.SystemMonitorStatusCard]) {
+    const css = styleOf(card(Cls, hass)._render());
+    const blocks = containerBlocks(css, "sm-header").filter((b) => /\.header \.logo\s*\{[^}]*display:\s*none/.test(b.body));
+    assert.ok(blocks.length, Cls.name);
+    for (const b of blocks) assert.ok(b.max < PHONE, `${Cls.name}: @container sm-header (max-width: ${b.max}px)`);
+  }
 });
 
 test("full card at phone width: the section titles drop their icon and tighten so that the chevron stays inside", () => {

@@ -1697,13 +1697,15 @@ const BASE_STYLE = `
   .bar { height: 4px; border-radius: 3px; background: var(--divider-color, rgba(127,127,127,.25)); overflow: hidden; }
   .bar > div { height: 100%; border-radius: 3px; background: var(--c, var(--sm-blue)); }
   .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 8px; container: sm-header / inline-size; }
-  .titles { flex: 1 1 0; min-width: 4ch; }
+  /* The title keeps 4 letters and its ellipsis ("Home…", 6.5ch of the 16 px title): the block measures its minimum in the
+     title's font (its other lines set their own sizes). */
+  .titles { flex: 1 1 0; min-width: 6.5ch; font-size: 16px; }
   /* The status pill shares the title's line, centred on it whatever the subtitle or the logo size. The title grows
      from 0 (flex-basis 0): the pill keeps its whole text while the title can still give way, down to a few letters
      (then an ellipsis); only then is the pill cut, and on a narrow header it shows its dot only (its text stays in
      title and aria-label). The buttons never shrink. */
   .title-row { display: flex; align-items: center; gap: 8px; }
-  .title-row > .name { flex: 1 1 0; min-width: min(4ch, 100%); }
+  .title-row > .name { flex: 1 1 0; min-width: min(6.5ch, 100%); }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .logo { flex: none; object-fit: contain; filter: drop-shadow(0 3px 5px rgba(0,0,0,.2)); }
@@ -1712,6 +1714,11 @@ const BASE_STYLE = `
   @container sm-header (max-width: 180px) {
     .title-row > .chip { padding: 4px; }
     .title-row > .chip > .chip-text { display: none; }
+  }
+  /* Under the cards' minimum width (6 columns of a 320 px screen, 132 px inside the header), as in a flex row of two
+     cards: the logo gives its room, so that the title keeps 4 letters and the zoom button stays inside. */
+  @container sm-header (max-width: 131px) {
+    .header .logo { display: none; }
   }
   .warning { padding: 16px; color: color-mix(in srgb, var(--sm-warn) 45%, var(--primary-text-color)); }
   /* Zoom button of the mini and status cards: rightmost in the header, 8 px from the card's right edge. */
@@ -2254,12 +2261,15 @@ const TILES_STYLE = `
 
 const FULL_STYLE = `
   .logo { height: 40px; width: 40px; }
-  /* A narrow card (under ~255 px) gives the pill the logo's last 8 px and 4 px of its gap: "Aktualizacja 2026.10.3"
-     keeps its whole text at 245 px, beside 4 letters of the title. */
+  /* A narrow card (under ~255 px) gives the pill the logo's last 8 px and 4 px of its gap: "Update 2026.10.3" stays
+     beside 4 letters of the title at 245 px. */
   @container sm-header (max-width: 230px) {
     .logo { height: 32px; width: 32px; }
     .title-row { gap: 4px; }
   }
+  /* Still too narrow for the pill beside 4 letters of the title (a longer label, or the zoom button of a zoomed mini or
+     status card in a narrow masonry column): the pill goes under the title, whole, instead of being cut. */
+  .title-row { flex-wrap: wrap; row-gap: 2px; }
   .section-title.toggle { cursor: pointer; margin-bottom: 0; user-select: none; }
   .section-title .count { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 400; }
   .section-title.closed .chevron { transform: rotate(-90deg); }
@@ -2947,11 +2957,10 @@ const STATUS_STYLE = `
   .header.tight .btn > span { display: none; }
   .header.tighter .title-row > .chip { padding: 4px; }
   .header.tighter .title-row > .chip > .chip-text { display: none; }
-  /* Phone width (6 columns of a 320 px screen, 132 px inside the header): the logo shrinks so that 4 letters of the
-     title and the pill's dot keep their room next to the HACS and zoom buttons, without running under them. */
-  @container sm-header (max-width: 145px) {
-    .logo { height: 24px; width: 24px; margin-right: 0; }
-  }
+  /* Between the two, the logo gives its room (measured by _fit too): at phone width (6 columns of a 320 to 364 px
+     screen, 132 to 154 px inside the header) 4 letters of the title and the pill's dot keep their room next to the
+     HACS and zoom buttons, and a longer pill ("Aktualizacja") keeps its text at 245 px. */
+  .header.bare .logo { display: none; }
   .stats { padding-bottom: 12px; }
   .err { padding: 0 12px 12px; }
 `;
@@ -2969,8 +2978,8 @@ class SystemMonitorStatusCard extends SystemMonitorZoomCard {
 
   /**
    * Compact header: when the title is cut (longer labels in some languages, narrow cards), the HACS
-   * button shows its icon only; the status pill shows its dot only when its own text no longer fits
-   * (the title has then given way down to a few letters). The buttons never shrink.
+   * button shows its icon only; when the status pill's text no longer fits (the title has then given way down to
+   * 4 letters), the logo gives its room, then the pill shows its dot only. The buttons never shrink.
    */
   _fit() {
     super._fit();
@@ -2978,10 +2987,19 @@ class SystemMonitorStatusCard extends SystemMonitorZoomCard {
     const name = header?.querySelector(".name");
     if (!name || !header.clientWidth) return;
     const cut = (el) => !!el && el.scrollWidth > el.clientWidth;
-    header.classList.remove("tight", "tighter");
+    header.classList.remove("tight", "tighter", "bare");
     if (!cut(name)) return;
     header.classList.add("tight");
-    if (cut(header.querySelector(".title-row > .chip > .chip-text"))) header.classList.add("tighter");
+    // The title keeps 4 letters (its min-width): the pill's text lacks room first, then the title row overflows its
+    // block, the pill running under the HACS button.
+    const short = () => cut(header.querySelector(".title-row > .chip > .chip-text")) || cut(header.querySelector(".title-row"));
+    // The logo gives its room so that the pill keeps its text; if that is not enough, the pill shows its dot only and
+    // the logo comes back, unless the header still lacks room.
+    if (!short()) return;
+    header.classList.add("bare");
+    if (!short()) return;
+    header.classList.replace("bare", "tighter");
+    if (short()) header.classList.add("bare");
   }
 
   _compactSize() {
