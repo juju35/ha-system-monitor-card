@@ -19,7 +19,7 @@
 ### Maintenance
 - Biome 2.6.4.
 - Tests: CPU temperature in °C, °F and K (thresholds, gauge, unavailable), counts of 1, 2, 5, 21 and 22 in every language, narrow-card and phone-width CSS rules, focus without scrolling, status text contrast and the editor's form.
-- Screenshots: a capture is rewritten only when its decoded pixels change.
+- Screenshots: a capture is rewritten only when its decoded pixels change; the page clock is fixed ("10 minutes ago" no longer drifts during a run) and the GIF spinners are really frozen frame by frame (they turn in the cards' shadow roots, which `document.getAnimations()` leaves out): two runs give byte-identical GIFs.
 
 ## 1.21.7 - 2026-11-01
 
