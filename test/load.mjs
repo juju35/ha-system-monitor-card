@@ -14,6 +14,7 @@ const NAMES = [
   "sameSignature",
   "focusSelector",
   "fmtBytes",
+  "ICONS",
   "STRINGS",
   "lang",
   "SystemMonitorCard",
