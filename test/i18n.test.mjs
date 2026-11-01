@@ -4,13 +4,17 @@ import { load } from "./load.mjs";
 
 const { STRINGS } = load();
 const placeholders = (s) => (String(s).match(/\{\w+\}/g) || []).sort();
+const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl"];
 
 test("I18N parity: every language has exactly the English keys and placeholders", () => {
   const ref = Object.keys(STRINGS.en).sort();
-  for (const l of ["fr", "de", "es", "sr", "sr-Latn"]) {
+  for (const l of LANGS) {
     assert.ok(STRINGS[l], `missing language ${l}`);
     assert.deepEqual(Object.keys(STRINGS[l]).sort(), ref, `keys of ${l}`);
-    for (const k of ref) assert.deepEqual(placeholders(STRINGS[l][k]), placeholders(STRINGS.en[k]), `placeholders of ${l}.${k}`);
+    for (const k of ref) {
+      assert.deepEqual(placeholders(STRINGS[l][k]), placeholders(STRINGS.en[k]), `placeholders of ${l}.${k}`);
+      assert.ok(String(STRINGS[l][k]).trim(), `empty value ${l}.${k}`);
+    }
   }
 });
 
@@ -22,9 +26,9 @@ const shape = (v, p = "") =>
       ? Object.keys(v).flatMap((k) => shape(v[k], p ? `${p}.${k}` : k))
       : [p];
 
-test("I18N parity: sr and sr-Latn have exactly the English key paths, arrays of the same length", () => {
+test("I18N parity: every language has exactly the English key paths, arrays of the same length", () => {
   const ref = shape(STRINGS.en).sort();
-  for (const l of ["sr", "sr-Latn"]) {
+  for (const l of LANGS) {
     assert.ok(STRINGS[l], `missing language ${l}`);
     assert.deepEqual(shape(STRINGS[l]).sort(), ref, `key paths of ${l}`);
   }
@@ -36,7 +40,6 @@ test("the language resolves to the full code, then the part before the dash, the
   assert.equal(lang({ language: "sr-Latn" }, {}), "sr-Latn");
   assert.equal(lang({ locale: { language: "sr-Latn" } }, {}), "sr-Latn");
   assert.equal(lang({ language: "sr" }, {}), "sr");
-  assert.equal(lang({ language: "pt-BR" }, {}), "en");
   assert.equal(lang({ language: "sr" }, { language: "sr-Latn" }), "sr-Latn");
 });
 
@@ -48,11 +51,40 @@ test("the language resolves to de and es, with an English fallback", () => {
   assert.equal(lang({ language: "xx" }, {}), "en");
 });
 
+test("the language resolves to it, nl, pt and pl, pt-BR falling back to European Portuguese", () => {
+  const { lang } = load();
+  assert.equal(lang({ language: "it-IT" }, {}), "it");
+  assert.equal(lang({ language: "nl-BE" }, {}), "nl");
+  assert.equal(lang({ language: "pt" }, {}), "pt");
+  assert.equal(lang({ language: "pt-BR" }, {}), "pt");
+  assert.equal(lang({ locale: { language: "pl-PL" } }, {}), "pl");
+  assert.equal(lang({ language: "sr-Latn" }, {}), "sr-Latn");
+  assert.equal(lang({ language: "ja" }, {}), "en");
+  assert.equal(lang({ language: "en" }, { language: "pl" }), "pl");
+});
+
 test("the editor offers every language", () => {
   const { SystemMonitorMiniCardEditor } = load();
   const editor = new SystemMonitorMiniCardEditor();
   editor._config = {};
   const field = editor._schema().find((f) => f.name === "language");
   const values = field.selector.select.options.map((o) => o.value);
-  for (const l of ["en", "fr", "de", "es", "sr", "sr-Latn"]) assert.ok(values.includes(l), `editor option ${l}`);
+  for (const l of ["en", ...LANGS]) assert.ok(values.includes(l), `editor option ${l}`);
+  assert.equal(field.selector.select.options.find((o) => o.value === "pt").label, "Português (Portugal)");
+});
+
+test("Intl gets European Portuguese for pt, keeps regional locales, and the language option wins", () => {
+  const { intlLocale } = load();
+  assert.equal(intlLocale({ language: "pt" }, {}), "pt-PT");
+  assert.equal(intlLocale({ locale: { language: "pt" } }, {}), "pt-PT");
+  assert.equal(intlLocale({ language: "pt-BR" }, {}), "pt-BR");
+  assert.equal(intlLocale({ language: "fr-CA" }, {}), "fr-CA");
+  assert.equal(intlLocale({ language: "de" }, { language: "pt" }), "pt-PT");
+  assert.equal(intlLocale({ language: "pt-BR" }, { language: "pt" }), "pt-PT");
+  assert.equal(intlLocale({ language: "pt-BR" }, { language: "fr" }), "fr");
+  assert.equal(intlLocale({ language: "ja" }, {}), "en");
+  assert.equal(intlLocale({ language: "sr-Latn" }, {}), "sr-Latn");
+  assert.equal(intlLocale({ language: "sr" }, { language: "sr-Latn" }), "sr-Latn");
+  assert.equal(intlLocale({ language: "sr-Latn" }, { language: "sr" }), "sr");
+  assert.equal(new Intl.RelativeTimeFormat(intlLocale({ language: "pt" }, {}), { numeric: "auto" }).resolvedOptions().locale, "pt-PT");
 });

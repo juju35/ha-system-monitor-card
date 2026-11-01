@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.21.7 - 2026-11-01
+
+### Features
+- **Translations**: Added Italian, Dutch, European Portuguese and Polish translations (`it`, `nl`, `pt`, `pl`), chosen automatically from the Home Assistant language (`pt-BR` uses European Portuguese) and offered in the editor's language list. Polish counts use the "label: {n}" form to avoid wrong plural forms.
+
+### Maintenance
+- Tests: key, key-path and placeholder parity and non-empty values for every language, language resolution (`it-IT` → `it`, `nl-BE` → `nl`, `pt` and `pt-BR` → `pt`, `pl-PL` → `pl`, `ja` → `en`) and the editor's language options.
+
 ## 1.21.6 - 2026-11-01
 
 ### Features

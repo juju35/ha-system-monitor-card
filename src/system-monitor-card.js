@@ -594,6 +594,374 @@ const STRINGS = {
     language: "Jezik",
     lang_auto: "Automatski",
   },
+  it: {
+    cpu: "CPU",
+    ram: "RAM",
+    disk: "Disco",
+    temperature: "Temp.",
+    swap: "Swap",
+    database: "Database",
+    network: "Rete",
+    storage: "Archiviazione",
+    processes: "Processi",
+    uptime: "Tempo di attività:",
+    load: "Carico:",
+    download: "Download",
+    upload: "Upload",
+    total: "Totale",
+    used: "usati",
+    of: "di",
+    hours: "h",
+    days: "g",
+    minutes: "min",
+    running: "In esecuzione",
+    up_to_date: "Aggiornato",
+    update: "Update",
+    no_sm: "Nessuna entità System Monitor trovata. L'integrazione System Monitor è installata e i suoi sensori sono abilitati?",
+    hacs: "HACS",
+    hacs_ok: "HACS aggiornato",
+    hacs_updates_one: "1 aggiornamento HACS",
+    hacs_updates: "{n} aggiornamenti HACS",
+    check_updates: "Controlla aggiornamenti",
+    checking: "Controllo {i}/{n}…",
+    check_failed: "Controllo non riuscito: {e}",
+    last_check: "Ultimo controllo {t}",
+    needs_refresh: "Installa HACS Refresh per controllare gli aggiornamenti di tutte le estensioni da Home Assistant.",
+    github: "Apri su GitHub",
+    check_ext: "Controlla gli aggiornamenti di questa estensione",
+    search_ext: "Cerca estensioni",
+    clear_search: "Cancella la ricerca",
+    no_match: "Nessuna estensione corrispondente",
+    install_all: "Installa tutti gli aggiornamenti ({n})",
+    install_all_confirm: "Installare {n} aggiornamenti HACS?",
+    install_title: "Installa gli aggiornamenti",
+    install_btn: "Installa",
+    cancel: "Annulla",
+    installing: "Installazione {i}/{n}…",
+    install_failed: "Installazione non riuscita: {e}",
+    btn_install: "Installa ({n})",
+    btn_check: "Controlla",
+    procs_ok: "Processi in esecuzione",
+    procs_one: "1 processo arrestato",
+    procs_many: "{n} processi arrestati",
+    integrations: "Integrazioni",
+    st_up_to_date: "Aggiornato",
+    st_unknown: "Sconosciuto",
+    st_update_one: "1 aggiornamento",
+    st_updates: "{n} aggiorn.",
+    st_running: "In esecuzione",
+    st_stopped_one: "1 arrestato",
+    st_stopped: "{n} arrestati",
+    st_available: "Disponibili",
+    st_unavailable_one: "1 non disponibile",
+    st_unavailable: "{n} offline",
+    wd_ok: "Integrazioni disponibili",
+    wd_one: "1 integrazione non disponibile",
+    wd_many: "{n} integrazioni non disponibili",
+    wd_check: "Controlla le integrazioni ora",
+    wd_none: "Tutte le integrazioni sono disponibili.",
+    wd_since: "Non disponibile {t}",
+    wd_reloads_one: "1 ricaricamento",
+    wd_reloads: "{n} ricaricamenti",
+    wd_unavailable: "Non disponibile",
+    wd_gave_up: "Abbandonata",
+    wd_last_reload: "Ultimo ricaricamento: {name} {t}",
+    wd_last_reload_failed: "Ultimo ricaricamento non riuscito: {name} {t}",
+    wd_last_check: "Controllato {t}",
+    wd_open: "Apri l'integrazione",
+    zoom_in: "Mostra la scheda completa",
+    zoom_out: "Torna alla vista compatta",
+    // Editor
+    title: "Titolo (facoltativo, predefinito: Home Assistant)",
+    show_image: "Mostra il logo di Home Assistant",
+    show_system: "Mostra il sistema (CPU, RAM, disco, temperatura)",
+    show_network: "Mostra la rete",
+    show_storage: "Mostra l'archiviazione",
+    show_processes: "Mostra i processi",
+    show_hacs: "Mostra le estensioni HACS",
+    show_watchdog: "Mostra le integrazioni non disponibili (Integration Watchdog)",
+    zoom: "Pulsante zoom",
+    zoom_helper: "Passa alla scheda completa e viceversa",
+    interface: "Interfaccia di rete (facoltativa, predefinito: tutte)",
+    language: "Lingua",
+    lang_auto: "Automatico",
+  },
+  nl: {
+    cpu: "CPU",
+    ram: "RAM",
+    disk: "Schijf",
+    temperature: "Temp.",
+    swap: "Swap",
+    database: "Database",
+    network: "Netwerk",
+    storage: "Opslag",
+    processes: "Processen",
+    uptime: "Uptime:",
+    load: "Belasting:",
+    download: "Download",
+    upload: "Upload",
+    total: "Totaal",
+    used: "gebruikt",
+    of: "van",
+    hours: "u",
+    days: "d",
+    minutes: "min",
+    running: "Actief",
+    up_to_date: "Up-to-date",
+    update: "Update",
+    no_sm: "Geen System Monitor-entiteiten gevonden. Is de System Monitor-integratie geïnstalleerd en zijn de sensoren ingeschakeld?",
+    hacs: "HACS",
+    hacs_ok: "HACS up-to-date",
+    hacs_updates_one: "1 HACS-update",
+    hacs_updates: "{n} HACS-updates",
+    check_updates: "Controleren op updates",
+    checking: "Controleren {i}/{n}…",
+    check_failed: "Controle mislukt: {e}",
+    last_check: "Laatste controle {t}",
+    needs_refresh: "Installeer HACS Refresh om vanuit Home Assistant alle extensies op updates te controleren.",
+    github: "Openen op GitHub",
+    check_ext: "Deze extensie op updates controleren",
+    search_ext: "Extensies zoeken",
+    clear_search: "Zoekopdracht wissen",
+    no_match: "Geen overeenkomende extensie",
+    install_all: "Alle updates installeren ({n})",
+    install_all_confirm: "{n} HACS-updates installeren?",
+    install_title: "Updates installeren",
+    install_btn: "Installeren",
+    cancel: "Annuleren",
+    installing: "Installeren {i}/{n}…",
+    install_failed: "Installatie mislukt: {e}",
+    btn_install: "Installeren ({n})",
+    btn_check: "Controleer",
+    procs_ok: "Processen actief",
+    procs_one: "1 proces gestopt",
+    procs_many: "{n} processen gestopt",
+    integrations: "Integraties",
+    st_up_to_date: "Up-to-date",
+    st_unknown: "Onbekend",
+    st_update_one: "1 update",
+    st_updates: "{n} updates",
+    st_running: "Actief",
+    st_stopped_one: "1 gestopt",
+    st_stopped: "{n} gestopt",
+    st_available: "Beschikbaar",
+    st_unavailable_one: "1 niet beschikbaar",
+    st_unavailable: "{n} offline",
+    wd_ok: "Integraties beschikbaar",
+    wd_one: "1 integratie niet beschikbaar",
+    wd_many: "{n} integraties niet beschikbaar",
+    wd_check: "Integraties nu controleren",
+    wd_none: "Alle integraties zijn beschikbaar.",
+    wd_since: "Niet beschikbaar {t}",
+    wd_reloads_one: "1 keer herladen",
+    wd_reloads: "{n} keer herladen",
+    wd_unavailable: "Niet beschikbaar",
+    wd_gave_up: "Opgegeven",
+    wd_last_reload: "Laatst herladen: {name} {t}",
+    wd_last_reload_failed: "Laatste herlaadpoging mislukt: {name} {t}",
+    wd_last_check: "Gecontroleerd {t}",
+    wd_open: "Integratie openen",
+    zoom_in: "Volledige kaart tonen",
+    zoom_out: "Terug naar de compacte weergave",
+    // Editor
+    title: "Titel (optioneel, standaard Home Assistant)",
+    show_image: "Home Assistant-logo tonen",
+    show_system: "Systeem tonen (CPU, RAM, schijf, temperatuur)",
+    show_network: "Netwerk tonen",
+    show_storage: "Opslag tonen",
+    show_processes: "Processen tonen",
+    show_hacs: "HACS-extensies tonen",
+    show_watchdog: "Niet-beschikbare integraties tonen (Integration Watchdog)",
+    zoom: "Zoomknop",
+    zoom_helper: "Schakelt tussen de volledige kaart en de compacte weergave",
+    interface: "Netwerkinterface (optioneel, standaard alle)",
+    language: "Taal",
+    lang_auto: "Automatisch",
+  },
+  pt: {
+    cpu: "CPU",
+    ram: "RAM",
+    disk: "Disco",
+    temperature: "Temp.",
+    swap: "Swap",
+    database: "Base de dados",
+    network: "Rede",
+    storage: "Armazenamento",
+    processes: "Processos",
+    uptime: "Tempo de atividade:",
+    load: "Carga:",
+    download: "Transferência",
+    upload: "Envio",
+    total: "Total",
+    used: "usados",
+    of: "de",
+    hours: "h",
+    days: "d",
+    minutes: "min",
+    running: "Em execução",
+    up_to_date: "Atualizado",
+    update: "Atualização",
+    no_sm: "Nenhuma entidade do System Monitor encontrada. A integração System Monitor está instalada e os respetivos sensores estão ativados?",
+    hacs: "HACS",
+    hacs_ok: "HACS atualizado",
+    hacs_updates_one: "1 atualização HACS",
+    hacs_updates: "{n} atualizações HACS",
+    check_updates: "Procurar atualizações",
+    checking: "A verificar {i}/{n}…",
+    check_failed: "Falha na verificação: {e}",
+    last_check: "Última verificação {t}",
+    needs_refresh: "Instale o HACS Refresh para procurar atualizações de todas as extensões a partir do Home Assistant.",
+    github: "Abrir no GitHub",
+    check_ext: "Procurar atualizações desta extensão",
+    search_ext: "Pesquisar extensões",
+    clear_search: "Limpar a pesquisa",
+    no_match: "Nenhuma extensão correspondente",
+    install_all: "Instalar todas as atualizações ({n})",
+    install_all_confirm: "Instalar {n} atualizações HACS?",
+    install_title: "Instalar as atualizações",
+    install_btn: "Instalar",
+    cancel: "Cancelar",
+    installing: "A instalar {i}/{n}…",
+    install_failed: "Falha na instalação: {e}",
+    btn_install: "Instalar ({n})",
+    btn_check: "Verificar",
+    procs_ok: "Processos em execução",
+    procs_one: "1 processo parado",
+    procs_many: "{n} processos parados",
+    integrations: "Integrações",
+    st_up_to_date: "Atualizado",
+    st_unknown: "Desconhecido",
+    st_update_one: "1 atualização",
+    st_updates: "{n} atualizações",
+    st_running: "Em execução",
+    st_stopped_one: "1 parado",
+    st_stopped: "{n} parados",
+    st_available: "Disponíveis",
+    st_unavailable_one: "1 indisponível",
+    st_unavailable: "{n} indisponíveis",
+    wd_ok: "Integrações disponíveis",
+    wd_one: "1 integração indisponível",
+    wd_many: "{n} integrações indisponíveis",
+    wd_check: "Verificar as integrações agora",
+    wd_none: "Todas as integrações estão disponíveis.",
+    wd_since: "Indisponível {t}",
+    wd_reloads_one: "1 recarregamento",
+    wd_reloads: "{n} recarregamentos",
+    wd_unavailable: "Indisponível",
+    wd_gave_up: "Abandonada",
+    wd_last_reload: "Último recarregamento: {name} {t}",
+    wd_last_reload_failed: "Falha no último recarregamento: {name} {t}",
+    wd_last_check: "Verificado {t}",
+    wd_open: "Abrir a integração",
+    zoom_in: "Mostrar o cartão completo",
+    zoom_out: "Voltar à vista compacta",
+    // Editor
+    title: "Título (opcional, Home Assistant por predefinição)",
+    show_image: "Mostrar o logótipo do Home Assistant",
+    show_system: "Mostrar o sistema (CPU, RAM, disco, temperatura)",
+    show_network: "Mostrar a rede",
+    show_storage: "Mostrar o armazenamento",
+    show_processes: "Mostrar os processos",
+    show_hacs: "Mostrar as extensões HACS",
+    show_watchdog: "Mostrar as integrações indisponíveis (Integration Watchdog)",
+    zoom: "Botão de zoom",
+    zoom_helper: "Alterna entre o cartão completo e a vista compacta",
+    interface: "Interface de rede (opcional, todas por predefinição)",
+    language: "Idioma",
+    lang_auto: "Automático",
+  },
+  pl: {
+    cpu: "CPU",
+    ram: "RAM",
+    disk: "Dysk",
+    temperature: "Temp.",
+    swap: "Swap",
+    database: "Baza danych",
+    network: "Sieć",
+    storage: "Pamięć masowa",
+    processes: "Procesy",
+    uptime: "Czas pracy:",
+    load: "Obciążenie:",
+    download: "Pobieranie",
+    upload: "Wysyłanie",
+    total: "Łącznie",
+    used: "użyte",
+    of: "z",
+    hours: "godz.",
+    days: "d",
+    minutes: "min",
+    running: "Działa",
+    up_to_date: "Aktualne",
+    update: "Aktualizacja",
+    no_sm: "Nie znaleziono encji System Monitor. Czy integracja System Monitor jest zainstalowana, a jej sensory włączone?",
+    hacs: "HACS",
+    hacs_ok: "HACS aktualny",
+    hacs_updates_one: "1 aktualizacja HACS",
+    hacs_updates: "Aktualizacje HACS: {n}",
+    check_updates: "Sprawdź aktualizacje",
+    checking: "Sprawdzanie {i}/{n}…",
+    check_failed: "Sprawdzanie nie powiodło się: {e}",
+    last_check: "Ostatnie sprawdzenie {t}",
+    needs_refresh: "Zainstaluj HACS Refresh, aby sprawdzać aktualizacje wszystkich rozszerzeń z poziomu Home Assistant.",
+    github: "Otwórz w GitHubie",
+    check_ext: "Sprawdź aktualizacje tego rozszerzenia",
+    search_ext: "Szukaj rozszerzeń",
+    clear_search: "Wyczyść wyszukiwanie",
+    no_match: "Brak pasujących rozszerzeń",
+    install_all: "Zainstaluj wszystkie aktualizacje ({n})",
+    install_all_confirm: "Zainstalować aktualizacje HACS ({n})?",
+    install_title: "Zainstaluj aktualizacje",
+    install_btn: "Zainstaluj",
+    cancel: "Anuluj",
+    installing: "Instalowanie {i}/{n}…",
+    install_failed: "Instalacja nie powiodła się: {e}",
+    btn_install: "Zainstaluj ({n})",
+    btn_check: "Sprawdź",
+    procs_ok: "Procesy działają",
+    procs_one: "1 proces zatrzymany",
+    procs_many: "Zatrzymane procesy: {n}",
+    integrations: "Integracje",
+    st_up_to_date: "Aktualne",
+    st_unknown: "Nieznany",
+    st_update_one: "1 aktualizacja",
+    st_updates: "Aktualizacje: {n}",
+    st_running: "Działa",
+    st_stopped_one: "1 zatrzymany",
+    st_stopped: "Zatrzymane: {n}",
+    st_available: "Dostępne",
+    st_unavailable_one: "1 niedostępna",
+    st_unavailable: "Niedostępne: {n}",
+    wd_ok: "Integracje dostępne",
+    wd_one: "1 integracja niedostępna",
+    wd_many: "Niedostępne integracje: {n}",
+    wd_check: "Sprawdź integracje teraz",
+    wd_none: "Wszystkie integracje są dostępne.",
+    wd_since: "Niedostępna {t}",
+    wd_reloads_one: "1 przeładowanie",
+    wd_reloads: "Przeładowania: {n}",
+    wd_unavailable: "Niedostępna",
+    wd_gave_up: "Porzucona",
+    wd_last_reload: "Ostatnie przeładowanie: {name} {t}",
+    wd_last_reload_failed: "Ostatnie przeładowanie nie powiodło się: {name} {t}",
+    wd_last_check: "Sprawdzono {t}",
+    wd_open: "Otwórz integrację",
+    zoom_in: "Pokaż pełną kartę",
+    zoom_out: "Wróć do widoku kompaktowego",
+    // Editor
+    title: "Tytuł (opcjonalny, domyślnie Home Assistant)",
+    show_image: "Pokaż logo Home Assistant",
+    show_system: "Pokaż system (CPU, RAM, dysk, temperatura)",
+    show_network: "Pokaż sieć",
+    show_storage: "Pokaż pamięć masową",
+    show_processes: "Pokaż procesy",
+    show_hacs: "Pokaż rozszerzenia HACS",
+    show_watchdog: "Pokaż niedostępne integracje (Integration Watchdog)",
+    zoom: "Przycisk powiększenia",
+    zoom_helper: "Przełącza między pełną kartą a widokiem kompaktowym",
+    interface: "Interfejs sieciowy (opcjonalny, domyślnie wszystkie)",
+    language: "Język",
+    lang_auto: "Automatycznie",
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -609,6 +977,19 @@ const fold = (v) => String(v ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g,
 const lang = (hass, config) => {
   const l = (config?.language) || (hass && (hass.locale?.language || hass.language)) || "en";
   return STRINGS[l] ? l : STRINGS[l.split("-")[0]] ? l.split("-")[0] : "en";
+};
+
+/**
+ * Locale for Intl: Home Assistant's full locale when its base matches the card's language (so
+ * regional formats are kept), otherwise the card's language. Home Assistant's "pt" is European
+ * Portuguese, but Intl reads "pt" as Brazilian, hence pt-PT.
+ */
+const intlLocale = (hass, config) => {
+  const l = lang(hass, config);
+  const ha = (hass && (hass.locale?.language || hass.language)) || "";
+  const base = (v) => v.split("-")[0];
+  const out = !config?.language && ha && base(ha) === base(l) && (l !== "sr-Latn" || ha === "sr-Latn") ? ha : l;
+  return out === "pt" ? "pt-PT" : out;
 };
 
 const t = (hass, config, key) => STRINGS[lang(hass, config)][key] ?? STRINGS.en[key] ?? key;
@@ -2103,7 +2484,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       const error = this._checkError || (st?.state === "error" ? st.attributes.error : null);
       const last = this._s(rf.lastCheck)?.state;
       const lastText = !running && last && !["unknown", "unavailable"].includes(last)
-        ? this._t("last_check").replace("{t}", relTime(last, lang(this._hass, this._config)))
+        ? this._t("last_check").replace("{t}", relTime(last, intlLocale(this._hass, this._config)))
         : "";
       if (lastText || error)
         info = `<div class="toolbar">
@@ -2192,7 +2573,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     // until a click elsewhere).
     if (!items.length && !this._wdOpen) return "";
     const open = this._wdOpen;
-    const locale = lang(this._hass, this._config);
+    const locale = intlLocale(this._hass, this._config);
     let check = "";
     if (wd.button) {
       const busy = this._s(wd.button)?.state === "unavailable";
@@ -2452,6 +2833,10 @@ const STATUS_STYLE = `
   /* The tight status row keeps the zoom pinned to the top line, snug to the HACS button. */
   .zoom { align-self: flex-start; margin: -4px -4px 0 -4px; }
   .header .btn.warn { color: var(--sm-warn); background: color-mix(in srgb, var(--sm-warn) 15%, transparent); }
+  /* No room left for the title (measured by _fit): the HACS button shows its icon only (its text stays in
+     title and aria-label), then the title takes two lines. */
+  .header.tight .btn > span { display: none; }
+  .header.tighter .name { white-space: normal; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
   .stats { padding-bottom: 12px; }
   .err { padding: 0 12px 12px; }
 `;
@@ -2465,6 +2850,40 @@ const STATUS_STYLE = `
 class SystemMonitorStatusCard extends SystemMonitorZoomCard {
   static getConfigElement() {
     return document.createElement("system-monitor-status-card-editor");
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // The room left for the title depends on the card's width: fit the header again when it changes,
+    // in the next frame (resizing the card from the observer's callback would loop).
+    if (typeof ResizeObserver === "undefined") return;
+    this._resizeObserver ??= new ResizeObserver(() => requestAnimationFrame(() => this._fit()));
+    this._resizeObserver.observe(this);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._resizeObserver?.disconnect();
+  }
+
+  _update() {
+    super._update();
+    this._fit();
+  }
+
+  /**
+   * Compact header: when the title is cut (longer labels in some languages, narrow cards), the HACS
+   * button shows its icon only, then the title takes two lines. The status pill and the buttons stay put.
+   */
+  _fit() {
+    const header = this._zoomed ? null : this.shadowRoot.querySelector(".header");
+    const name = header?.querySelector(".name");
+    if (!name || !header.clientWidth) return;
+    header.classList.remove("tight", "tighter");
+    for (const cls of ["tight", "tighter"]) {
+      if (name.scrollWidth <= name.clientWidth) return;
+      header.classList.add(cls);
+    }
   }
 
   _compactSize() {
@@ -2516,7 +2935,7 @@ class SystemMonitorStatusCard extends SystemMonitorZoomCard {
     const title = running
       ? this._t("checking").replace("{i}", st.attributes.done ?? 0).replace("{n}", st.attributes.total || "…")
       : last && !["unknown", "unavailable"].includes(last)
-        ? `${this._t("check_updates")} · ${this._t("last_check").replace("{t}", relTime(last, lang(this._hass, this._config)))}`
+        ? `${this._t("check_updates")} · ${this._t("last_check").replace("{t}", relTime(last, intlLocale(this._hass, this._config)))}`
         : this._t("check_updates");
     const label = running ? `${st.attributes.done ?? 0}/${st.attributes.total || "…"}` : this._t("btn_check");
     return btn("hacs-check", "", ICONS.refresh, running, label, title, busy);
@@ -2606,6 +3025,10 @@ class SystemMonitorEditorBase extends HTMLElement {
               { value: "es", label: "Español" },
               { value: "sr", label: "Српски" },
               { value: "sr-Latn", label: "Srpski (latinica)" },
+              { value: "it", label: "Italiano" },
+              { value: "nl", label: "Nederlands" },
+              { value: "pt", label: "Português (Portugal)" },
+              { value: "pl", label: "Polski" },
             ],
           },
         },

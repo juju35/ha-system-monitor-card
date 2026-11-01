@@ -17,6 +17,7 @@ const NAMES = [
   "ICONS",
   "STRINGS",
   "lang",
+  "intlLocale",
   "SystemMonitorCard",
   "SystemMonitorMiniCard",
   "SystemMonitorStatusCard",
