@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.21.5 - 2026-10-29
+
+### Fixes
+- **Spinners**: the spinning icon of a running HACS check, an install or an Integration Watchdog check no longer jumps back to its start each time the progress moves on (1/6 to 2/6); it keeps turning smoothly, in the full card as on the status card's button.
+- **Accessibility**: with "reduce motion" turned on in the system, the spinners stay still (the label still shows the progress).
+- **Icons**: the disk gauge of the full card and the disk bar of the mini card use the disk icon, like the disk rows of Storage, instead of the database one.
+- **Readability**: the used / total size under the RAM and disk gauges (`3.02 / 7.81 GiB`) is no longer faded, so it is as readable as the other secondary text (contrast 4.8:1 in light themes, 6.1:1 in dark ones, instead of 3.3:1 and 4.4:1).
+- **Buttons**: the Check, Install and Check now buttons get a hover state, in their own colour, and look clearly dimmed while unavailable.
+
+### Maintenance
+- Removed the bar, ring and chevron transitions, which never played (each render rebuilds the card).
+- Lint: the Biome version is read from `.pre-commit-config.yaml`, and the check fails if the hook and `biome.json` disagree.
+- Tests: reduced motion, spinner phase, icons, gauge detail contrast and button states.
+
 ## 1.21.4 - 2026-10-29
 
 ### Fixes
