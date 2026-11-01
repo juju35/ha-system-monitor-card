@@ -1064,6 +1064,19 @@ const uptimeSec = (s) => {
   return Number.isFinite(boot) ? Math.max(0, (Date.now() - boot) / 1000) : null;
 };
 
+/**
+ * CPU temperature: Home Assistant converts it to the user's unit (unit system, or the sensor's display unit). The value
+ * is shown in that unit, the warning levels and the gauge use it converted to °C.
+ */
+const TO_CELSIUS = { "°C": (v) => v, "°F": (v) => ((v - 32) * 5) / 9, K: (v) => v - 273.15 };
+const temperature = (s, hass) => {
+  const v = num(s);
+  if (v === null) return { c: null, display: "—" };
+  const unit = s.attributes?.unit_of_measurement || hass?.config?.unit_system?.temperature || "°C";
+  const c = (TO_CELSIUS[unit] || TO_CELSIUS["°C"])(v);
+  return { c, display: `${Math.round(v)}${unit.startsWith("°") ? unit : ` ${unit}`}` };
+};
+
 const level = (v, warn, crit) => (v === null ? "" : v >= crit ? "crit" : v >= warn ? "warn" : "ok");
 
 const svgIcon = (path, cls = "") => `<svg class="icon ${cls}" viewBox="0 0 24 24"><path d="${path}"/></svg>`;
@@ -2418,11 +2431,9 @@ class SystemMonitorCard extends SystemMonitorBase {
       );
     }
 
-    const temp = num(this._s(sc.processor_temperature));
+    const temp = temperature(this._s(sc.processor_temperature), this._hass);
     if (sc.processor_temperature)
-      gauges.push(
-        this._gauge(sc.processor_temperature, `${this._t("temperature")} ${this._t("cpu")}`, ICONS.temp, temp, temp === null ? "—" : `${Math.round(temp)}°C`, level(temp, 75, 90))
-      );
+      gauges.push(this._gauge(sc.processor_temperature, `${this._t("temperature")} ${this._t("cpu")}`, ICONS.temp, temp.c, esc(temp.display), level(temp.c, 75, 90)));
 
     const facts = [];
     const up = uptimeSec(this._s(sc.last_boot));
@@ -2829,9 +2840,9 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
         );
       }
     }
-    const temp = num(this._s(sc.processor_temperature));
+    const temp = temperature(this._s(sc.processor_temperature), this._hass);
     if (sc.processor_temperature)
-      rows.push(this._metric(sc.processor_temperature, ICONS.temp, this._t("temperature"), temp, temp === null ? "—" : `${Math.round(temp)}°C`, level(temp, 75, 90)));
+      rows.push(this._metric(sc.processor_temperature, ICONS.temp, this._t("temperature"), temp.c, esc(temp.display), level(temp.c, 75, 90)));
 
     const foot = [];
     const core = this._s(sm.core_update);
