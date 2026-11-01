@@ -21,6 +21,7 @@ const NAMES = [
   "SystemMonitorCard",
   "SystemMonitorMiniCard",
   "SystemMonitorStatusCard",
+  "SystemMonitorCardEditor",
   "SystemMonitorMiniCardEditor",
   "SystemMonitorStatusCardEditor",
   "document",

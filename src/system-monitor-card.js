@@ -3128,11 +3128,21 @@ class SystemMonitorEditorBase extends HTMLElement {
       });
       this.appendChild(this._form);
     }
-    const data = { ...this._config };
-    for (const name of this._booleans()) if (data[name] === undefined) data[name] = true;
     this._form.hass = this._hass;
-    this._form.data = data;
-    this._form.schema = this._schema();
+    // ha-form renders again on a new data or schema object: rebuild them only when the config, the language or the
+    // network interfaces change, not on every state change of Home Assistant.
+    if (this._formConfig !== this._config) {
+      this._formConfig = this._config;
+      const data = { ...this._config };
+      for (const name of this._booleans()) if (data[name] === undefined) data[name] = true;
+      this._form.data = data;
+    }
+    const schema = this._schema();
+    const key = JSON.stringify(schema);
+    if (key !== this._schemaKey) {
+      this._schemaKey = key;
+      this._form.schema = schema;
+    }
   }
 }
 
