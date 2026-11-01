@@ -979,6 +979,19 @@ const lang = (hass, config) => {
   return STRINGS[l] ? l : STRINGS[l.split("-")[0]] ? l.split("-")[0] : "en";
 };
 
+/**
+ * Locale for Intl: Home Assistant's full locale when its base matches the card's language (so
+ * regional formats are kept), otherwise the card's language. Home Assistant's "pt" is European
+ * Portuguese, but Intl reads "pt" as Brazilian, hence pt-PT.
+ */
+const intlLocale = (hass, config) => {
+  const l = lang(hass, config);
+  const ha = (hass && (hass.locale?.language || hass.language)) || "";
+  const base = (v) => v.split("-")[0];
+  const out = !config?.language && ha && base(ha) === base(l) && (l !== "sr-Latn" || ha === "sr-Latn") ? ha : l;
+  return out === "pt" ? "pt-PT" : out;
+};
+
 const t = (hass, config, key) => STRINGS[lang(hass, config)][key] ?? STRINGS.en[key] ?? key;
 
 const num = (s) => {
@@ -2471,7 +2484,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       const error = this._checkError || (st?.state === "error" ? st.attributes.error : null);
       const last = this._s(rf.lastCheck)?.state;
       const lastText = !running && last && !["unknown", "unavailable"].includes(last)
-        ? this._t("last_check").replace("{t}", relTime(last, lang(this._hass, this._config)))
+        ? this._t("last_check").replace("{t}", relTime(last, intlLocale(this._hass, this._config)))
         : "";
       if (lastText || error)
         info = `<div class="toolbar">
@@ -2560,7 +2573,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     // until a click elsewhere).
     if (!items.length && !this._wdOpen) return "";
     const open = this._wdOpen;
-    const locale = lang(this._hass, this._config);
+    const locale = intlLocale(this._hass, this._config);
     let check = "";
     if (wd.button) {
       const busy = this._s(wd.button)?.state === "unavailable";
@@ -2820,6 +2833,10 @@ const STATUS_STYLE = `
   /* The tight status row keeps the zoom pinned to the top line, snug to the HACS button. */
   .zoom { align-self: flex-start; margin: -4px -4px 0 -4px; }
   .header .btn.warn { color: var(--sm-warn); background: color-mix(in srgb, var(--sm-warn) 15%, transparent); }
+  /* No room left for the title (measured by _fit): the HACS button shows its icon only (its text stays in
+     title and aria-label), then the title takes two lines. */
+  .header.tight .btn > span { display: none; }
+  .header.tighter .name { white-space: normal; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
   .stats { padding-bottom: 12px; }
   .err { padding: 0 12px 12px; }
 `;
@@ -2833,6 +2850,40 @@ const STATUS_STYLE = `
 class SystemMonitorStatusCard extends SystemMonitorZoomCard {
   static getConfigElement() {
     return document.createElement("system-monitor-status-card-editor");
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // The room left for the title depends on the card's width: fit the header again when it changes,
+    // in the next frame (resizing the card from the observer's callback would loop).
+    if (typeof ResizeObserver === "undefined") return;
+    this._resizeObserver ??= new ResizeObserver(() => requestAnimationFrame(() => this._fit()));
+    this._resizeObserver.observe(this);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._resizeObserver?.disconnect();
+  }
+
+  _update() {
+    super._update();
+    this._fit();
+  }
+
+  /**
+   * Compact header: when the title is cut (longer labels in some languages, narrow cards), the HACS
+   * button shows its icon only, then the title takes two lines. The status pill and the buttons stay put.
+   */
+  _fit() {
+    const header = this._zoomed ? null : this.shadowRoot.querySelector(".header");
+    const name = header?.querySelector(".name");
+    if (!name || !header.clientWidth) return;
+    header.classList.remove("tight", "tighter");
+    for (const cls of ["tight", "tighter"]) {
+      if (name.scrollWidth <= name.clientWidth) return;
+      header.classList.add(cls);
+    }
   }
 
   _compactSize() {
@@ -2884,7 +2935,7 @@ class SystemMonitorStatusCard extends SystemMonitorZoomCard {
     const title = running
       ? this._t("checking").replace("{i}", st.attributes.done ?? 0).replace("{n}", st.attributes.total || "…")
       : last && !["unknown", "unavailable"].includes(last)
-        ? `${this._t("check_updates")} · ${this._t("last_check").replace("{t}", relTime(last, lang(this._hass, this._config)))}`
+        ? `${this._t("check_updates")} · ${this._t("last_check").replace("{t}", relTime(last, intlLocale(this._hass, this._config)))}`
         : this._t("check_updates");
     const label = running ? `${st.attributes.done ?? 0}/${st.attributes.total || "…"}` : this._t("btn_check");
     return btn("hacs-check", "", ICONS.refresh, running, label, title, busy);
@@ -2976,7 +3027,7 @@ class SystemMonitorEditorBase extends HTMLElement {
               { value: "sr-Latn", label: "Srpski (latinica)" },
               { value: "it", label: "Italiano" },
               { value: "nl", label: "Nederlands" },
-              { value: "pt", label: "Português" },
+              { value: "pt", label: "Português (Portugal)" },
               { value: "pl", label: "Polski" },
             ],
           },
