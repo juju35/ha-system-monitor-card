@@ -32,9 +32,9 @@ const renders = () => {
 
 const styleOf = (html) => [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join("\n");
 
-/** The declarations of the rules whose selector list contains this selector, outside any @media block. */
+/** The declarations of the rules whose selector list contains this selector, outside any @media or @container block. */
 const rulesFor = (css, selector) => {
-  const flat = css.replace(/@media[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, "");
+  const flat = css.replace(/\/\*[\s\S]*?\*\//g, "").replace(/@(?:media|container)[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, "");
   return [...flat.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
     .filter((m) => m[1].split(",").some((s) => s.trim() === selector))
     .map((m) => m[2])
@@ -79,6 +79,34 @@ test("mini card: the disk bar uses the disk icon, not the database one", () => {
 test("full card: the gauge detail (3.02 / 7.81 GiB) is not faded below the secondary text colour", () => {
   const css = styleOf(card(lib.SystemMonitorCard, hassWith())._render());
   assert.doesNotMatch(rulesFor(css, ".gauge .lbl2"), /opacity/);
+});
+
+// Narrow cards (300 px): the status tiles' labels and values wrap instead of being cut with an ellipsis.
+test("status tiles: labels and values wrap on two lines, never cut with an ellipsis", () => {
+  for (const [name, html] of Object.entries(renders())) {
+    const css = styleOf(html);
+    if (!/class="stats"/.test(html)) continue;
+    for (const sel of [".stat .k span", ".stat .v"]) {
+      const rules = rulesFor(css, sel);
+      assert.doesNotMatch(rules, /text-overflow:\s*ellipsis|white-space:\s*nowrap/, `${name}: ${sel} is cut on one line`);
+      assert.match(rules, /-webkit-line-clamp:\s*2/, `${name}: ${sel} is not clamped to two lines`);
+    }
+    // A tile is at least as wide as its longest word: it wraps to a new row rather than cutting a word.
+    assert.match(rulesFor(css, ".stats"), /flex-wrap:\s*wrap/, `${name}: tiles don't wrap`);
+    assert.match(rulesFor(css, ".stat"), /min-width:\s*min-content/, `${name}: a tile can cut a word`);
+  }
+});
+
+test("labels still cut on the narrowest cards keep their full text in title", () => {
+  const html = card(lib.SystemMonitorCard, hassWith())._render();
+  for (const m of html.matchAll(/<div class="(?:lbl|k)"( title="[^"]*")?>([^<]*)<\/div>/g))
+    assert.equal(m[1], ` title="${m[2]}"`, `"${m[2]}" without a title`);
+});
+
+test("mini card: the metric labels share one column wide enough for the longest one", () => {
+  const css = styleOf(card(lib.SystemMonitorMiniCard, hassWith())._render());
+  assert.match(rulesFor(css, ".content"), /grid-template-columns:\s*18px minmax\(64px, max-content\)/);
+  assert.match(rulesFor(css, ".metric"), /grid-template-columns:\s*subgrid/);
 });
 
 test("buttons: a hover state, and a disabled state set apart from the enabled one", () => {

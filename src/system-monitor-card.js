@@ -2192,13 +2192,15 @@ const ring = (p) => {
 
 /** Status tiles and buttons, shared by the full and the status cards. */
 const TILES_STYLE = `
-  .stats { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; padding: 0 12px 10px; }
-  .stat { display: flex; flex-direction: column; gap: 0; padding: 6px 8px; border-radius: 10px; min-width: 0;
-          background: color-mix(in srgb, var(--c, var(--sm-ok)) 12%, var(--secondary-background-color, transparent)); }
+  /* Tiles of equal width side by side while they fit. A label or a status takes two lines (never a cut word) before its
+     tile goes down to a second row, whose tiles share its width; the tiles of a row keep the same height. */
+  .stats { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 10px; }
+  .stat { flex: 1 1 0; display: flex; flex-direction: column; gap: 0; padding: 6px 8px; border-radius: 10px; min-width: min-content; max-width: 100%;
+          box-sizing: border-box; background: color-mix(in srgb, var(--c, var(--sm-ok)) 12%, var(--secondary-background-color, transparent)); }
   .stat .k { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); min-width: 0; }
-  .stat .k span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stat .k span, .stat .v { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: normal; }
   .stat .k .icon { width: 16px; height: 16px; color: var(--c, var(--sm-ok)); }
-  .stat .v { font-size: 13px; font-weight: 500; color: var(--c, var(--sm-ok)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stat .v { font-size: 13px; font-weight: 500; color: var(--c, var(--sm-ok)); }
   .btn { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500; padding: 6px 12px;
          border: none; border-radius: 10px; cursor: pointer; color: var(--primary-color, #03a9f4);
          background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); }
@@ -2260,7 +2262,7 @@ const FULL_STYLE = `
   .section-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; text-transform: uppercase;
                    letter-spacing: .04em; color: var(--secondary-text-color); margin-bottom: 6px; }
   .section-title .icon { width: 16px; height: 16px; }
-  .gauges { display: grid; grid-template-columns: repeat(var(--n, 3), 1fr); gap: 6px; }
+  .gauges { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; container-type: inline-size; }
   .gauge { display: flex; flex-direction: column; align-items: center; min-width: 0; }
   .dial { position: relative; width: 100%; max-width: 60px; aspect-ratio: 1; }
   .ring { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
@@ -2270,8 +2272,11 @@ const FULL_STYLE = `
   .dial .val { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .dial .val b { font-size: 14px; font-weight: 500; }
   .dial .val .icon { width: 12px; height: 12px; color: var(--secondary-text-color); }
-  .gauge .lbl { font-size: 12px; color: var(--secondary-text-color); margin-top: 0; text-align: center; }
-  .gauge .lbl2 { font-size: 11px; color: var(--secondary-text-color); text-align: center; white-space: nowrap; }
+  .gauge .lbl { font-size: 12px; color: var(--secondary-text-color); margin-top: 0; text-align: center; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+  /* Used / total: on two lines (at the slash) rather than over the next gauge. */
+  .gauge .lbl2 { font-size: 11px; color: var(--secondary-text-color); text-align: center; }
+  /* Four gauges on a narrow card: a size smaller, so that the longest labels (Datenträger) still fit. */
+  @container (max-width: 300px) { .gauge .lbl { font-size: 11px; } .gauge .lbl2 { font-size: 10px; } }
   .section-title .arg { text-transform: none; letter-spacing: 0; }
   .facts { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; margin-top: 6px; }
   .facts > span { display: inline-flex; align-items: center; gap: 4px; }
@@ -2339,7 +2344,7 @@ class SystemMonitorCard extends SystemMonitorBase {
   _gauge(id, label, icon, value, display, cls, detail = "") {
     return `<div class="gauge clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">
       <div class="dial">${ring(value)}<div class="val">${svgIcon(icon)}<b>${display}</b></div></div>
-      <div class="lbl">${label}</div>
+      <div class="lbl" title="${label}">${label}</div>
       ${detail ? `<div class="lbl2">${detail}</div>` : ""}
     </div>`;
   }
@@ -2410,7 +2415,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       const id = n[rateKey];
       const total = toBytes(this._s(n[totalKey]));
       return `<div class="tile clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">${svgIcon(icon)}<div style="min-width:0">
-        <div class="k">${esc(label)}</div>
+        <div class="k" title="${esc(label)}">${esc(label)}</div>
         <div class="v">${fmtRate(toBps(this._s(id)))}</div>
         ${total !== null ? `<div class="t">${this._t("total")} ${fmtBytes(total)}</div>` : ""}
       </div></div>`;
@@ -2725,8 +2730,10 @@ const MINI_STYLE = `
   /* The status shows in the footer. */
   .title-row > .chip { display: none; }
   .name { font-size: 16px; }
-  .content { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 8px; }
-  .metric { display: grid; grid-template-columns: 18px 64px 1fr 56px; align-items: center; gap: 8px; font-size: 13px; }
+  /* One grid for every metric: the label column widens for the longest label (Datenträger), the same for all rows. */
+  .content { padding: 0 12px 12px; display: grid; grid-template-columns: 18px minmax(64px, max-content) 1fr 56px; gap: 8px; }
+  .content > * { grid-column: 1 / -1; }
+  .metric { display: grid; grid-template-columns: subgrid; align-items: center; font-size: 13px; }
   .metric .icon { color: var(--secondary-text-color); }
   .metric .v { text-align: right; font-weight: 500; }
   .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--secondary-text-color); margin-top: 2px; }
