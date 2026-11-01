@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.21.8 - 2026-11-01
+
+### Fixes
+- **Temperature**: with US customary units, or °F chosen as the display unit of the sensor, the CPU temperature is shown in °F (`130°F`) instead of being labelled °C (`130°C`), and the orange / red thresholds apply to the real temperature: a 54 °C CPU no longer shows red in the full and mini cards. Kelvin is handled too.
+- **Narrow cards**: the labels of the tiles, gauges, network tiles, mini card and section titles are no longer cut or overflowing (wrapped on two lines, or an ellipsis with the full text as a tooltip).
+- **Narrow cards, header**: the title always keeps a few letters (`Home As…` instead of nothing); the status pill is cut first, then shows its coloured dot only (its text stays in the tooltip); the zoom and HACS buttons keep their size. On the status card, the title is no longer cut letter by letter on two lines.
+- **Narrow cards, Storage**: the mount point (`/media`, `Swap`) keeps its line; the used / total size goes under the bar.
+- **Narrow cards, HACS and integrations lists**: the status pills show their dot only, so the extension names stay readable and the GitHub links stay in the card.
+- **Readability**: the status texts (tiles such as "2 updates", pills such as "Up to date", the Install and Check buttons, errors) are darkened in light themes and lightened in dark ones: 4.7:1 contrast or more instead of 1.55:1 for orange in light themes.
+- **Keyboard**: the focus ring uses the theme's primary colour, like the other cards.
+- **Serbian**: counts read right for every number ("Nedostupne: 2" instead of "2 nedostupno", "1 nedostupna" for the integrations tile).
+- **Install confirmation**: singular for a single update, in every language ("Install 1 HACS update?").
+- **Editor**: the form is no longer redrawn on every state change of Home Assistant.
+
+### Maintenance
+- Biome 2.6.4.
+- Tests: CPU temperature in °C, °F and K (thresholds, gauge, unavailable), counts of 1, 2, 5, 21 and 22 in every language, narrow-card CSS rules, status text contrast and the editor's form.
+
 ## 1.21.7 - 2026-11-01
 
 ### Features
