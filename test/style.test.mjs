@@ -103,6 +103,29 @@ test("labels still cut on the narrowest cards keep their full text in title", ()
     assert.equal(m[1], ` title="${m[2]}"`, `"${m[2]}" without a title`);
 });
 
+// Narrow cards (260 px, Integrationen): the section name gives way, never the chevron or the check button.
+test("section titles: the name is cut with an ellipsis (full text in title), the chevron and buttons keep their size", () => {
+  for (const [name, html] of Object.entries(renders())) {
+    if (!/class="section-title/.test(html)) continue;
+    const css = styleOf(html);
+    assert.match(rulesFor(css, ".section-title > *"), /flex:\s*none/, `${name}: the header items can shrink`);
+    const label = rulesFor(css, ".section-title > .label");
+    for (const re of [/min-width:\s*0/, /text-overflow:\s*ellipsis/, /white-space:\s*nowrap/, /overflow:\s*hidden/, /flex:\s*0 1 auto/])
+      assert.match(label, re, `${name}: section name without ${re}`);
+    // The check button may drop its text (kept in title and aria-label) once the name is cut, as the status header does.
+    assert.match(rulesFor(css, ".section-title.tight .btn-check > span"), /display:\s*none/, `${name}: no icon-only check button`);
+    for (const head of html.matchAll(/<div class="section-title[^"]*"[^>]*>([\s\S]*?)<\/div>/g)) {
+      const m = head[1].match(/<span class="label"( title="[^"]*")?>([^<]*)<\/span>/);
+      assert.ok(m, `${name}: section title without a .label name: ${head[1].trim().slice(0, 80)}`);
+      assert.equal(m[1], ` title="${m[2]}"`, `${name}: "${m[2]}" without a title`);
+    }
+    for (const b of html.matchAll(/<span class="btn btn-check"[^>]*>/g)) {
+      const t = b[0].match(/ title="([^"]+)"/)?.[1];
+      assert.ok(t && b[0].includes(`aria-label="${t}"`), `${name}: check button without title and aria-label`);
+    }
+  }
+});
+
 test("mini card: the metric labels share one column wide enough for the longest one", () => {
   const css = styleOf(card(lib.SystemMonitorMiniCard, hassWith())._render());
   assert.match(rulesFor(css, ".content"), /grid-template-columns:\s*18px minmax\(64px, max-content\)/);

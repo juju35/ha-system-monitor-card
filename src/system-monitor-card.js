@@ -2262,6 +2262,11 @@ const FULL_STYLE = `
   .section-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; text-transform: uppercase;
                    letter-spacing: .04em; color: var(--secondary-text-color); margin-bottom: 6px; }
   .section-title .icon { width: 16px; height: 16px; }
+  /* Narrow cards, long names (Integrationen): the name gives way with an ellipsis (full text in title); the pills,
+     the buttons, the count and the chevron keep their size, and the check button drops its text (.tight, see _fit). */
+  .section-title > * { flex: none; }
+  .section-title > .label, .section-title > .arg { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .section-title.tight .btn-check > span { display: none; }
   .gauges { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; container-type: inline-size; }
   .gauge { display: flex; flex-direction: column; align-items: center; min-width: 0; }
   .dial { position: relative; width: 100%; max-width: 60px; aspect-ratio: 1; }
@@ -2339,6 +2344,44 @@ class SystemMonitorCard extends SystemMonitorBase {
         ${this._statusRow(sm)}
         <div class="content">${parts.filter(Boolean).join("")}</div>
       </ha-card>`;
+  }
+
+  /** Name of a section title: cut with an ellipsis when the card is too narrow, its full text in title. */
+  _label(key) {
+    const text = esc(this._t(key));
+    return `<span class="label" title="${text}">${text}</span>`;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // The room left for the section names (and the status card's title) depends on the card's width: fit them again
+    // when it changes, in the next frame (resizing the card from the observer's callback would loop).
+    if (typeof ResizeObserver === "undefined") return;
+    this._resizeObserver ??= new ResizeObserver(() => requestAnimationFrame(() => this._fit()));
+    this._resizeObserver.observe(this);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._resizeObserver?.disconnect();
+  }
+
+  _update() {
+    super._update();
+    this._fit();
+  }
+
+  /**
+   * Section titles: when a name is cut (longer names in some languages, narrow cards), the check button shows its
+   * icon only (its text stays in title and aria-label). Same mechanism as the status card's header.
+   */
+  _fit() {
+    for (const head of this.shadowRoot.querySelectorAll?.(".section-title") || []) {
+      const name = head.querySelector(".label");
+      if (!name || !head.clientWidth || !head.querySelector(".btn-check > span")) continue;
+      head.classList.remove("tight");
+      if (name.scrollWidth > name.clientWidth) head.classList.add("tight");
+    }
   }
 
   _gauge(id, label, icon, value, display, cls, detail = "") {
@@ -2429,7 +2472,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       </div>`;
     });
     return `<div>
-      <div class="section-title">${svgIcon(ICONS.network)}${this._t("network")}${multi ? "" : `<span class="arg">· ${esc(ifs[0])}</span>`}</div>
+      <div class="section-title">${svgIcon(ICONS.network)}${this._label("network")}${multi ? "" : `<span class="arg" title="${esc(ifs[0])}">· ${esc(ifs[0])}</span>`}</div>
       ${rows.join("")}
     </div>`;
   }
@@ -2462,7 +2505,7 @@ class SystemMonitorCard extends SystemMonitorBase {
         <div class="detail"><span>${fmtBytes(toBytes(this._s(db)))}</span></div>
       </div>`);
     if (!rows.length) return "";
-    return `<div><div class="section-title">${svgIcon(ICONS.database)}${this._t("storage")}</div>${rows.join("")}</div>`;
+    return `<div><div class="section-title">${svgIcon(ICONS.database)}${this._label("storage")}</div>${rows.join("")}</div>`;
   }
 
   _hacs() {
@@ -2502,7 +2545,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     if (this._installError)
       info += `<div class="toolbar"><span class="err">${esc(this._t("install_failed").replace("{e}", this._installError))}</span></div>`;
     const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="hacs" role="button" aria-expanded="${open}">
-        ${svgIcon(ICONS.hacs)}${this._t("hacs")}
+        ${svgIcon(ICONS.hacs)}${this._label("hacs")}
         ${this._installChip(n, admin)}${check}
         <span class="count">${ext.length}</span>${svgIcon(ICONS.chevron, "chevron")}
       </div>`;
@@ -2588,7 +2631,7 @@ class SystemMonitorCard extends SystemMonitorBase {
         </span>`;
     }
     const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="wd" role="button" aria-expanded="${open}">
-        ${svgIcon(ICONS.watchdog)}${this._t("integrations")}
+        ${svgIcon(ICONS.watchdog)}${this._label("integrations")}
         ${items.length ? `<span class="chip crit"><span class="dot"></span>${items.length}</span>` : ""}${check}
         <span class="count"></span>${svgIcon(ICONS.chevron, "chevron")}
       </div>`;
@@ -2629,7 +2672,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     const n = this._stopped(sm).length;
     const open = this._procsUnfolded();
     const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="procs" role="button" aria-expanded="${open}">
-        ${svgIcon(ICONS.process)}${this._t("processes")}
+        ${svgIcon(ICONS.process)}${this._label("processes")}
         ${n ? `<span class="chip crit"><span class="dot"></span>${n}</span>` : ""}
         <span class="count">${entries.length}</span>${svgIcon(ICONS.chevron, "chevron")}
       </div>`;
@@ -2859,30 +2902,12 @@ class SystemMonitorStatusCard extends SystemMonitorZoomCard {
     return document.createElement("system-monitor-status-card-editor");
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    // The room left for the title depends on the card's width: fit the header again when it changes,
-    // in the next frame (resizing the card from the observer's callback would loop).
-    if (typeof ResizeObserver === "undefined") return;
-    this._resizeObserver ??= new ResizeObserver(() => requestAnimationFrame(() => this._fit()));
-    this._resizeObserver.observe(this);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this._resizeObserver?.disconnect();
-  }
-
-  _update() {
-    super._update();
-    this._fit();
-  }
-
   /**
    * Compact header: when the title is cut (longer labels in some languages, narrow cards), the HACS
    * button shows its icon only, then the title takes two lines. The status pill and the buttons stay put.
    */
   _fit() {
+    super._fit();
     const header = this._zoomed ? null : this.shadowRoot.querySelector(".header");
     const name = header?.querySelector(".name");
     if (!name || !header.clientWidth) return;
