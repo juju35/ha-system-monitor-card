@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.21.6 - 2026-11-01
+
+### Features
+- **Translations**: Serbian, in Cyrillic (`sr`) and Latin (`sr-Latn`) script, chosen automatically when Home Assistant uses either of them and offered in the editor's language list. Serbian translations by @cpmarexel2f (#42).
+
+### Maintenance
+- Tests: `sr` and `sr-Latn` key parity with English, and language resolution (`fr-FR` → `fr`, `sr-Latn` → `sr-Latn`, `sr` → `sr`, `pt-BR` → `en`).
+
 ## 1.21.5 - 2026-10-29
 
 ### Fixes
