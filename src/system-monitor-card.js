@@ -503,6 +503,19 @@ const level = (v, warn, crit) => (v === null ? "" : v >= crit ? "crit" : v >= wa
 
 const svgIcon = (path, cls = "") => `<svg class="icon ${cls}" viewBox="0 0 24 24"><path d="${path}"/></svg>`;
 
+/**
+ * Each render recreates the spinners: anchored to the start of the document timeline, they all turn in step and a
+ * re-render (a HACS check progressing from 1 to 2 done) carries on from the same angle instead of jumping to 0°.
+ * Without the Web Animations API, a negative delay taken from the clock does nearly the same.
+ */
+const SPIN_PERIOD = 1000;
+const syncSpinners = (root) => {
+  for (const el of root?.querySelectorAll?.(".spin") || []) {
+    if (typeof el.getAnimations === "function") for (const a of el.getAnimations()) a.startTime = 0;
+    else el.style.animationDelay = `-${Date.now() % SPIN_PERIOD}ms`;
+  }
+};
+
 const pct = (used, free) => (used !== null && free !== null && used + free > 0 ? (used / (used + free)) * 100 : null);
 
 // ---------------------------------------------------------------------------
@@ -1091,7 +1104,7 @@ const BASE_STYLE = `
   .chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
           background: color-mix(in srgb, var(--c, var(--sm-ok)) 15%, transparent); color: var(--c, var(--sm-ok)); }
   .bar { height: 4px; border-radius: 3px; background: var(--divider-color, rgba(127,127,127,.25)); overflow: hidden; }
-  .bar > div { height: 100%; border-radius: 3px; background: var(--c, var(--sm-blue)); transition: width .6s ease; }
+  .bar > div { height: 100%; border-radius: 3px; background: var(--c, var(--sm-blue)); }
   .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 8px; }
   .titles { flex: 1; min-width: 0; }
   /* The status pill shares the title's line, centred on it whatever the subtitle or the logo size. */
@@ -1459,6 +1472,7 @@ class SystemMonitorBase extends HTMLElement {
       const focused = search ? null : focusSelector(active);
       this._html = html;
       this.shadowRoot.innerHTML = html;
+      syncSpinners(this.shadowRoot);
       if (search) {
         const field = this.shadowRoot.querySelector(`[data-search="${search}"]`);
         if (field) {
@@ -1623,10 +1637,14 @@ const TILES_STYLE = `
   .btn { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500; padding: 6px 12px;
          border: none; border-radius: 10px; cursor: pointer; color: var(--primary-color, #03a9f4);
          background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); }
-  .btn:disabled, .btn[aria-disabled="true"] { cursor: default; opacity: .8; }
+  /* currentColor: the orange Install button of the status card keeps its own tint on hover. */
+  .btn:not(:disabled):not([aria-disabled="true"]):hover { background: color-mix(in srgb, currentColor 24%, transparent); }
+  .btn:disabled, .btn[aria-disabled="true"] { cursor: default; opacity: .5; }
   .btn .icon { width: 16px; height: 16px; }
-  .spin { animation: sm-spin 1s linear infinite; }
+  .spin { animation: sm-spin ${SPIN_PERIOD}ms linear infinite; }
   @keyframes sm-spin { to { transform: rotate(360deg); } }
+  /* Spinners (HACS check, installs, watchdog check) are decorative: the label already says what runs. After .spin, to win. */
+  @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
   .err { font-size: 12px; color: var(--sm-crit); }
 `;
 
@@ -1634,7 +1652,6 @@ const FULL_STYLE = `
   .logo { height: 40px; width: 40px; }
   .section-title.toggle { cursor: pointer; margin-bottom: 0; user-select: none; }
   .section-title .count { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 400; }
-  .section-title .chevron { transition: transform .2s ease; }
   .section-title.closed .chevron { transform: rotate(-90deg); }
   .section-title .chip { text-transform: none; letter-spacing: 0; padding: 0 8px; }
   .section-title .btn-install { cursor: pointer; padding: 2px 8px; }
@@ -1684,12 +1701,12 @@ const FULL_STYLE = `
   .ring { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
   .ring circle { fill: none; stroke-width: 6; }
   .ring .track { stroke: var(--divider-color, rgba(127,127,127,.25)); }
-  .ring .value { stroke: var(--c, var(--sm-blue)); stroke-linecap: round; transition: stroke-dasharray .6s ease; }
+  .ring .value { stroke: var(--c, var(--sm-blue)); stroke-linecap: round; }
   .dial .val { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .dial .val b { font-size: 14px; font-weight: 500; }
   .dial .val .icon { width: 12px; height: 12px; color: var(--secondary-text-color); }
   .gauge .lbl { font-size: 12px; color: var(--secondary-text-color); margin-top: 0; text-align: center; }
-  .gauge .lbl2 { font-size: 11px; color: var(--secondary-text-color); opacity: .8; text-align: center; white-space: nowrap; }
+  .gauge .lbl2 { font-size: 11px; color: var(--secondary-text-color); text-align: center; white-space: nowrap; }
   .section-title .arg { text-transform: none; letter-spacing: 0; }
   .facts { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; margin-top: 6px; }
   .facts > span { display: inline-flex; align-items: center; gap: 4px; }
@@ -1784,7 +1801,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       const u = diskUsage(this._hass, d);
       const detail = u.used !== null && u.total !== null ? `${fmtBytes(u.used).split(" ")[0]} / ${fmtBytes(u.total)}` : "";
       gauges.push(
-        this._gauge(d.disk_use_percent || d.disk_use || d.disk_free, `${this._t("disk")} ${esc(mount)}`, ICONS.database, u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, level(u.pct, 80, 90), detail)
+        this._gauge(d.disk_use_percent || d.disk_use || d.disk_free, `${this._t("disk")} ${esc(mount)}`, ICONS.disk, u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, level(u.pct, 80, 90), detail)
       );
     }
 
@@ -2193,7 +2210,7 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
         const d = sm.disks[mount];
         const u = diskUsage(this._hass, d);
         rows.push(
-          this._metric(d.disk_use_percent || d.disk_use || d.disk_free, ICONS.database, this._t("disk"), u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, level(u.pct, 80, 90))
+          this._metric(d.disk_use_percent || d.disk_use || d.disk_free, ICONS.disk, this._t("disk"), u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, level(u.pct, 80, 90))
         );
       }
     }

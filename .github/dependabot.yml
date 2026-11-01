@@ -17,8 +17,9 @@ updates:
       dev-dependencies:
         dependency-type: development
         patterns: ["*"]
-  # Hooks of .pre-commit-config.yaml. Biome stays pinned by hand: its version must move together in
-  # biome.json ($schema), the Lint workflow (setup-biome) and the hook, so Dependabot leaves it alone.
+  # Hooks of .pre-commit-config.yaml. Biome stays pinned by hand: its version must move together in the
+  # hook's rev, its additional_dependencies and biome.json ($schema), so Dependabot leaves it alone.
+  # The Lint workflow reads it from the hook and fails when the three disagree.
   - package-ecosystem: pre-commit
     directory: /
     schedule:
