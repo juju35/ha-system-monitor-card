@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Fixes
+- **Mini and status cards**: the header logo keeps its full size (40 px) in the compact view, like the full card.
+
 ## 1.21.8 - 2026-11-01
 
 ### Fixes

@@ -2835,7 +2835,8 @@ class SystemMonitorZoomCard extends SystemMonitorCard {
 // ---------------------------------------------------------------------------
 
 const MINI_STYLE = `
-  .logo { height: 32px; width: 32px; align-self: flex-start; }
+  /* The full card's logo size: the compact view does not shrink it. */
+  .logo { height: 40px; width: 40px; align-self: flex-start; }
   /* The status shows in the footer. */
   .title-row > .chip { display: none; }
   .name { font-size: 16px; }
@@ -2947,7 +2948,7 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
 const STATUS_STYLE = `
   /* Tighter than the other headers: the status pill, the HACS button and the zoom button share the title row. */
   .header { gap: 4px; }
-  .logo { height: 32px; width: 32px; align-self: flex-start; margin-right: 6px; }
+  .logo { height: 40px; width: 40px; align-self: flex-start; margin-right: 6px; }
   .title-row { gap: 4px; }
   .title-row > .chip { padding: 1px 6px; }
   .header .btn { flex: none; padding: 6px; font-size: 12px; gap: 4px; white-space: nowrap; }
