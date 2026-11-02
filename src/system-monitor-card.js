@@ -1680,6 +1680,9 @@ const DIALOG_STYLE = `
 `;
 
 const BASE_STYLE = `
+  /* A block host: in Home Assistant the card sits in hui-card (no display), and an inline host has no size of its own,
+     so the ResizeObserver that fits the header and section titles to the card's width would never fire on resize. */
+  :host { display: block; }
   :host { --sm-blue: #18bcf2; --sm-ok: var(--success-color, #43a047); --sm-warn: var(--warning-color, #ffa600); --sm-crit: var(--error-color, #db4437);
           --sm-focus: var(--primary-color, #03a9f4); }
   /* Status colours tint pills, dots, bars, rings and icons; text in a status colour is mixed with the text colour
