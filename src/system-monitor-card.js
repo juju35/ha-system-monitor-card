@@ -85,6 +85,7 @@ const STRINGS = {
     no_match: "No matching extension",
     install_all: "Install all updates ({n})",
     install_all_confirm: "Install {n} HACS updates?",
+    install_all_confirm_one: "Install 1 HACS update?",
     install_title: "Install the updates",
     install_btn: "Install",
     cancel: "Cancel",
@@ -177,6 +178,7 @@ const STRINGS = {
     no_match: "Aucune extension trouvée",
     install_all: "Installer toutes les mises à jour ({n})",
     install_all_confirm: "Installer {n} mises à jour HACS ?",
+    install_all_confirm_one: "Installer 1 mise à jour HACS ?",
     install_title: "Installer les mises à jour",
     install_btn: "Installer",
     cancel: "Annuler",
@@ -268,6 +270,7 @@ const STRINGS = {
     no_match: "Keine passende Erweiterung",
     install_all: "Alle Updates installieren ({n})",
     install_all_confirm: "{n} HACS-Updates installieren?",
+    install_all_confirm_one: "1 HACS-Update installieren?",
     install_title: "Updates installieren",
     install_btn: "Installieren",
     cancel: "Abbrechen",
@@ -359,6 +362,7 @@ const STRINGS = {
     no_match: "Ninguna extensión coincide",
     install_all: "Instalar todas las actualizaciones ({n})",
     install_all_confirm: "¿Instalar {n} actualizaciones de HACS?",
+    install_all_confirm_one: "¿Instalar 1 actualización de HACS?",
     install_title: "Instalar las actualizaciones",
     install_btn: "Instalar",
     cancel: "Cancelar",
@@ -437,7 +441,7 @@ const STRINGS = {
     hacs: "HACS",
     hacs_ok: "HACS је ажуриран",
     hacs_updates_one: "1 HACS ажурирање",
-    hacs_updates: "{n} HACS ажурирања",
+    hacs_updates: "HACS ажурирања: {n}",
     check_updates: "Провери ажурирања",
     checking: "Проверавање {i}/{n}…",
     check_failed: "Провера није успела: {e}",
@@ -449,7 +453,8 @@ const STRINGS = {
     clear_search: "Очисти претрагу",
     no_match: "Нема подударних проширења",
     install_all: "Инсталирај сва ажурирања ({n})",
-    install_all_confirm: "Инсталирати {n} HACS ажурирања?",
+    install_all_confirm: "Инсталирати HACS ажурирања ({n})?",
+    install_all_confirm_one: "Инсталирати 1 HACS ажурирање?",
     install_title: "Инсталирај ажурирања",
     install_btn: "Инсталирај",
     cancel: "Откажи",
@@ -459,26 +464,26 @@ const STRINGS = {
     btn_check: "Провери",
     procs_ok: "Процеси покренути",
     procs_one: "1 процес заустављен",
-    procs_many: "{n} процеса заустављено",
+    procs_many: "Заустављени процеси: {n}",
     integrations: "Интеграције",
     st_up_to_date: "Ажурирано",
     st_unknown: "Непознато",
     st_update_one: "1 ажурирање",
-    st_updates: "{n} ажурирања",
+    st_updates: "Ажурирања: {n}",
     st_running: "Покренуто",
     st_stopped_one: "1 заустављен",
-    st_stopped: "{n} заустављено",
+    st_stopped: "Заустављени: {n}",
     st_available: "Доступно",
-    st_unavailable_one: "1 недоступан",
-    st_unavailable: "{n} недоступно",
+    st_unavailable_one: "1 недоступна",
+    st_unavailable: "Недоступне: {n}",
     wd_ok: "Интеграције доступне",
     wd_one: "1 интеграција недоступна",
-    wd_many: "{n} интеграција недоступно",
+    wd_many: "Недоступне интеграције: {n}",
     wd_check: "Провери интеграције сада",
     wd_none: "Свака интеграција је доступна.",
     wd_since: "Недоступно од {t}",
     wd_reloads_one: "1 поновно учитавање",
-    wd_reloads: "{n} поновних учитавања",
+    wd_reloads: "Поновна учитавања: {n}",
     wd_unavailable: "Недоступно",
     wd_gave_up: "Одустао",
     wd_last_reload: "Последње поновно учитавање: {name} {t}",
@@ -529,7 +534,7 @@ const STRINGS = {
     hacs: "HACS",
     hacs_ok: "HACS je ažuriran",
     hacs_updates_one: "1 HACS ažuriranje",
-    hacs_updates: "{n} HACS ažuriranja",
+    hacs_updates: "HACS ažuriranja: {n}",
     check_updates: "Proveri ažuriranja",
     checking: "Proveravanje {i}/{n}…",
     check_failed: "Provera nije uspela: {e}",
@@ -541,7 +546,8 @@ const STRINGS = {
     clear_search: "Očisti pretragu",
     no_match: "Nema podudarnih proširenja",
     install_all: "Instaliraj sva ažuriranja ({n})",
-    install_all_confirm: "Instalirati {n} HACS ažuriranja?",
+    install_all_confirm: "Instalirati HACS ažuriranja ({n})?",
+    install_all_confirm_one: "Instalirati 1 HACS ažuriranje?",
     install_title: "Instaliraj ažuriranja",
     install_btn: "Instaliraj",
     cancel: "Otkaži",
@@ -551,26 +557,26 @@ const STRINGS = {
     btn_check: "Proveri",
     procs_ok: "Procesi pokrenuti",
     procs_one: "1 proces zaustavljen",
-    procs_many: "{n} procesa zaustavljeno",
+    procs_many: "Zaustavljeni procesi: {n}",
     integrations: "Integracije",
     st_up_to_date: "Ažurirano",
     st_unknown: "Nepoznato",
     st_update_one: "1 ažuriranje",
-    st_updates: "{n} ažuriranja",
+    st_updates: "Ažuriranja: {n}",
     st_running: "Pokrenuto",
     st_stopped_one: "1 zaustavljen",
-    st_stopped: "{n} zaustavljeno",
+    st_stopped: "Zaustavljeni: {n}",
     st_available: "Dostupno",
-    st_unavailable_one: "1 nedostupan",
-    st_unavailable: "{n} nedostupno",
+    st_unavailable_one: "1 nedostupna",
+    st_unavailable: "Nedostupne: {n}",
     wd_ok: "Integracije dostupne",
     wd_one: "1 integracija nedostupna",
-    wd_many: "{n} integracija nedostupno",
+    wd_many: "Nedostupne integracije: {n}",
     wd_check: "Proveri integracije sada",
     wd_none: "Svaka integracija je dostupna.",
     wd_since: "Nedostupno od {t}",
     wd_reloads_one: "1 ponovno učitavanje",
-    wd_reloads: "{n} ponovnih učitavanja",
+    wd_reloads: "Ponovna učitavanja: {n}",
     wd_unavailable: "Nedostupno",
     wd_gave_up: "Odustao",
     wd_last_reload: "Poslednje ponovno učitavanje: {name} {t}",
@@ -634,6 +640,7 @@ const STRINGS = {
     no_match: "Nessuna estensione corrispondente",
     install_all: "Installa tutti gli aggiornamenti ({n})",
     install_all_confirm: "Installare {n} aggiornamenti HACS?",
+    install_all_confirm_one: "Installare 1 aggiornamento HACS?",
     install_title: "Installa gli aggiornamenti",
     install_btn: "Installa",
     cancel: "Annulla",
@@ -726,6 +733,7 @@ const STRINGS = {
     no_match: "Geen overeenkomende extensie",
     install_all: "Alle updates installeren ({n})",
     install_all_confirm: "{n} HACS-updates installeren?",
+    install_all_confirm_one: "1 HACS-update installeren?",
     install_title: "Updates installeren",
     install_btn: "Installeren",
     cancel: "Annuleren",
@@ -818,6 +826,7 @@ const STRINGS = {
     no_match: "Nenhuma extensão correspondente",
     install_all: "Instalar todas as atualizações ({n})",
     install_all_confirm: "Instalar {n} atualizações HACS?",
+    install_all_confirm_one: "Instalar 1 atualização HACS?",
     install_title: "Instalar as atualizações",
     install_btn: "Instalar",
     cancel: "Cancelar",
@@ -910,6 +919,7 @@ const STRINGS = {
     no_match: "Brak pasujących rozszerzeń",
     install_all: "Zainstaluj wszystkie aktualizacje ({n})",
     install_all_confirm: "Zainstalować aktualizacje HACS ({n})?",
+    install_all_confirm_one: "Zainstalować 1 aktualizację HACS?",
     install_title: "Zainstaluj aktualizacje",
     install_btn: "Zainstaluj",
     cancel: "Anuluj",
@@ -1062,6 +1072,19 @@ const uptimeSec = (s) => {
   if (/^\d+(\.\d+)?$/.test(s.state)) return parseFloat(s.state) * (DURATION_FACTORS[s.attributes.unit_of_measurement] ?? 1);
   const boot = Date.parse(s.state);
   return Number.isFinite(boot) ? Math.max(0, (Date.now() - boot) / 1000) : null;
+};
+
+/**
+ * CPU temperature: Home Assistant converts it to the user's unit (unit system, or the sensor's display unit). The value
+ * is shown in that unit, the warning levels and the gauge use it converted to °C.
+ */
+const TO_CELSIUS = { "°C": (v) => v, "°F": (v) => ((v - 32) * 5) / 9, K: (v) => v - 273.15 };
+const temperature = (s, hass) => {
+  const v = num(s);
+  if (v === null) return { c: null, display: "—" };
+  const unit = s.attributes?.unit_of_measurement || hass?.config?.unit_system?.temperature || "°C";
+  const c = (TO_CELSIUS[unit] || TO_CELSIUS["°C"])(v);
+  return { c, display: `${Math.round(v)}${unit.startsWith("°") ? unit : ` ${unit}`}` };
 };
 
 const level = (v, warn, crit) => (v === null ? "" : v >= crit ? "crit" : v >= warn ? "warn" : "ok");
@@ -1647,45 +1670,66 @@ const DIALOG_STYLE = `
   .modal-item { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
   .modal-item span:first-child { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .modal-item span:last-child { flex: none; color: var(--secondary-text-color); font-variant-numeric: tabular-nums; }
-  .modal-item b { font-weight: 500; color: var(--sm-warn); }
+  .modal-item b { font-weight: 500; color: color-mix(in srgb, var(--sm-warn) 45%, var(--primary-text-color)); }
   .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 2px; }
   .modal button.act { border: 0; border-radius: 8px; padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
   .modal button.cancel { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
-  .modal button.primary { background: color-mix(in srgb, var(--primary-color, #03a9f4) 16%, transparent); color: var(--primary-color, #03a9f4); }
+  .modal button.primary { background: color-mix(in srgb, var(--primary-color, #03a9f4) 16%, transparent); color: color-mix(in srgb, var(--primary-color, #03a9f4) 45%, var(--primary-text-color)); }
   .modal button.cancel:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, var(--secondary-background-color, transparent)); }
   .modal button.primary:hover { background: color-mix(in srgb, var(--primary-color, #03a9f4) 24%, transparent); }
 `;
 
 const BASE_STYLE = `
-  :host { --sm-blue: #18bcf2; --sm-ok: var(--success-color, #43a047); --sm-warn: var(--warning-color, #ffa600); --sm-crit: var(--error-color, #db4437); }
+  /* A block host: in Home Assistant the card sits in hui-card (no display), and an inline host has no size of its own,
+     so the ResizeObserver that fits the header and section titles to the card's width would never fire on resize. */
+  :host { display: block; }
+  :host { --sm-blue: #18bcf2; --sm-ok: var(--success-color, #43a047); --sm-warn: var(--warning-color, #ffa600); --sm-crit: var(--error-color, #db4437);
+          --sm-focus: var(--primary-color, #03a9f4); }
+  /* Status colours tint pills, dots, bars, rings and icons; text in a status colour is mixed with the text colour
+     (45 %), so that it reads at 4.5:1 or more on its tinted background in light and dark themes alike. */
   ha-card { overflow: hidden; position: relative; }
   ha-card.dialog-open { min-height: 220px; }
   .icon { width: 18px; height: 18px; fill: currentColor; flex: none; }
   .muted { color: var(--secondary-text-color); --c: var(--secondary-text-color); }
   .clickable { cursor: pointer; }
-  .clickable:focus-visible, [role="button"]:focus-visible { outline: 2px solid var(--sm-blue); outline-offset: -2px; }
+  .clickable:focus-visible, [role="button"]:focus-visible { outline: 2px solid var(--sm-focus); outline-offset: -2px; }
   .ok { --c: var(--sm-blue); } .warn { --c: var(--sm-warn); } .crit { --c: var(--sm-crit); } .good { --c: var(--sm-ok); }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c, var(--sm-ok)); flex: none; display: inline-block; }
   .chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
-          background: color-mix(in srgb, var(--c, var(--sm-ok)) 15%, transparent); color: var(--c, var(--sm-ok)); }
+          background: color-mix(in srgb, var(--c, var(--sm-ok)) 15%, transparent); color: color-mix(in srgb, var(--c, var(--sm-ok)) 45%, var(--primary-text-color)); }
   .bar { height: 4px; border-radius: 3px; background: var(--divider-color, rgba(127,127,127,.25)); overflow: hidden; }
   .bar > div { height: 100%; border-radius: 3px; background: var(--c, var(--sm-blue)); }
-  .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 8px; }
-  .titles { flex: 1; min-width: 0; }
-  /* The status pill shares the title's line, centred on it whatever the subtitle or the logo size. */
+  .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 8px; container: sm-header / inline-size; }
+  /* The title keeps 4 letters and its ellipsis ("Home…", 6.5ch of the 16 px title): the block measures its minimum in the
+     title's font (its other lines set their own sizes). */
+  .titles { flex: 1 1 0; min-width: 6.5ch; font-size: 16px; }
+  /* The status pill shares the title's line, centred on it whatever the subtitle or the logo size. The title grows
+     from 0 (flex-basis 0): the pill keeps its whole text while the title can still give way, down to a few letters
+     (then an ellipsis); only then is the pill cut, and on a narrow header it shows its dot only (its text stays in
+     title and aria-label). The buttons never shrink. */
   .title-row { display: flex; align-items: center; gap: 8px; }
-  .title-row > .name { flex: 1; min-width: 0; }
+  .title-row > .name { flex: 1 1 0; min-width: min(6.5ch, 100%); }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .logo { flex: none; object-fit: contain; filter: drop-shadow(0 3px 5px rgba(0,0,0,.2)); }
-  .title-row > .chip { flex: none; white-space: nowrap; }
-  .warning { padding: 16px; color: var(--sm-warn); }
+  .title-row > .chip { flex: 0 1 auto; min-width: 0; white-space: nowrap; }
+  .title-row > .chip > .chip-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  @container sm-header (max-width: 180px) {
+    .title-row > .chip { padding: 4px; }
+    .title-row > .chip > .chip-text { display: none; }
+  }
+  /* Under the cards' minimum width (6 columns of a 320 px screen, 132 px inside the header), as in a flex row of two
+     cards: the logo gives its room, so that the title keeps 4 letters and the zoom button stays inside. */
+  @container sm-header (max-width: 131px) {
+    .header .logo { display: none; }
+  }
+  .warning { padding: 16px; color: color-mix(in srgb, var(--sm-warn) 45%, var(--primary-text-color)); }
   /* Zoom button of the mini and status cards: rightmost in the header, 8 px from the card's right edge. */
   .zoom { all: unset; flex: none; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;
           display: grid; place-items: center; color: var(--secondary-text-color); }
   .zoom .icon { width: 16px; height: 16px; }
   .zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }
-  .zoom:focus-visible { outline: 2px solid var(--sm-blue); outline-offset: 1px; }
+  .zoom:focus-visible { outline: 2px solid var(--sm-focus); outline-offset: 1px; }
 `;
 
 class SystemMonitorBase extends HTMLElement {
@@ -1728,7 +1772,7 @@ class SystemMonitorBase extends HTMLElement {
         if (action.dataset.action === "hacs-clear") {
           this._hacsQuery = "";
           this._update();
-          this.shadowRoot.querySelector('[data-search="hacs"]')?.focus();
+          this.shadowRoot.querySelector('[data-search="hacs"]')?.focus({ preventScroll: true });
           return;
         }
         // With a process stopped, the list stays unfolded.
@@ -1907,7 +1951,7 @@ class SystemMonitorBase extends HTMLElement {
       .join("");
     this._openDialog({
       body: `<h3>${esc(this._t("install_title"))}</h3>
-        <div class="hint">${esc(this._t("install_all_confirm").replace("{n}", pending.length))}</div>
+        <div class="hint">${esc(pending.length === 1 ? this._t("install_all_confirm_one") : this._t("install_all_confirm").replace("{n}", pending.length))}</div>
         <div class="modal-list">${items}</div>`,
       ok: this._t("install_btn"),
       onOk: () => this._runInstall(pending.map((x) => x.id)),
@@ -1918,7 +1962,9 @@ class SystemMonitorBase extends HTMLElement {
   _openDialog(dialog) {
     this._dialog = dialog;
     this._update();
-    this.shadowRoot.querySelector(".modal .primary")?.focus();
+    // Focus without scrolling (the page stays put), then bring the popup into view only if it is off screen.
+    this.shadowRoot.querySelector(".modal .primary")?.focus({ preventScroll: true });
+    this.shadowRoot.querySelector(".modal")?.scrollIntoView?.({ block: "nearest" });
   }
 
   _closeDialog() {
@@ -2057,19 +2103,16 @@ class SystemMonitorBase extends HTMLElement {
     const sub = [coreVersion ? `Core ${coreVersion}` : null, osVersion ? `OS ${osVersion}` : null].filter(Boolean).join(" · ");
     // Status chip: pending Core / OS update, else "up to date" (or "running" without update entities).
     const { pending, unknown } = updateStatus(core, os);
+    // Its full text stays in title and aria-label: on a narrow header the pill is cut, then shows its dot only.
+    const pill = (cls, entity, text, shown = text) =>
+      `<span class="chip ${cls}" data-entity="${entity || ""}" title="${esc(text)}" aria-label="${esc(text)}"><span class="dot"></span><span class="chip-text">${esc(shown)}</span></span>`;
     let chip;
     if (pending) {
       // The status card's compact header shows the new version as a tooltip only, leaving the title its room.
       const text = `${this._t("update")} ${pending.attributes.latest_version || ""}`.trim();
-      chip = `<span class="chip clickable warn" data-entity="${pending.entity_id}" title="${esc(text)}"><span class="dot"></span>${esc(
-        this._compactHeader() ? this._t("update") : text
-      )}</span>`;
-    } else if (unknown)
-      chip = `<span class="chip clickable muted" data-entity="${unknown.entity_id}"><span class="dot"></span>${esc(this._t("st_unknown"))}</span>`;
-    else
-      chip = `<span class="chip good ${core ? "clickable" : ""}" data-entity="${core?.entity_id || ""}"><span class="dot"></span>${this._t(
-        core ? "up_to_date" : "running"
-      )}</span>`;
+      chip = pill("clickable warn", pending.entity_id, text, this._compactHeader() ? this._t("update") : text);
+    } else if (unknown) chip = pill("clickable muted", unknown.entity_id, this._t("st_unknown"));
+    else chip = pill(`good ${core ? "clickable" : ""}`, core?.entity_id, this._t(core ? "up_to_date" : "running"));
     return `
       <div class="header">
         ${c.show_image !== false ? `<img class="logo" src="${IMG_LOGO}" alt="Home Assistant">` : ""}
@@ -2180,6 +2223,10 @@ class SystemMonitorBase extends HTMLElement {
 // Full card
 // ---------------------------------------------------------------------------
 
+/** Status pill of a HACS or Integration Watchdog row: on a narrow list, its dot only (the text stays in title and aria-label). */
+const listPill = (cls, text) =>
+  `<span class="chip ${cls}" title="${esc(text)}" aria-label="${esc(text)}"><span class="dot"></span><span class="chip-text">${esc(text)}</span></span>`;
+
 const ring = (p) => {
   const r = 26;
   const c = 2 * Math.PI * r;
@@ -2200,23 +2247,32 @@ const TILES_STYLE = `
   .stat .k { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); min-width: 0; }
   .stat .k span, .stat .v { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: normal; }
   .stat .k .icon { width: 16px; height: 16px; color: var(--c, var(--sm-ok)); }
-  .stat .v { font-size: 13px; font-weight: 500; color: var(--c, var(--sm-ok)); }
-  .btn { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500; padding: 6px 12px;
-         border: none; border-radius: 10px; cursor: pointer; color: var(--primary-color, #03a9f4);
-         background: color-mix(in srgb, var(--primary-color, #03a9f4) 15%, transparent); }
-  /* currentColor: the orange Install button of the status card keeps its own tint on hover. */
-  .btn:not(:disabled):not([aria-disabled="true"]):hover { background: color-mix(in srgb, currentColor 24%, transparent); }
+  .stat .v { font-size: 13px; font-weight: 500; color: color-mix(in srgb, var(--c, var(--sm-ok)) 45%, var(--primary-text-color)); }
+  .btn { --btn-c: var(--primary-color, #03a9f4); display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500;
+         padding: 6px 12px; border: none; border-radius: 10px; cursor: pointer; color: color-mix(in srgb, var(--btn-c) 45%, var(--primary-text-color));
+         background: color-mix(in srgb, var(--btn-c) 15%, transparent); }
+  /* --btn-c: the orange Install button of the status card keeps its own tint on hover. */
+  .btn:not(:disabled):not([aria-disabled="true"]):hover { background: color-mix(in srgb, var(--btn-c) 24%, transparent); }
   .btn:disabled, .btn[aria-disabled="true"] { cursor: default; opacity: .5; }
   .btn .icon { width: 16px; height: 16px; }
   .spin { animation: sm-spin ${SPIN_PERIOD}ms linear infinite; }
   @keyframes sm-spin { to { transform: rotate(360deg); } }
   /* Spinners (HACS check, installs, watchdog check) are decorative: the label already says what runs. After .spin, to win. */
   @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
-  .err { font-size: 12px; color: var(--sm-crit); }
+  .err { font-size: 12px; color: color-mix(in srgb, var(--sm-crit) 45%, var(--primary-text-color)); }
 `;
 
 const FULL_STYLE = `
   .logo { height: 40px; width: 40px; }
+  /* A narrow card (under ~255 px) gives the pill the logo's last 8 px and 4 px of its gap: "Update 2026.10.3" stays
+     beside 4 letters of the title at 245 px. */
+  @container sm-header (max-width: 230px) {
+    .logo { height: 32px; width: 32px; }
+    .title-row { gap: 4px; }
+  }
+  /* Still too narrow for the pill beside 4 letters of the title (a longer label, or the zoom button of a zoomed mini or
+     status card in a narrow masonry column): the pill goes under the title, whole, instead of being cut. */
+  .title-row { flex-wrap: wrap; row-gap: 2px; }
   .section-title.toggle { cursor: pointer; margin-bottom: 0; user-select: none; }
   .section-title .count { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 400; }
   .section-title.closed .chevron { transform: rotate(-90deg); }
@@ -2229,10 +2285,10 @@ const FULL_STYLE = `
   .toolbar .last { font-size: 12px; }
   .toolbar .hint { font-size: 12px; color: var(--secondary-text-color); text-decoration: none; }
   .toolbar .hint:hover { text-decoration: underline; }
-  .exts { margin-top: 4px; }
+  .exts { margin-top: 4px; container: sm-list / inline-size; }
   .hacs .search { display: flex; align-items: center; gap: 6px; margin: 8px 0 4px; padding: 0 10px; height: 34px; border-radius: 10px;
                   background: var(--secondary-background-color, rgba(127,127,127,.08)); color: var(--secondary-text-color); cursor: text; }
-  .hacs .search:focus-within { outline: 2px solid var(--sm-blue); outline-offset: -2px; }
+  .hacs .search:focus-within { outline: 2px solid var(--sm-focus); outline-offset: -2px; }
   .hacs .search .icon { width: 16px; height: 16px; }
   .hacs .search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font: inherit; font-size: 13px; color: var(--primary-text-color); }
   .hacs .search input::placeholder { color: var(--secondary-text-color); }
@@ -2247,18 +2303,23 @@ const FULL_STYLE = `
   .ext .grow { flex: 1; min-width: 0; }
   .ext-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ext-ver { font-size: 12px; color: var(--secondary-text-color); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .ext-ver b { font-weight: 500; color: var(--sm-warn); }
+  .ext-ver b { font-weight: 500; color: color-mix(in srgb, var(--sm-warn) 45%, var(--primary-text-color)); }
   .ext-logo { width: 28px; height: 28px; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 8px; overflow: hidden; }
   .ext-logo img { width: 100%; height: 100%; object-fit: contain; }
   .ext-logo.fallback, .ext-logo:has(> svg) { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--secondary-text-color); }
   .ext .chip { flex: none; }
+  /* Narrow list: the name comes first, the status pills show their dot only. */
+  @container sm-list (max-width: 300px) {
+    .ext .chip { padding: 4px; }
+    .ext .chip > .chip-text { display: none; }
+  }
   .gh { flex: none; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
         color: var(--secondary-text-color); }
   .gh[role="button"] { cursor: pointer; }
   .gh[aria-disabled="true"] { cursor: default; }
   .gh:hover { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
   .gh.placeholder { visibility: hidden; }
-  .content { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 12px; }
+  .content { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 12px; container: sm-content / inline-size; }
   .section-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; text-transform: uppercase;
                    letter-spacing: .04em; color: var(--secondary-text-color); margin-bottom: 6px; }
   .section-title .icon { width: 16px; height: 16px; }
@@ -2267,6 +2328,14 @@ const FULL_STYLE = `
   .section-title > * { flex: none; }
   .section-title > .label, .section-title > .arg { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .section-title.tight .btn-check > span { display: none; }
+  /* Phone width (6 columns of a 320 px screen, 132 px inside): the section icon goes, the gaps and the check button's
+     margins shrink, so that the pills, the buttons, the count and the chevron stay inside the card with the name. */
+  @container sm-content (max-width: 160px) {
+    .section-title { gap: 4px; }
+    .section-title > .icon:first-child { display: none; }
+    .section-title .btn-check { margin: 0; padding: 4px; }
+    .section-title .btn-install { padding: 2px 6px; }
+  }
   .gauges { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; container-type: inline-size; }
   .gauge { display: flex; flex-direction: column; align-items: center; min-width: 0; }
   .dial { position: relative; width: 100%; max-width: 60px; aspect-ratio: 1; }
@@ -2306,6 +2375,11 @@ const FULL_STYLE = `
               color: var(--secondary-text-color); }
   .vol .bar { margin: 4px 0 0; grid-column: 1 / -1; grid-row: 2; }
   .vol .detail { font-size: 11px; color: var(--secondary-text-color); display: flex; justify-content: flex-end; grid-column: 2; grid-row: 1; gap: 8px; }
+  /* Narrow card: the mount point (the main information) keeps the whole line, the used / total size goes under the bar. */
+  @container sm-content (max-width: 300px) {
+    .vol .row { grid-column: 1 / -1; }
+    .vol .detail { grid-column: 1 / -1; grid-row: 3; margin-top: 2px; }
+  }
   .procs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   .procs .chip { font-weight: 400; }
 `;
@@ -2418,11 +2492,9 @@ class SystemMonitorCard extends SystemMonitorBase {
       );
     }
 
-    const temp = num(this._s(sc.processor_temperature));
+    const temp = temperature(this._s(sc.processor_temperature), this._hass);
     if (sc.processor_temperature)
-      gauges.push(
-        this._gauge(sc.processor_temperature, `${this._t("temperature")} ${this._t("cpu")}`, ICONS.temp, temp, temp === null ? "—" : `${Math.round(temp)}°C`, level(temp, 75, 90))
-      );
+      gauges.push(this._gauge(sc.processor_temperature, `${this._t("temperature")} ${this._t("cpu")}`, ICONS.temp, temp.c, esc(temp.display), level(temp.c, 75, 90)));
 
     const facts = [];
     const up = uptimeSec(this._s(sc.last_boot));
@@ -2568,11 +2640,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     }</label>`;
     const rows = shown.map((x) => {
       const ver = x.update ? `${esc(x.installed || "?")} → <b>${esc(x.latest || "?")}</b>` : esc(x.installed || "—");
-      const status = x.update
-        ? `<span class="chip warn"><span class="dot"></span>${esc(this._t("update"))}</span>`
-        : x.unknown
-          ? `<span class="chip muted"><span class="dot"></span>${esc(this._t("st_unknown"))}</span>`
-          : `<span class="chip good"><span class="dot"></span>${esc(this._t("up_to_date"))}</span>`;
+      const status = x.update ? listPill("warn", this._t("update")) : listPill(x.unknown ? "muted" : "good", this._t(x.unknown ? "st_unknown" : "up_to_date"));
       const gh = x.repo
         ? `<a class="gh" href="https://github.com/${esc(x.repo)}" target="_blank" rel="noopener noreferrer" title="${esc(this._t("github"))}" aria-label="${esc(this._t("github"))}">${svgIcon(ICONS.github)}</a>`
         : hasRepo
@@ -2652,9 +2720,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       // The domain only when the title doesn't already say it.
       const domain = String(x.title || "").toLowerCase().replace(/[^a-z0-9]/g, "") === String(x.domain).replace(/_/g, "") ? "" : x.domain;
       const sub = [domain, x.since ? this._t("wd_since").replace("{t}", relTime(x.since, locale)) : "", reloads].filter(Boolean).join(" · ");
-      const status = x.gave_up
-        ? `<span class="chip crit"><span class="dot"></span>${esc(this._t("wd_gave_up"))}</span>`
-        : `<span class="chip warn"><span class="dot"></span>${esc(this._t("wd_unavailable"))}</span>`;
+      const status = listPill(x.gave_up ? "crit" : "warn", this._t(x.gave_up ? "wd_gave_up" : "wd_unavailable"));
       const path = `/config/integrations/integration/${encodeURIComponent(x.domain)}`;
       return `<div class="ext clickable" data-action="nav" data-path="${esc(path)}" role="button" tabindex="0" title="${esc(this._t("wd_open"))}">
           ${this._logo({ domain: x.domain, category: "integration" })}
@@ -2744,7 +2810,7 @@ class SystemMonitorZoomCard extends SystemMonitorCard {
     ev.stopPropagation(); // no other action of the header
     this._setZoom(!this._zoomed);
     // Keyboard use (Enter / Space: no click count) keeps the focus on the button that replaced this one.
-    if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus();
+    if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus({ preventScroll: true });
   }
 
   _compactHeader() {
@@ -2773,15 +2839,20 @@ const MINI_STYLE = `
   /* The status shows in the footer. */
   .title-row > .chip { display: none; }
   .name { font-size: 16px; }
-  /* One grid for every metric: the label column widens for the longest label (Datenträger), the same for all rows. */
-  .content { padding: 0 12px 12px; display: grid; grid-template-columns: 18px minmax(64px, max-content) 1fr 56px; gap: 8px; }
+  /* One grid for every metric: the label column widens for the longest label (Datenträger), the same for all rows.
+     At phone width (6 columns of a 320 px screen, 132 px inside) the gaps and the label give way (ellipsis), the bar
+     keeps a few pixels and the value its whole text ("130°F"): no container query, the grid itself is the card. */
+  .content { padding: 0 12px 12px; display: grid; gap: 8px min(8px, 3%);
+             grid-template-columns: 18px minmax(min(64px, 30%), max-content) minmax(16px, 1fr) minmax(max-content, 56px); }
   .content > * { grid-column: 1 / -1; }
   .metric { display: grid; grid-template-columns: subgrid; align-items: center; font-size: 13px; }
   .metric .icon { color: var(--secondary-text-color); }
-  .metric .v { text-align: right; font-weight: 500; }
+  .metric .v { text-align: right; font-weight: 500; white-space: nowrap; }
+  .metric > span:not(.v) { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--secondary-text-color); margin-top: 2px; }
   .foot span { display: inline-flex; align-items: center; gap: 2px; }
   .foot .icon { width: 14px; height: 14px; }
+  .foot .rates { flex-wrap: wrap; column-gap: 8px; }
 `;
 
 /**
@@ -2829,9 +2900,9 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
         );
       }
     }
-    const temp = num(this._s(sc.processor_temperature));
+    const temp = temperature(this._s(sc.processor_temperature), this._hass);
     if (sc.processor_temperature)
-      rows.push(this._metric(sc.processor_temperature, ICONS.temp, this._t("temperature"), temp, temp === null ? "—" : `${Math.round(temp)}°C`, level(temp, 75, 90)));
+      rows.push(this._metric(sc.processor_temperature, ICONS.temp, this._t("temperature"), temp.c, esc(temp.display), level(temp.c, 75, 90)));
 
     const foot = [];
     const core = this._s(sm.core_update);
@@ -2848,9 +2919,9 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
       const n = sm.nets[ifs[0]];
       // One span per direction: each rate opens its own sensor.
       foot.push(
-        `<span><span class="clickable" data-entity="${n.throughput_network_in || ""}">${svgIcon(ICONS.down)}${fmtRate(
+        `<span class="rates"><span class="clickable" data-entity="${n.throughput_network_in || ""}">${svgIcon(ICONS.down)}${fmtRate(
           toBps(this._s(n.throughput_network_in))
-        )}</span>&nbsp;&nbsp;<span class="clickable" data-entity="${n.throughput_network_out || ""}">${svgIcon(ICONS.up)}${fmtRate(
+        )}</span><span class="clickable" data-entity="${n.throughput_network_out || ""}">${svgIcon(ICONS.up)}${fmtRate(
           toBps(this._s(n.throughput_network_out))
         )}</span></span>`
       );
@@ -2882,11 +2953,17 @@ const STATUS_STYLE = `
   .header .btn { flex: none; padding: 6px; font-size: 12px; gap: 4px; white-space: nowrap; }
   /* The tight status row keeps the zoom pinned to the top line, snug to the HACS button. */
   .zoom { align-self: flex-start; margin: -4px -4px 0 -4px; }
-  .header .btn.warn { color: var(--sm-warn); background: color-mix(in srgb, var(--sm-warn) 15%, transparent); }
-  /* No room left for the title (measured by _fit): the HACS button shows its icon only (its text stays in
-     title and aria-label), then the title takes two lines. */
+  .header .btn.warn { --btn-c: var(--sm-warn); }
+  /* No room left for the title (measured by _fit): the HACS button shows its icon only, then the status pill its dot
+     only (their text stays in title and aria-label). The title stays on one line, with an ellipsis: cutting it into
+     two lines broke "Home Assistant" letter by letter on a narrow card. */
   .header.tight .btn > span { display: none; }
-  .header.tighter .name { white-space: normal; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .header.tighter .title-row > .chip { padding: 4px; }
+  .header.tighter .title-row > .chip > .chip-text { display: none; }
+  /* Between the two, the logo gives its room (measured by _fit too): at phone width (6 columns of a 320 to 364 px
+     screen, 132 to 154 px inside the header) 4 letters of the title and the pill's dot keep their room next to the
+     HACS and zoom buttons, and a longer pill ("Aktualizacja") keeps its text at 245 px. */
+  .header.bare .logo { display: none; }
   .stats { padding-bottom: 12px; }
   .err { padding: 0 12px 12px; }
 `;
@@ -2904,18 +2981,28 @@ class SystemMonitorStatusCard extends SystemMonitorZoomCard {
 
   /**
    * Compact header: when the title is cut (longer labels in some languages, narrow cards), the HACS
-   * button shows its icon only, then the title takes two lines. The status pill and the buttons stay put.
+   * button shows its icon only; when the status pill's text no longer fits (the title has then given way down to
+   * 4 letters), the logo gives its room, then the pill shows its dot only. The buttons never shrink.
    */
   _fit() {
     super._fit();
     const header = this._zoomed ? null : this.shadowRoot.querySelector(".header");
     const name = header?.querySelector(".name");
     if (!name || !header.clientWidth) return;
-    header.classList.remove("tight", "tighter");
-    for (const cls of ["tight", "tighter"]) {
-      if (name.scrollWidth <= name.clientWidth) return;
-      header.classList.add(cls);
-    }
+    const cut = (el) => !!el && el.scrollWidth > el.clientWidth;
+    header.classList.remove("tight", "tighter", "bare");
+    if (!cut(name)) return;
+    header.classList.add("tight");
+    // The title keeps 4 letters (its min-width): the pill's text lacks room first, then the title row overflows its
+    // block, the pill running under the HACS button.
+    const short = () => cut(header.querySelector(".title-row > .chip > .chip-text")) || cut(header.querySelector(".title-row"));
+    // The logo gives its room so that the pill keeps its text; if that is not enough, the pill shows its dot only and
+    // the logo comes back, unless the header still lacks room.
+    if (!short()) return;
+    header.classList.add("bare");
+    if (!short()) return;
+    header.classList.replace("bare", "tighter");
+    if (short()) header.classList.add("bare");
   }
 
   _compactSize() {
@@ -3090,11 +3177,21 @@ class SystemMonitorEditorBase extends HTMLElement {
       });
       this.appendChild(this._form);
     }
-    const data = { ...this._config };
-    for (const name of this._booleans()) if (data[name] === undefined) data[name] = true;
     this._form.hass = this._hass;
-    this._form.data = data;
-    this._form.schema = this._schema();
+    // ha-form renders again on a new data or schema object: rebuild them only when the config, the language or the
+    // network interfaces change, not on every state change of Home Assistant.
+    if (this._formConfig !== this._config) {
+      this._formConfig = this._config;
+      const data = { ...this._config };
+      for (const name of this._booleans()) if (data[name] === undefined) data[name] = true;
+      this._form.data = data;
+    }
+    const schema = this._schema();
+    const key = JSON.stringify(schema);
+    if (key !== this._schemaKey) {
+      this._schemaKey = key;
+      this._form.schema = schema;
+    }
   }
 }
 

@@ -258,8 +258,10 @@ Gauges and bars turn orange, then red, when a value crosses these thresholds:
 | CPU usage | 70 % | 90 % |
 | RAM usage | 80 % | 95 % |
 | Disk usage | 80 % | 90 % |
-| CPU temperature | 75 °C | 90 °C |
+| CPU temperature | 75 °C (167 °F) | 90 °C (194 °F) |
 | Swap usage | 50 % | 80 % |
+
+The CPU temperature is shown in the unit of its sensor, which follows the unit system of Home Assistant (°C, or °F with US customary units) or the display unit chosen in the sensor's settings; the thresholds apply to the same temperature in any unit.
 
 ## Development
 
@@ -295,7 +297,7 @@ The cards auto-detect the language from your Home Assistant settings. Currently 
 | Português (Portugal) | `pt` |
 | Polski | `pl` |
 
-Regional variants fall back to the base language (`it-IT` → `it`, `nl-BE` → `nl`, `pl-PL` → `pl`); Brazilian Portuguese (`pt-BR`) uses the European Portuguese translation.
+Regional variants fall back to the base language (`it-IT` → `it`, `nl-BE` → `nl`, `pl-PL` → `pl`); Brazilian Portuguese (`pt-BR`) uses the European Portuguese translation. In Serbian and Polish, whose plurals have three forms, counts other than 1 read "label: {n}" (`Nedostupne: 2`).
 
 Contributions for additional languages are welcome!
 

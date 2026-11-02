@@ -128,14 +128,15 @@ test("section titles: the name is cut with an ellipsis (full text in title), the
 
 test("mini card: the metric labels share one column wide enough for the longest one", () => {
   const css = styleOf(card(lib.SystemMonitorMiniCard, hassWith())._render());
-  assert.match(rulesFor(css, ".content"), /grid-template-columns:\s*18px minmax\(64px, max-content\)/);
+  assert.match(rulesFor(css, ".content"), /grid-template-columns:\s*18px minmax\(min\(64px, 30%\), max-content\)/);
   assert.match(rulesFor(css, ".metric"), /grid-template-columns:\s*subgrid/);
 });
 
 test("buttons: a hover state, and a disabled state set apart from the enabled one", () => {
   const css = styleOf(card(lib.SystemMonitorStatusCard, hassWith())._render());
-  // currentColor, not --primary-color: this rule outranks .header .btn.warn, whose Install button is orange.
-  assert.match(css, /\.btn:not\(:disabled\):not\(\[aria-disabled="true"\]\):hover\s*\{[^}]*background:\s*color-mix\(in srgb, currentColor/);
+  // --btn-c, not --primary-color: this rule outranks .header .btn.warn, whose Install button is orange (--btn-c).
+  assert.match(css, /\.btn:not\(:disabled\):not\(\[aria-disabled="true"\]\):hover\s*\{[^}]*background:\s*color-mix\(in srgb, var\(--btn-c\)/);
+  assert.match(rulesFor(css, ".header .btn.warn"), /--btn-c:\s*var\(--sm-warn\)/);
   assert.match(rulesFor(css, '.btn[aria-disabled="true"]'), /opacity:\s*\.5/);
 });
 

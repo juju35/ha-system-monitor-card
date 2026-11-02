@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { devices, entities, states, updateAvailable } from "../scripts/mock-states.mjs";
 import { load } from "./load.mjs";
@@ -574,6 +575,27 @@ test("restoring the focus of the search field does not scroll the page either", 
   assert.equal(calls[0]?.preventScroll, true);
 });
 
+test("every focus the cards give after a re-render (search field, popup, zoom button) leaves the page where it is", () => {
+  const src = readFileSync(new URL("../src/system-monitor-card.js", import.meta.url), "utf8");
+  const calls = [...src.matchAll(/\.focus\(([^)]*)\)/g)];
+  assert.ok(calls.length >= 5, `${calls.length} focus() calls`);
+  for (const [call, args] of calls) assert.match(args, /^\{ preventScroll: true \}$/, call);
+});
+
+test("the install popup takes the focus without scrolling, then shows itself only if it is off screen", () => {
+  const card = new lib.SystemMonitorCard();
+  const calls = [];
+  const scrolls = [];
+  card._update = () => {};
+  card.shadowRoot = {
+    querySelector: (sel) =>
+      sel === ".modal .primary" ? { focus: (opts) => calls.push({ ...opts }) } : sel === ".modal" ? { scrollIntoView: (opts) => scrolls.push({ ...opts }) } : null,
+  };
+  card._openDialog({ body: "", ok: "OK", onOk() {} });
+  assert.deepEqual(calls, [{ preventScroll: true }]);
+  assert.deepEqual(scrolls, [{ block: "nearest" }]);
+});
+
 // ── Zoom (status and mini cards) ─────────────────────────────────────────────
 
 /** A connected zoomable card with a recording document listener and a shadow root that keeps its HTML. */
@@ -587,7 +609,7 @@ const zoomCard = (cls, config = {}) => {
   const card = new cls();
   card._fetchBrandsToken = () => {};
   const focused = [];
-  card.shadowRoot.querySelector = (sel) => (sel === ".zoom" ? { focus: () => focused.push(sel) } : null);
+  card.shadowRoot.querySelector = (sel) => (sel === ".zoom" ? { focus: (opts) => focused.push({ ...opts }) } : null);
   card.setConfig(config);
   card.hass = hassWith();
   card.connectedCallback();
@@ -633,7 +655,7 @@ for (const [name, cls, compactSize, compactPart] of [
     card._zoomClick(click([], 1));
     assert.equal(focused.length, 0);
     card._zoomClick(click([], 0));
-    assert.equal(focused.length, 1);
+    assert.deepEqual(focused, [{ preventScroll: true }]);
   });
 
   test(`a click outside the zoomed ${name} card brings it back, a click inside or in a dialog does not`, () => {
@@ -724,12 +746,12 @@ test("the status pill sits in the header row, the status card's one without the 
   full._config = {};
   // On the title's line, right of the title, above the subtitle.
   const head = full._header(sm);
-  assert.match(head, /<div class="title-row"><div class="name">[^<]*<\/div><span class="chip clickable warn"[^>]*title="Update 2026.10.3"><span class="dot"><\/span>Update 2026.10.3<\/span>/);
+  assert.match(head, /<div class="title-row"><div class="name">[^<]*<\/div><span class="chip clickable warn"[^>]*title="Update 2026.10.3"[^>]*><span class="dot"><\/span><span class="chip-text">Update 2026.10.3<\/span><\/span>/);
   assert.doesNotMatch(head, /class="chips"/);
   const status = statusCard(hass);
-  assert.match(status._header(sm), /title="Update 2026.10.3"><span class="dot"><\/span>Update<\/span>/);
+  assert.match(status._header(sm), /title="Update 2026.10.3"[^>]*><span class="dot"><\/span><span class="chip-text">Update<\/span>/);
   status._zoomed = true;
-  assert.match(status._header(sm), /<\/span>Update 2026.10.3<\/span>/);
+  assert.match(status._header(sm), /<span class="chip-text">Update 2026.10.3<\/span>/);
 });
 
 test("the Home Assistant database size comes from the File Size integration", () => {
