@@ -9,9 +9,10 @@
  */
 
 const VERSION = "__VERSION__";
-const IMG_LOGO = "__IMG_LOGO__";
 
 const ICONS = {
+  monitor_dashboard:
+    "M21,16V4H3V16H21M21,2A2,2 0 0,1 23,4V16A2,2 0 0,1 21,18H14V20H16V22H8V20H10V18H3C1.89,18 1,17.1 1,16V4C1,2.89 1.89,2 3,2H21M5,6H14V11H5V6M15,6H19V8H15V6M19,9V14H15V9H19M5,12H9V14H5V12M10,12H14V14H10V12Z",
   cpu: "M6,4H18V5H21V7H18V9H21V11H18V13H21V15H18V17H21V19H18V20H6V19H3V17H6V15H3V13H6V11H3V9H6V7H3V5H6V4M11,15V18H12V15H11M13,15V18H14V15H13M15,15V18H16V15H15Z",
   ram: "M17,17H7V7H17M21,11V9H19V7C19,5.89 18.1,5 17,5H15V3H13V5H11V3H9V5H7C5.89,5 5,5.89 5,7V9H3V11H5V13H3V15H5V17A2,2 0 0,0 7,19H9V21H11V19H13V21H15V19H17A2,2 0 0,0 19,17V15H21V13H19V11M13,13H11V11H13M15,9H9V15H15V9Z",
   temp: "M15 13V5A3 3 0 0 0 9 5V13A5 5 0 1 0 15 13M12 4A1 1 0 0 1 13 5V8H11V5A1 1 0 0 1 12 4Z",
@@ -125,7 +126,6 @@ const STRINGS = {
     zoom_out: "Back to the compact view",
     // Editor
     title: "Title (optional, defaults to Home Assistant)",
-    show_image: "Show Home Assistant logo",
     show_system: "Show system (CPU, RAM, disk, temperature)",
     show_network: "Show network",
     show_storage: "Show storage",
@@ -217,7 +217,6 @@ const STRINGS = {
     zoom_in: "Afficher la carte complète",
     zoom_out: "Revenir à la vue compacte",
     title: "Titre (facultatif, Home Assistant par défaut)",
-    show_image: "Afficher le logo Home Assistant",
     show_system: "Afficher le système (CPU, RAM, disque, température)",
     show_network: "Afficher le réseau",
     show_storage: "Afficher le stockage",
@@ -309,7 +308,6 @@ const STRINGS = {
     zoom_in: "Vollständige Karte anzeigen",
     zoom_out: "Zurück zur kompakten Ansicht",
     title: "Titel (optional, standardmäßig Home Assistant)",
-    show_image: "Home Assistant-Logo anzeigen",
     show_system: "System anzeigen (CPU, RAM, Datenträger, Temperatur)",
     show_network: "Netzwerk anzeigen",
     show_storage: "Speicher anzeigen",
@@ -401,7 +399,6 @@ const STRINGS = {
     zoom_in: "Mostrar la tarjeta completa",
     zoom_out: "Volver a la vista compacta",
     title: "Título (opcional, Home Assistant por defecto)",
-    show_image: "Mostrar el logo de Home Assistant",
     show_system: "Mostrar el sistema (CPU, RAM, disco, temperatura)",
     show_network: "Mostrar la red",
     show_storage: "Mostrar el almacenamiento",
@@ -494,7 +491,6 @@ const STRINGS = {
     zoom_out: "Назад на компактни приказ",
     // Editor
     title: "Наслов (опционо, подразумевано је Home Assistant)",
-    show_image: "Прикажи Home Assistant лого",
     show_system: "Прикажи систем (CPU, RAM, диск, температура)",
     show_network: "Прикажи мрежу",
     show_storage: "Прикажи складиште",
@@ -587,7 +583,6 @@ const STRINGS = {
     zoom_out: "Nazad na kompaktni prikaz",
     // Editor
     title: "Naslov (opciono, podrazumevano je Home Assistant)",
-    show_image: "Prikaži Home Assistant logo",
     show_system: "Prikaži sistem (CPU, RAM, disk, temperatura)",
     show_network: "Prikaži mrežu",
     show_storage: "Prikaži skladište",
@@ -680,7 +675,6 @@ const STRINGS = {
     zoom_out: "Torna alla vista compatta",
     // Editor
     title: "Titolo (facoltativo, predefinito: Home Assistant)",
-    show_image: "Mostra il logo di Home Assistant",
     show_system: "Mostra il sistema (CPU, RAM, disco, temperatura)",
     show_network: "Mostra la rete",
     show_storage: "Mostra l'archiviazione",
@@ -773,7 +767,6 @@ const STRINGS = {
     zoom_out: "Terug naar de compacte weergave",
     // Editor
     title: "Titel (optioneel, standaard Home Assistant)",
-    show_image: "Home Assistant-logo tonen",
     show_system: "Systeem tonen (CPU, RAM, schijf, temperatuur)",
     show_network: "Netwerk tonen",
     show_storage: "Opslag tonen",
@@ -866,7 +859,6 @@ const STRINGS = {
     zoom_out: "Voltar à vista compacta",
     // Editor
     title: "Título (opcional, Home Assistant por predefinição)",
-    show_image: "Mostrar o logótipo do Home Assistant",
     show_system: "Mostrar o sistema (CPU, RAM, disco, temperatura)",
     show_network: "Mostrar a rede",
     show_storage: "Mostrar o armazenamento",
@@ -959,7 +951,6 @@ const STRINGS = {
     zoom_out: "Wróć do widoku kompaktowego",
     // Editor
     title: "Tytuł (opcjonalny, domyślnie Home Assistant)",
-    show_image: "Pokaż logo Home Assistant",
     show_system: "Pokaż system (CPU, RAM, dysk, temperatura)",
     show_network: "Pokaż sieć",
     show_storage: "Pokaż pamięć masową",
@@ -1711,7 +1702,10 @@ const BASE_STYLE = `
   .title-row > .name { flex: 1 1 0; min-width: min(6.5ch, 100%); }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .logo { flex: none; object-fit: contain; filter: drop-shadow(0 3px 5px rgba(0,0,0,.2)); }
+  /* Round icon of the showcase site, tinted with the status colour like the pill. */
+  .logo { flex: none; border-radius: 50%; display: grid; place-items: center;
+          background: color-mix(in srgb, var(--c, var(--sm-ok)) 16%, transparent); }
+  .logo .icon { width: 24px; height: 24px; fill: currentColor; color: var(--c, var(--sm-ok)); }
   .title-row > .chip { flex: 0 1 auto; min-width: 0; white-space: nowrap; }
   .title-row > .chip > .chip-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
   @container sm-header (max-width: 180px) {
@@ -2106,6 +2100,8 @@ class SystemMonitorBase extends HTMLElement {
     // Its full text stays in title and aria-label: on a narrow header the pill is cut, then shows its dot only.
     const pill = (cls, entity, text, shown = text) =>
       `<span class="chip ${cls}" data-entity="${entity || ""}" title="${esc(text)}" aria-label="${esc(text)}"><span class="dot"></span><span class="chip-text">${esc(shown)}</span></span>`;
+    // The header icon takes the status colour of the pill: green up to date, orange update pending, grey unknown.
+    const iconCls = pending ? "warn" : unknown ? "muted" : "good";
     let chip;
     if (pending) {
       // The status card's compact header shows the new version as a tooltip only, leaving the title its room.
@@ -2115,7 +2111,7 @@ class SystemMonitorBase extends HTMLElement {
     else chip = pill(`good ${core ? "clickable" : ""}`, core?.entity_id, this._t(core ? "up_to_date" : "running"));
     return `
       <div class="header">
-        ${c.show_image !== false ? `<img class="logo" src="${IMG_LOGO}" alt="Home Assistant">` : ""}
+        <span class="logo ${iconCls}" aria-hidden="true">${svgIcon(ICONS.monitor_dashboard)}</span>
         <div class="titles">
           <div class="title-row"><div class="name">${esc(c.title || "Home Assistant")}</div>${chip}</div>
           <div class="sub">${esc(sub)}</div>
@@ -2268,6 +2264,7 @@ const FULL_STYLE = `
      beside 4 letters of the title at 245 px. */
   @container sm-header (max-width: 230px) {
     .logo { height: 32px; width: 32px; }
+    .logo .icon { width: 20px; height: 20px; }
     .title-row { gap: 4px; }
   }
   /* Still too narrow for the pill beside 4 letters of the title (a longer label, or the zoom button of a zoomed mini or
@@ -3096,7 +3093,7 @@ class SystemMonitorEditorBase extends HTMLElement {
 
   /** Boolean options, all on by default. */
   _booleans() {
-    return ["show_image", ...this.constructor.toggles];
+    return [...this.constructor.toggles];
   }
 
   setConfig(config) {
