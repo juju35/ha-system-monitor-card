@@ -1,6 +1,6 @@
 // Narrow cards (the minimum width of getGridOptions, 4 to 6 columns of a Sections view, the zoomed mini card), status
-// text contrast and focus rings: the CSS rules that keep them right. There are no browser tests in this repository;
-// the layouts were measured in Chromium (see the pull request "Review pass 9 fixes").
+// text contrast and focus rings: the CSS rules that keep them right. The layouts were measured in Chromium (see the
+// pull request "Review pass 9 fixes"); test/resize.browser.test.mjs covers re-fitting on resize in Chromium.
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { devices, entities, hacsUpdates, states, updateAvailable } from "../scripts/mock-states.mjs";
