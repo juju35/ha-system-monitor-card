@@ -15,10 +15,11 @@
 - **Serbian**: counts read right for every number ("Nedostupne: 2" instead of "2 nedostupno", "1 nedostupna" for the integrations tile).
 - **Install confirmation**: singular for a single update, in every language ("Install 1 HACS update?").
 - **Editor**: the form is no longer redrawn on every state change of Home Assistant.
+- **Resizing**: the cards fit their header and section titles again when their width changes (phone rotation, window resize, sidebar opened or closed), instead of a minute later: after widening a status card, the logo, the pill's text and the HACS button's label come back at once.
 
 ### Maintenance
 - Biome 2.6.4.
-- Tests: CPU temperature in °C, °F and K (thresholds, gauge, unavailable), counts of 1, 2, 5, 21 and 22 in every language, narrow-card and phone-width CSS rules, focus without scrolling, status text contrast and the editor's form.
+- Tests: CPU temperature in °C, °F and K (thresholds, gauge, unavailable), counts of 1, 2, 5, 21 and 22 in every language, narrow-card and phone-width CSS rules, re-fitting on resize in Chromium (card in an inline `hui-card`, as in Home Assistant), focus without scrolling, status text contrast and the editor's form.
 - Screenshots: a capture is rewritten only when its decoded pixels change; the page clock is fixed ("10 minutes ago" no longer drifts during a run) and the GIF spinners are really frozen frame by frame (they turn in the cards' shadow roots, which `document.getAnimations()` leaves out): two runs give byte-identical GIFs.
 
 ## 1.21.7 - 2026-11-01
