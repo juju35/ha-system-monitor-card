@@ -205,9 +205,9 @@ test("status card: the title gives way before the pill, which drops to its dot o
   assert.deepEqual([...classes], [], "nothing cut: nothing hidden");
 });
 
-// A header whose measures follow its classes: the logo (42 px with its gap) gives its room with .bare, the pill's text
+// A header whose measures follow its classes: the logo (50 px with its margin and the gap) gives its room with .bare, the pill's text
 // (dropped with .tighter) needs `pill` px, the title keeps its minimum (4 letters) and the title row overflows (the pill under the HACS button).
-const fakeStatusHeader = ({ room, pill, logo = 42 }) => {
+const fakeStatusHeader = ({ room, pill, logo = 50 }) => {
   const classes = new Set();
   const left = () => room + (classes.has("bare") ? logo : 0);
   const text = { get scrollWidth() { return pill; }, get clientWidth() { return Math.max(0, Math.min(pill, left())); } };
@@ -233,7 +233,7 @@ const fakeStatusHeader = ({ room, pill, logo = 42 }) => {
 };
 
 test("status card: the title keeps 4 letters; the logo gives its room before the pill drops its text", () => {
-  // "Aktualizacja" at 245 px: 30 px short beside 4 letters, the logo's 42 px are enough.
+  // "Aktualizacja" at 245 px: 30 px short beside 4 letters, the logo's 50 px are enough.
   assert.deepEqual(fakeStatusHeader({ room: 50, pill: 80 }), ["bare", "tight"]);
   // Even without the logo the text does not fit: the pill shows its dot and the logo comes back.
   assert.deepEqual(fakeStatusHeader({ room: 20, pill: 80 }), ["tight", "tighter"]);
@@ -271,6 +271,12 @@ test("status card at phone width: the logo gives its room (class bare) so that 4
   // No container rule hides the logo of a 6-column phone card (132 px inside the header) on its own: _fit decides.
   for (const b of containerBlocks(css, "sm-header").filter((x) => /\.logo\s*\{[^}]*display:\s*none/.test(x.body)))
     assert.ok(b.max < PHONE, `@container sm-header (max-width: ${b.max}px)`);
+});
+
+test("mini and status cards: the folded view keeps the full card's logo size", () => {
+  const hass = hassWith(updateAvailable);
+  const size = (Cls) => rulesFor(styleOf(card(Cls, hass)._render()), ".logo").match(/width:\s*(\d+)px/g).pop();
+  for (const Cls of [lib.SystemMonitorMiniCard, lib.SystemMonitorStatusCard]) assert.equal(size(Cls), size(lib.SystemMonitorCard), Cls.name);
 });
 
 test("every card under its minimum width (flex row of two cards): the logo gives its room to the title", () => {
