@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.21.10 - 2026-11-02
 
 ### Changes
 - Cards: the header shows the round monitor icon of the project's showcase page instead of the Home Assistant logo, tinted with the status color like the pill (green up to date, orange update available, grey unknown).
