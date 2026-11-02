@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Changes
+- Cards: the header shows the round monitor icon of the project's showcase page instead of the Home Assistant logo, tinted with the status color like the pill (green up to date, orange update available, grey unknown).
+- Cards: the `show_image` option is removed: the icon is always shown. An existing `show_image` line is ignored.
+
 ## 1.21.9 - 2026-11-02
 
 ### Fixes

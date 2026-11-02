@@ -34,7 +34,7 @@ The cards are built on top of the core [System Monitor integration](https://www.
 - Click any value to open its Home Assistant history (more-info dialog)
 - Visual editor in the dashboard UI for every card (no YAML needed)
 - Light and dark mode, English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese and Polish
-- Single file, no external dependency, the Home Assistant logo is embedded
+- Single file, no external dependency
 
 ## Prerequisites
 
@@ -106,7 +106,6 @@ type: custom:system-monitor-status-card
 ```yaml
 type: custom:system-monitor-card
 title: My Home Assistant
-show_image: true
 show_system: true
 show_network: true
 show_storage: true
@@ -120,7 +119,6 @@ language: fr
 ```yaml
 type: custom:system-monitor-mini-card
 title: My Home Assistant
-show_image: true
 show_storage: true
 show_network: true
 zoom: true
@@ -131,7 +129,6 @@ language: fr
 ```yaml
 type: custom:system-monitor-status-card
 title: My Home Assistant
-show_image: true
 show_hacs: true
 show_processes: true
 show_watchdog: true
@@ -144,7 +141,6 @@ language: fr
 | Option | Card | Default | Description |
 |---|---|---|---|
 | `title` | all | `Home Assistant` | Card title |
-| `show_image` | all | `true` | Show the Home Assistant logo |
 | `show_system` | full | `true` | CPU, RAM, disk and temperature gauges, uptime, load, IP address |
 | `show_network` | full, mini | `true` | Network download / upload |
 | `show_storage` | full, mini | `true` | Full card: mount points, swap and database size. Mini card: disk bar |
@@ -305,4 +301,3 @@ Contributions for additional languages are welcome!
 
 [MIT](LICENSE)
 
-The Home Assistant logo is a trademark of the Open Home Foundation and is used here to identify Home Assistant.

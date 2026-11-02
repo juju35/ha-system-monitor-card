@@ -338,3 +338,13 @@ test("mini card footer: the two network rates wrap rather than run out of a narr
   assert.doesNotMatch(html, /&nbsp;&nbsp;<span class="clickable"/);
   assert.match(rulesFor(styleOf(html), ".foot .rates"), /flex-wrap:\s*wrap/);
 });
+
+test("header icon: the monitor icon in the status color, always shown", () => {
+  const icon = (extra, config = {}) =>
+    card(lib.SystemMonitorCard, hassWith(extra), config)._render().match(/<span class="logo (\w+)" aria-hidden="true"><svg class="icon /)?.[1];
+  assert.equal(icon({}), "good");
+  assert.equal(icon(updateAvailable), "warn");
+  // show_image is gone: an old false value no longer hides the icon.
+  assert.equal(icon(updateAvailable, { show_image: false }), "warn");
+  assert.doesNotMatch(card(lib.SystemMonitorCard, hassWith())._render(), /<img class="logo"/);
+});
