@@ -36,6 +36,16 @@ The cards are built on top of the core [System Monitor integration](https://www.
 - Light and dark mode, English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese and Polish
 - Single file, no external dependency
 
+## Supported integrations
+
+| Integration | What the cards show |
+|---|---|
+| [System Monitor](https://www.home-assistant.io/integrations/systemmonitor/) (built in) | CPU, RAM, disk and temperature gauges, uptime, load, IP address, network, storage and swap, monitored processes |
+| [File Size](https://www.home-assistant.io/integrations/filesize/) (built in, optional) | Size of the Home Assistant database |
+| Home Assistant updates (built in, `update.home_assistant_*`) | Core and OS versions, with a badge when an update is available |
+| [HACS](https://hacs.xyz/) with [HACS Refresh](https://github.com/juju35/ha-hacs-refresh) (optional) | HACS extensions with their versions and updates, **Check for updates** run on the server |
+| [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog) (optional) | Unavailable integrations, their reloads, and the last reload |
+
 ## Prerequisites
 
 Home Assistant 2024.8 or later, and:
