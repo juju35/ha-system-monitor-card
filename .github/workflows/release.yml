@@ -66,6 +66,8 @@ jobs:
         if: steps.version.outputs.exists == 'false' || inputs.overwrite
         run: |
           npm ci
+          # npm test runs the browser tests too (they fail instead of skipping when CI is set): Chromium, as in validate.yml.
+          npx playwright install chromium
           npm test
           npm run check
           .github/scripts/release-notes.sh "${{ steps.version.outputs.version }}" > notes.md
