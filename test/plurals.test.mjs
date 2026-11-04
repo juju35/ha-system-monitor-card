@@ -7,9 +7,9 @@ const lib = load();
 const LANGS = Object.keys(lib.STRINGS);
 const WD = "sensor.integration_watchdog_unavailable_integrations";
 // Languages with more than two plural forms (Serbian, Polish, Russian, Ukrainian, Slovak, Czech, Slovenian: 1, 2-4,
-// 5+; Romanian "de" from 20; Irish, Maltese and Latvian): their counts other than 1 are turned into "label: {n}"
+// 5+; Romanian "de" from 20; Latvian): their counts other than 1 are turned into "label: {n}"
 // (or "label ({n})"), which reads right for every number.
-const ROTATED = ["sr", "sr-Latn", "pl", "ro", "ru", "uk", "ga", "sk", "cs", "sl", "mt", "lv"];
+const ROTATED = ["sr", "sr-Latn", "pl", "ro", "ru", "uk", "sk", "cs", "sl", "lv"];
 const rotated = (s, n) => s.endsWith(`: ${n}`) || s.includes(`(${n})`);
 
 /** n HACS extensions with an update, n integrations unavailable (one reload each), n processes stopped. */
