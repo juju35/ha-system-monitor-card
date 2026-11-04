@@ -5,10 +5,10 @@
 [![Validate](https://github.com/juju35/ha-system-monitor-card/actions/workflows/validate.yml/badge.svg)](https://github.com/juju35/ha-system-monitor-card/actions/workflows/validate.yml)
 [![Lint](https://github.com/juju35/ha-system-monitor-card/actions/workflows/lint.yml/badge.svg)](https://github.com/juju35/ha-system-monitor-card/actions/workflows/lint.yml)
 [![Release](https://img.shields.io/github/v/release/juju35/ha-system-monitor-card)](https://github.com/juju35/ha-system-monitor-card/releases/latest)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/juju35/ha-system-monitor-card/blob/main/LICENSE)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/julienstep9)
 
-<p align="center"><img src="images/home-assistant.svg" alt="Home Assistant" width="140"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/images/home-assistant.svg" alt="Home Assistant" width="140"></p>
 
 Lovelace cards for Home Assistant to monitor the machine running Home Assistant itself: CPU, RAM, disk, temperature, network, storage and processes at a glance.
 
@@ -169,31 +169,31 @@ While HACS checks for updates, the card animates: the check button spins as the 
 
 | Light | Dark |
 |---|---|
-| ![HACS check animation](screenshots/hacs-checking.gif) | ![HACS check animation dark](screenshots/hacs-checking-dark.gif) |
+| ![HACS check animation](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-checking.gif) | ![HACS check animation dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-checking-dark.gif) |
 
 While **Install all** runs, its chip spins with the progress of the installs (here 1 of 2 done).
 
 | Light | Dark |
 |---|---|
-| ![Install all animation](screenshots/hacs-installing.gif) | ![Install all animation dark](screenshots/hacs-installing-dark.gif) |
+| ![Install all animation](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-installing.gif) | ![Install all animation dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-installing-dark.gif) |
 
 While Integration Watchdog checks the integrations, its check button spins until the result comes back.
 
 | Light | Dark |
 |---|---|
-| ![Watchdog check animation](screenshots/wd-checking.gif) | ![Watchdog check animation dark](screenshots/wd-checking-dark.gif) |
+| ![Watchdog check animation](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/wd-checking.gif) | ![Watchdog check animation dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/wd-checking-dark.gif) |
 
 | Light | Dark |
 |---|---|
-| ![card](screenshots/card.png) | ![card dark](screenshots/card-dark.png) |
-| ![mini card](screenshots/mini-card.png) | ![mini card dark](screenshots/mini-card-dark.png) |
-| ![mini card zoomed in](screenshots/mini-card-zoom.png) | ![mini card zoomed in dark](screenshots/mini-card-zoom-dark.png) |
-| ![status card](screenshots/status-card.png) | ![status card dark](screenshots/status-card-dark.png) |
-| ![status card zoomed in](screenshots/status-card-zoom.png) | ![status card zoomed in dark](screenshots/status-card-zoom-dark.png) |
-| ![HACS extensions](screenshots/card-hacs.png) | ![HACS extensions dark](screenshots/card-hacs-dark.png) |
-| ![HACS search](screenshots/card-hacs-search-light.png) | ![HACS search dark](screenshots/card-hacs-search.png) |
-| ![Install confirmation](screenshots/card-install-light.png) | ![Install confirmation dark](screenshots/card-install.png) |
-| ![Unavailable integrations](screenshots/card-watchdog.png) | ![Unavailable integrations dark](screenshots/card-watchdog-dark.png) |
+| ![card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card.png) | ![card dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-dark.png) |
+| ![mini card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card.png) | ![mini card dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card-dark.png) |
+| ![mini card zoomed in](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card-zoom.png) | ![mini card zoomed in dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card-zoom-dark.png) |
+| ![status card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card.png) | ![status card dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card-dark.png) |
+| ![status card zoomed in](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card-zoom.png) | ![status card zoomed in dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card-zoom-dark.png) |
+| ![HACS extensions](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs.png) | ![HACS extensions dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs-dark.png) |
+| ![HACS search](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs-search-light.png) | ![HACS search dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs-search.png) |
+| ![Install confirmation](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-install-light.png) | ![Install confirmation dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-install.png) |
+| ![Unavailable integrations](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-watchdog.png) | ![Unavailable integrations dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-watchdog-dark.png) |
 
 ## How it works
 
@@ -285,7 +285,7 @@ npm run screenshots  # renders the cards (and the hacs-checking, hacs-installing
 ### Releasing
 
 1. Bump `version` in `package.json`
-2. Add a `## <version>` section at the top of [CHANGELOG.md](CHANGELOG.md)
+2. Add a `## <version>` section at the top of [CHANGELOG.md](https://github.com/juju35/ha-system-monitor-card/blob/main/CHANGELOG.md)
 3. Push to `main`: the **Release** workflow builds the card, creates the tag and the GitHub release with the changelog section as notes, and attaches `system-monitor-card.js`
 
 ## Translations
@@ -323,7 +323,7 @@ Contributions for additional languages are welcome!
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/juju35/ha-system-monitor-card/blob/main/LICENSE)
 
 ## Support
 
