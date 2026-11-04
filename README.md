@@ -18,7 +18,7 @@ The cards are built on top of the core [System Monitor integration](https://www.
 
 | System Monitor Card | System Monitor Mini Card | System Monitor Status Card |
 |---|---|---|
-| ![system-monitor-card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card.png) | ![system-monitor-mini-card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card.png) | ![system-monitor-status-card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card.png) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card.png" alt="system-monitor-card" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card.png" alt="system-monitor-mini-card" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card.png" alt="system-monitor-status-card" width="400"> |
 
 ## Features
 
@@ -169,31 +169,31 @@ While HACS checks for updates, the card animates: the check button spins as the 
 
 | Light | Dark |
 |---|---|
-| ![HACS check animation](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-checking.gif) | ![HACS check animation dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-checking-dark.gif) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-checking.gif" alt="HACS check animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-checking-dark.gif" alt="HACS check animation dark" width="400"> |
 
 While **Install all** runs, its chip spins with the progress of the installs (here 1 of 2 done).
 
 | Light | Dark |
 |---|---|
-| ![Install all animation](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-installing.gif) | ![Install all animation dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-installing-dark.gif) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-installing.gif" alt="Install all animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-installing-dark.gif" alt="Install all animation dark" width="400"> |
 
 While Integration Watchdog checks the integrations, its check button spins until the result comes back.
 
 | Light | Dark |
 |---|---|
-| ![Watchdog check animation](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/wd-checking.gif) | ![Watchdog check animation dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/wd-checking-dark.gif) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/wd-checking.gif" alt="Watchdog check animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/wd-checking-dark.gif" alt="Watchdog check animation dark" width="400"> |
 
 | Light | Dark |
 |---|---|
-| ![card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card.png) | ![card dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-dark.png) |
-| ![mini card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card.png) | ![mini card dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card-dark.png) |
-| ![mini card zoomed in](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card-zoom.png) | ![mini card zoomed in dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card-zoom-dark.png) |
-| ![status card](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card.png) | ![status card dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card-dark.png) |
-| ![status card zoomed in](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card-zoom.png) | ![status card zoomed in dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card-zoom-dark.png) |
-| ![HACS extensions](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs.png) | ![HACS extensions dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs-dark.png) |
-| ![HACS search](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs-search-light.png) | ![HACS search dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs-search.png) |
-| ![Install confirmation](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-install-light.png) | ![Install confirmation dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-install.png) |
-| ![Unavailable integrations](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-watchdog.png) | ![Unavailable integrations dark](https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-watchdog-dark.png) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card.png" alt="card" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-dark.png" alt="card dark" width="400"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card.png" alt="mini card" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card-dark.png" alt="mini card dark" width="400"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card-zoom.png" alt="mini card zoomed in" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card-zoom-dark.png" alt="mini card zoomed in dark" width="400"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card.png" alt="status card" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card-dark.png" alt="status card dark" width="400"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card-zoom.png" alt="status card zoomed in" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card-zoom-dark.png" alt="status card zoomed in dark" width="400"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs.png" alt="HACS extensions" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs-dark.png" alt="HACS extensions dark" width="400"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs-search-light.png" alt="HACS search" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs-search.png" alt="HACS search dark" width="400"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-install-light.png" alt="Install confirmation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-install.png" alt="Install confirmation dark" width="400"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-watchdog.png" alt="Unavailable integrations" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-watchdog-dark.png" alt="Unavailable integrations dark" width="400"> |
 
 ## How it works
 

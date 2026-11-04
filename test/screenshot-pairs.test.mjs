@@ -3,7 +3,9 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { shots } from "../scripts/screenshot-shots.mjs";
 
-const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8");
+const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8")
+  // <img> screenshots (sized for HACS) read as ![](url)
+  .replace(/<img\b[^>]*\bsrc="([^"]+)"[^>]*>/g, "![]($1)");
 const withoutTheme = ({ file, theme, ...setup }) => setup;
 
 // The README's "| Light | Dark |" screenshot rows: [light file, dark file].
