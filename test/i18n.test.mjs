@@ -4,7 +4,7 @@ import { load } from "./load.mjs";
 
 const { STRINGS } = load();
 const placeholders = (s) => (String(s).match(/\{\w+\}/g) || []).sort();
-const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl"];
+const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl", "ro", "da", "sv", "bg", "ru", "uk", "hu", "sk", "cs", "sl", "lv", "el"];
 
 test("I18N parity: every language has exactly the English keys and placeholders", () => {
   const ref = Object.keys(STRINGS.en).sort();
@@ -63,6 +63,19 @@ test("the language resolves to it, nl, pt and pl, pt-BR falling back to European
   assert.equal(lang({ language: "en" }, { language: "pl" }), "pl");
 });
 
+test("the language resolves to the 12 languages added in 1.21.11, with regional variants", () => {
+  const { lang } = load();
+  for (const l of ["ro", "da", "sv", "bg", "ru", "uk", "hu", "sk", "cs", "sl", "lv", "el"]) assert.equal(lang({ language: l }, {}), l);
+  assert.equal(lang({ language: "ro-RO" }, {}), "ro");
+  assert.equal(lang({ language: "sv-FI" }, {}), "sv");
+  assert.equal(lang({ locale: { language: "ru-RU" } }, {}), "ru");
+  assert.equal(lang({ language: "cs-CZ" }, {}), "cs");
+  assert.equal(lang({ language: "el-GR" }, {}), "el");
+  assert.equal(lang({ language: "en" }, { language: "uk" }), "uk");
+  assert.equal(lang({ language: "sr" }, {}), "sr");
+  assert.equal(lang({ language: "sr-Latn" }, {}), "sr-Latn");
+});
+
 test("the editor offers every language", () => {
   const { SystemMonitorMiniCardEditor } = load();
   const editor = new SystemMonitorMiniCardEditor();
@@ -71,6 +84,7 @@ test("the editor offers every language", () => {
   const values = field.selector.select.options.map((o) => o.value);
   for (const l of ["en", ...LANGS]) assert.ok(values.includes(l), `editor option ${l}`);
   assert.equal(field.selector.select.options.find((o) => o.value === "pt").label, "Português (Portugal)");
+  assert.equal(field.selector.select.options.find((o) => o.value === "el").label, "Ελληνικά");
 });
 
 test("Intl gets European Portuguese for pt, keeps regional locales, and the language option wins", () => {

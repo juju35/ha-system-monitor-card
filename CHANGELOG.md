@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.21.11 - 2026-11-04
+
+### Features
+- **Translations**: Added Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek translations (`ro`, `da`, `sv`, `bg`, `ru`, `uk`, `hu`, `sk`, `cs`, `sl`, `lv`, `el`), chosen automatically from the Home Assistant language and offered in the editor's language list. In the languages with more than two plural forms (Romanian, Russian, Ukrainian, Slovak, Czech, Slovenian, Latvian), counts use the "label: {n}" form to avoid wrong plural forms.
+
+### Maintenance
+- Tests: key, key-path and placeholder parity for the new languages, language resolution (`ro-RO` → `ro`, `sv-FI` → `sv`, `ru-RU` → `ru`, `cs-CZ` → `cs`, `el-GR` → `el`), the editor's language options and the "label: {n}" counts.
+
 ## 1.21.10 - 2026-11-02
 
 ### Changes

@@ -101,7 +101,7 @@ test("status card in an inline hui-card: widening 130 -> 500 px brings back the 
 test("every card in an inline hui-card re-fits on resize, wider and narrower, as a fresh render at that width", { skip }, async () => {
   const cases = [];
   for (const tag of ["system-monitor-card", "system-monitor-mini-card", "system-monitor-status-card"])
-    for (const lang of ["en", "pl"])
+    for (const lang of ["en", "pl", "lv", "uk", "el"])
       for (const [from, to] of [[130, 500], [178, 364], [364, 178], [500, 156]]) cases.push([tag, lang, from, to]);
   for (const [tag, lang, from, to] of cases) {
     const r = await resize(tag, lang, from, to);
