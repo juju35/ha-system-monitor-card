@@ -7,7 +7,7 @@ const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8");
 const withoutTheme = ({ file, theme, ...setup }) => setup;
 
 // The README's "| Light | Dark |" screenshot rows: [light file, dark file].
-const pairs = [...readme.matchAll(/\| !\[[^\]]*\]\(screenshots\/([\w-]+)\.png\) \| !\[[^\]]*\]\(screenshots\/([\w-]+)\.png\) \|/g)].map((m) => [
+const pairs = [...readme.matchAll(/^\| !\[[^\]]*\]\((?:[^)\s]*\/)?screenshots\/([\w-]+)\.png\) \| !\[[^\]]*\]\((?:[^)\s]*\/)?screenshots\/([\w-]+)\.png\) \|$/gm)].map((m) => [
   m[1],
   m[2],
 ]);
