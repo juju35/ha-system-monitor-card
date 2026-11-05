@@ -1,18 +1,15 @@
 // Renders the cards with mock System Monitor data and saves the README screenshots.
 // Usage: npm run build && npm run screenshots
-import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
-import { states, entities, devices, updateAvailable, hacsUpdates, procsRunning } from "./mock-states.mjs";
+import { states, entities, devices, updateAvailable, procsRunning } from "./mock-states.mjs";
 import { shots } from "./screenshot-shots.mjs";
 import { writeIfChanged } from "./screenshot-write.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 // The mock states are dated from the moment they were imported ("10 minutes ago"): every page reads that same moment,
-// so a slow run (or the last GIF of a long one) never shows "12 minutes ago" and rewrites an unchanged capture.
+// so a slow run never shows "12 minutes ago" and rewrites an unchanged capture.
 const NOW = Date.now();
 const cardJs = readFileSync(`${root}dist/system-monitor-card.js`, "utf8");
 
@@ -56,115 +53,34 @@ const page_html = (theme, width) => `<!doctype html><html><head><meta charset="u
 const browser = await chromium.launch(
   process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}
 );
-// Logos are loaded dynamically by the card. Offline, serve each integration's own brand/icon.png from its
-// repository (what Home Assistant's brands proxy does for custom integrations); other logos fall back to icons.
-const brandRepos = Object.fromEntries(
-  Object.values(states)
-    .filter((s) => s.attributes.entity_picture && s.attributes.release_url)
-    .map((s) => [/\/_\/([^/]+)\//.exec(s.attributes.entity_picture)[1], /github\.com\/([^/]+\/[^/]+)/.exec(s.attributes.release_url)[1]])
-);
-const routeLogos = (page) =>
-  page.route(/brands\.home-assistant\.io|github\.com\/[^/]+\.png|avatars\.githubusercontent/, async (route) => {
-    const domain = /\/_\/([^/]+)\/icon\.png/.exec(route.request().url())?.[1];
-    if (!domain || !brandRepos[domain]) return route.abort();
-    try {
-      const res = await route.fetch({ url: `https://raw.githubusercontent.com/${brandRepos[domain]}/HEAD/custom_components/${domain}/brand/icon.png` });
-      if (res.ok()) return route.fulfill({ response: res });
-    } catch (_e) {
-      /* offline */
-    }
-    return route.abort();
-  });
-// The HACS check in progress: the refresh status sensor reads "running", a few repositories still to go.
-const hacsRunning = {
-  "sensor.hacs_refresh_status": {
-    ...states["sensor.hacs_refresh_status"],
-    state: "running",
-    attributes: { ...states["sensor.hacs_refresh_status"].attributes, done: 3, total: 6 },
-  },
-};
-// The Integration Watchdog check in progress: its button goes unavailable while it runs.
-const wdChecking = {
-  "button.integration_watchdog_check_now": { ...states["button.integration_watchdog_check_now"], state: "unavailable" },
-};
-
 // Mounts shot `s` on a fresh page (the card's script declares classes and custom elements once per page), settles
 // it and clears the focus ring; returns the page ready to capture.
 async function openCard(s) {
   const page = await browser.newPage({ deviceScaleFactor: 2, viewport: { width: 1000, height: 2000 } });
   await page.clock.setFixedTime(NOW);
   page.on("pageerror", (err) => console.error(`${s.file}: ${err.message}`));
-  await routeLogos(page);
   await page.setContent(page_html(s.theme, s.width));
   await page.addScriptTag({ content: HA_CARD });
   await page.addScriptTag({ content: cardJs });
-  // document.getAnimations() leaves out the shadow roots, where the cards' spinners turn: the GIFs walk them all.
-  await page.evaluate(() => {
-    window.allAnimations = () => {
-      const out = [...document.getAnimations()];
-      const walk = (root) => {
-        for (const el of root.querySelectorAll("*")) {
-          if (!el.shadowRoot) continue;
-          out.push(...el.shadowRoot.getAnimations());
-          walk(el.shadowRoot);
-        }
-      };
-      walk(document);
-      return out;
-    };
-  });
   await page.evaluate(
-    ({ type, config, states, entities, devices, open, action, search, install, installing, zoom }) => {
+    ({ type, config, states, entities, devices, zoom }) => {
       const el = document.createElement(type);
       el.setConfig({ type: `custom:${type}`, ...config });
-      el.hass = {
-        states, entities, devices, config: { version: "2026.10.2" }, language: "en", locale: { language: "en" },
-        user: { is_admin: true }, services: { hacs_refresh: { check_updates: {}, check_repository: {} } }, callWS: async () => { throw new Error("offline"); },
-      };
+      el.hass = { states, entities, devices, config: { version: "2026.10.2" }, language: "en", locale: { language: "en" }, user: { is_admin: true } };
       document.getElementById("root").appendChild(el);
       // A mouse click (detail 1): a keyboard one would focus the new button and draw its focus ring.
       if (zoom) el.shadowRoot.querySelector(".zoom").dispatchEvent(new MouseEvent("click", { bubbles: true, composed: true, detail: 1 }));
-      if (open) el.shadowRoot.querySelector(`.section-title[data-action="${action}"]`).click();
-      if (install) el.shadowRoot.querySelector('[data-action="hacs-install-all"]').click();
-      if (search) {
-        const field = el.shadowRoot.querySelector("[data-search]");
-        field.value = search;
-        field.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
-      }
-      // "Install all" mid-run: the state _runInstall holds between two update.install calls.
-      if (installing) {
-        el._installing = { done: 1, total: 2 };
-        el._update();
-      }
     },
     {
       type: s.type,
       config: s.config,
-      states: {
-        ...states,
-        ...(s.update ? updateAvailable : {}),
-        ...(s.update || s.hacs ? hacsUpdates : {}),
-        ...(s.procsOk ? procsRunning : {}),
-        ...(s.running ? hacsRunning : {}),
-        ...(s.wdBusy ? wdChecking : {}),
-      },
+      states: { ...states, ...(s.update ? updateAvailable : {}), ...(s.procsOk ? procsRunning : {}) },
       entities,
       devices,
-      open: s.open,
-      action: s.action || "hacs",
-      search: s.search,
-      install: s.install,
-      installing: s.installing,
       zoom: s.zoom,
     }
   );
   await page.waitForTimeout(800);
-  // No focus ring in the captures: the install popup focuses its button, which draws the :focus-visible outline.
-  await page.evaluate(() => {
-    let el = document.activeElement;
-    while (el?.shadowRoot?.activeElement) el = el.shadowRoot.activeElement;
-    el?.blur?.();
-  });
   return page;
 }
 
@@ -181,58 +97,4 @@ for (const s of shots) {
   await page.close();
 }
 
-// Animated states, recorded as looping GIFs — needs ffmpeg on PATH. Every animation is paused and
-// stepped frame by frame, so the GIFs are identical whatever the machine's speed.
-// Every animation is recorded in both themes: each light GIF gets a `-dark` twin with the exact same setup.
-const SECTIONS_OFF = { show_system: false, show_network: false, show_storage: false, show_processes: false };
-const lightGifs = [
-  // The HACS section mid-check: its status sensor is "running".
-  { file: "hacs-checking", type: "system-monitor-card", theme: "light", width: 460, config: SECTIONS_OFF, hacs: true, open: true, running: true },
-  // "Install all" mid-run: the chip spins with the progress of the installs.
-  { file: "hacs-installing", type: "system-monitor-card", theme: "light", width: 460, config: SECTIONS_OFF, hacs: true, open: true, installing: true },
-  // The Integration Watchdog "check now" button mid-check: unavailable while it runs, so it spins.
-  { file: "wd-checking", type: "system-monitor-card", theme: "light", width: 460, config: { ...SECTIONS_OFF, show_hacs: false }, open: true, action: "wd", wdBusy: true },
-];
-const gifs = [...lightGifs, ...lightGifs.map((g) => ({ ...g, file: `${g.file}-dark`, theme: "dark" }))];
-const FPS = 20;
-const SECONDS = 2;
-for (const gif of gifs) {
-  const page = await openCard(gif);
-  const box = await page.locator("#root").boundingBox();
-  const clip = { x: 0, y: 0, width: gif.width + 32, height: Math.ceil(box.height) + 32 };
-  const dir = mkdtempSync(join(tmpdir(), "sm-frames-"));
-  const frames = Math.round(FPS * SECONDS);
-  for (let i = 0; i < frames; i++) {
-    const t = (i * 1000) / FPS;
-    // A re-render during the capture (a logo falling back) recreates the spinners, which then run from the wall
-    // clock: the frame is taken again until every animation is still paused at `t` after the capture.
-    for (let attempt = 0; ; attempt++) {
-      await page.evaluate((t) => {
-        for (const a of window.allAnimations()) {
-          a.pause();
-          a.currentTime = t;
-        }
-      }, t);
-      await page.screenshot({ path: join(dir, `f${String(i).padStart(3, "0")}.png`), clip });
-      const still = await page.evaluate((t) => {
-        const list = window.allAnimations();
-        return list.length > 0 && list.every((a) => a.playState === "paused" && Math.abs(a.currentTime - t) < 0.5);
-      }, t);
-      if (still) break;
-      if (attempt === 4) throw new Error(`${gif.file}: the animations keep restarting (frame ${i})`);
-    }
-  }
-  await page.close();
-  const out = join(dir, "out.gif");
-  // Halve the retina capture and build a per-clip palette: the colours stay clean and the file stays small.
-  execFileSync("ffmpeg", [
-    "-y", "-loglevel", "error", "-framerate", String(FPS), "-i", join(dir, "f%03d.png"),
-    "-vf", `scale=${clip.width}:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128[p];[b][p]paletteuse=dither=bayer:bayer_scale=4`,
-    "-loop", "0", out,
-  ]);
-  // Same frames, same palette (built from them), ordered dithering: the same GIF; kept unless its frames differ.
-  const written = writeIfChanged(`${root}screenshots/${gif.file}.gif`, readFileSync(out));
-  rmSync(dir, { recursive: true });
-  console.log(`screenshots/${gif.file}.gif${written ? "" : " (unchanged)"}`);
-}
 await browser.close();

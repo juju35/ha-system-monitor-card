@@ -86,19 +86,3 @@ test("the editor offers every language", () => {
   assert.equal(field.selector.select.options.find((o) => o.value === "pt").label, "Português (Portugal)");
   assert.equal(field.selector.select.options.find((o) => o.value === "el").label, "Ελληνικά");
 });
-
-test("Intl gets European Portuguese for pt, keeps regional locales, and the language option wins", () => {
-  const { intlLocale } = load();
-  assert.equal(intlLocale({ language: "pt" }, {}), "pt-PT");
-  assert.equal(intlLocale({ locale: { language: "pt" } }, {}), "pt-PT");
-  assert.equal(intlLocale({ language: "pt-BR" }, {}), "pt-BR");
-  assert.equal(intlLocale({ language: "fr-CA" }, {}), "fr-CA");
-  assert.equal(intlLocale({ language: "de" }, { language: "pt" }), "pt-PT");
-  assert.equal(intlLocale({ language: "pt-BR" }, { language: "pt" }), "pt-PT");
-  assert.equal(intlLocale({ language: "pt-BR" }, { language: "fr" }), "fr");
-  assert.equal(intlLocale({ language: "ja" }, {}), "en");
-  assert.equal(intlLocale({ language: "sr-Latn" }, {}), "sr-Latn");
-  assert.equal(intlLocale({ language: "sr" }, { language: "sr-Latn" }), "sr-Latn");
-  assert.equal(intlLocale({ language: "sr-Latn" }, { language: "sr" }), "sr");
-  assert.equal(new Intl.RelativeTimeFormat(intlLocale({ language: "pt" }, {}), { numeric: "auto" }).resolvedOptions().locale, "pt-PT");
-});

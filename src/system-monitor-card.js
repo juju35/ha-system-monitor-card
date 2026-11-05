@@ -26,23 +26,11 @@ const ICONS = {
   ip: "M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3M12,7A2,2 0 0,1 14,9A2,2 0 0,1 12,11A2,2 0 0,1 10,9A2,2 0 0,1 12,7Z",
   process: "M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M15,18V16H6V18H15M18,14V12H6V14H18Z",
   swap: "M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z",
-  hacs: "M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L10.11,5.22L16,8.61L17.96,7.5L12,4.15M6.04,7.5L12,10.85L13.96,9.75L8.08,6.35L6.04,7.5M5,15.91L11,19.29V12.58L5,9.21V15.91M19,15.91V9.21L13,12.58V19.29L19,15.91Z",
-  github: "M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z",
   close: "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z",
-  search: "M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z",
-  refresh: "M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z",
-  download: "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z",
-  watchdog: "M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z",
   chevron: "M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z",
-  // mdi:arrow-expand and mdi:arrow-collapse, for the zoom button of the mini and status cards.
+  // mdi:arrow-expand and mdi:arrow-collapse, for the zoom button of the mini card.
   expand: "M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z",
   collapse: "M19.5,3.09L15,7.59V4H13V11H20V9H16.41L20.91,4.5L19.5,3.09M4,13V15H7.59L3.09,19.5L4.5,20.91L9,16.41V20H11V13H4Z",
-  // Fallbacks per HACS category when no logo can be loaded.
-  integration: "M22,13.5C22,15.26 20.7,16.72 19,16.96V20A2,2 0 0,1 17,22H13.2V21.7A2.7,2.7 0 0,0 10.5,19C9,19 7.8,20.21 7.8,21.7V22H4A2,2 0 0,1 2,20V16.2H2.3C3.79,16.2 5,15 5,13.5C5,12 3.79,10.8 2.3,10.8H2V7A2,2 0 0,1 4,5H7.04C7.28,3.3 8.74,2 10.5,2C12.26,2 13.72,3.3 13.96,5H17A2,2 0 0,1 19,7V10.04C20.7,10.28 22,11.74 22,13.5M17,15H18.5A1.5,1.5 0 0,0 20,13.5A1.5,1.5 0 0,0 18.5,12H17V7H12V5.5A1.5,1.5 0 0,0 10.5,4A1.5,1.5 0 0,0 9,5.5V7H4V9.12C5.76,9.8 7,11.5 7,13.5C7,15.5 5.75,17.2 4,17.88V20H6.12C6.8,18.25 8.5,17 10.5,17C12.5,17 14.2,18.25 14.88,20H17V15Z",
-  plugin: "M19,5V7H15V5H19M9,5V11H5V5H9M19,13V19H15V13H19M9,17V19H5V17H9M21,3H13V9H21V3M11,3H3V13H11V3M21,11H13V21H21V11M11,15H3V21H11V15Z",
-  theme: "M12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2C17.5,2 22,6 22,11A6,6 0 0,1 16,17H14.2C13.9,17 13.7,17.2 13.7,17.5C13.7,17.6 13.8,17.7 13.8,17.8C14.2,18.3 14.4,18.9 14.4,19.5C14.5,20.9 13.4,22 12,22M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C12.3,20 12.5,19.8 12.5,19.5C12.5,19.3 12.4,19.2 12.4,19.1C12,18.6 11.8,18.1 11.8,17.5C11.8,16.1 12.9,15 14.3,15H16A4,4 0 0,0 20,11C20,7.1 16.4,4 12,4M6.5,10C7.3,10 8,10.7 8,11.5C8,12.3 7.3,13 6.5,13C5.7,13 5,12.3 5,11.5C5,10.7 5.7,10 6.5,10M9.5,6C10.3,6 11,6.7 11,7.5C11,8.3 10.3,9 9.5,9C8.7,9 8,8.3 8,7.5C8,6.7 8.7,6 9.5,6M14.5,6C15.3,6 16,6.7 16,7.5C16,8.3 15.3,9 14.5,9C13.7,9 13,8.3 13,7.5C13,6.7 13.7,6 14.5,6M17.5,10C18.3,10 19,10.7 19,11.5C19,12.3 18.3,13 17.5,13C16.7,13 16,12.3 16,11.5C16,10.7 16.7,10 17.5,10Z",
-  python_script: "M19.14,7.5A2.86,2.86 0 0,1 22,10.36V14.14A2.86,2.86 0 0,1 19.14,17H12C12,17.39 12.32,17.96 12.71,17.96H17V19.64A2.86,2.86 0 0,1 14.14,22.5H9.86A2.86,2.86 0 0,1 7,19.64V15.89C7,14.31 8.28,13.04 9.86,13.04H15.11C16.69,13.04 17.96,11.76 17.96,10.18V7.5H19.14M14.86,19.29C14.46,19.29 14.14,19.59 14.14,20.18C14.14,20.77 14.46,20.89 14.86,20.89A0.71,0.71 0 0,0 15.57,20.18C15.57,19.59 15.25,19.29 14.86,19.29M4.86,17.5C3.28,17.5 2,16.22 2,14.64V10.86C2,9.28 3.28,8 4.86,8H12C12,7.61 11.68,7.04 11.29,7.04H7V5.36C7,3.78 8.28,2.5 9.86,2.5H14.14C15.72,2.5 17,3.78 17,5.36V9.11C17,10.69 15.72,11.96 14.14,11.96H8.89C7.31,11.96 6.04,13.24 6.04,14.82V17.5H4.86M9.14,5.71C9.54,5.71 9.86,5.41 9.86,4.82C9.86,4.23 9.54,4.11 9.14,4.11C8.75,4.11 8.43,4.23 8.43,4.82C8.43,5.41 8.75,5.71 9.14,5.71Z",
-  template: "M14 2H6C4.89 2 4 2.9 4 4V20C4 21.11 4.89 22 6 22H18C19.11 22 20 21.11 20 20V8L14 2M18 20H6V4H13V9H18V20M9.54 15.65L11.63 17.74L10.35 19L7 15.65L10.35 12.3L11.63 13.56L9.54 15.65M17 15.65L13.65 19L12.38 17.74L14.47 15.65L12.38 13.56L13.65 12.3L17 15.65Z",
 };
 
 const STRINGS = {
@@ -70,58 +58,13 @@ const STRINGS = {
     up_to_date: "Up to date",
     update: "Update",
     no_sm: "No System Monitor entities found. Is the System Monitor integration installed and are its sensors enabled?",
-    hacs: "HACS",
-    hacs_ok: "HACS up to date",
-    hacs_updates_one: "1 HACS update",
-    hacs_updates: "{n} HACS updates",
-    check_updates: "Check for updates",
-    checking: "Checking {i}/{n}…",
-    check_failed: "Check failed: {e}",
-    last_check: "Last check {t}",
-    needs_refresh: "Install HACS Refresh to check every extension for updates from Home Assistant.",
-    github: "Open on GitHub",
-    check_ext: "Check this extension for updates",
-    search_ext: "Search extensions",
-    clear_search: "Clear the search",
-    no_match: "No matching extension",
-    install_all: "Install all updates ({n})",
-    install_all_confirm: "Install {n} HACS updates?",
-    install_all_confirm_one: "Install 1 HACS update?",
-    install_title: "Install the updates",
-    install_btn: "Install",
-    cancel: "Cancel",
-    installing: "Installing {i}/{n}…",
-    install_failed: "Install failed: {e}",
-    btn_install: "Install ({n})",
-    btn_check: "Check",
     procs_ok: "Processes running",
     procs_one: "1 process stopped",
     procs_many: "{n} processes stopped",
-    integrations: "Integrations",
-    st_up_to_date: "Up to date",
     st_unknown: "Unknown",
-    st_update_one: "1 update",
-    st_updates: "{n} updates",
     st_running: "Running",
     st_stopped_one: "1 stopped",
     st_stopped: "{n} stopped",
-    st_available: "Available",
-    st_unavailable_one: "1 unavailable",
-    st_unavailable: "{n} unavailable",
-    wd_ok: "Integrations available",
-    wd_one: "1 integration unavailable",
-    wd_many: "{n} integrations unavailable",
-    wd_check: "Check the integrations now",
-    wd_none: "Every integration is available.",
-    wd_since: "Unavailable {t}",
-    wd_reloads_one: "1 reload",
-    wd_reloads: "{n} reloads",
-    wd_unavailable: "Unavailable",
-    wd_gave_up: "Given up",
-    wd_last_reload: "Last reload: {name} {t}",
-    wd_last_reload_failed: "Last reload failed: {name} {t}",
-    wd_last_check: "Checked {t}",
-    wd_open: "Open the integration",
     zoom_in: "Show the full card",
     zoom_out: "Back to the compact view",
     // Editor
@@ -130,8 +73,6 @@ const STRINGS = {
     show_network: "Show network",
     show_storage: "Show storage",
     show_processes: "Show processes",
-    show_hacs: "Show HACS extensions",
-    show_watchdog: "Show unavailable integrations (Integration Watchdog)",
     zoom: "Zoom button",
     zoom_helper: "Switches the card to the full card and back",
     interface: "Network interface (optional, all by default)",
@@ -162,58 +103,13 @@ const STRINGS = {
     up_to_date: "À jour",
     update: "Mise à jour",
     no_sm: "Aucune entité System Monitor trouvée. L'intégration System Monitor est-elle installée et ses capteurs activés ?",
-    hacs: "HACS",
-    hacs_ok: "HACS à jour",
-    hacs_updates_one: "1 mise à jour HACS",
-    hacs_updates: "{n} mises à jour HACS",
-    check_updates: "Rechercher les mises à jour",
-    checking: "Recherche {i}/{n}…",
-    check_failed: "Échec de la recherche : {e}",
-    last_check: "Dernière recherche {t}",
-    needs_refresh: "Installez HACS Refresh pour rechercher les mises à jour de toutes les extensions depuis Home Assistant.",
-    github: "Ouvrir sur GitHub",
-    check_ext: "Rechercher les mises à jour de cette extension",
-    search_ext: "Rechercher une extension",
-    clear_search: "Effacer la recherche",
-    no_match: "Aucune extension trouvée",
-    install_all: "Installer toutes les mises à jour ({n})",
-    install_all_confirm: "Installer {n} mises à jour HACS ?",
-    install_all_confirm_one: "Installer 1 mise à jour HACS ?",
-    install_title: "Installer les mises à jour",
-    install_btn: "Installer",
-    cancel: "Annuler",
-    installing: "Installation {i}/{n}…",
-    install_failed: "Échec de l'installation : {e}",
-    btn_install: "Installer ({n})",
-    btn_check: "Vérifier",
     procs_ok: "Processus en marche",
     procs_one: "1 processus arrêté",
     procs_many: "{n} processus arrêtés",
-    integrations: "Intégrations",
-    st_up_to_date: "À jour",
     st_unknown: "Inconnu",
-    st_update_one: "1 mise à jour",
-    st_updates: "{n} mises à jour",
     st_running: "En marche",
     st_stopped_one: "1 arrêté",
     st_stopped: "{n} arrêtés",
-    st_available: "Disponibles",
-    st_unavailable_one: "1 indisponible",
-    st_unavailable: "{n} indisponibles",
-    wd_ok: "Intégrations disponibles",
-    wd_one: "1 intégration indisponible",
-    wd_many: "{n} intégrations indisponibles",
-    wd_check: "Vérifier les intégrations maintenant",
-    wd_none: "Toutes les intégrations sont disponibles.",
-    wd_since: "Indisponible {t}",
-    wd_reloads_one: "1 rechargement",
-    wd_reloads: "{n} rechargements",
-    wd_unavailable: "Indisponible",
-    wd_gave_up: "Abandonnée",
-    wd_last_reload: "Dernier rechargement : {name} {t}",
-    wd_last_reload_failed: "Échec du dernier rechargement : {name} {t}",
-    wd_last_check: "Vérifié {t}",
-    wd_open: "Ouvrir l'intégration",
     zoom_in: "Afficher la carte complète",
     zoom_out: "Revenir à la vue compacte",
     title: "Titre (facultatif, Home Assistant par défaut)",
@@ -221,8 +117,6 @@ const STRINGS = {
     show_network: "Afficher le réseau",
     show_storage: "Afficher le stockage",
     show_processes: "Afficher les processus",
-    show_hacs: "Afficher les extensions HACS",
-    show_watchdog: "Afficher les intégrations indisponibles (Integration Watchdog)",
     zoom: "Bouton zoom",
     zoom_helper: "Bascule la carte en carte complète, et inversement",
     interface: "Interface réseau (facultatif, toutes par défaut)",
@@ -253,58 +147,13 @@ const STRINGS = {
     up_to_date: "Aktuell",
     update: "Update",
     no_sm: "Keine System Monitor-Entitäten gefunden. Ist die System Monitor-Integration installiert und sind ihre Sensoren aktiviert?",
-    hacs: "HACS",
-    hacs_ok: "HACS aktuell",
-    hacs_updates_one: "1 HACS-Update",
-    hacs_updates: "{n} HACS-Updates",
-    check_updates: "Nach Updates suchen",
-    checking: "Prüfe {i}/{n}…",
-    check_failed: "Prüfung fehlgeschlagen: {e}",
-    last_check: "Zuletzt geprüft {t}",
-    needs_refresh: "Installiere HACS Refresh, um alle Erweiterungen direkt aus Home Assistant auf Updates zu prüfen.",
-    github: "Auf GitHub öffnen",
-    check_ext: "Diese Erweiterung auf Updates prüfen",
-    search_ext: "Erweiterungen durchsuchen",
-    clear_search: "Suche löschen",
-    no_match: "Keine passende Erweiterung",
-    install_all: "Alle Updates installieren ({n})",
-    install_all_confirm: "{n} HACS-Updates installieren?",
-    install_all_confirm_one: "1 HACS-Update installieren?",
-    install_title: "Updates installieren",
-    install_btn: "Installieren",
-    cancel: "Abbrechen",
-    installing: "Installiere {i}/{n}…",
-    install_failed: "Installation fehlgeschlagen: {e}",
-    btn_install: "Installieren ({n})",
-    btn_check: "Prüfen",
     procs_ok: "Prozesse laufen",
     procs_one: "1 Prozess gestoppt",
     procs_many: "{n} Prozesse gestoppt",
-    integrations: "Integrationen",
-    st_up_to_date: "Aktuell",
     st_unknown: "Unbekannt",
-    st_update_one: "1 Update",
-    st_updates: "{n} Updates",
     st_running: "Läuft",
     st_stopped_one: "1 gestoppt",
     st_stopped: "{n} gestoppt",
-    st_available: "Verfügbar",
-    st_unavailable_one: "1 nicht verfügbar",
-    st_unavailable: "{n} nicht verfügbar",
-    wd_ok: "Integrationen verfügbar",
-    wd_one: "1 Integration nicht verfügbar",
-    wd_many: "{n} Integrationen nicht verfügbar",
-    wd_check: "Integrationen jetzt prüfen",
-    wd_none: "Alle Integrationen sind verfügbar.",
-    wd_since: "Nicht verfügbar ({t})",
-    wd_reloads_one: "1× neu geladen",
-    wd_reloads: "{n}× neu geladen",
-    wd_unavailable: "Nicht verfügbar",
-    wd_gave_up: "Aufgegeben",
-    wd_last_reload: "Zuletzt neu geladen: {name} {t}",
-    wd_last_reload_failed: "Letztes Neuladen fehlgeschlagen: {name} {t}",
-    wd_last_check: "Geprüft {t}",
-    wd_open: "Integration öffnen",
     zoom_in: "Vollständige Karte anzeigen",
     zoom_out: "Zurück zur kompakten Ansicht",
     title: "Titel (optional, standardmäßig Home Assistant)",
@@ -312,8 +161,6 @@ const STRINGS = {
     show_network: "Netzwerk anzeigen",
     show_storage: "Speicher anzeigen",
     show_processes: "Prozesse anzeigen",
-    show_hacs: "HACS-Erweiterungen anzeigen",
-    show_watchdog: "Nicht verfügbare Integrationen anzeigen (Integration Watchdog)",
     zoom: "Zoom-Schaltfläche",
     zoom_helper: "Schaltet zwischen kompakter und vollständiger Karte um",
     interface: "Netzwerkschnittstelle (optional, standardmäßig alle)",
@@ -344,58 +191,13 @@ const STRINGS = {
     up_to_date: "Actualizado",
     update: "Actualización",
     no_sm: "No se encontraron entidades de System Monitor. ¿Está instalada la integración System Monitor y están activados sus sensores?",
-    hacs: "HACS",
-    hacs_ok: "HACS actualizado",
-    hacs_updates_one: "1 actualización de HACS",
-    hacs_updates: "{n} actualizaciones de HACS",
-    check_updates: "Buscar actualizaciones",
-    checking: "Comprobando {i}/{n}…",
-    check_failed: "Error al comprobar: {e}",
-    last_check: "Última comprobación {t}",
-    needs_refresh: "Instala HACS Refresh para buscar actualizaciones de todas las extensiones desde Home Assistant.",
-    github: "Abrir en GitHub",
-    check_ext: "Buscar actualizaciones de esta extensión",
-    search_ext: "Buscar extensiones",
-    clear_search: "Borrar la búsqueda",
-    no_match: "Ninguna extensión coincide",
-    install_all: "Instalar todas las actualizaciones ({n})",
-    install_all_confirm: "¿Instalar {n} actualizaciones de HACS?",
-    install_all_confirm_one: "¿Instalar 1 actualización de HACS?",
-    install_title: "Instalar las actualizaciones",
-    install_btn: "Instalar",
-    cancel: "Cancelar",
-    installing: "Instalando {i}/{n}…",
-    install_failed: "Error en la instalación: {e}",
-    btn_install: "Instalar ({n})",
-    btn_check: "Comprobar",
     procs_ok: "Procesos en ejecución",
     procs_one: "1 proceso detenido",
     procs_many: "{n} procesos detenidos",
-    integrations: "Integraciones",
-    st_up_to_date: "Actualizado",
     st_unknown: "Desconocido",
-    st_update_one: "1 actualización",
-    st_updates: "{n} actualizaciones",
     st_running: "En ejecución",
     st_stopped_one: "1 detenido",
     st_stopped: "{n} detenidos",
-    st_available: "Disponibles",
-    st_unavailable_one: "1 no disponible",
-    st_unavailable: "{n} no disponibles",
-    wd_ok: "Integraciones disponibles",
-    wd_one: "1 integración no disponible",
-    wd_many: "{n} integraciones no disponibles",
-    wd_check: "Comprobar las integraciones ahora",
-    wd_none: "Todas las integraciones están disponibles.",
-    wd_since: "No disponible {t}",
-    wd_reloads_one: "1 recarga",
-    wd_reloads: "{n} recargas",
-    wd_unavailable: "No disponible",
-    wd_gave_up: "Abandonada",
-    wd_last_reload: "Última recarga: {name} {t}",
-    wd_last_reload_failed: "Falló la última recarga: {name} {t}",
-    wd_last_check: "Comprobado {t}",
-    wd_open: "Abrir la integración",
     zoom_in: "Mostrar la tarjeta completa",
     zoom_out: "Volver a la vista compacta",
     title: "Título (opcional, Home Assistant por defecto)",
@@ -403,8 +205,6 @@ const STRINGS = {
     show_network: "Mostrar la red",
     show_storage: "Mostrar el almacenamiento",
     show_processes: "Mostrar los procesos",
-    show_hacs: "Mostrar las extensiones de HACS",
-    show_watchdog: "Mostrar las integraciones no disponibles (Integration Watchdog)",
     zoom: "Botón de zoom",
     zoom_helper: "Alterna entre la tarjeta completa y la vista compacta",
     interface: "Interfaz de red (opcional, todas por defecto)",
@@ -435,58 +235,13 @@ const STRINGS = {
     up_to_date: "Ажурирано",
     update: "Ажурирај",
     no_sm: "Нису пронађени ентитети за System Monitor. Да ли је интеграција System Monitor инсталирана и да ли су њени сензори омогућени?",
-    hacs: "HACS",
-    hacs_ok: "HACS је ажуриран",
-    hacs_updates_one: "1 HACS ажурирање",
-    hacs_updates: "HACS ажурирања: {n}",
-    check_updates: "Провери ажурирања",
-    checking: "Проверавање {i}/{n}…",
-    check_failed: "Провера није успела: {e}",
-    last_check: "Последња провера {t}",
-    needs_refresh: "Инсталирајте HACS Refresh да бисте проверили ажурирања за свако проширење из Home Assistant-а.",
-    github: "Отвори на GitHub-у",
-    check_ext: "Провери ажурирања за ово проширење",
-    search_ext: "Претражи проширења",
-    clear_search: "Очисти претрагу",
-    no_match: "Нема подударних проширења",
-    install_all: "Инсталирај сва ажурирања ({n})",
-    install_all_confirm: "Инсталирати HACS ажурирања ({n})?",
-    install_all_confirm_one: "Инсталирати 1 HACS ажурирање?",
-    install_title: "Инсталирај ажурирања",
-    install_btn: "Инсталирај",
-    cancel: "Откажи",
-    installing: "Инсталирање {i}/{n}…",
-    install_failed: "Инсталација није успела: {e}",
-    btn_install: "Инсталирај ({n})",
-    btn_check: "Провери",
     procs_ok: "Процеси покренути",
     procs_one: "1 процес заустављен",
     procs_many: "Заустављени процеси: {n}",
-    integrations: "Интеграције",
-    st_up_to_date: "Ажурирано",
     st_unknown: "Непознато",
-    st_update_one: "1 ажурирање",
-    st_updates: "Ажурирања: {n}",
     st_running: "Покренуто",
     st_stopped_one: "1 заустављен",
     st_stopped: "Заустављени: {n}",
-    st_available: "Доступно",
-    st_unavailable_one: "1 недоступна",
-    st_unavailable: "Недоступне: {n}",
-    wd_ok: "Интеграције доступне",
-    wd_one: "1 интеграција недоступна",
-    wd_many: "Недоступне интеграције: {n}",
-    wd_check: "Провери интеграције сада",
-    wd_none: "Свака интеграција је доступна.",
-    wd_since: "Недоступно од {t}",
-    wd_reloads_one: "1 поновно учитавање",
-    wd_reloads: "Поновна учитавања: {n}",
-    wd_unavailable: "Недоступно",
-    wd_gave_up: "Одустао",
-    wd_last_reload: "Последње поновно учитавање: {name} {t}",
-    wd_last_reload_failed: "Последње поновно учитавање није успело: {name} {t}",
-    wd_last_check: "Проверено {t}",
-    wd_open: "Отвори интеграцију",
     zoom_in: "Прикажи целу картицу",
     zoom_out: "Назад на компактни приказ",
     // Editor
@@ -495,8 +250,6 @@ const STRINGS = {
     show_network: "Прикажи мрежу",
     show_storage: "Прикажи складиште",
     show_processes: "Прикажи процесе",
-    show_hacs: "Прикажи HACS проширења",
-    show_watchdog: "Прикажи недоступне интеграције (Integration Watchdog)",
     zoom: "Дугме за увећање",
     zoom_helper: "Пребацује картицу на пун приказ и назад",
     interface: "Мрежни интерфејс (опционо, подразумевано сви)",
@@ -527,58 +280,13 @@ const STRINGS = {
     up_to_date: "Ažurirano",
     update: "Ažuriraj",
     no_sm: "Nisu pronađeni entiteti za System Monitor. Da li je integracija System Monitor instalirana i da li su njeni senzori omogućeni?",
-    hacs: "HACS",
-    hacs_ok: "HACS je ažuriran",
-    hacs_updates_one: "1 HACS ažuriranje",
-    hacs_updates: "HACS ažuriranja: {n}",
-    check_updates: "Proveri ažuriranja",
-    checking: "Proveravanje {i}/{n}…",
-    check_failed: "Provera nije uspela: {e}",
-    last_check: "Poslednja provera {t}",
-    needs_refresh: "Instalirajte HACS Refresh da biste proverili ažuriranja za svako proširenje iz Home Assistant-a.",
-    github: "Otvori na GitHub-u",
-    check_ext: "Proveri ažuriranja za ovo proširenje",
-    search_ext: "Pretraži proširenja",
-    clear_search: "Očisti pretragu",
-    no_match: "Nema podudarnih proširenja",
-    install_all: "Instaliraj sva ažuriranja ({n})",
-    install_all_confirm: "Instalirati HACS ažuriranja ({n})?",
-    install_all_confirm_one: "Instalirati 1 HACS ažuriranje?",
-    install_title: "Instaliraj ažuriranja",
-    install_btn: "Instaliraj",
-    cancel: "Otkaži",
-    installing: "Instaliranje {i}/{n}…",
-    install_failed: "Instalacija nije uspela: {e}",
-    btn_install: "Instaliraj ({n})",
-    btn_check: "Proveri",
     procs_ok: "Procesi pokrenuti",
     procs_one: "1 proces zaustavljen",
     procs_many: "Zaustavljeni procesi: {n}",
-    integrations: "Integracije",
-    st_up_to_date: "Ažurirano",
     st_unknown: "Nepoznato",
-    st_update_one: "1 ažuriranje",
-    st_updates: "Ažuriranja: {n}",
     st_running: "Pokrenuto",
     st_stopped_one: "1 zaustavljen",
     st_stopped: "Zaustavljeni: {n}",
-    st_available: "Dostupno",
-    st_unavailable_one: "1 nedostupna",
-    st_unavailable: "Nedostupne: {n}",
-    wd_ok: "Integracije dostupne",
-    wd_one: "1 integracija nedostupna",
-    wd_many: "Nedostupne integracije: {n}",
-    wd_check: "Proveri integracije sada",
-    wd_none: "Svaka integracija je dostupna.",
-    wd_since: "Nedostupno od {t}",
-    wd_reloads_one: "1 ponovno učitavanje",
-    wd_reloads: "Ponovna učitavanja: {n}",
-    wd_unavailable: "Nedostupno",
-    wd_gave_up: "Odustao",
-    wd_last_reload: "Poslednje ponovno učitavanje: {name} {t}",
-    wd_last_reload_failed: "Poslednje ponovno učitavanje nije uspelo: {name} {t}",
-    wd_last_check: "Provereno {t}",
-    wd_open: "Otvori integraciju",
     zoom_in: "Prikaži celu karticu",
     zoom_out: "Nazad na kompaktni prikaz",
     // Editor
@@ -587,8 +295,6 @@ const STRINGS = {
     show_network: "Prikaži mrežu",
     show_storage: "Prikaži skladište",
     show_processes: "Prikaži procese",
-    show_hacs: "Prikaži HACS proširenja",
-    show_watchdog: "Prikaži nedostupne integracije (Integration Watchdog)",
     zoom: "Dugme za uvećanje",
     zoom_helper: "Prebacuje karticu na pun prikaz i nazad",
     interface: "Mrežni interfejs (opciono, podrazumevano svi)",
@@ -619,58 +325,13 @@ const STRINGS = {
     up_to_date: "Aggiornato",
     update: "Update",
     no_sm: "Nessuna entità System Monitor trovata. L'integrazione System Monitor è installata e i suoi sensori sono abilitati?",
-    hacs: "HACS",
-    hacs_ok: "HACS aggiornato",
-    hacs_updates_one: "1 aggiornamento HACS",
-    hacs_updates: "{n} aggiornamenti HACS",
-    check_updates: "Controlla aggiornamenti",
-    checking: "Controllo {i}/{n}…",
-    check_failed: "Controllo non riuscito: {e}",
-    last_check: "Ultimo controllo {t}",
-    needs_refresh: "Installa HACS Refresh per controllare gli aggiornamenti di tutte le estensioni da Home Assistant.",
-    github: "Apri su GitHub",
-    check_ext: "Controlla gli aggiornamenti di questa estensione",
-    search_ext: "Cerca estensioni",
-    clear_search: "Cancella la ricerca",
-    no_match: "Nessuna estensione corrispondente",
-    install_all: "Installa tutti gli aggiornamenti ({n})",
-    install_all_confirm: "Installare {n} aggiornamenti HACS?",
-    install_all_confirm_one: "Installare 1 aggiornamento HACS?",
-    install_title: "Installa gli aggiornamenti",
-    install_btn: "Installa",
-    cancel: "Annulla",
-    installing: "Installazione {i}/{n}…",
-    install_failed: "Installazione non riuscita: {e}",
-    btn_install: "Installa ({n})",
-    btn_check: "Controlla",
     procs_ok: "Processi in esecuzione",
     procs_one: "1 processo arrestato",
     procs_many: "{n} processi arrestati",
-    integrations: "Integrazioni",
-    st_up_to_date: "Aggiornato",
     st_unknown: "Sconosciuto",
-    st_update_one: "1 aggiornamento",
-    st_updates: "{n} aggiorn.",
     st_running: "In esecuzione",
     st_stopped_one: "1 arrestato",
     st_stopped: "{n} arrestati",
-    st_available: "Disponibili",
-    st_unavailable_one: "1 non disponibile",
-    st_unavailable: "{n} offline",
-    wd_ok: "Integrazioni disponibili",
-    wd_one: "1 integrazione non disponibile",
-    wd_many: "{n} integrazioni non disponibili",
-    wd_check: "Controlla le integrazioni ora",
-    wd_none: "Tutte le integrazioni sono disponibili.",
-    wd_since: "Non disponibile {t}",
-    wd_reloads_one: "1 ricaricamento",
-    wd_reloads: "{n} ricaricamenti",
-    wd_unavailable: "Non disponibile",
-    wd_gave_up: "Abbandonata",
-    wd_last_reload: "Ultimo ricaricamento: {name} {t}",
-    wd_last_reload_failed: "Ultimo ricaricamento non riuscito: {name} {t}",
-    wd_last_check: "Controllato {t}",
-    wd_open: "Apri l'integrazione",
     zoom_in: "Mostra la scheda completa",
     zoom_out: "Torna alla vista compatta",
     // Editor
@@ -679,8 +340,6 @@ const STRINGS = {
     show_network: "Mostra la rete",
     show_storage: "Mostra l'archiviazione",
     show_processes: "Mostra i processi",
-    show_hacs: "Mostra le estensioni HACS",
-    show_watchdog: "Mostra le integrazioni non disponibili (Integration Watchdog)",
     zoom: "Pulsante zoom",
     zoom_helper: "Passa alla scheda completa e viceversa",
     interface: "Interfaccia di rete (facoltativa, predefinito: tutte)",
@@ -711,58 +370,13 @@ const STRINGS = {
     up_to_date: "Up-to-date",
     update: "Update",
     no_sm: "Geen System Monitor-entiteiten gevonden. Is de System Monitor-integratie geïnstalleerd en zijn de sensoren ingeschakeld?",
-    hacs: "HACS",
-    hacs_ok: "HACS up-to-date",
-    hacs_updates_one: "1 HACS-update",
-    hacs_updates: "{n} HACS-updates",
-    check_updates: "Controleren op updates",
-    checking: "Controleren {i}/{n}…",
-    check_failed: "Controle mislukt: {e}",
-    last_check: "Laatste controle {t}",
-    needs_refresh: "Installeer HACS Refresh om vanuit Home Assistant alle extensies op updates te controleren.",
-    github: "Openen op GitHub",
-    check_ext: "Deze extensie op updates controleren",
-    search_ext: "Extensies zoeken",
-    clear_search: "Zoekopdracht wissen",
-    no_match: "Geen overeenkomende extensie",
-    install_all: "Alle updates installeren ({n})",
-    install_all_confirm: "{n} HACS-updates installeren?",
-    install_all_confirm_one: "1 HACS-update installeren?",
-    install_title: "Updates installeren",
-    install_btn: "Installeren",
-    cancel: "Annuleren",
-    installing: "Installeren {i}/{n}…",
-    install_failed: "Installatie mislukt: {e}",
-    btn_install: "Installeren ({n})",
-    btn_check: "Controleer",
     procs_ok: "Processen actief",
     procs_one: "1 proces gestopt",
     procs_many: "{n} processen gestopt",
-    integrations: "Integraties",
-    st_up_to_date: "Up-to-date",
     st_unknown: "Onbekend",
-    st_update_one: "1 update",
-    st_updates: "{n} updates",
     st_running: "Actief",
     st_stopped_one: "1 gestopt",
     st_stopped: "{n} gestopt",
-    st_available: "Beschikbaar",
-    st_unavailable_one: "1 niet beschikbaar",
-    st_unavailable: "{n} offline",
-    wd_ok: "Integraties beschikbaar",
-    wd_one: "1 integratie niet beschikbaar",
-    wd_many: "{n} integraties niet beschikbaar",
-    wd_check: "Integraties nu controleren",
-    wd_none: "Alle integraties zijn beschikbaar.",
-    wd_since: "Niet beschikbaar {t}",
-    wd_reloads_one: "1 keer herladen",
-    wd_reloads: "{n} keer herladen",
-    wd_unavailable: "Niet beschikbaar",
-    wd_gave_up: "Opgegeven",
-    wd_last_reload: "Laatst herladen: {name} {t}",
-    wd_last_reload_failed: "Laatste herlaadpoging mislukt: {name} {t}",
-    wd_last_check: "Gecontroleerd {t}",
-    wd_open: "Integratie openen",
     zoom_in: "Volledige kaart tonen",
     zoom_out: "Terug naar de compacte weergave",
     // Editor
@@ -771,8 +385,6 @@ const STRINGS = {
     show_network: "Netwerk tonen",
     show_storage: "Opslag tonen",
     show_processes: "Processen tonen",
-    show_hacs: "HACS-extensies tonen",
-    show_watchdog: "Niet-beschikbare integraties tonen (Integration Watchdog)",
     zoom: "Zoomknop",
     zoom_helper: "Schakelt tussen de volledige kaart en de compacte weergave",
     interface: "Netwerkinterface (optioneel, standaard alle)",
@@ -803,58 +415,13 @@ const STRINGS = {
     up_to_date: "Atualizado",
     update: "Atualização",
     no_sm: "Nenhuma entidade do System Monitor encontrada. A integração System Monitor está instalada e os respetivos sensores estão ativados?",
-    hacs: "HACS",
-    hacs_ok: "HACS atualizado",
-    hacs_updates_one: "1 atualização HACS",
-    hacs_updates: "{n} atualizações HACS",
-    check_updates: "Procurar atualizações",
-    checking: "A verificar {i}/{n}…",
-    check_failed: "Falha na verificação: {e}",
-    last_check: "Última verificação {t}",
-    needs_refresh: "Instale o HACS Refresh para procurar atualizações de todas as extensões a partir do Home Assistant.",
-    github: "Abrir no GitHub",
-    check_ext: "Procurar atualizações desta extensão",
-    search_ext: "Pesquisar extensões",
-    clear_search: "Limpar a pesquisa",
-    no_match: "Nenhuma extensão correspondente",
-    install_all: "Instalar todas as atualizações ({n})",
-    install_all_confirm: "Instalar {n} atualizações HACS?",
-    install_all_confirm_one: "Instalar 1 atualização HACS?",
-    install_title: "Instalar as atualizações",
-    install_btn: "Instalar",
-    cancel: "Cancelar",
-    installing: "A instalar {i}/{n}…",
-    install_failed: "Falha na instalação: {e}",
-    btn_install: "Instalar ({n})",
-    btn_check: "Verificar",
     procs_ok: "Processos em execução",
     procs_one: "1 processo parado",
     procs_many: "{n} processos parados",
-    integrations: "Integrações",
-    st_up_to_date: "Atualizado",
     st_unknown: "Desconhecido",
-    st_update_one: "1 atualização",
-    st_updates: "{n} atualizações",
     st_running: "Em execução",
     st_stopped_one: "1 parado",
     st_stopped: "{n} parados",
-    st_available: "Disponíveis",
-    st_unavailable_one: "1 indisponível",
-    st_unavailable: "{n} indisponíveis",
-    wd_ok: "Integrações disponíveis",
-    wd_one: "1 integração indisponível",
-    wd_many: "{n} integrações indisponíveis",
-    wd_check: "Verificar as integrações agora",
-    wd_none: "Todas as integrações estão disponíveis.",
-    wd_since: "Indisponível {t}",
-    wd_reloads_one: "1 recarregamento",
-    wd_reloads: "{n} recarregamentos",
-    wd_unavailable: "Indisponível",
-    wd_gave_up: "Abandonada",
-    wd_last_reload: "Último recarregamento: {name} {t}",
-    wd_last_reload_failed: "Falha no último recarregamento: {name} {t}",
-    wd_last_check: "Verificado {t}",
-    wd_open: "Abrir a integração",
     zoom_in: "Mostrar o cartão completo",
     zoom_out: "Voltar à vista compacta",
     // Editor
@@ -863,8 +430,6 @@ const STRINGS = {
     show_network: "Mostrar a rede",
     show_storage: "Mostrar o armazenamento",
     show_processes: "Mostrar os processos",
-    show_hacs: "Mostrar as extensões HACS",
-    show_watchdog: "Mostrar as integrações indisponíveis (Integration Watchdog)",
     zoom: "Botão de zoom",
     zoom_helper: "Alterna entre o cartão completo e a vista compacta",
     interface: "Interface de rede (opcional, todas por predefinição)",
@@ -895,58 +460,13 @@ const STRINGS = {
     up_to_date: "Aktualne",
     update: "Aktualizacja",
     no_sm: "Nie znaleziono encji System Monitor. Czy integracja System Monitor jest zainstalowana, a jej sensory włączone?",
-    hacs: "HACS",
-    hacs_ok: "HACS aktualny",
-    hacs_updates_one: "1 aktualizacja HACS",
-    hacs_updates: "Aktualizacje HACS: {n}",
-    check_updates: "Sprawdź aktualizacje",
-    checking: "Sprawdzanie {i}/{n}…",
-    check_failed: "Sprawdzanie nie powiodło się: {e}",
-    last_check: "Ostatnie sprawdzenie {t}",
-    needs_refresh: "Zainstaluj HACS Refresh, aby sprawdzać aktualizacje wszystkich rozszerzeń z poziomu Home Assistant.",
-    github: "Otwórz w GitHubie",
-    check_ext: "Sprawdź aktualizacje tego rozszerzenia",
-    search_ext: "Szukaj rozszerzeń",
-    clear_search: "Wyczyść wyszukiwanie",
-    no_match: "Brak pasujących rozszerzeń",
-    install_all: "Zainstaluj wszystkie aktualizacje ({n})",
-    install_all_confirm: "Zainstalować aktualizacje HACS ({n})?",
-    install_all_confirm_one: "Zainstalować 1 aktualizację HACS?",
-    install_title: "Zainstaluj aktualizacje",
-    install_btn: "Zainstaluj",
-    cancel: "Anuluj",
-    installing: "Instalowanie {i}/{n}…",
-    install_failed: "Instalacja nie powiodła się: {e}",
-    btn_install: "Zainstaluj ({n})",
-    btn_check: "Sprawdź",
     procs_ok: "Procesy działają",
     procs_one: "1 proces zatrzymany",
     procs_many: "Zatrzymane procesy: {n}",
-    integrations: "Integracje",
-    st_up_to_date: "Aktualne",
     st_unknown: "Nieznany",
-    st_update_one: "1 aktualizacja",
-    st_updates: "Aktualizacje: {n}",
     st_running: "Działa",
     st_stopped_one: "1 zatrzymany",
     st_stopped: "Zatrzymane: {n}",
-    st_available: "Dostępne",
-    st_unavailable_one: "1 niedostępna",
-    st_unavailable: "Niedostępne: {n}",
-    wd_ok: "Integracje dostępne",
-    wd_one: "1 integracja niedostępna",
-    wd_many: "Niedostępne integracje: {n}",
-    wd_check: "Sprawdź integracje teraz",
-    wd_none: "Wszystkie integracje są dostępne.",
-    wd_since: "Niedostępna {t}",
-    wd_reloads_one: "1 przeładowanie",
-    wd_reloads: "Przeładowania: {n}",
-    wd_unavailable: "Niedostępna",
-    wd_gave_up: "Porzucona",
-    wd_last_reload: "Ostatnie przeładowanie: {name} {t}",
-    wd_last_reload_failed: "Ostatnie przeładowanie nie powiodło się: {name} {t}",
-    wd_last_check: "Sprawdzono {t}",
-    wd_open: "Otwórz integrację",
     zoom_in: "Pokaż pełną kartę",
     zoom_out: "Wróć do widoku kompaktowego",
     // Editor
@@ -955,8 +475,6 @@ const STRINGS = {
     show_network: "Pokaż sieć",
     show_storage: "Pokaż pamięć masową",
     show_processes: "Pokaż procesy",
-    show_hacs: "Pokaż rozszerzenia HACS",
-    show_watchdog: "Pokaż niedostępne integracje (Integration Watchdog)",
     zoom: "Przycisk powiększenia",
     zoom_helper: "Przełącza między pełną kartą a widokiem kompaktowym",
     interface: "Interfejs sieciowy (opcjonalny, domyślnie wszystkie)",
@@ -987,58 +505,13 @@ const STRINGS = {
     up_to_date: "La zi",
     update: "Actualizare",
     no_sm: "Nu s-au găsit entități System Monitor. Integrarea System Monitor este instalată și senzorii ei sunt activați?",
-    hacs: "HACS",
-    hacs_ok: "HACS la zi",
-    hacs_updates_one: "1 actualizare HACS",
-    hacs_updates: "Actualizări HACS: {n}",
-    check_updates: "Caută actualizări",
-    checking: "Se verifică {i}/{n}…",
-    check_failed: "Verificarea a eșuat: {e}",
-    last_check: "Ultima verificare {t}",
-    needs_refresh: "Instalați HACS Refresh pentru a verifica actualizările tuturor extensiilor din Home Assistant.",
-    github: "Deschide pe GitHub",
-    check_ext: "Caută actualizări pentru această extensie",
-    search_ext: "Caută extensii",
-    clear_search: "Șterge căutarea",
-    no_match: "Nicio extensie găsită",
-    install_all: "Instalează toate actualizările ({n})",
-    install_all_confirm: "Instalați actualizările HACS ({n})?",
-    install_all_confirm_one: "Instalați 1 actualizare HACS?",
-    install_title: "Instalează actualizările",
-    install_btn: "Instalează",
-    cancel: "Anulează",
-    installing: "Se instalează {i}/{n}…",
-    install_failed: "Instalarea a eșuat: {e}",
-    btn_install: "Instalează ({n})",
-    btn_check: "Verifică",
     procs_ok: "Procese în execuție",
     procs_one: "1 proces oprit",
     procs_many: "Procese oprite: {n}",
-    integrations: "Integrări",
-    st_up_to_date: "La zi",
     st_unknown: "Necunoscut",
-    st_update_one: "1 actualizare",
-    st_updates: "Actualizări: {n}",
     st_running: "Rulează",
     st_stopped_one: "1 oprit",
     st_stopped: "Oprite: {n}",
-    st_available: "Disponibile",
-    st_unavailable_one: "1 indisponibilă",
-    st_unavailable: "Indisponibile: {n}",
-    wd_ok: "Integrări disponibile",
-    wd_one: "1 integrare indisponibilă",
-    wd_many: "Integrări indisponibile: {n}",
-    wd_check: "Verifică integrările acum",
-    wd_none: "Toate integrările sunt disponibile.",
-    wd_since: "Indisponibilă {t}",
-    wd_reloads_one: "1 reîncărcare",
-    wd_reloads: "Reîncărcări: {n}",
-    wd_unavailable: "Indisponibilă",
-    wd_gave_up: "Abandonată",
-    wd_last_reload: "Ultima reîncărcare: {name} {t}",
-    wd_last_reload_failed: "Ultima reîncărcare a eșuat: {name} {t}",
-    wd_last_check: "Verificat {t}",
-    wd_open: "Deschide integrarea",
     zoom_in: "Afișează cardul complet",
     zoom_out: "Înapoi la vizualizarea compactă",
     // Editor
@@ -1047,8 +520,6 @@ const STRINGS = {
     show_network: "Afișează rețeaua",
     show_storage: "Afișează stocarea",
     show_processes: "Afișează procesele",
-    show_hacs: "Afișează extensiile HACS",
-    show_watchdog: "Afișează integrările indisponibile (Integration Watchdog)",
     zoom: "Buton de zoom",
     zoom_helper: "Comută între cardul complet și vizualizarea compactă",
     interface: "Interfață de rețea (opțional, implicit toate)",
@@ -1079,58 +550,13 @@ const STRINGS = {
     up_to_date: "Opdateret",
     update: "Opdatering",
     no_sm: "Ingen System Monitor-entiteter fundet. Er System Monitor-integrationen installeret, og er dens sensorer aktiveret?",
-    hacs: "HACS",
-    hacs_ok: "HACS opdateret",
-    hacs_updates_one: "1 HACS-opdatering",
-    hacs_updates: "{n} HACS-opdateringer",
-    check_updates: "Søg efter opdateringer",
-    checking: "Kontrollerer {i}/{n}…",
-    check_failed: "Kontrol mislykkedes: {e}",
-    last_check: "Sidst kontrolleret {t}",
-    needs_refresh: "Installer HACS Refresh for at søge efter opdateringer til alle udvidelser fra Home Assistant.",
-    github: "Åbn på GitHub",
-    check_ext: "Søg efter opdateringer til denne udvidelse",
-    search_ext: "Søg i udvidelser",
-    clear_search: "Ryd søgningen",
-    no_match: "Ingen matchende udvidelser",
-    install_all: "Installer alle opdateringer ({n})",
-    install_all_confirm: "Installer {n} HACS-opdateringer?",
-    install_all_confirm_one: "Installer 1 HACS-opdatering?",
-    install_title: "Installer opdateringerne",
-    install_btn: "Installer",
-    cancel: "Annuller",
-    installing: "Installerer {i}/{n}…",
-    install_failed: "Installation mislykkedes: {e}",
-    btn_install: "Installer ({n})",
-    btn_check: "Kontroller",
     procs_ok: "Processer kører",
     procs_one: "1 proces stoppet",
     procs_many: "{n} processer stoppet",
-    integrations: "Integrationer",
-    st_up_to_date: "Opdateret",
     st_unknown: "Ukendt",
-    st_update_one: "1 opdatering",
-    st_updates: "{n} opdateringer",
     st_running: "Kører",
     st_stopped_one: "1 stoppet",
     st_stopped: "{n} stoppet",
-    st_available: "Tilgængelige",
-    st_unavailable_one: "1 utilgængelig",
-    st_unavailable: "{n} utilgængelige",
-    wd_ok: "Integrationer tilgængelige",
-    wd_one: "1 integration utilgængelig",
-    wd_many: "{n} integrationer utilgængelige",
-    wd_check: "Kontroller integrationerne nu",
-    wd_none: "Alle integrationer er tilgængelige.",
-    wd_since: "Utilgængelig ({t})",
-    wd_reloads_one: "1 genindlæsning",
-    wd_reloads: "{n} genindlæsninger",
-    wd_unavailable: "Utilgængelig",
-    wd_gave_up: "Opgivet",
-    wd_last_reload: "Sidste genindlæsning: {name} {t}",
-    wd_last_reload_failed: "Sidste genindlæsning mislykkedes: {name} {t}",
-    wd_last_check: "Kontrolleret {t}",
-    wd_open: "Åbn integrationen",
     zoom_in: "Vis hele kortet",
     zoom_out: "Tilbage til kompakt visning",
     // Editor
@@ -1139,8 +565,6 @@ const STRINGS = {
     show_network: "Vis netværk",
     show_storage: "Vis lager",
     show_processes: "Vis processer",
-    show_hacs: "Vis HACS-udvidelser",
-    show_watchdog: "Vis utilgængelige integrationer (Integration Watchdog)",
     zoom: "Zoomknap",
     zoom_helper: "Skifter mellem hele kortet og kompakt visning",
     interface: "Netværksinterface (valgfrit, alle som standard)",
@@ -1171,58 +595,13 @@ const STRINGS = {
     up_to_date: "Uppdaterad",
     update: "Uppdatering",
     no_sm: "Inga System Monitor-entiteter hittades. Är System Monitor-integrationen installerad och är dess sensorer aktiverade?",
-    hacs: "HACS",
-    hacs_ok: "HACS uppdaterat",
-    hacs_updates_one: "1 HACS-uppdatering",
-    hacs_updates: "{n} HACS-uppdateringar",
-    check_updates: "Sök efter uppdateringar",
-    checking: "Kontrollerar {i}/{n}…",
-    check_failed: "Kontrollen misslyckades: {e}",
-    last_check: "Senast kontrollerad {t}",
-    needs_refresh: "Installera HACS Refresh för att söka efter uppdateringar för alla tillägg från Home Assistant.",
-    github: "Öppna på GitHub",
-    check_ext: "Sök efter uppdateringar för detta tillägg",
-    search_ext: "Sök tillägg",
-    clear_search: "Rensa sökningen",
-    no_match: "Inga matchande tillägg",
-    install_all: "Installera alla uppdateringar ({n})",
-    install_all_confirm: "Installera {n} HACS-uppdateringar?",
-    install_all_confirm_one: "Installera 1 HACS-uppdatering?",
-    install_title: "Installera uppdateringarna",
-    install_btn: "Installera",
-    cancel: "Avbryt",
-    installing: "Installerar {i}/{n}…",
-    install_failed: "Installationen misslyckades: {e}",
-    btn_install: "Installera ({n})",
-    btn_check: "Kontrollera",
     procs_ok: "Processer körs",
     procs_one: "1 process stoppad",
     procs_many: "{n} processer stoppade",
-    integrations: "Integrationer",
-    st_up_to_date: "Uppdaterad",
     st_unknown: "Okänd",
-    st_update_one: "1 uppdatering",
-    st_updates: "{n} uppdateringar",
     st_running: "Körs",
     st_stopped_one: "1 stoppad",
     st_stopped: "{n} stoppade",
-    st_available: "Tillgängliga",
-    st_unavailable_one: "1 otillgänglig",
-    st_unavailable: "{n} otillgängliga",
-    wd_ok: "Integrationer tillgängliga",
-    wd_one: "1 integration otillgänglig",
-    wd_many: "{n} integrationer otillgängliga",
-    wd_check: "Kontrollera integrationerna nu",
-    wd_none: "Alla integrationer är tillgängliga.",
-    wd_since: "Otillgänglig ({t})",
-    wd_reloads_one: "1 omladdning",
-    wd_reloads: "{n} omladdningar",
-    wd_unavailable: "Otillgänglig",
-    wd_gave_up: "Gav upp",
-    wd_last_reload: "Senaste omladdning: {name} {t}",
-    wd_last_reload_failed: "Senaste omladdningen misslyckades: {name} {t}",
-    wd_last_check: "Kontrollerad {t}",
-    wd_open: "Öppna integrationen",
     zoom_in: "Visa hela kortet",
     zoom_out: "Tillbaka till kompakt vy",
     // Editor
@@ -1231,8 +610,6 @@ const STRINGS = {
     show_network: "Visa nätverk",
     show_storage: "Visa lagring",
     show_processes: "Visa processer",
-    show_hacs: "Visa HACS-tillägg",
-    show_watchdog: "Visa otillgängliga integrationer (Integration Watchdog)",
     zoom: "Zoomknapp",
     zoom_helper: "Växlar mellan hela kortet och kompakt vy",
     interface: "Nätverksgränssnitt (valfritt, alla som standard)",
@@ -1263,58 +640,13 @@ const STRINGS = {
     up_to_date: "Актуално",
     update: "Нова версия",
     no_sm: "Не са открити обекти на System Monitor. Инсталирана ли е интеграцията System Monitor и активирани ли са сензорите ѝ?",
-    hacs: "HACS",
-    hacs_ok: "HACS е актуален",
-    hacs_updates_one: "1 актуализация на HACS",
-    hacs_updates: "{n} актуализации на HACS",
-    check_updates: "Проверка за актуализации",
-    checking: "Проверка {i}/{n}…",
-    check_failed: "Проверката е неуспешна: {e}",
-    last_check: "Последна проверка {t}",
-    needs_refresh: "Инсталирайте HACS Refresh, за да проверявате за актуализации на всички разширения от Home Assistant.",
-    github: "Отваряне в GitHub",
-    check_ext: "Проверка за актуализации на това разширение",
-    search_ext: "Търсене на разширения",
-    clear_search: "Изчистване на търсенето",
-    no_match: "Няма съвпадащи разширения",
-    install_all: "Инсталиране на всички актуализации ({n})",
-    install_all_confirm: "Да се инсталират ли {n} актуализации на HACS?",
-    install_all_confirm_one: "Да се инсталира ли 1 актуализация на HACS?",
-    install_title: "Инсталиране на актуализациите",
-    install_btn: "Инсталиране",
-    cancel: "Отказ",
-    installing: "Инсталиране {i}/{n}…",
-    install_failed: "Инсталирането е неуспешно: {e}",
-    btn_install: "Инсталиране ({n})",
-    btn_check: "Проверка",
     procs_ok: "Процесите работят",
     procs_one: "1 спрян процес",
     procs_many: "{n} спрени процеса",
-    integrations: "Интеграции",
-    st_up_to_date: "Актуално",
     st_unknown: "Неизвестно",
-    st_update_one: "1 актуализация",
-    st_updates: "{n} актуализации",
     st_running: "Работи",
     st_stopped_one: "1 спрян",
     st_stopped: "{n} спрени",
-    st_available: "Налични",
-    st_unavailable_one: "1 недостъпна",
-    st_unavailable: "{n} недостъпни",
-    wd_ok: "Интеграциите са налични",
-    wd_one: "1 недостъпна интеграция",
-    wd_many: "{n} недостъпни интеграции",
-    wd_check: "Проверка на интеграциите сега",
-    wd_none: "Всички интеграции са налични.",
-    wd_since: "Недостъпна {t}",
-    wd_reloads_one: "1 презареждане",
-    wd_reloads: "{n} презареждания",
-    wd_unavailable: "Недостъпна",
-    wd_gave_up: "Без нови опити",
-    wd_last_reload: "Последно презареждане: {name} {t}",
-    wd_last_reload_failed: "Последното презареждане е неуспешно: {name} {t}",
-    wd_last_check: "Проверено {t}",
-    wd_open: "Отваряне на интеграцията",
     zoom_in: "Показване на цялата карта",
     zoom_out: "Обратно към компактния изглед",
     // Editor
@@ -1323,8 +655,6 @@ const STRINGS = {
     show_network: "Показване на мрежата",
     show_storage: "Показване на хранилището",
     show_processes: "Показване на процесите",
-    show_hacs: "Показване на разширенията от HACS",
-    show_watchdog: "Показване на недостъпните интеграции (Integration Watchdog)",
     zoom: "Бутон за мащабиране",
     zoom_helper: "Превключва между цялата карта и компактния изглед",
     interface: "Мрежов интерфейс (по избор, по подразбиране всички)",
@@ -1355,58 +685,13 @@ const STRINGS = {
     up_to_date: "Актуально",
     update: "Обновление",
     no_sm: "Объекты System Monitor не найдены. Установлена ли интеграция System Monitor и включены ли её сенсоры?",
-    hacs: "HACS",
-    hacs_ok: "HACS актуален",
-    hacs_updates_one: "1 обновление HACS",
-    hacs_updates: "Обновления HACS: {n}",
-    check_updates: "Проверить обновления",
-    checking: "Проверка {i}/{n}…",
-    check_failed: "Ошибка проверки: {e}",
-    last_check: "Последняя проверка {t}",
-    needs_refresh: "Установите HACS Refresh, чтобы проверять обновления всех расширений из Home Assistant.",
-    github: "Открыть на GitHub",
-    check_ext: "Проверить обновления этого расширения",
-    search_ext: "Поиск расширений",
-    clear_search: "Очистить поиск",
-    no_match: "Подходящих расширений нет",
-    install_all: "Установить все обновления ({n})",
-    install_all_confirm: "Установить обновления HACS ({n})?",
-    install_all_confirm_one: "Установить 1 обновление HACS?",
-    install_title: "Установка обновлений",
-    install_btn: "Установить",
-    cancel: "Отмена",
-    installing: "Установка {i}/{n}…",
-    install_failed: "Ошибка установки: {e}",
-    btn_install: "Установить ({n})",
-    btn_check: "Проверить",
     procs_ok: "Процессы работают",
     procs_one: "1 процесс остановлен",
     procs_many: "Остановленные процессы: {n}",
-    integrations: "Интеграции",
-    st_up_to_date: "Актуально",
     st_unknown: "Неизвестно",
-    st_update_one: "1 обновление",
-    st_updates: "Обновления: {n}",
     st_running: "Работает",
     st_stopped_one: "1 остановлен",
     st_stopped: "Остановлены: {n}",
-    st_available: "Доступны",
-    st_unavailable_one: "1 недоступна",
-    st_unavailable: "Недоступны: {n}",
-    wd_ok: "Интеграции доступны",
-    wd_one: "1 интеграция недоступна",
-    wd_many: "Недоступные интеграции: {n}",
-    wd_check: "Проверить интеграции сейчас",
-    wd_none: "Все интеграции доступны.",
-    wd_since: "Недоступна {t}",
-    wd_reloads_one: "1 перезагрузка",
-    wd_reloads: "Перезагрузки: {n}",
-    wd_unavailable: "Недоступна",
-    wd_gave_up: "Попытки прекращены",
-    wd_last_reload: "Последняя перезагрузка: {name} {t}",
-    wd_last_reload_failed: "Последняя перезагрузка не удалась: {name} {t}",
-    wd_last_check: "Проверено {t}",
-    wd_open: "Открыть интеграцию",
     zoom_in: "Показать полную карточку",
     zoom_out: "Вернуться к компактному виду",
     // Editor
@@ -1415,8 +700,6 @@ const STRINGS = {
     show_network: "Показывать сеть",
     show_storage: "Показывать хранилище",
     show_processes: "Показывать процессы",
-    show_hacs: "Показывать расширения HACS",
-    show_watchdog: "Показывать недоступные интеграции (Integration Watchdog)",
     zoom: "Кнопка масштабирования",
     zoom_helper: "Переключает между полной карточкой и компактным видом",
     interface: "Сетевой интерфейс (необязательно, по умолчанию все)",
@@ -1447,58 +730,13 @@ const STRINGS = {
     up_to_date: "Актуально",
     update: "Оновлення",
     no_sm: "Сутності System Monitor не знайдено. Чи встановлено інтеграцію System Monitor і чи увімкнено її сенсори?",
-    hacs: "HACS",
-    hacs_ok: "HACS актуальний",
-    hacs_updates_one: "1 оновлення HACS",
-    hacs_updates: "Оновлення HACS: {n}",
-    check_updates: "Перевірити оновлення",
-    checking: "Перевірка {i}/{n}…",
-    check_failed: "Помилка перевірки: {e}",
-    last_check: "Остання перевірка {t}",
-    needs_refresh: "Встановіть HACS Refresh, щоб перевіряти оновлення всіх розширень із Home Assistant.",
-    github: "Відкрити на GitHub",
-    check_ext: "Перевірити оновлення цього розширення",
-    search_ext: "Пошук розширень",
-    clear_search: "Очистити пошук",
-    no_match: "Немає відповідних розширень",
-    install_all: "Встановити всі оновлення ({n})",
-    install_all_confirm: "Встановити оновлення HACS ({n})?",
-    install_all_confirm_one: "Встановити 1 оновлення HACS?",
-    install_title: "Встановлення оновлень",
-    install_btn: "Встановити",
-    cancel: "Скасувати",
-    installing: "Встановлення {i}/{n}…",
-    install_failed: "Помилка встановлення: {e}",
-    btn_install: "Встановити ({n})",
-    btn_check: "Перевірити",
     procs_ok: "Процеси працюють",
     procs_one: "1 процес зупинено",
     procs_many: "Зупинені процеси: {n}",
-    integrations: "Інтеграції",
-    st_up_to_date: "Актуально",
     st_unknown: "Невідомо",
-    st_update_one: "1 оновлення",
-    st_updates: "Оновлення: {n}",
     st_running: "Працює",
     st_stopped_one: "1 зупинено",
     st_stopped: "Зупинено: {n}",
-    st_available: "Доступні",
-    st_unavailable_one: "1 недоступна",
-    st_unavailable: "Недоступні: {n}",
-    wd_ok: "Інтеграції доступні",
-    wd_one: "1 інтеграція недоступна",
-    wd_many: "Недоступні інтеграції: {n}",
-    wd_check: "Перевірити інтеграції зараз",
-    wd_none: "Усі інтеграції доступні.",
-    wd_since: "Недоступна {t}",
-    wd_reloads_one: "1 перезавантаження",
-    wd_reloads: "Перезавантаження: {n}",
-    wd_unavailable: "Недоступна",
-    wd_gave_up: "Спроби припинено",
-    wd_last_reload: "Останнє перезавантаження: {name} {t}",
-    wd_last_reload_failed: "Останнє перезавантаження не вдалося: {name} {t}",
-    wd_last_check: "Перевірено {t}",
-    wd_open: "Відкрити інтеграцію",
     zoom_in: "Показати повну картку",
     zoom_out: "Повернутися до компактного вигляду",
     // Editor
@@ -1507,8 +745,6 @@ const STRINGS = {
     show_network: "Показувати мережу",
     show_storage: "Показувати сховище",
     show_processes: "Показувати процеси",
-    show_hacs: "Показувати розширення HACS",
-    show_watchdog: "Показувати недоступні інтеграції (Integration Watchdog)",
     zoom: "Кнопка масштабування",
     zoom_helper: "Перемикає між повною карткою та компактним виглядом",
     interface: "Мережевий інтерфейс (необов’язково, типово всі)",
@@ -1539,58 +775,13 @@ const STRINGS = {
     up_to_date: "Naprakész",
     update: "Frissítés",
     no_sm: "Nem található System Monitor entitás. Telepítve van a System Monitor integráció, és engedélyezve vannak az érzékelői?",
-    hacs: "HACS",
-    hacs_ok: "HACS naprakész",
-    hacs_updates_one: "1 HACS-frissítés",
-    hacs_updates: "{n} HACS-frissítés",
-    check_updates: "Frissítések keresése",
-    checking: "Ellenőrzés {i}/{n}…",
-    check_failed: "Az ellenőrzés sikertelen: {e}",
-    last_check: "Utolsó ellenőrzés: {t}",
-    needs_refresh: "Telepítsd a HACS Refresh-t, hogy a Home Assistantből kereshess frissítéseket az összes bővítményhez.",
-    github: "Megnyitás a GitHubon",
-    check_ext: "Frissítések keresése ehhez a bővítményhez",
-    search_ext: "Bővítmények keresése",
-    clear_search: "Keresés törlése",
-    no_match: "Nincs egyező bővítmény",
-    install_all: "Összes frissítés telepítése ({n})",
-    install_all_confirm: "Telepíted a HACS-frissítéseket ({n})?",
-    install_all_confirm_one: "Telepíted az 1 HACS-frissítést?",
-    install_title: "Frissítések telepítése",
-    install_btn: "Telepítés",
-    cancel: "Mégse",
-    installing: "Telepítés {i}/{n}…",
-    install_failed: "A telepítés sikertelen: {e}",
-    btn_install: "Telepítés ({n})",
-    btn_check: "Ellenőrzés",
     procs_ok: "A folyamatok futnak",
     procs_one: "1 folyamat leállt",
     procs_many: "{n} folyamat leállt",
-    integrations: "Integrációk",
-    st_up_to_date: "Naprakész",
     st_unknown: "Ismeretlen",
-    st_update_one: "1 frissítés",
-    st_updates: "{n} frissítés",
     st_running: "Fut",
     st_stopped_one: "1 leállt",
     st_stopped: "{n} leállt",
-    st_available: "Elérhető",
-    st_unavailable_one: "1 nem elérhető",
-    st_unavailable: "{n} nem elérhető",
-    wd_ok: "Az integrációk elérhetők",
-    wd_one: "1 integráció nem elérhető",
-    wd_many: "{n} integráció nem elérhető",
-    wd_check: "Integrációk ellenőrzése most",
-    wd_none: "Minden integráció elérhető.",
-    wd_since: "Nem elérhető ({t})",
-    wd_reloads_one: "1 újratöltés",
-    wd_reloads: "{n} újratöltés",
-    wd_unavailable: "Nem elérhető",
-    wd_gave_up: "Feladva",
-    wd_last_reload: "Utolsó újratöltés: {name} {t}",
-    wd_last_reload_failed: "Az utolsó újratöltés sikertelen: {name} {t}",
-    wd_last_check: "Ellenőrizve {t}",
-    wd_open: "Integráció megnyitása",
     zoom_in: "Teljes kártya megjelenítése",
     zoom_out: "Vissza a kompakt nézethez",
     // Editor
@@ -1599,8 +790,6 @@ const STRINGS = {
     show_network: "Hálózat megjelenítése",
     show_storage: "Tárhely megjelenítése",
     show_processes: "Folyamatok megjelenítése",
-    show_hacs: "HACS-bővítmények megjelenítése",
-    show_watchdog: "Nem elérhető integrációk megjelenítése (Integration Watchdog)",
     zoom: "Nagyítás gomb",
     zoom_helper: "Vált a teljes kártya és a kompakt nézet között",
     interface: "Hálózati interfész (nem kötelező, alapértelmezés: mind)",
@@ -1631,58 +820,13 @@ const STRINGS = {
     up_to_date: "Aktuálne",
     update: "Aktualizácia",
     no_sm: "Nenašli sa žiadne entity System Monitor. Je integrácia System Monitor nainštalovaná a sú jej senzory povolené?",
-    hacs: "HACS",
-    hacs_ok: "HACS je aktuálny",
-    hacs_updates_one: "1 aktualizácia HACS",
-    hacs_updates: "Aktualizácie HACS: {n}",
-    check_updates: "Skontrolovať aktualizácie",
-    checking: "Kontroluje sa {i}/{n}…",
-    check_failed: "Kontrola zlyhala: {e}",
-    last_check: "Posledná kontrola {t}",
-    needs_refresh: "Nainštalujte HACS Refresh, aby ste mohli kontrolovať aktualizácie všetkých rozšírení priamo z Home Assistanta.",
-    github: "Otvoriť na GitHube",
-    check_ext: "Skontrolovať aktualizácie tohto rozšírenia",
-    search_ext: "Hľadať rozšírenia",
-    clear_search: "Vymazať vyhľadávanie",
-    no_match: "Žiadne zodpovedajúce rozšírenie",
-    install_all: "Nainštalovať všetky aktualizácie ({n})",
-    install_all_confirm: "Nainštalovať aktualizácie HACS ({n})?",
-    install_all_confirm_one: "Nainštalovať 1 aktualizáciu HACS?",
-    install_title: "Nainštalovať aktualizácie",
-    install_btn: "Nainštalovať",
-    cancel: "Zrušiť",
-    installing: "Inštaluje sa {i}/{n}…",
-    install_failed: "Inštalácia zlyhala: {e}",
-    btn_install: "Nainštalovať ({n})",
-    btn_check: "Skontrolovať",
     procs_ok: "Procesy bežia",
     procs_one: "1 proces zastavený",
     procs_many: "Zastavené procesy: {n}",
-    integrations: "Integrácie",
-    st_up_to_date: "Aktuálne",
     st_unknown: "Neznáme",
-    st_update_one: "1 aktualizácia",
-    st_updates: "Aktualizácie: {n}",
     st_running: "Beží",
     st_stopped_one: "1 zastavený",
     st_stopped: "Zastavené: {n}",
-    st_available: "Dostupné",
-    st_unavailable_one: "1 nedostupná",
-    st_unavailable: "Nedostupné: {n}",
-    wd_ok: "Integrácie dostupné",
-    wd_one: "1 integrácia nedostupná",
-    wd_many: "Nedostupné integrácie: {n}",
-    wd_check: "Skontrolovať integrácie teraz",
-    wd_none: "Všetky integrácie sú dostupné.",
-    wd_since: "Nedostupná {t}",
-    wd_reloads_one: "1 opätovné načítanie",
-    wd_reloads: "Opätovné načítania: {n}",
-    wd_unavailable: "Nedostupná",
-    wd_gave_up: "Vzdané",
-    wd_last_reload: "Posledné opätovné načítanie: {name} {t}",
-    wd_last_reload_failed: "Posledné opätovné načítanie zlyhalo: {name} {t}",
-    wd_last_check: "Skontrolované {t}",
-    wd_open: "Otvoriť integráciu",
     zoom_in: "Zobraziť celú kartu",
     zoom_out: "Späť na kompaktné zobrazenie",
     // Editor
@@ -1691,8 +835,6 @@ const STRINGS = {
     show_network: "Zobraziť sieť",
     show_storage: "Zobraziť úložisko",
     show_processes: "Zobraziť procesy",
-    show_hacs: "Zobraziť rozšírenia HACS",
-    show_watchdog: "Zobraziť nedostupné integrácie (Integration Watchdog)",
     zoom: "Tlačidlo priblíženia",
     zoom_helper: "Prepína medzi celou kartou a kompaktným zobrazením",
     interface: "Sieťové rozhranie (voliteľné, predvolene všetky)",
@@ -1723,58 +865,13 @@ const STRINGS = {
     up_to_date: "Aktuální",
     update: "Aktualizace",
     no_sm: "Nebyly nalezeny žádné entity System Monitor. Je integrace System Monitor nainstalovaná a jsou její senzory povolené?",
-    hacs: "HACS",
-    hacs_ok: "HACS je aktuální",
-    hacs_updates_one: "1 aktualizace HACS",
-    hacs_updates: "Aktualizace HACS: {n}",
-    check_updates: "Zkontrolovat aktualizace",
-    checking: "Kontrola {i}/{n}…",
-    check_failed: "Kontrola selhala: {e}",
-    last_check: "Poslední kontrola {t}",
-    needs_refresh: "Nainstalujte HACS Refresh, abyste mohli kontrolovat aktualizace všech rozšíření přímo z Home Assistanta.",
-    github: "Otevřít na GitHubu",
-    check_ext: "Zkontrolovat aktualizace tohoto rozšíření",
-    search_ext: "Hledat rozšíření",
-    clear_search: "Vymazat hledání",
-    no_match: "Žádné odpovídající rozšíření",
-    install_all: "Nainstalovat všechny aktualizace ({n})",
-    install_all_confirm: "Nainstalovat aktualizace HACS ({n})?",
-    install_all_confirm_one: "Nainstalovat 1 aktualizaci HACS?",
-    install_title: "Nainstalovat aktualizace",
-    install_btn: "Nainstalovat",
-    cancel: "Zrušit",
-    installing: "Instalace {i}/{n}…",
-    install_failed: "Instalace selhala: {e}",
-    btn_install: "Nainstalovat ({n})",
-    btn_check: "Zkontrolovat",
     procs_ok: "Procesy běží",
     procs_one: "1 proces zastaven",
     procs_many: "Zastavené procesy: {n}",
-    integrations: "Integrace",
-    st_up_to_date: "Aktuální",
     st_unknown: "Neznámý",
-    st_update_one: "1 aktualizace",
-    st_updates: "Aktualizace: {n}",
     st_running: "Běží",
     st_stopped_one: "1 zastaven",
     st_stopped: "Zastaveno: {n}",
-    st_available: "Dostupné",
-    st_unavailable_one: "1 nedostupná",
-    st_unavailable: "Nedostupné: {n}",
-    wd_ok: "Integrace dostupné",
-    wd_one: "1 integrace nedostupná",
-    wd_many: "Nedostupné integrace: {n}",
-    wd_check: "Zkontrolovat integrace nyní",
-    wd_none: "Všechny integrace jsou dostupné.",
-    wd_since: "Nedostupná {t}",
-    wd_reloads_one: "1 opětovné načtení",
-    wd_reloads: "Opětovná načtení: {n}",
-    wd_unavailable: "Nedostupná",
-    wd_gave_up: "Vzdáno",
-    wd_last_reload: "Poslední opětovné načtení: {name} {t}",
-    wd_last_reload_failed: "Poslední opětovné načtení selhalo: {name} {t}",
-    wd_last_check: "Zkontrolováno {t}",
-    wd_open: "Otevřít integraci",
     zoom_in: "Zobrazit celou kartu",
     zoom_out: "Zpět na kompaktní zobrazení",
     // Editor
@@ -1783,8 +880,6 @@ const STRINGS = {
     show_network: "Zobrazit síť",
     show_storage: "Zobrazit úložiště",
     show_processes: "Zobrazit procesy",
-    show_hacs: "Zobrazit rozšíření HACS",
-    show_watchdog: "Zobrazit nedostupné integrace (Integration Watchdog)",
     zoom: "Tlačítko přiblížení",
     zoom_helper: "Přepíná mezi celou kartou a kompaktním zobrazením",
     interface: "Síťové rozhraní (volitelné, výchozí všechna)",
@@ -1815,58 +910,13 @@ const STRINGS = {
     up_to_date: "Posodobljeno",
     update: "Posodobitev",
     no_sm: "Ni najdenih entitet System Monitor. Ali je integracija System Monitor nameščena in so njeni senzorji omogočeni?",
-    hacs: "HACS",
-    hacs_ok: "HACS je posodobljen",
-    hacs_updates_one: "1 posodobitev HACS",
-    hacs_updates: "Posodobitve HACS: {n}",
-    check_updates: "Preveri posodobitve",
-    checking: "Preverjanje {i}/{n}…",
-    check_failed: "Preverjanje ni uspelo: {e}",
-    last_check: "Zadnje preverjanje {t}",
-    needs_refresh: "Namestite HACS Refresh, da boste lahko posodobitve vseh razširitev preverjali iz Home Assistanta.",
-    github: "Odpri na GitHubu",
-    check_ext: "Preveri posodobitve te razširitve",
-    search_ext: "Išči razširitve",
-    clear_search: "Počisti iskanje",
-    no_match: "Ni ustreznih razširitev",
-    install_all: "Namesti vse posodobitve ({n})",
-    install_all_confirm: "Želite namestiti posodobitve HACS ({n})?",
-    install_all_confirm_one: "Želite namestiti 1 posodobitev HACS?",
-    install_title: "Namesti posodobitve",
-    install_btn: "Namesti",
-    cancel: "Prekliči",
-    installing: "Nameščanje {i}/{n}…",
-    install_failed: "Namestitev ni uspela: {e}",
-    btn_install: "Namesti ({n})",
-    btn_check: "Preveri",
     procs_ok: "Procesi tečejo",
     procs_one: "1 proces ustavljen",
     procs_many: "Ustavljeni procesi: {n}",
-    integrations: "Integracije",
-    st_up_to_date: "Posodobljeno",
     st_unknown: "Neznano",
-    st_update_one: "1 posodobitev",
-    st_updates: "Posodobitve: {n}",
     st_running: "Teče",
     st_stopped_one: "1 ustavljen",
     st_stopped: "Ustavljeni: {n}",
-    st_available: "Na voljo",
-    st_unavailable_one: "1 ni na voljo",
-    st_unavailable: "Ni na voljo: {n}",
-    wd_ok: "Integracije so na voljo",
-    wd_one: "1 integracija ni na voljo",
-    wd_many: "Integracije, ki niso na voljo: {n}",
-    wd_check: "Preveri integracije zdaj",
-    wd_none: "Vse integracije so na voljo.",
-    wd_since: "Ni na voljo ({t})",
-    wd_reloads_one: "1 ponovno nalaganje",
-    wd_reloads: "Ponovna nalaganja: {n}",
-    wd_unavailable: "Ni na voljo",
-    wd_gave_up: "Opuščeno",
-    wd_last_reload: "Zadnje ponovno nalaganje: {name} {t}",
-    wd_last_reload_failed: "Zadnje ponovno nalaganje ni uspelo: {name} {t}",
-    wd_last_check: "Preverjeno {t}",
-    wd_open: "Odpri integracijo",
     zoom_in: "Prikaži celotno kartico",
     zoom_out: "Nazaj na strnjen pogled",
     // Editor
@@ -1875,8 +925,6 @@ const STRINGS = {
     show_network: "Prikaži omrežje",
     show_storage: "Prikaži shrambo",
     show_processes: "Prikaži procese",
-    show_hacs: "Prikaži razširitve HACS",
-    show_watchdog: "Prikaži integracije, ki niso na voljo (Integration Watchdog)",
     zoom: "Gumb za povečavo",
     zoom_helper: "Preklaplja med celotno kartico in strnjenim pogledom",
     interface: "Omrežni vmesnik (neobvezno, privzeto vsi)",
@@ -1907,58 +955,13 @@ const STRINGS = {
     up_to_date: "Atjaunināts",
     update: "Jauna versija",
     no_sm: "Netika atrastas System Monitor vienības. Vai integrācija System Monitor ir instalēta un tās sensori ir iespējoti?",
-    hacs: "HACS",
-    hacs_ok: "HACS ir atjaunināts",
-    hacs_updates_one: "1 HACS atjauninājums",
-    hacs_updates: "HACS atjauninājumi: {n}",
-    check_updates: "Meklēt atjauninājumus",
-    checking: "Pārbauda {i}/{n}…",
-    check_failed: "Pārbaude neizdevās: {e}",
-    last_check: "Pēdējā pārbaude {t}",
-    needs_refresh: "Instalējiet HACS Refresh, lai no Home Assistant pārbaudītu atjauninājumus visiem paplašinājumiem.",
-    github: "Atvērt vietnē GitHub",
-    check_ext: "Pārbaudīt šī paplašinājuma atjauninājumus",
-    search_ext: "Meklēt paplašinājumus",
-    clear_search: "Notīrīt meklēšanu",
-    no_match: "Nav atbilstošu paplašinājumu",
-    install_all: "Instalēt visus atjauninājumus ({n})",
-    install_all_confirm: "Instalēt HACS atjauninājumus ({n})?",
-    install_all_confirm_one: "Instalēt 1 HACS atjauninājumu?",
-    install_title: "Instalēt atjauninājumus",
-    install_btn: "Instalēt",
-    cancel: "Atcelt",
-    installing: "Instalē {i}/{n}…",
-    install_failed: "Instalēšana neizdevās: {e}",
-    btn_install: "Instalēt ({n})",
-    btn_check: "Pārbaudīt",
     procs_ok: "Procesi darbojas",
     procs_one: "1 process apturēts",
     procs_many: "Apturēti procesi: {n}",
-    integrations: "Integrācijas",
-    st_up_to_date: "Atjaunināts",
     st_unknown: "Nezināms",
-    st_update_one: "1 atjauninājums",
-    st_updates: "Atjauninājumi: {n}",
     st_running: "Darbojas",
     st_stopped_one: "1 apturēts",
     st_stopped: "Apturēti: {n}",
-    st_available: "Pieejamas",
-    st_unavailable_one: "1 nepieejama",
-    st_unavailable: "Nepieejamas: {n}",
-    wd_ok: "Integrācijas pieejamas",
-    wd_one: "1 integrācija nepieejama",
-    wd_many: "Nepieejamas integrācijas: {n}",
-    wd_check: "Pārbaudīt integrācijas tagad",
-    wd_none: "Visas integrācijas ir pieejamas.",
-    wd_since: "Nepieejama {t}",
-    wd_reloads_one: "1 atkārtota ielāde",
-    wd_reloads: "Atkārtotas ielādes: {n}",
-    wd_unavailable: "Nepieejama",
-    wd_gave_up: "Atmesta",
-    wd_last_reload: "Pēdējā atkārtotā ielāde: {name} {t}",
-    wd_last_reload_failed: "Pēdējā atkārtotā ielāde neizdevās: {name} {t}",
-    wd_last_check: "Pārbaudīts {t}",
-    wd_open: "Atvērt integrāciju",
     zoom_in: "Rādīt pilno karti",
     zoom_out: "Atpakaļ uz kompakto skatu",
     // Editor
@@ -1967,8 +970,6 @@ const STRINGS = {
     show_network: "Rādīt tīklu",
     show_storage: "Rādīt krātuvi",
     show_processes: "Rādīt procesus",
-    show_hacs: "Rādīt HACS paplašinājumus",
-    show_watchdog: "Rādīt nepieejamās integrācijas (Integration Watchdog)",
     zoom: "Tālummaiņas poga",
     zoom_helper: "Pārslēdz starp pilno karti un kompakto skatu",
     interface: "Tīkla saskarne (neobligāta, pēc noklusējuma visas)",
@@ -1999,58 +1000,13 @@ const STRINGS = {
     up_to_date: "Ενημερωμένο",
     update: "Ενημέρωση",
     no_sm: "Δεν βρέθηκαν οντότητες System Monitor. Είναι εγκατεστημένη η ενσωμάτωση System Monitor και ενεργοποιημένοι οι αισθητήρες της;",
-    hacs: "HACS",
-    hacs_ok: "Το HACS είναι ενημερωμένο",
-    hacs_updates_one: "1 ενημέρωση HACS",
-    hacs_updates: "{n} ενημερώσεις HACS",
-    check_updates: "Έλεγχος για ενημερώσεις",
-    checking: "Έλεγχος {i}/{n}…",
-    check_failed: "Ο έλεγχος απέτυχε: {e}",
-    last_check: "Τελευταίος έλεγχος {t}",
-    needs_refresh: "Εγκαταστήστε το HACS Refresh για να ελέγχετε για ενημερώσεις όλες τις επεκτάσεις από το Home Assistant.",
-    github: "Άνοιγμα στο GitHub",
-    check_ext: "Έλεγχος αυτής της επέκτασης για ενημερώσεις",
-    search_ext: "Αναζήτηση επεκτάσεων",
-    clear_search: "Απαλοιφή αναζήτησης",
-    no_match: "Καμία επέκταση δεν ταιριάζει",
-    install_all: "Εγκατάσταση όλων των ενημερώσεων ({n})",
-    install_all_confirm: "Εγκατάσταση {n} ενημερώσεων HACS;",
-    install_all_confirm_one: "Εγκατάσταση 1 ενημέρωσης HACS;",
-    install_title: "Εγκατάσταση των ενημερώσεων",
-    install_btn: "Εγκατάσταση",
-    cancel: "Ακύρωση",
-    installing: "Εγκατάσταση {i}/{n}…",
-    install_failed: "Η εγκατάσταση απέτυχε: {e}",
-    btn_install: "Εγκατάσταση ({n})",
-    btn_check: "Έλεγχος",
     procs_ok: "Οι διεργασίες εκτελούνται",
     procs_one: "1 διεργασία σταματημένη",
     procs_many: "{n} διεργασίες σταματημένες",
-    integrations: "Ενσωματώσεις",
-    st_up_to_date: "Ενημερωμένο",
     st_unknown: "Άγνωστο",
-    st_update_one: "1 ενημέρωση",
-    st_updates: "{n} ενημερώσεις",
     st_running: "Εκτελείται",
     st_stopped_one: "1 σταματημένη",
     st_stopped: "{n} σταματημένες",
-    st_available: "Διαθέσιμες",
-    st_unavailable_one: "1 μη διαθέσιμη",
-    st_unavailable: "{n} μη διαθέσιμες",
-    wd_ok: "Οι ενσωματώσεις είναι διαθέσιμες",
-    wd_one: "1 ενσωμάτωση μη διαθέσιμη",
-    wd_many: "{n} ενσωματώσεις μη διαθέσιμες",
-    wd_check: "Έλεγχος των ενσωματώσεων τώρα",
-    wd_none: "Όλες οι ενσωματώσεις είναι διαθέσιμες.",
-    wd_since: "Μη διαθέσιμη ({t})",
-    wd_reloads_one: "1 επαναφόρτωση",
-    wd_reloads: "{n} επαναφορτώσεις",
-    wd_unavailable: "Μη διαθέσιμη",
-    wd_gave_up: "Εγκαταλείφθηκε",
-    wd_last_reload: "Τελευταία επαναφόρτωση: {name} {t}",
-    wd_last_reload_failed: "Η τελευταία επαναφόρτωση απέτυχε: {name} {t}",
-    wd_last_check: "Ελέγχθηκε {t}",
-    wd_open: "Άνοιγμα της ενσωμάτωσης",
     zoom_in: "Εμφάνιση πλήρους κάρτας",
     zoom_out: "Επιστροφή στη συμπαγή προβολή",
     // Editor
@@ -2059,8 +1015,6 @@ const STRINGS = {
     show_network: "Εμφάνιση δικτύου",
     show_storage: "Εμφάνιση αποθήκευσης",
     show_processes: "Εμφάνιση διεργασιών",
-    show_hacs: "Εμφάνιση επεκτάσεων HACS",
-    show_watchdog: "Εμφάνιση μη διαθέσιμων ενσωματώσεων (Integration Watchdog)",
     zoom: "Κουμπί μεγέθυνσης",
     zoom_helper: "Εναλλάσσει μεταξύ πλήρους κάρτας και συμπαγούς προβολής",
     interface: "Διεπαφή δικτύου (προαιρετική, προεπιλογή όλες)",
@@ -2076,25 +1030,10 @@ const STRINGS = {
 const esc = (v) =>
   String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
-/** Lower case without accents, for searching. */
-const fold = (v) => String(v ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 const lang = (hass, config) => {
   const l = (config?.language) || (hass && (hass.locale?.language || hass.language)) || "en";
   return STRINGS[l] ? l : STRINGS[l.split("-")[0]] ? l.split("-")[0] : "en";
-};
-
-/**
- * Locale for Intl: Home Assistant's full locale when its base matches the card's language (so
- * regional formats are kept), otherwise the card's language. Home Assistant's "pt" is European
- * Portuguese, but Intl reads "pt" as Brazilian, hence pt-PT.
- */
-const intlLocale = (hass, config) => {
-  const l = lang(hass, config);
-  const ha = (hass && (hass.locale?.language || hass.language)) || "";
-  const base = (v) => v.split("-")[0];
-  const out = !config?.language && ha && base(ha) === base(l) && (l !== "sr-Latn" || ha === "sr-Latn") ? ha : l;
-  return out === "pt" ? "pt-PT" : out;
 };
 
 const t = (hass, config, key) => STRINGS[lang(hass, config)][key] ?? STRINGS.en[key] ?? key;
@@ -2185,19 +1124,6 @@ const temperature = (s, hass) => {
 const level = (v, warn, crit) => (v === null ? "" : v >= crit ? "crit" : v >= warn ? "warn" : "ok");
 
 const svgIcon = (path, cls = "") => `<svg class="icon ${cls}" viewBox="0 0 24 24"><path d="${path}"/></svg>`;
-
-/**
- * Each render recreates the spinners: anchored to the start of the document timeline, they all turn in step and a
- * re-render (a HACS check progressing from 1 to 2 done) carries on from the same angle instead of jumping to 0°.
- * Without the Web Animations API, a negative delay taken from the clock does nearly the same.
- */
-const SPIN_PERIOD = 1000;
-const syncSpinners = (root) => {
-  for (const el of root?.querySelectorAll?.(".spin") || []) {
-    if (typeof el.getAnimations === "function") for (const a of el.getAnimations()) a.startTime = 0;
-    else el.style.animationDelay = `-${Date.now() % SPIN_PERIOD}ms`;
-  }
-};
 
 const pct = (used, free) => (used !== null && free !== null && used + free > 0 ? (used / (used + free)) * 100 : null);
 
@@ -2577,21 +1503,6 @@ const memUsage = (hass, sc, prefix) => {
   return { used, total: used !== null && free !== null ? used + free : null, pct: p };
 };
 
-// ---------------------------------------------------------------------------
-// HACS extensions
-// ---------------------------------------------------------------------------
-
-/**
- * Repositories downloaded with HACS, read from their update entities (platform "hacs"):
- * HACS names the device after the repository and stores its category in the device model,
- * and the release URL carries the GitHub "owner/repo".
- */
-const hacsEntities = registryCache((hass) =>
-  Object.values(hass.entities || {})
-    .filter((e) => e.platform === "hacs" && e.entity_id.startsWith("update.") && !e.hidden)
-    .map((e) => ({ id: e.entity_id, dev: hass.devices?.[e.device_id] }))
-);
-
 /** A state that tells nothing: the entity is unavailable (integration failed or unloaded) or not reported yet. */
 const isUnknown = (s) => !s || s.state === "unavailable" || s.state === "unknown";
 
@@ -2604,29 +1515,6 @@ const updateStatus = (core, os) => {
   return { pending, unknown: !pending && [core, os].find((s) => s && isUnknown(s)) };
 };
 
-const discoverHacs = (hass) => {
-  const out = [];
-  for (const { id, dev } of hacsEntities(hass)) {
-    const s = hass.states[id];
-    if (!s) continue;
-    const a = s.attributes;
-    const repo = /github\.com\/([^/]+\/[^/]+)/.exec(a.release_url || "")?.[1] || null;
-    out.push({
-      id,
-      name: dev?.name_by_user || dev?.name || String(a.friendly_name || id).replace(/ update$/i, ""),
-      category: dev?.model || (a.entity_picture ? "integration" : null),
-      repo,
-      domain: /\/_\/([^/]+)\/icon\.png/.exec(a.entity_picture || "")?.[1] || null,
-      installed: a.installed_version,
-      latest: a.latest_version,
-      update: s.state === "on",
-      unknown: isUnknown(s),
-      busy: !!a.in_progress,
-    });
-  }
-  return out.sort((x, y) => y.update - x.update || x.name.localeCompare(y.name));
-};
-
 /** Registry entries of a platform that have a state; the others are listed in `missing`. */
 const platformEntities = (hass, platform, missing) =>
   Object.values(hass.entities || {}).filter((e) => {
@@ -2634,20 +1522,6 @@ const platformEntities = (hass, platform, missing) =>
     if (!hass.states[e.entity_id]) missing.push(e.entity_id);
     return !!hass.states[e.entity_id];
   });
-
-/** Entities of the HACS Refresh integration, which checks every HACS repository for updates on the server. */
-const discoverRefresh = registryCache((hass, missing) => {
-  const out = {};
-  for (const e of platformEntities(hass, "hacs_refresh", missing)) {
-    if (e.entity_id.startsWith("button.")) out.button = e.entity_id;
-    else if (e.entity_id.startsWith("sensor.")) {
-      const s = hass.states[e.entity_id];
-      if (e.translation_key === "last_check" || s.attributes.device_class === "timestamp") out.lastCheck = e.entity_id;
-      else out.status = e.entity_id;
-    }
-  }
-  return out;
-});
 
 /**
  * Size of the Home Assistant database (recorder), from the File Size integration
@@ -2666,31 +1540,12 @@ const discoverDatabase = registryCache((hass, missing) => {
   return null;
 });
 
-// ---------------------------------------------------------------------------
-// Integration Watchdog
-// ---------------------------------------------------------------------------
-
-/** Entities of the Integration Watchdog integration, which reloads the integrations whose entities are all unavailable. */
-const discoverWatchdog = registryCache((hass, missing) => {
-  const out = {};
-  const keys = { unavailable: "unavailable", unavailable_integrations: "unavailable", last_reload: "lastReload", last_check: "lastCheck" };
-  for (const e of platformEntities(hass, "integration_watchdog", missing)) {
-    if (e.entity_id.startsWith("button.")) out.button = e.entity_id;
-    else if (e.entity_id.startsWith("sensor.")) {
-      // Translation key, else the end of the English entity id.
-      const key = keys[e.translation_key] || Object.entries(keys).find(([k]) => e.entity_id.endsWith(`_${k}`))?.[1];
-      if (key) out[key] ??= e.entity_id;
-    }
-  }
-  return out;
-});
-
 /** Entity ids a card reads its states from: a change of any other state doesn't re-render it. */
 const trackedIds = (hass) => {
   const sm = discover(hass);
   const ids = [...Object.values(sm.scalars), ...Object.values(sm.procs), sm.core_update, sm.os_update];
   for (const group of [sm.disks, sm.nets]) for (const g of Object.values(group)) ids.push(...Object.values(g));
-  ids.push(discoverDatabase(hass), ...hacsEntities(hass).map((x) => x.id), ...Object.values(discoverRefresh(hass)), ...Object.values(discoverWatchdog(hass)));
+  ids.push(discoverDatabase(hass));
   return ids;
 };
 
@@ -2712,11 +1567,6 @@ const renderSignature = (hass) => [
 
 const sameSignature = (a, b) => !!a && a.length === b.length && a.every((v, i) => v === b[i]);
 
-/**
- * URL without its brands access token, the stable identity of a logo source: the token rotates
- * every few minutes, so keying failures on the full URL would grow the failed set without bound.
- */
-const untokened = (u) => u.replace(/([?&])token=[^&]*&?/, "$1").replace(/[?&]$/, "");
 
 /** CSS attribute selector matching an attribute value exactly. */
 const attrSel = (name, value) => `[${name}="${String(value).replace(/["\\]/g, "\\$&")}"]`;
@@ -2734,15 +1584,6 @@ const focusSelector = (el) => {
   return d.action ? sel : `[role="button"]${sel}`;
 };
 
-const relTime = (iso, locale) => {
-  const sec = (Date.parse(iso) - Date.now()) / 1000;
-  if (!Number.isFinite(sec)) return "";
-  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
-  for (const [unit, size] of [["day", 86400], ["hour", 3600], ["minute", 60]])
-    if (Math.abs(sec) >= size) return rtf.format(Math.round(sec / size), unit);
-  return rtf.format(Math.round(sec), "second");
-};
-
 const fireMoreInfo = (node, entityId) => {
   if (!entityId) return;
   node.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId }, bubbles: true, composed: true }));
@@ -2752,31 +1593,9 @@ const fireMoreInfo = (node, entityId) => {
 // Shared styles
 // ---------------------------------------------------------------------------
 
-// In-card confirmation popup, as in ha-iptv-card: a backdrop over the card with a small dialog,
-// at the top of the card so it stays in view when the card is long.
-const DIALOG_STYLE = `
-  .backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: flex-start; justify-content: center;
-              padding-top: 12px; box-sizing: border-box; z-index: 9; border-radius: inherit; }
-  .modal { background: var(--card-background-color, #1c1c1c); color: var(--primary-text-color); width: min(92%, 340px); max-height: calc(100% - 24px);
-           box-sizing: border-box; border-radius: 14px; padding: 16px; box-shadow: 0 8px 30px rgba(0,0,0,.4); display: flex; flex-direction: column; gap: 10px; }
-  .modal h3 { margin: 0; font-size: 16px; font-weight: 500; }
-  .modal .hint { font-size: 13px; color: var(--secondary-text-color); }
-  .modal-list { display: flex; flex-direction: column; gap: 4px; overflow: auto; min-height: 0; }
-  .modal-item { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
-  .modal-item span:first-child { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .modal-item span:last-child { flex: none; color: var(--secondary-text-color); font-variant-numeric: tabular-nums; }
-  .modal-item b { font-weight: 500; color: color-mix(in srgb, var(--sm-warn) 45%, var(--primary-text-color)); }
-  .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 2px; }
-  .modal button.act { border: 0; border-radius: 8px; padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
-  .modal button.cancel { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
-  .modal button.primary { background: color-mix(in srgb, var(--primary-color, #03a9f4) 16%, transparent); color: color-mix(in srgb, var(--primary-color, #03a9f4) 45%, var(--primary-text-color)); }
-  .modal button.cancel:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, var(--secondary-background-color, transparent)); }
-  .modal button.primary:hover { background: color-mix(in srgb, var(--primary-color, #03a9f4) 24%, transparent); }
-`;
 
 const BASE_STYLE = `
-  /* A block host: in Home Assistant the card sits in hui-card (no display), and an inline host has no size of its own,
-     so the ResizeObserver that fits the header and section titles to the card's width would never fire on resize. */
+  /* A block host: in Home Assistant the card sits in hui-card (no display), and an inline host has no size of its own. */
   :host { display: block; }
   :host { --sm-blue: #18bcf2; --sm-ok: var(--success-color, #43a047); --sm-warn: var(--warning-color, #ffa600); --sm-crit: var(--error-color, #db4437);
           --sm-focus: var(--primary-color, #03a9f4); }
@@ -2822,7 +1641,7 @@ const BASE_STYLE = `
     .header .logo { display: none; }
   }
   .warning { padding: 16px; color: color-mix(in srgb, var(--sm-warn) 45%, var(--primary-text-color)); }
-  /* Zoom button of the mini and status cards: rightmost in the header, 8 px from the card's right edge. */
+  /* Zoom button of the mini card: rightmost in the header, 8 px from the card's right edge. */
   .zoom { all: unset; flex: none; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;
           display: grid; place-items: center; color: var(--secondary-text-color); }
   .zoom .icon { width: 16px; height: 16px; }
@@ -2835,133 +1654,37 @@ class SystemMonitorBase extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this._html = "";
-    this._hacsOpen = false;
-    this._hacsQuery = "";
-    this._wdOpen = false;
     this._procsOpen = false;
-    this._imgFailed = new Set();
-    // Brand logo URL per integration domain, kept once loaded: a new brands token doesn't reload it.
-    this._brandUrls = new Map();
     this.shadowRoot.addEventListener("click", (ev) => {
       const path = ev.composedPath();
-      // Links (GitHub) open on their own, without the more-info dialog.
-      if (path.some((n) => n.tagName === "A")) return;
       const action = path.find((n) => n.dataset?.action);
-      // Inside the popup, only its buttons and the backdrop itself act.
-      if (this._dialog && action?.dataset.action !== "dialog-ok" && action?.dataset.action !== "dialog-cancel") {
-        if (path[0] === action) this._closeDialog();
-        return;
-      }
-      if (action?.dataset.action === "dialog-cancel") return this._closeDialog();
-      if (action?.dataset.action === "dialog-ok") {
-        const run = this._dialog.onOk;
-        this._closeDialog();
-        run();
-        return;
-      }
       if (action?.dataset.action === "zoom") return this._zoomClick?.(ev);
       if (action) {
-        if (action.dataset.action === "hacs") {
-          this._hacsOpen = !this._hacsOpen;
-          // Folding the list clears the search.
-          if (!this._hacsOpen) this._hacsQuery = "";
-        }
-        if (action.dataset.action === "wd") this._wdOpen = !this._wdOpen;
-        if (action.dataset.action === "hacs-clear") {
-          this._hacsQuery = "";
-          this._update();
-          this.shadowRoot.querySelector('[data-search="hacs"]')?.focus({ preventScroll: true });
-          return;
-        }
         // With a process stopped, the list stays unfolded.
         if (action.dataset.action === "procs" && !this._procsKo()) this._procsOpen = !this._procsOpen;
-        const enabled = action.getAttribute("aria-disabled") !== "true";
-        if (action.dataset.action === "hacs-check" && enabled) this._checkHacs();
-        if (action.dataset.action === "hacs-check-ext" && enabled) this._checkExt(action.dataset.target);
-        if (action.dataset.action === "hacs-install-all" && enabled) this._installAll();
-        if (action.dataset.action === "wd-check" && enabled) this._checkWatchdog();
-        if (action.dataset.action === "nav") this._navigate(action.dataset.path);
         this._update();
         return;
       }
       const el = path.find((n) => n.dataset?.entity);
       if (el) fireMoreInfo(this, el.dataset.entity);
     });
-    // Keyboard: Enter / Space on an element with role="button" (the check button is a span inside the folding header,
-    // gauges, tiles and rows open their entity). A real link (GitHub) inside a row keeps its own behaviour.
+    // Keyboard: Enter / Space on an element with role="button" (gauges, tiles and rows open their entity).
     this.shadowRoot.addEventListener("keydown", (ev) => {
       if ((ev.key === "Enter" || ev.key === " ") && ev.target?.getAttribute?.("role") === "button") {
         ev.preventDefault();
         ev.target.click();
       }
     });
-    // Escape closes the popup.
-    this.shadowRoot.addEventListener("keydown", (ev) => {
-      if (ev.key === "Escape" && this._dialog) {
-        ev.stopPropagation();
-        this._closeDialog();
-      }
-    });
-    // HACS search field: filters the list as you type; Escape clears it.
-    this.shadowRoot.addEventListener("input", (ev) => {
-      if (ev.target?.dataset?.search !== "hacs") return;
-      this._hacsQuery = ev.target.value;
-      this._update();
-    });
-    this.shadowRoot.addEventListener("keydown", (ev) => {
-      if (ev.key !== "Escape" || ev.target?.dataset?.search !== "hacs" || !this._hacsQuery) return;
-      ev.stopPropagation();
-      this._hacsQuery = "";
-      this._update();
-    });
-    // Logos load dynamically: on error, try the next source, then fall back to the category icon.
-    this.shadowRoot.addEventListener(
-      "error",
-      (ev) => {
-        const img = ev.target;
-        if (img.tagName !== "IMG" || img.dataset.fb === undefined) return;
-        this._imgFailed.add(untokened(img.getAttribute("src")));
-        // A kept brand URL whose token has expired: the next render uses the current token.
-        if (this._brandUrls.get(img.dataset.domain) === img.getAttribute("src")) this._brandUrls.delete(img.dataset.domain);
-        const next = img.dataset.fb.split(" ").filter((u) => u && !this._imgFailed.has(untokened(u)));
-        if (next.length) {
-          img.dataset.fb = next.slice(1).join(" ");
-          img.src = next[0];
-        } else img.replaceWith(Object.assign(document.createElement("span"), { innerHTML: svgIcon(ICONS[img.dataset.cat] || ICONS.hacs) }).firstChild);
-      },
-      true
-    );
-    this.shadowRoot.addEventListener(
-      "load",
-      (ev) => {
-        const img = ev.target;
-        const src = img.tagName === "IMG" ? img.getAttribute("src") : "";
-        if (img.dataset?.domain && src.startsWith("/api/brands/")) this._brandUrls.set(img.dataset.domain, src);
-      },
-      true
-    );
   }
 
   connectedCallback() {
-    // The brands access token rotates: refresh it before it expires — only once a logo needed it
-    // (the token is fetched lazily by _logoSources, so a card without logos never calls the API).
-    this._tokenTimer = setInterval(() => {
-      // Once a token was asked for, unless Home Assistant does not know the command (older version):
-      // a failure (connection lost while Home Assistant restarts, timeout) is tried again.
-      if (this._brandsToken !== undefined && !this._brandsUnsupported) this._fetchBrandsToken(true);
-    }, 20 * 60 * 1000);
     // The uptime and the relative times ("2 minutes ago") depend on the current minute: without a
     // state change, `set hass` doesn't come, so check the render signature (it includes the minute).
     this._minuteTimer = setInterval(() => this._maybeRender(), 30 * 1000);
-    // A click elsewhere on the page folds the HACS and integrations lists (as in ha-carburants-france).
+    // A click elsewhere on the page folds the processes list (as in ha-carburants-france), unless a process is stopped.
     // A click, not a pointerdown: folding on press would shift the layout under the pointer before the click.
-    // The processes list folds too, unless a process is stopped.
     this._onOutside ??= (ev) => {
-      if ((!this._hacsOpen && !this._wdOpen && !this._procsOpen && !this._dialog) || ev.composedPath().includes(this)) return;
-      this._dialog = null;
-      this._hacsOpen = false;
-      this._hacsQuery = "";
-      this._wdOpen = false;
+      if (!this._procsOpen || ev.composedPath().includes(this)) return;
       this._procsOpen = false;
       this._update();
     };
@@ -2969,170 +1692,8 @@ class SystemMonitorBase extends HTMLElement {
   }
 
   disconnectedCallback() {
-    clearInterval(this._tokenTimer);
     clearInterval(this._minuteTimer);
     document.removeEventListener("click", this._onOutside, true);
-  }
-
-  /** Token for /api/brands (Home Assistant 2026.3+), which serves local custom integration brands before the CDN. */
-  async _fetchBrandsToken(force = false) {
-    if (!this._hass || (this._brandsToken !== undefined && !force) || this._tokenPending) return;
-    this._tokenPending = true;
-    try {
-      const res = await this._hass.callWS({ type: "brands/access_token" });
-      this._brandsToken = res?.token || null;
-      // A local logo that failed with the previous token may load with this one: retry it.
-      if (this._brandsToken) for (const u of this._imgFailed) if (u.startsWith("/api/brands/")) this._imgFailed.delete(u);
-    } catch (err) {
-      // Older Home Assistant: CDN only, for good. Any other failure keeps the current token
-      // (CDN until the next try if there was none yet).
-      if (err?.code === "unknown_command") {
-        this._brandsUnsupported = true;
-        this._brandsToken = null;
-      } else if (!this._brandsToken) this._brandsToken = null;
-    }
-    this._tokenPending = false;
-    // Renders only if a logo URL changed: logos already loaded keep theirs (see _logoSources).
-    this._update();
-  }
-
-  /** Logo sources of an extension, best first: local/proxied brand, brands CDN, GitHub owner avatar. */
-  _logoSources(x) {
-    const out = [];
-    if (x.domain) {
-      const kept = this._brandUrls.get(x.domain);
-      if (kept) out.push(kept);
-      else if (this._brandsToken)
-        out.push(`/api/brands/integration/${encodeURIComponent(x.domain)}/icon.png?placeholder=no&token=${encodeURIComponent(this._brandsToken)}`);
-      // First logo rendered: fetch the token now (the render that follows adds the local source).
-      else if (this._brandsToken === undefined) this._fetchBrandsToken();
-      out.push(`https://brands.home-assistant.io/_/${encodeURIComponent(x.domain)}/icon.png`);
-    }
-    if (x.repo) out.push(`https://github.com/${x.repo.split("/")[0]}.png?size=64`);
-    return out.filter((u) => !this._imgFailed.has(untokened(u)));
-  }
-
-  _logo(x) {
-    const src = this._logoSources(x);
-    const cat = ICONS[x.category] ? x.category : "hacs";
-    if (!src.length) return `<span class="ext-logo fallback">${svgIcon(ICONS[cat])}</span>`;
-    return `<span class="ext-logo"><img src="${esc(src[0])}" data-fb="${esc(src.slice(1).join(" "))}" data-cat="${cat}" data-domain="${esc(x.domain || "")}" alt="" loading="lazy" referrerpolicy="no-referrer"></span>`;
-  }
-
-  /** Checks one extension through HACS Refresh's check_repository action, which ends with the result. */
-  async _checkExt(entityId) {
-    this._extChecking ??= new Set();
-    if (this._extChecking.has(entityId)) return;
-    this._extChecking.add(entityId);
-    this._checkError = null;
-    this._update();
-    try {
-      await this._hass.callService("hacs_refresh", "check_repository", { entity_id: entityId });
-    } catch (e) {
-      this._checkError = e?.message || String(e);
-    }
-    this._extChecking.delete(entityId);
-    this._update();
-  }
-
-  /**
-   * Installs every pending HACS update, one after the other (HACS downloads one repository at a
-   * time), after a confirmation. Integrations then need a Home Assistant restart, which HA raises
-   * as a repair; dashboard cards need a browser reload.
-   */
-  async _installAll() {
-    if (this._installing) return;
-    const pending = discoverHacs(this._hass).filter((x) => x.update && !x.busy);
-    if (!pending.length) return;
-    const items = pending
-      .map((x) => `<div class="modal-item"><span>${esc(x.name)}</span><span>${esc(x.installed || "?")} → <b>${esc(x.latest || "?")}</b></span></div>`)
-      .join("");
-    this._openDialog({
-      body: `<h3>${esc(this._t("install_title"))}</h3>
-        <div class="hint">${esc(pending.length === 1 ? this._t("install_all_confirm_one") : this._t("install_all_confirm").replace("{n}", pending.length))}</div>
-        <div class="modal-list">${items}</div>`,
-      ok: this._t("install_btn"),
-      onOk: () => this._runInstall(pending.map((x) => x.id)),
-    });
-  }
-
-  /** Opens the in-card popup: body HTML, label of the main button, and what it does. */
-  _openDialog(dialog) {
-    this._dialog = dialog;
-    this._update();
-    // Focus without scrolling (the page stays put), then bring the popup into view only if it is off screen.
-    this.shadowRoot.querySelector(".modal .primary")?.focus({ preventScroll: true });
-    this.shadowRoot.querySelector(".modal")?.scrollIntoView?.({ block: "nearest" });
-  }
-
-  _closeDialog() {
-    this._dialog = null;
-    this._update();
-  }
-
-  _dialogHtml() {
-    const d = this._dialog;
-    if (!d) return "";
-    return `<style>${DIALOG_STYLE}</style><div class="backdrop" data-action="dialog-backdrop">
-      <div class="modal" role="dialog" aria-modal="true">
-        ${d.body}
-        <div class="modal-actions">
-          <button class="act cancel" data-action="dialog-cancel">${esc(this._t("cancel"))}</button>
-          <button class="act primary" data-action="dialog-ok">${esc(d.ok)}</button>
-        </div>
-      </div>
-    </div>`;
-  }
-
-  async _runInstall(ids) {
-    if (this._installing) return;
-    this._installing = { done: 0, total: ids.length };
-    this._installError = null;
-    this._update();
-    for (const id of ids) {
-      try {
-        await this._hass.callService("update", "install", { entity_id: id });
-      } catch (e) {
-        this._installError = `${this._hass.states[id]?.attributes?.friendly_name || id}: ${e?.message || e}`;
-      }
-      this._installing.done++;
-      this._update();
-    }
-    this._installing = null;
-    this._update();
-  }
-
-  /** Presses the HACS Refresh button: the check runs on the server, its progress comes back through the status sensor. */
-  async _checkHacs() {
-    const rf = discoverRefresh(this._hass);
-    if (!rf.button) return;
-    this._checkError = null;
-    try {
-      await this._hass.callService("button", "press", { entity_id: rf.button });
-    } catch (e) {
-      this._checkError = e?.message || String(e);
-    }
-    this._update();
-  }
-
-  /** Presses the Integration Watchdog button: it checks the integrations now and reloads those that are due. */
-  async _checkWatchdog() {
-    const wd = discoverWatchdog(this._hass);
-    if (!wd.button) return;
-    this._wdError = null;
-    try {
-      await this._hass.callService("button", "press", { entity_id: wd.button });
-    } catch (e) {
-      this._wdError = e?.message || String(e);
-    }
-    this._update();
-  }
-
-  /** Opens a Home Assistant page, as a link inside the frontend does. */
-  _navigate(path) {
-    if (!path) return;
-    history.pushState(null, "", path);
-    window.dispatchEvent(new CustomEvent("location-changed", { detail: { replace: false } }));
   }
 
   set hass(hass) {
@@ -3170,25 +1731,14 @@ class SystemMonitorBase extends HTMLElement {
 
   _update() {
     if (!this._hass || !this._config) return;
-    let html = this._render();
-    if (this._dialog) html = html.replace(/<ha-card>([\s\S]*)<\/ha-card>\s*$/, (_, inner) => `<ha-card class="dialog-open">${inner}${this._dialogHtml()}</ha-card>`);
+    const html = this._render();
     if (html !== this._html) {
-      // Re-rendering replaces the search field and the buttons: keep the focus (and the caret), without scrolling
-      // the page back to the card (a mouse click focuses gauges and rows too).
-      const active = this.shadowRoot.activeElement;
-      const search = active?.dataset?.search;
-      const caret = search ? [active.selectionStart, active.selectionEnd] : null;
-      const focused = search ? null : focusSelector(active);
+      // Re-rendering replaces the buttons: keep the focus, without scrolling the page back to the card
+      // (a mouse click focuses gauges and rows too).
+      const focused = focusSelector(this.shadowRoot.activeElement);
       this._html = html;
       this.shadowRoot.innerHTML = html;
-      syncSpinners(this.shadowRoot);
-      if (search) {
-        const field = this.shadowRoot.querySelector(`[data-search="${search}"]`);
-        if (field) {
-          field.focus({ preventScroll: true });
-          field.setSelectionRange(...caret);
-        }
-      } else if (focused) this.shadowRoot.querySelector(focused)?.focus({ preventScroll: true });
+      if (focused) this.shadowRoot.querySelector(focused)?.focus({ preventScroll: true });
     }
   }
 
@@ -3202,15 +1752,14 @@ class SystemMonitorBase extends HTMLElement {
     // Status chip: pending Core / OS update, else "up to date" (or "running" without update entities).
     const { pending, unknown } = updateStatus(core, os);
     // Its full text stays in title and aria-label: on a narrow header the pill is cut, then shows its dot only.
-    const pill = (cls, entity, text, shown = text) =>
-      `<span class="chip ${cls}" data-entity="${entity || ""}" title="${esc(text)}" aria-label="${esc(text)}"><span class="dot"></span><span class="chip-text">${esc(shown)}</span></span>`;
+    const pill = (cls, entity, text) =>
+      `<span class="chip ${cls}" data-entity="${entity || ""}" title="${esc(text)}" aria-label="${esc(text)}"><span class="dot"></span><span class="chip-text">${esc(text)}</span></span>`;
     // The header icon takes the status colour of the pill: green up to date, orange update pending, grey unknown.
     const iconCls = pending ? "warn" : unknown ? "muted" : "good";
     let chip;
     if (pending) {
-      // The status card's compact header shows the new version as a tooltip only, leaving the title its room.
       const text = `${this._t("update")} ${pending.attributes.latest_version || ""}`.trim();
-      chip = pill("clickable warn", pending.entity_id, text, this._compactHeader() ? this._t("update") : text);
+      chip = pill("clickable warn", pending.entity_id, text);
     } else if (unknown) chip = pill("clickable muted", unknown.entity_id, this._t("st_unknown"));
     else chip = pill(`good ${core ? "clickable" : ""}`, core?.entity_id, this._t(core ? "up_to_date" : "running"));
     return `
@@ -3224,25 +1773,6 @@ class SystemMonitorBase extends HTMLElement {
       </div>`;
   }
 
-  /** Whether the header is the status card's compact one (status pill without the version). */
-  _compactHeader() {
-    return false;
-  }
-
-  /** HACS status tile: all extensions up to date, or how many have an update. */
-  _hacsStat() {
-    if (this._config.show_hacs === false) return "";
-    const ext = discoverHacs(this._hass);
-    if (!ext.length) return "";
-    const n = ext.filter((x) => x.update).length;
-    // Every extension unavailable (HACS failed to start, for example): nothing is known, so nothing is "up to date".
-    if (!n && ext.every((x) => x.unknown))
-      return this._stat("hacs", ICONS.hacs, this._t("hacs"), this._t("st_unknown"), "muted", `${this._t("hacs")} · ${this._t("st_unknown")}`);
-    const text = n === 0 ? this._t("hacs_ok") : n === 1 ? this._t("hacs_updates_one") : this._t("hacs_updates").replace("{n}", n);
-    const value = n === 0 ? this._t("st_up_to_date") : this._t(n === 1 ? "st_update_one" : "st_updates").replace("{n}", n);
-    return this._stat("hacs", ICONS.hacs, this._t("hacs"), value, n ? "warn" : "good", text);
-  }
-
   /** Monitored processes that are stopped (process binary sensors off). */
   _stopped(sm) {
     return Object.values(sm.procs).filter((id) => this._s(id)?.state !== "on");
@@ -3254,8 +1784,7 @@ class SystemMonitorBase extends HTMLElement {
 
   /**
    * The processes section is always unfolded while a process is stopped. Otherwise it is folded
-   * by default, and like the HACS and integrations lists, unfolds on a click and folds again on a
-   * click elsewhere.
+   * by default, unfolds on a click and folds again on a click elsewhere.
    */
   _procsUnfolded() {
     return this._procsKo() || !!this._procsOpen;
@@ -3270,21 +1799,6 @@ class SystemMonitorBase extends HTMLElement {
     return this._stat("procs", ICONS.process, this._t("processes"), value, n ? "crit" : "good", text);
   }
 
-  /** Integration Watchdog status tile: all integrations available, or how many are not. */
-  _wdStat() {
-    if (this._config.show_watchdog === false) return "";
-    const wd = discoverWatchdog(this._hass);
-    const st = this._s(wd.unavailable);
-    if (!st) return "";
-    // Watchdog unloaded or failed: its sensor is unavailable, without the list of integrations.
-    if (isUnknown(st))
-      return this._stat("wd", ICONS.watchdog, this._t("integrations"), this._t("st_unknown"), "muted", `${this._t("integrations")} · ${this._t("st_unknown")}`);
-    const n = (st.attributes.integrations || []).length;
-    const text = n === 0 ? this._t("wd_ok") : n === 1 ? this._t("wd_one") : this._t("wd_many").replace("{n}", n);
-    const value = n === 0 ? this._t("st_available") : this._t(n === 1 ? "st_unavailable_one" : "st_unavailable").replace("{n}", n);
-    return this._stat("wd", ICONS.watchdog, this._t("integrations"), value, n ? "crit" : "good", text);
-  }
-
   /**
    * A status tile of the row under the header: section icon and name, status in its color; a click folds or unfolds that section.
    * Returns its status class with its HTML, so that callers don't have to read the status back from the markup.
@@ -3292,23 +1806,18 @@ class SystemMonitorBase extends HTMLElement {
   _stat(action, icon, label, value, cls, title) {
     return {
       cls,
-      html: `<div class="stat clickable ${cls}" ${this._statTarget(action)} role="button" tabindex="0" title="${esc(title)}" aria-label="${esc(title)}">
+      html: `<div class="stat clickable ${cls}" data-action="${action}" role="button" tabindex="0" title="${esc(title)}" aria-label="${esc(title)}">
         <div class="k">${svgIcon(icon)}<span>${esc(label)}</span></div><div class="v">${esc(value)}</div>
       </div>`,
     };
   }
 
-  /** What a click on a status tile does: here, fold or unfold its section. */
-  _statTarget(action) {
-    return `data-action="${action}"`;
-  }
-
-  /** Status tiles shown: HACS, processes, integrations. */
+  /** Status tiles shown: processes. */
   _stats(sm) {
-    return [this._hacsStat(), this._procsStat(sm), this._wdStat()].filter(Boolean);
+    return [this._procsStat(sm)].filter(Boolean);
   }
 
-  /** Overall statuses (HACS, processes, integrations), side by side under the header. */
+  /** Overall statuses (processes), under the header. */
   _statusRow(sm) {
     const stats = this._stats(sm);
     return stats.length ? `<div class="stats" style="--n:${stats.length}">${stats.map((x) => x.html).join("")}</div>` : "";
@@ -3323,9 +1832,6 @@ class SystemMonitorBase extends HTMLElement {
 // Full card
 // ---------------------------------------------------------------------------
 
-/** Status pill of a HACS or Integration Watchdog row: on a narrow list, its dot only (the text stays in title and aria-label). */
-const listPill = (cls, text) =>
-  `<span class="chip ${cls}" title="${esc(text)}" aria-label="${esc(text)}"><span class="dot"></span><span class="chip-text">${esc(text)}</span></span>`;
 
 const ring = (p) => {
   const r = 26;
@@ -3337,7 +1843,7 @@ const ring = (p) => {
   </svg>`;
 };
 
-/** Status tiles and buttons, shared by the full and the status cards. */
+/** Status tiles under the header of the full card. */
 const TILES_STYLE = `
   /* Tiles of equal width side by side while they fit. A label or a status takes two lines (never a cut word) before its
      tile goes down to a second row, whose tiles share its width; the tiles of a row keep the same height. */
@@ -3348,18 +1854,6 @@ const TILES_STYLE = `
   .stat .k span, .stat .v { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: normal; }
   .stat .k .icon { width: 16px; height: 16px; color: var(--c, var(--sm-ok)); }
   .stat .v { font-size: 13px; font-weight: 500; color: color-mix(in srgb, var(--c, var(--sm-ok)) 45%, var(--primary-text-color)); }
-  .btn { --btn-c: var(--primary-color, #03a9f4); display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; font-weight: 500;
-         padding: 6px 12px; border: none; border-radius: 10px; cursor: pointer; color: color-mix(in srgb, var(--btn-c) 45%, var(--primary-text-color));
-         background: color-mix(in srgb, var(--btn-c) 15%, transparent); }
-  /* --btn-c: the orange Install button of the status card keeps its own tint on hover. */
-  .btn:not(:disabled):not([aria-disabled="true"]):hover { background: color-mix(in srgb, var(--btn-c) 24%, transparent); }
-  .btn:disabled, .btn[aria-disabled="true"] { cursor: default; opacity: .5; }
-  .btn .icon { width: 16px; height: 16px; }
-  .spin { animation: sm-spin ${SPIN_PERIOD}ms linear infinite; }
-  @keyframes sm-spin { to { transform: rotate(360deg); } }
-  /* Spinners (HACS check, installs, watchdog check) are decorative: the label already says what runs. After .spin, to win. */
-  @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
-  .err { font-size: 12px; color: color-mix(in srgb, var(--sm-crit) 45%, var(--primary-text-color)); }
 `;
 
 const FULL_STYLE = `
@@ -3371,71 +1865,26 @@ const FULL_STYLE = `
     .logo .icon { width: 20px; height: 20px; }
     .title-row { gap: 4px; }
   }
-  /* Still too narrow for the pill beside 4 letters of the title (a longer label, or the zoom button of a zoomed mini or
-     status card in a narrow masonry column): the pill goes under the title, whole, instead of being cut. */
+  /* Still too narrow for the pill beside 4 letters of the title (a longer label, or the zoom button of a zoomed mini
+     card in a narrow masonry column): the pill goes under the title, whole, instead of being cut. */
   .title-row { flex-wrap: wrap; row-gap: 2px; }
   .section-title.toggle { cursor: pointer; margin-bottom: 0; user-select: none; }
   .section-title .count { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 400; }
   .section-title.closed .chevron { transform: rotate(-90deg); }
   .section-title .chip { text-transform: none; letter-spacing: 0; padding: 0 8px; }
-  .section-title .btn-install { cursor: pointer; padding: 2px 8px; }
-  .section-title .btn-install[aria-disabled="true"] { cursor: default; }
-  .section-title .btn-install .icon { width: 14px; height: 14px; }
-  .hacs .toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; }
-  .section-title .btn-check { text-transform: none; letter-spacing: 0; padding: 4px 8px; margin-left: 6px; margin-right: 16px; font-size: 12px; gap: 4px; }
-  .toolbar .last { font-size: 12px; }
-  .toolbar .hint { font-size: 12px; color: var(--secondary-text-color); text-decoration: none; }
-  .toolbar .hint:hover { text-decoration: underline; }
-  .exts { margin-top: 4px; container: sm-list / inline-size; }
-  .hacs .search { display: flex; align-items: center; gap: 6px; margin: 8px 0 4px; padding: 0 10px; height: 34px; border-radius: 10px;
-                  background: var(--secondary-background-color, rgba(127,127,127,.08)); color: var(--secondary-text-color); cursor: text; }
-  .hacs .search:focus-within { outline: 2px solid var(--sm-focus); outline-offset: -2px; }
-  .hacs .search .icon { width: 16px; height: 16px; }
-  .hacs .search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font: inherit; font-size: 13px; color: var(--primary-text-color); }
-  .hacs .search input::placeholder { color: var(--secondary-text-color); }
-  .hacs .search input::-webkit-search-cancel-button { display: none; }
-  .hacs .search .clear { flex: none; width: 24px; height: 24px; margin-right: -4px; display: flex; align-items: center; justify-content: center;
-                         border-radius: 50%; cursor: pointer; color: var(--secondary-text-color); }
-  .hacs .search .clear.empty { opacity: .35; pointer-events: none; }
-  .hacs .search .clear:hover { background: var(--divider-color, rgba(127,127,127,.25)); color: var(--primary-text-color); }
-  .exts .empty { padding: 8px 0; font-size: 13px; }
-  .ext { display: flex; align-items: center; gap: 10px; padding: 4px 0; font-size: 13px; }
-  .ext + .ext { border-top: 1px solid var(--divider-color, rgba(127,127,127,.25)); }
-  .ext .grow { flex: 1; min-width: 0; }
-  .ext-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .ext-ver { font-size: 12px; color: var(--secondary-text-color); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .ext-ver b { font-weight: 500; color: color-mix(in srgb, var(--sm-warn) 45%, var(--primary-text-color)); }
-  .ext-logo { width: 28px; height: 28px; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 8px; overflow: hidden; }
-  .ext-logo img { width: 100%; height: 100%; object-fit: contain; }
-  .ext-logo.fallback, .ext-logo:has(> svg) { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--secondary-text-color); }
-  .ext .chip { flex: none; }
-  /* Narrow list: the name comes first, the status pills show their dot only. */
-  @container sm-list (max-width: 300px) {
-    .ext .chip { padding: 4px; }
-    .ext .chip > .chip-text { display: none; }
-  }
-  .gh { flex: none; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
-        color: var(--secondary-text-color); }
-  .gh[role="button"] { cursor: pointer; }
-  .gh[aria-disabled="true"] { cursor: default; }
-  .gh:hover { background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
-  .gh.placeholder { visibility: hidden; }
   .content { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 12px; container: sm-content / inline-size; }
   .section-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; text-transform: uppercase;
                    letter-spacing: .04em; color: var(--secondary-text-color); margin-bottom: 6px; }
   .section-title .icon { width: 16px; height: 16px; }
-  /* Narrow cards, long names (Integrationen): the name gives way with an ellipsis (full text in title); the pills,
-     the buttons, the count and the chevron keep their size, and the check button drops its text (.tight, see _fit). */
+  /* Narrow cards, long names: the name gives way with an ellipsis (full text in title); the pills, the count and the
+     chevron keep their size. */
   .section-title > * { flex: none; }
   .section-title > .label, .section-title > .arg { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .section-title.tight .btn-check > span { display: none; }
-  /* Phone width (6 columns of a 320 px screen, 132 px inside): the section icon goes, the gaps and the check button's
-     margins shrink, so that the pills, the buttons, the count and the chevron stay inside the card with the name. */
+  /* Phone width (6 columns of a 320 px screen, 132 px inside): the section icon goes and the gaps shrink, so that the
+     pills, the count and the chevron stay inside the card with the name. */
   @container sm-content (max-width: 160px) {
     .section-title { gap: 4px; }
     .section-title > .icon:first-child { display: none; }
-    .section-title .btn-check { margin: 0; padding: 4px; }
-    .section-title .btn-install { padding: 2px 6px; }
   }
   .gauges { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; container-type: inline-size; }
   .gauge { display: flex; flex-direction: column; align-items: center; min-width: 0; }
@@ -3511,8 +1960,6 @@ class SystemMonitorCard extends SystemMonitorBase {
     if (c.show_network !== false) parts.push(this._network(sm));
     if (c.show_storage !== false) parts.push(this._storage(sm));
     if (c.show_processes !== false) parts.push(this._processes(sm));
-    if (c.show_hacs !== false) parts.push(this._hacs());
-    if (c.show_watchdog !== false) parts.push(this._watchdog());
     return `<style>${BASE_STYLE}${TILES_STYLE}${FULL_STYLE}</style>
       <ha-card>
         ${this._header(sm)}
@@ -3525,38 +1972,6 @@ class SystemMonitorCard extends SystemMonitorBase {
   _label(key) {
     const text = esc(this._t(key));
     return `<span class="label" title="${text}">${text}</span>`;
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    // The room left for the section names (and the status card's title) depends on the card's width: fit them again
-    // when it changes, in the next frame (resizing the card from the observer's callback would loop).
-    if (typeof ResizeObserver === "undefined") return;
-    this._resizeObserver ??= new ResizeObserver(() => requestAnimationFrame(() => this._fit()));
-    this._resizeObserver.observe(this);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this._resizeObserver?.disconnect();
-  }
-
-  _update() {
-    super._update();
-    this._fit();
-  }
-
-  /**
-   * Section titles: when a name is cut (longer names in some languages, narrow cards), the check button shows its
-   * icon only (its text stays in title and aria-label). Same mechanism as the status card's header.
-   */
-  _fit() {
-    for (const head of this.shadowRoot.querySelectorAll?.(".section-title") || []) {
-      const name = head.querySelector(".label");
-      if (!name || !head.clientWidth || !head.querySelector(".btn-check > span")) continue;
-      head.classList.remove("tight");
-      if (name.scrollWidth > name.clientWidth) head.classList.add("tight");
-    }
   }
 
   _gauge(id, label, icon, value, display, cls, detail = "") {
@@ -3681,158 +2096,6 @@ class SystemMonitorCard extends SystemMonitorBase {
     return `<div><div class="section-title">${svgIcon(ICONS.database)}${this._label("storage")}</div>${rows.join("")}</div>`;
   }
 
-  _hacs() {
-    const ext = discoverHacs(this._hass);
-    if (!ext.length) return "";
-    const open = this._hacsOpen;
-    const n = ext.filter((x) => x.update).length;
-    const rf = discoverRefresh(this._hass);
-    const admin = !this._hass.user || this._hass.user.is_admin;
-    // Check button in the header, so it stays visible while the section is folded.
-    let check = "";
-    let info = "";
-    if (rf.button) {
-      const st = this._s(rf.status);
-      const running = st?.state === "running";
-      const busy = running || this._s(rf.button)?.state === "unavailable";
-      const progress = running ? `${st.attributes.done ?? 0}/${st.attributes.total || "…"}` : "";
-      const title = running
-        ? this._t("checking").replace("{i}", st.attributes.done ?? 0).replace("{n}", st.attributes.total || "…")
-        : this._t("check_updates");
-      check = `<span class="btn btn-check" role="button" tabindex="0" data-action="hacs-check" title="${esc(title)}" aria-label="${esc(title)}" aria-disabled="${busy}">
-          ${svgIcon(ICONS.refresh, running ? "spin" : "")}${progress ? `<span>${esc(progress)}</span>` : ""}
-        </span>`;
-      const error = this._checkError || (st?.state === "error" ? st.attributes.error : null);
-      const last = this._s(rf.lastCheck)?.state;
-      const lastText = !running && last && !["unknown", "unavailable"].includes(last)
-        ? this._t("last_check").replace("{t}", relTime(last, intlLocale(this._hass, this._config)))
-        : "";
-      if (lastText || error)
-        info = `<div class="toolbar">
-          ${lastText ? `<span class="muted last clickable" data-entity="${rf.lastCheck}">${esc(lastText)}</span>` : ""}
-          ${error ? `<span class="err">${esc(this._t("check_failed").replace("{e}", error))}</span>` : ""}
-        </div>`;
-    } else if (admin) {
-      info = `<div class="toolbar"><a class="hint" href="https://github.com/juju35/ha-hacs-refresh" target="_blank" rel="noopener noreferrer">${esc(this._t("needs_refresh"))}</a></div>`;
-    }
-    if (this._installError)
-      info += `<div class="toolbar"><span class="err">${esc(this._t("install_failed").replace("{e}", this._installError))}</span></div>`;
-    const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="hacs" role="button" aria-expanded="${open}">
-        ${svgIcon(ICONS.hacs)}${this._label("hacs")}
-        ${this._installChip(n, admin)}${check}
-        <span class="count">${ext.length}</span>${svgIcon(ICONS.chevron, "chevron")}
-      </div>`;
-    if (!open) return `<div class="hacs">${head}</div>`;
-    // Per-extension check, with HACS Refresh 0.2.0 or later.
-    const canCheckExt = !!this._hass.services?.hacs_refresh?.check_repository;
-    const st = rf.status ? this._s(rf.status) : null;
-    const fullRunning = st?.state === "running";
-    const serverChecking = new Set(st?.attributes?.checking || []);
-    // Without a GitHub link, keep its slot so the buttons stay aligned with the other rows.
-    const hasRepo = ext.some((x) => x.repo);
-    const query = fold(this._hacsQuery.trim());
-    const shown = query ? ext.filter((x) => fold(`${x.name} ${x.repo || ""}`).includes(query)) : ext;
-    const search = `<label class="search">${svgIcon(ICONS.search)}<input type="search" data-search="hacs" value="${esc(
-      this._hacsQuery
-    )}" placeholder="${esc(this._t("search_ext"))}" aria-label="${esc(this._t("search_ext"))}" autocomplete="off" spellcheck="false">${
-      this._hacsQuery
-        ? `<span class="clear" role="button" tabindex="0" data-action="hacs-clear" title="${esc(this._t("clear_search"))}" aria-label="${esc(this._t("clear_search"))}">${svgIcon(ICONS.close)}</span>`
-        : `<span class="clear empty" aria-hidden="true">${svgIcon(ICONS.close)}</span>`
-    }</label>`;
-    const rows = shown.map((x) => {
-      const ver = x.update ? `${esc(x.installed || "?")} → <b>${esc(x.latest || "?")}</b>` : esc(x.installed || "—");
-      const status = x.update ? listPill("warn", this._t("update")) : listPill(x.unknown ? "muted" : "good", this._t(x.unknown ? "st_unknown" : "up_to_date"));
-      const gh = x.repo
-        ? `<a class="gh" href="https://github.com/${esc(x.repo)}" target="_blank" rel="noopener noreferrer" title="${esc(this._t("github"))}" aria-label="${esc(this._t("github"))}">${svgIcon(ICONS.github)}</a>`
-        : hasRepo
-          ? `<span class="gh placeholder" aria-hidden="true"></span>`
-          : "";
-      const checking = fullRunning || serverChecking.has(x.id) || !!this._extChecking?.has(x.id);
-      const check = canCheckExt
-        ? `<span class="gh" role="button" tabindex="0" data-action="hacs-check-ext" data-target="${x.id}" title="${esc(this._t("check_ext"))}" aria-label="${esc(this._t("check_ext"))}" aria-disabled="${checking}">${svgIcon(ICONS.refresh, checking ? "spin" : "")}</span>`
-        : "";
-      // The row stays clickable with the mouse; only its name is the keyboard button, so that the check button and
-      // the GitHub link next to it are not nested in a role="button" (their roles would be lost).
-      return `<div class="ext clickable" data-entity="${x.id}">
-          ${this._logo(x)}
-          <div class="grow" data-entity="${x.id}" role="button" tabindex="0"><div class="ext-name">${esc(x.name)}</div><div class="ext-ver">${ver}</div></div>
-          ${status}${check}${gh}
-        </div>`;
-    });
-    const list = rows.length ? rows.join("") : `<div class="muted empty">${esc(this._t("no_match"))}</div>`;
-    return `<div class="hacs">${head}${info}${search}<div class="exts">${list}</div></div>`;
-  }
-
-  /**
-   * Number of pending HACS updates, next to the section title. For admins it is a button that
-   * installs them all, with its progress while it runs.
-   */
-  _installChip(n, admin) {
-    const run = this._installing;
-    if (!n && !run) return "";
-    if (!admin) return `<span class="chip warn"><span class="dot"></span>${n}</span>`;
-    const title = run
-      ? this._t("installing").replace("{i}", run.done).replace("{n}", run.total)
-      : this._t("install_all").replace("{n}", n);
-    const label = run ? `${run.done}/${run.total}` : n;
-    return `<span class="chip warn btn-install" role="button" tabindex="0" data-action="hacs-install-all" title="${esc(title)}" aria-label="${esc(title)}" aria-disabled="${!!run}">
-        ${run ? svgIcon(ICONS.refresh, "spin") : svgIcon(ICONS.download)}<span>${esc(label)}</span>
-      </span>`;
-  }
-
-  /** Integrations whose entities are all unavailable, from Integration Watchdog. */
-  _watchdog() {
-    const wd = discoverWatchdog(this._hass);
-    const st = this._s(wd.unavailable);
-    if (!st) return "";
-    const items = st.attributes.integrations || [];
-    // Hidden while every integration is available, unless shown from the status tile (unfolded,
-    // until a click elsewhere).
-    if (!items.length && !this._wdOpen) return "";
-    const open = this._wdOpen;
-    const locale = intlLocale(this._hass, this._config);
-    let check = "";
-    if (wd.button) {
-      const busy = this._s(wd.button)?.state === "unavailable";
-      const title = this._t("wd_check");
-      check = `<span class="btn btn-check" role="button" tabindex="0" data-action="wd-check" title="${esc(title)}" aria-label="${esc(title)}" aria-disabled="${busy}">
-          ${svgIcon(ICONS.refresh, busy ? "spin" : "")}
-        </span>`;
-    }
-    const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="wd" role="button" aria-expanded="${open}">
-        ${svgIcon(ICONS.watchdog)}${this._label("integrations")}
-        ${items.length ? `<span class="chip crit"><span class="dot"></span>${items.length}</span>` : ""}${check}
-        <span class="count"></span>${svgIcon(ICONS.chevron, "chevron")}
-      </div>`;
-    if (!open) return `<div class="hacs wd">${head}</div>`;
-    const info = [];
-    const reload = this._s(wd.lastReload);
-    if (reload && !["unknown", "unavailable"].includes(reload.state)) {
-      const key = reload.attributes.success === false ? "wd_last_reload_failed" : "wd_last_reload";
-      const text = this._t(key).replace("{name}", reload.attributes.title || reload.attributes.domain || "").replace("{t}", relTime(reload.state, locale));
-      info.push(`<span class="muted last clickable ${reload.attributes.success === false ? "err" : ""}" data-entity="${reload.entity_id}">${esc(text)}</span>`);
-    }
-    const last = this._s(wd.lastCheck);
-    if (last && !["unknown", "unavailable"].includes(last.state))
-      info.push(`<span class="muted last clickable" data-entity="${last.entity_id}">${esc(this._t("wd_last_check").replace("{t}", relTime(last.state, locale)))}</span>`);
-    if (this._wdError) info.push(`<span class="err">${esc(this._t("check_failed").replace("{e}", this._wdError))}</span>`);
-    const rows = items.map((x) => {
-      const reloads = x.reloads ? (x.reloads === 1 ? this._t("wd_reloads_one") : this._t("wd_reloads").replace("{n}", x.reloads)) : "";
-      // The domain only when the title doesn't already say it.
-      const domain = String(x.title || "").toLowerCase().replace(/[^a-z0-9]/g, "") === String(x.domain).replace(/_/g, "") ? "" : x.domain;
-      const sub = [domain, x.since ? this._t("wd_since").replace("{t}", relTime(x.since, locale)) : "", reloads].filter(Boolean).join(" · ");
-      const status = listPill(x.gave_up ? "crit" : "warn", this._t(x.gave_up ? "wd_gave_up" : "wd_unavailable"));
-      const path = `/config/integrations/integration/${encodeURIComponent(x.domain)}`;
-      return `<div class="ext clickable" data-action="nav" data-path="${esc(path)}" role="button" tabindex="0" title="${esc(this._t("wd_open"))}">
-          ${this._logo({ domain: x.domain, category: "integration" })}
-          <div class="grow"><div class="ext-name">${esc(x.title || x.domain)}</div><div class="ext-ver">${esc(sub)}</div></div>
-          ${status}
-        </div>`;
-    });
-    const body = rows.length ? `<div class="exts">${rows.join("")}</div>` : `<div class="toolbar"><span class="muted last">${esc(this._t(isUnknown(st) ? "st_unknown" : "wd_none"))}</span></div>`;
-    return `<div class="hacs wd">${head}${info.length ? `<div class="toolbar">${info.join("")}</div>` : ""}${body}</div>`;
-  }
-
   _processes(sm) {
     const entries = Object.entries(sm.procs);
     if (!entries.length) return "";
@@ -3854,7 +2117,7 @@ class SystemMonitorCard extends SystemMonitorBase {
 }
 
 // ---------------------------------------------------------------------------
-// Zoomable compact cards (mini and status)
+// Zoomable compact card (mini)
 // ---------------------------------------------------------------------------
 
 /** A click inside a dialog (more-info opened from the card, say) is not a click outside the card. */
@@ -3869,15 +2132,13 @@ const inDialog = (ev) => ev.composedPath().some((n) => ["ha-more-info-dialog", "
 class SystemMonitorZoomCard extends SystemMonitorCard {
   constructor() {
     super();
-    // A click outside the card (or a dialog opened from it) brings it back to the compact view,
-    // never while the install confirmation is open.
+    // A click outside the card (or a dialog opened from it) brings it back to the compact view.
     this._onUnzoom = (ev) => {
-      if (this._zoomed && !this._dialog && !ev.composedPath().includes(this) && !inDialog(ev)) this._setZoom(false);
+      if (this._zoomed && !ev.composedPath().includes(this) && !inDialog(ev)) this._setZoom(false);
     };
   }
 
   connectedCallback() {
-    // Before the base listener, which closes the confirmation on the same click.
     document.addEventListener("click", this._onUnzoom, true);
     super.connectedCallback();
   }
@@ -3895,15 +2156,10 @@ class SystemMonitorZoomCard extends SystemMonitorCard {
     return this._zoomed ? super.getGridOptions() : { columns: 6, min_columns: 6 };
   }
 
-  /** Full card, or back to the compact view (its sections folded again). */
+  /** Full card, or back to the compact view (its processes list folded again). */
   _setZoom(zoomed) {
     this._zoomed = zoomed;
-    if (!zoomed) {
-      this._hacsOpen = false;
-      this._hacsQuery = "";
-      this._wdOpen = false;
-      this._procsOpen = false;
-    }
+    if (!zoomed) this._procsOpen = false;
     this._update();
   }
 
@@ -3912,10 +2168,6 @@ class SystemMonitorZoomCard extends SystemMonitorCard {
     this._setZoom(!this._zoomed);
     // Keyboard use (Enter / Space: no click count) keeps the focus on the button that replaced this one.
     if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus({ preventScroll: true });
-  }
-
-  _compactHeader() {
-    return !this._zoomed;
   }
 
   /** The header of both views, with the zoom button at its far right. */
@@ -4043,156 +2295,12 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
 }
 
 // ---------------------------------------------------------------------------
-// Status card
-// ---------------------------------------------------------------------------
-
-const STATUS_STYLE = `
-  /* Tighter than the other headers: the status pill, the HACS button and the zoom button share the title row. */
-  .header { gap: 4px; }
-  .logo { height: 40px; width: 40px; align-self: flex-start; margin-right: 6px; }
-  .title-row { gap: 4px; }
-  .title-row > .chip { padding: 1px 6px; }
-  .header .btn { flex: none; padding: 6px; font-size: 12px; gap: 4px; white-space: nowrap; }
-  /* The tight status row keeps the zoom pinned to the top line, snug to the HACS button. */
-  .zoom { align-self: flex-start; margin: -4px -4px 0 -4px; }
-  .header .btn.warn { --btn-c: var(--sm-warn); }
-  /* No room left for the title (measured by _fit): the HACS button shows its icon only, then the status pill its dot
-     only (their text stays in title and aria-label). The title stays on one line, with an ellipsis: cutting it into
-     two lines broke "Home Assistant" letter by letter on a narrow card. */
-  .header.tight .btn > span { display: none; }
-  .header.tighter .title-row > .chip { padding: 4px; }
-  .header.tighter .title-row > .chip > .chip-text { display: none; }
-  /* Between the two, the logo gives its room (measured by _fit too): at phone width (6 columns of a 320 to 364 px
-     screen, 132 to 154 px inside the header) 4 letters of the title and the pill's dot keep their room next to the
-     HACS and zoom buttons, and a longer pill ("Aktualizacja") keeps its text at 245 px. */
-  .header.bare .logo { display: none; }
-  .stats { padding-bottom: 12px; }
-  .err { padding: 0 12px 12px; }
-`;
-
-/**
- * Minimal card: header (Core / OS versions and update), the overall status tiles and a single
- * button that checks HACS for updates, or installs them when some are pending.
- * Its zoom button (top right, `zoom: false` removes it) switches it to the full card, with the same
- * config, and back; a click anywhere outside the card brings it back too.
- */
-class SystemMonitorStatusCard extends SystemMonitorZoomCard {
-  static getConfigElement() {
-    return document.createElement("system-monitor-status-card-editor");
-  }
-
-  /**
-   * Compact header: when the title is cut (longer labels in some languages, narrow cards), the HACS
-   * button shows its icon only; when the status pill's text no longer fits (the title has then given way down to
-   * 4 letters), the logo gives its room, then the pill shows its dot only. The buttons never shrink.
-   */
-  _fit() {
-    super._fit();
-    const header = this._zoomed ? null : this.shadowRoot.querySelector(".header");
-    const name = header?.querySelector(".name");
-    if (!name || !header.clientWidth) return;
-    const cut = (el) => !!el && el.scrollWidth > el.clientWidth;
-    header.classList.remove("tight", "tighter", "bare");
-    if (!cut(name)) return;
-    header.classList.add("tight");
-    // The title keeps 4 letters (its min-width): the pill's text lacks room first, then the title row overflows its
-    // block, the pill running under the HACS button.
-    const short = () => cut(header.querySelector(".title-row > .chip > .chip-text")) || cut(header.querySelector(".title-row"));
-    // The logo gives its room so that the pill keeps its text; if that is not enough, the pill shows its dot only and
-    // the logo comes back, unless the header still lacks room.
-    if (!short()) return;
-    header.classList.add("bare");
-    if (!short()) return;
-    header.classList.replace("bare", "tighter");
-    if (short()) header.classList.add("bare");
-  }
-
-  _compactSize() {
-    return 2;
-  }
-
-  /** No sections to unfold here: tiles open the HACS or integrations page, or the first stopped process. */
-  _statTarget(action) {
-    if (this._zoomed) return super._statTarget(action);
-    if (action === "hacs") return `data-action="nav" data-path="/hacs/dashboard"`;
-    if (action === "wd") return `data-action="nav" data-path="/config/integrations/dashboard"`;
-    const sm = discover(this._hass);
-    return `data-entity="${this._stopped(sm)[0] || Object.values(sm.procs)[0] || ""}"`;
-  }
-
-  /** The status row shows up only while one of the statuses is not good (an update, a failure, or an unavailable source). */
-  _statusRow(sm) {
-    if (this._zoomed) return super._statusRow(sm);
-    if (this._stats(sm).every((x) => x.cls === "good")) return "";
-    return super._statusRow(sm);
-  }
-
-  /**
-   * Install the pending HACS updates (admins), else check for updates through HACS Refresh (every user,
-   * as in the full card: the check only fetches information).
-   */
-  _button() {
-    if (this._config.show_hacs === false) return "";
-    const ext = discoverHacs(this._hass);
-    if (!ext.length) return "";
-    const admin = !this._hass.user || this._hass.user.is_admin;
-    const n = admin ? ext.filter((x) => x.update).length : 0;
-    const btn = (action, cls, icon, spin, label, title, busy) =>
-      `<span class="btn ${cls}" role="button" tabindex="0" data-action="${action}" title="${esc(title)}" aria-label="${esc(title)}" aria-disabled="${busy}">
-          ${svgIcon(icon, spin ? "spin" : "")}<span>${esc(label)}</span>
-        </span>`;
-    const run = admin && this._installing;
-    if (run) {
-      const title = this._t("installing").replace("{i}", run.done).replace("{n}", run.total);
-      return btn("hacs-install-all", "warn", ICONS.refresh, true, `${run.done}/${run.total}`, title, true);
-    }
-    if (n) return btn("hacs-install-all", "warn", ICONS.download, false, this._t("btn_install").replace("{n}", n), this._t("install_all").replace("{n}", n), false);
-    const rf = discoverRefresh(this._hass);
-    if (!rf.button) return "";
-    const st = this._s(rf.status);
-    const running = st?.state === "running";
-    const busy = running || this._s(rf.button)?.state === "unavailable";
-    const last = this._s(rf.lastCheck)?.state;
-    const title = running
-      ? this._t("checking").replace("{i}", st.attributes.done ?? 0).replace("{n}", st.attributes.total || "…")
-      : last && !["unknown", "unavailable"].includes(last)
-        ? `${this._t("check_updates")} · ${this._t("last_check").replace("{t}", relTime(last, intlLocale(this._hass, this._config)))}`
-        : this._t("check_updates");
-    const label = running ? `${st.attributes.done ?? 0}/${st.attributes.total || "…"}` : this._t("btn_check");
-    return btn("hacs-check", "", ICONS.refresh, running, label, title, busy);
-  }
-
-  _compactRender() {
-    const sm = discover(this._hass);
-    if (!sm.found) return this._noSm();
-    const rf = discoverRefresh(this._hass);
-    const st = this._s(rf.status);
-    const error = this._installError
-      ? this._t("install_failed").replace("{e}", this._installError)
-      : this._checkError || st?.state === "error"
-        ? this._t("check_failed").replace("{e}", this._checkError || st.attributes.error)
-        : "";
-    return `<style>${BASE_STYLE}${TILES_STYLE}${STATUS_STYLE}</style>
-      <ha-card>
-        ${this._header(sm, this._button())}
-        ${this._statusRow(sm)}
-        ${error ? `<div class="err">${esc(error)}</div>` : ""}
-      </ha-card>`;
-  }
-}
-
-// ---------------------------------------------------------------------------
 // Visual editors (ha-form)
 // ---------------------------------------------------------------------------
 
 class SystemMonitorEditorBase extends HTMLElement {
   static get toggles() {
     return [];
-  }
-
-  /** Whether the card shows network figures, hence the interface choice. */
-  static get withInterface() {
-    return true;
   }
 
   /** Boolean options, all on by default. */
@@ -4225,14 +2333,10 @@ class SystemMonitorEditorBase extends HTMLElement {
           ...this._booleans().map((name) => ({ name, selector: { boolean: {} } })),
         ],
       },
-      ...(this.constructor.withInterface
-        ? [
-            {
-              name: "interface",
-              selector: { select: { mode: "dropdown", custom_value: true, options: [{ value: "", label: tr("lang_auto") }, ...ifOptions] } },
-            },
-          ]
-        : []),
+      {
+        name: "interface",
+        selector: { select: { mode: "dropdown", custom_value: true, options: [{ value: "", label: tr("lang_auto") }, ...ifOptions] } },
+      },
       {
         name: "language",
         selector: {
@@ -4311,23 +2415,13 @@ class SystemMonitorEditorBase extends HTMLElement {
 
 class SystemMonitorCardEditor extends SystemMonitorEditorBase {
   static get toggles() {
-    return ["show_system", "show_network", "show_storage", "show_processes", "show_hacs", "show_watchdog"];
+    return ["show_system", "show_network", "show_storage", "show_processes"];
   }
 }
 
 class SystemMonitorMiniCardEditor extends SystemMonitorEditorBase {
   static get toggles() {
     return ["show_storage", "show_network", "zoom"];
-  }
-}
-
-class SystemMonitorStatusCardEditor extends SystemMonitorEditorBase {
-  static get toggles() {
-    return ["show_hacs", "show_processes", "show_watchdog", "zoom"];
-  }
-
-  static get withInterface() {
-    return false;
   }
 }
 
@@ -4342,8 +2436,6 @@ define("system-monitor-card", SystemMonitorCard);
 define("system-monitor-mini-card", SystemMonitorMiniCard);
 define("system-monitor-card-editor", SystemMonitorCardEditor);
 define("system-monitor-mini-card-editor", SystemMonitorMiniCardEditor);
-define("system-monitor-status-card", SystemMonitorStatusCard);
-define("system-monitor-status-card-editor", SystemMonitorStatusCardEditor);
 
 window.customCards = window.customCards || [];
 for (const card of [
@@ -4356,11 +2448,6 @@ for (const card of [
     type: "system-monitor-mini-card",
     name: "System Monitor Mini Card",
     description: "Compact Home Assistant host overview: CPU, RAM, disk, temperature, network and uptime.",
-  },
-  {
-    type: "system-monitor-status-card",
-    name: "System Monitor Status Card",
-    description: "Minimal Home Assistant status: versions, HACS, processes and integrations statuses, and a button to check for or install HACS updates.",
   },
 ]) {
   if (!window.customCards.some((c) => c.type === card.type))

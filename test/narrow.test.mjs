@@ -3,7 +3,7 @@
 // pull request "Review pass 9 fixes"); test/resize.browser.test.mjs covers re-fitting on resize in Chromium.
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { devices, entities, hacsUpdates, states, updateAvailable } from "../scripts/mock-states.mjs";
+import { devices, entities, states, updateAvailable } from "../scripts/mock-states.mjs";
 import { load } from "./load.mjs";
 
 const lib = load();
@@ -31,7 +31,7 @@ const containerBlocks = (css, name) =>
     .map((m) => ({ max: Number(m[2]), body: m[3] }));
 
 const renders = () => {
-  const hass = hassWith({ ...updateAvailable, ...hacsUpdates });
+  const hass = hassWith(updateAvailable);
   const zoomed = (Cls) => {
     const c = card(Cls, hass);
     c._zoomed = true;
@@ -40,8 +40,6 @@ const renders = () => {
   return {
     full: card(lib.SystemMonitorCard, hass)._render(),
     "mini zoomed": zoomed(lib.SystemMonitorMiniCard),
-    status: card(lib.SystemMonitorStatusCard, hass)._render(),
-    "status zoomed": zoomed(lib.SystemMonitorStatusCard),
   };
 };
 
@@ -95,13 +93,6 @@ test("header pill: every status (update, unknown, up to date, running) has its t
   }
 });
 
-test("status card: a narrow header shows the pill's dot, never the title cut letter by letter on two lines", () => {
-  const css = styleOf(card(lib.SystemMonitorStatusCard, hassWith(updateAvailable))._render());
-  assert.doesNotMatch(strip(css), /\.tighter \.name\s*\{[^}]*(line-clamp|overflow-wrap:\s*anywhere|white-space:\s*normal)/);
-  assert.match(rulesFor(css, ".header.tighter .title-row > .chip > .chip-text"), /display:\s*none/);
-  assert.match(rulesFor(css, ".header .btn"), /flex:\s*none/);
-});
-
 test("storage: on a narrow card the used / total size goes under the bar, the mount point keeps the line", () => {
   const css = styleOf(card(lib.SystemMonitorCard, hassWith())._render());
   assert.match(rulesFor(css, ".content"), /container:\s*sm-content \/ inline-size/);
@@ -112,21 +103,6 @@ test("storage: on a narrow card the used / total size goes under the bar, the mo
   assert.match(body, /\.vol \.row\s*\{[^}]*grid-column:\s*1 \/ -1/);
   // Wide enough for "/media" and the longest detail ("iskorišćeno od", "użyte z") side by side above it.
   assert.ok(narrow.every((b) => b.max >= 300));
-});
-
-test("HACS and Integration Watchdog lists: on a narrow card the status pills show their dot, the name comes first", () => {
-  const hass = hassWith(hacsUpdates);
-  const c = card(lib.SystemMonitorCard, hass);
-  c._hacsOpen = true;
-  c._hacsQuery = "";
-  c._wdOpen = true;
-  const html = c._render();
-  const css = styleOf(html);
-  assert.match(rulesFor(css, ".exts"), /container:\s*sm-list \/ inline-size/);
-  assert.ok(containerBlocks(css, "sm-list").some((b) => /\.ext \.chip > \.chip-text\s*\{[^}]*display:\s*none/.test(b.body)));
-  const rows = [...html.matchAll(/<div class="ext clickable"[\s\S]*?<\/div>\s*(<span class="chip[^>]*>)<span class="dot"><\/span><span class="chip-text">([^<]*)</g)];
-  assert.ok(rows.length >= 8, `${rows.length} pills with a .chip-text`); // 6 HACS extensions, 2 integrations
-  for (const [, pill, text] of rows) assert.ok(pill.includes(`title="${text}"`) && pill.includes(`aria-label="${text}"`), pill);
 });
 
 // WCAG 2 contrast of text in a status colour on its tinted background, with Home Assistant's default colours.
@@ -166,88 +142,15 @@ test("focus rings use the theme's primary colour, like the other cards", () => {
   const css = strip(styleOf(renders().full));
   assert.match(css, /--sm-focus:\s*var\(--primary-color, #03a9f4\)/);
   const outlines = [...css.matchAll(/outline:\s*2px solid ([^;}]+)/g)].map((m) => m[1].trim());
-  assert.ok(outlines.length >= 3);
+  assert.ok(outlines.length >= 2);
   for (const o of outlines) assert.equal(o, "var(--sm-focus)");
 });
 
 // Phone width: 6 columns of a Sections view on a 320 px screen make a 156 px card, 132 px inside its 12 px padding.
 const PHONE = 132;
 
-test("status card: the title gives way before the pill, which drops to its dot only when its own text is cut", () => {
-  const c = new lib.SystemMonitorStatusCard();
-  c._zoomed = false;
-  const classes = new Set();
-  const el = (scroll, client) => ({ scrollWidth: scroll, clientWidth: client });
-  const name = el(115, 51);
-  let text = el(50, 50);
-  const header = {
-    clientWidth: 221,
-    scrollWidth: 221,
-    classList: {
-      add: (x) => classes.add(x),
-      remove: (...x) => {
-        for (const y of x) classes.delete(y);
-      },
-      replace: (a, b) => classes.delete(a) && classes.add(b),
-    },
-    // A hidden pill text (.tighter) measures 0.
-    querySelector: (sel) => (sel === ".name" ? name : sel === ".title-row > .chip > .chip-text" && !classes.has("tighter") ? text : null),
-  };
-  c.shadowRoot = { querySelector: (sel) => (sel === ".header" ? header : null), querySelectorAll: () => [] };
-  c._fit();
-  assert.deepEqual([...classes], ["tight"], "the pill keeps its text while it fits");
-  text = el(80, 40);
-  c._fit();
-  assert.deepEqual([...classes].sort(), ["tight", "tighter"]);
-  name.scrollWidth = 40;
-  name.clientWidth = 40;
-  c._fit();
-  assert.deepEqual([...classes], [], "nothing cut: nothing hidden");
-});
-
-// A header whose measures follow its classes: the logo (50 px with its margin and the gap) gives its room with .bare, the pill's text
-// (dropped with .tighter) needs `pill` px, the title keeps its minimum (4 letters) and the title row overflows (the pill under the HACS button).
-const fakeStatusHeader = ({ room, pill, logo = 50 }) => {
-  const classes = new Set();
-  const left = () => room + (classes.has("bare") ? logo : 0);
-  const text = { get scrollWidth() { return pill; }, get clientWidth() { return Math.max(0, Math.min(pill, left())); } };
-  const name = { scrollWidth: 115, clientWidth: 57 };
-  const row = { clientWidth: 100, get scrollWidth() { return 100 + Math.max(0, (classes.has("tighter") ? 12 : 0) - left()); } };
-  const header = {
-    clientWidth: 221,
-    classList: {
-      add: (x) => classes.add(x),
-      remove: (...x) => {
-        for (const y of x) classes.delete(y);
-      },
-      replace: (a, b) => classes.delete(a) && classes.add(b),
-    },
-    querySelector: (sel) =>
-      sel === ".name" ? name : sel === ".title-row" ? row : sel === ".title-row > .chip > .chip-text" && !classes.has("tighter") ? text : null,
-  };
-  const c = new lib.SystemMonitorStatusCard();
-  c._zoomed = false;
-  c.shadowRoot = { querySelector: (sel) => (sel === ".header" ? header : null), querySelectorAll: () => [] };
-  c._fit();
-  return [...classes].sort();
-};
-
-test("status card: the title keeps 4 letters; the logo gives its room before the pill drops its text", () => {
-  // "Aktualizacja" at 245 px: 30 px short beside 4 letters, the logo's 50 px are enough.
-  assert.deepEqual(fakeStatusHeader({ room: 50, pill: 80 }), ["bare", "tight"]);
-  // Even without the logo the text does not fit: the pill shows its dot and the logo comes back.
-  assert.deepEqual(fakeStatusHeader({ room: 20, pill: 80 }), ["tight", "tighter"]);
-  // Phone width: not even room for the dot beside the logo and 4 letters: both give way.
-  assert.deepEqual(fakeStatusHeader({ room: 4, pill: 80 }), ["bare", "tight", "tighter"]);
-});
-
-test("full card and zoomed cards: a pill that does not fit beside 4 letters of the title goes under it, whole", () => {
-  for (const [name, html] of Object.entries(renders())) {
-    if (name === "status") continue;
-    assert.match(rulesFor(styleOf(html), ".title-row"), /flex-wrap:\s*wrap/, name);
-  }
-  // The status card keeps one line: its pill drops to its dot (see _fit).
-  assert.doesNotMatch(rulesFor(styleOf(renders().status), ".title-row"), /flex-wrap:\s*wrap/);
+test("full card and zoomed mini card: a pill that does not fit beside 4 letters of the title goes under it, whole", () => {
+  for (const [name, html] of Object.entries(renders())) assert.match(rulesFor(styleOf(html), ".title-row"), /flex-wrap:\s*wrap/, name);
 });
 
 test("full card under ~255 px: the logo and the title row's gap give 12 px to the pill, so that it keeps its text at 245 px", () => {
@@ -265,23 +168,15 @@ test("full card under ~255 px: the logo and the title row's gap give 12 px to th
   for (const b of blocks) assert.doesNotMatch(b.body, /chip-text/);
 });
 
-test("status card at phone width: the logo gives its room (class bare) so that 4 letters and the pill fit beside the buttons", () => {
-  const css = styleOf(card(lib.SystemMonitorStatusCard, hassWith(updateAvailable))._render());
-  assert.match(rulesFor(css, ".header.bare .logo"), /display:\s*none/);
-  // No container rule hides the logo of a 6-column phone card (132 px inside the header) on its own: _fit decides.
-  for (const b of containerBlocks(css, "sm-header").filter((x) => /\.logo\s*\{[^}]*display:\s*none/.test(x.body)))
-    assert.ok(b.max < PHONE, `@container sm-header (max-width: ${b.max}px)`);
-});
-
-test("mini and status cards: the folded view keeps the full card's logo size", () => {
+test("mini card: the folded view keeps the full card's logo size", () => {
   const hass = hassWith(updateAvailable);
   const size = (Cls) => rulesFor(styleOf(card(Cls, hass)._render()), ".logo").match(/width:\s*(\d+)px/g).pop();
-  for (const Cls of [lib.SystemMonitorMiniCard, lib.SystemMonitorStatusCard]) assert.equal(size(Cls), size(lib.SystemMonitorCard), Cls.name);
+  assert.equal(size(lib.SystemMonitorMiniCard), size(lib.SystemMonitorCard));
 });
 
 test("every card under its minimum width (flex row of two cards): the logo gives its room to the title", () => {
   const hass = hassWith(updateAvailable);
-  for (const Cls of [lib.SystemMonitorCard, lib.SystemMonitorMiniCard, lib.SystemMonitorStatusCard]) {
+  for (const Cls of [lib.SystemMonitorCard, lib.SystemMonitorMiniCard]) {
     const css = styleOf(card(Cls, hass)._render());
     const blocks = containerBlocks(css, "sm-header").filter((b) => /\.header \.logo\s*\{[^}]*display:\s*none/.test(b.body));
     assert.ok(blocks.length, Cls.name);
@@ -290,14 +185,13 @@ test("every card under its minimum width (flex row of two cards): the logo gives
 });
 
 test("full card at phone width: the section titles drop their icon and tighten so that the chevron stays inside", () => {
-  const html = card(lib.SystemMonitorCard, hassWith({ ...updateAvailable, ...hacsUpdates }))._render();
+  const html = card(lib.SystemMonitorCard, hassWith(updateAvailable))._render();
   const css = styleOf(html);
   const phone = containerBlocks(css, "sm-content").filter((b) => b.max >= PHONE && /\.section-title/.test(b.body));
   assert.ok(phone.length, "no phone-width @container sm-content block");
   const body = phone.map((b) => b.body).join("");
   assert.match(body, /\.section-title\s*\{[^}]*gap:\s*4px/);
   assert.match(body, /\.section-title > \.icon:first-child\s*\{[^}]*display:\s*none/);
-  assert.match(body, /\.section-title \.btn-check\s*\{[^}]*margin:\s*0/);
 });
 
 /** Smallest width of one grid track size at this container width, `max-content` counting as `value` px. */

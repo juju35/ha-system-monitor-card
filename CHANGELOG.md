@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.0.0 - 2026-11-05
+
+### Breaking changes
+- **HACS extensions section removed**: Home Assistant 2026.11 replaces HACS with the built-in Marketplace, and the Marketplace updates have their own card in [Marketplace Refresh](https://github.com/juju35/ha-marketplace-refresh) (the former HACS Refresh). The list, its search field, the **Check for updates** button, **Install all** and the HACS status tile are gone, with the `show_hacs` option.
+- **Unavailable integrations section removed**: it duplicated the card shipped with [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog). The list, its **Check now** button and the Integrations status tile are gone, with the `show_watchdog` option.
+- **System Monitor Status Card removed** (`custom:system-monitor-status-card`): without the HACS button and the HACS / Integrations tiles, it only showed the versions and the processes tile; use the Mini Card (and its zoom button) instead. Remove the card from your dashboards before updating.
+- The status row under the full card's header keeps the Processes tile only.
+
+### Maintenance
+- Build, tests and screenshots without the logo loading, the brands token, the in-card confirmation popup, the spinners and the GIF recording; the animated captures are gone.
+
+
 ## 1.21.12 - 2026-11-04
 
 ### Documentation

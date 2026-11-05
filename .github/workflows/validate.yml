@@ -31,10 +31,6 @@ jobs:
       - name: Build and check the card
         run: npm run check
 
-      # Chromium for the browser tests (test/*.browser.test.mjs), which fail instead of skipping when CI is set.
-      - name: Install Chromium
-        run: npx playwright install chromium
-
       - name: Unit tests
         run: npm test
 

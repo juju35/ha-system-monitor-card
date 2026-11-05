@@ -16,22 +16,20 @@ The cards are built on top of the core [System Monitor integration](https://www.
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-system-monitor-card&category=plugin)
 
-| System Monitor Card | System Monitor Mini Card | System Monitor Status Card |
-|---|---|---|
-| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card.png" alt="system-monitor-card" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card.png" alt="system-monitor-mini-card" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card.png" alt="system-monitor-status-card" width="400"> |
+| System Monitor Card | System Monitor Mini Card |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card.png" alt="system-monitor-card" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card.png" alt="system-monitor-mini-card" width="400"> |
 
 ## Features
 
-- Three cards: a full **System Monitor Card**, a compact **System Monitor Mini Card** and a minimal **System Monitor Status Card** (versions, overall statuses and one HACS update button)
-- **Zoom** on the mini and status cards: a button at the top right switches them to the full System Monitor card (same options) and back; a click anywhere outside the card brings it back too
+- Two cards: a full **System Monitor Card** and a compact **System Monitor Mini Card**
+- **Zoom** on the mini card: a button at the top right switches it to the full System Monitor card (same options) and back; a click anywhere outside the card brings it back too
 - Automatic discovery of the System Monitor entities through the entity registry (any language)
 - CPU, RAM, disk and CPU temperature gauges, uptime, load average and IP address
 - Home Assistant Core and OS versions, with an orange badge when an update is available
 - Network download / upload rates and totals, per interface (virtual interfaces such as `docker0` or `hassio` are hidden)
 - Storage: every monitored mount point and the swap, with used space, and the size of the Home Assistant database
 - Monitored processes, green when running and red when stopped: hidden while they all run (their status tile shows the list on a click), always shown while one is stopped, with their overall status in the status row
-- **HACS extensions**: a collapsible list of every repository downloaded with HACS, with its logo, version, update status and a GitHub button, a search field that filters it as you type, plus a **Check for updates** button that runs on the server through [HACS Refresh](https://github.com/juju35/ha-hacs-refresh); its overall status sits in the status row
-- **Unavailable integrations**: with [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog), a collapsible list of the integrations whose entities are all unavailable, with their logo, since when, how many times they were reloaded and whether the watchdog gave up, plus the last reload and a **Check now** button; its overall status sits in the status row
 - Colors turn orange / red when a threshold is crossed (CPU, RAM, disk, temperature)
 - Click any value to open its Home Assistant history (more-info dialog)
 - Visual editor in the dashboard UI for every card (no YAML needed)
@@ -45,8 +43,8 @@ The cards are built on top of the core [System Monitor integration](https://www.
 | [System Monitor](https://www.home-assistant.io/integrations/systemmonitor/) (built in) | CPU, RAM, disk and temperature gauges, uptime, load, IP address, network, storage and swap, monitored processes |
 | [File Size](https://www.home-assistant.io/integrations/filesize/) (built in, optional) | Size of the Home Assistant database |
 | Home Assistant updates (built in, `update.home_assistant_*`) | Core and OS versions, with a badge when an update is available |
-| [HACS](https://hacs.xyz/) with [HACS Refresh](https://github.com/juju35/ha-hacs-refresh) (optional) | HACS extensions with their versions and updates, **Check for updates** run on the server |
-| [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog) (optional) | Unavailable integrations, their reloads, and the last reload |
+
+The Marketplace updates and the unavailable integrations have their own cards: [Marketplace Refresh](https://github.com/juju35/ha-marketplace-refresh) and [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog).
 
 ## Prerequisites
 
@@ -62,8 +60,6 @@ Most of its sensors are disabled by default: open the **System Monitor** device 
 | Network | Network throughput in / out, Network in / out (totals) |
 | Storage | Disk use + Disk free for each mount point, Swap use + Swap free. For the database size, the [File Size](https://www.home-assistant.io/integrations/filesize/) integration on `/config/home-assistant_v2.db` (see below) |
 | Processes | Process binary sensors (configured in the integration options) |
-| Integrations | The [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog) integration. Without it the section is not shown |
-| HACS | Nothing for the list: the update entities HACS creates for downloaded repositories are used as is. The **Check for updates** button needs the [HACS Refresh](https://github.com/juju35/ha-hacs-refresh) integration |
 
 Sections and gauges without any enabled sensor are simply not displayed.
 
@@ -97,7 +93,7 @@ Or manually:
 
 ### Visual editor
 
-Edit a dashboard, click **Add card** and search for **System Monitor Card**, **System Monitor Mini Card** or **System Monitor Status Card**. Set an optional title, choose the sections to display, the network interface and the language. The preview updates live, and options left at their default are kept out of the generated YAML.
+Edit a dashboard, click **Add card** and search for **System Monitor Card** or **System Monitor Mini Card**. Set an optional title, choose the sections to display, the network interface and the language. The preview updates live, and options left at their default are kept out of the generated YAML.
 
 ### Minimal
 
@@ -109,10 +105,6 @@ type: custom:system-monitor-card
 type: custom:system-monitor-mini-card
 ```
 
-```yaml
-type: custom:system-monitor-status-card
-```
-
 ### Full options
 
 ```yaml
@@ -122,8 +114,6 @@ show_system: true
 show_network: true
 show_storage: true
 show_processes: true
-show_hacs: true
-show_watchdog: true
 interface: eth0
 language: fr
 ```
@@ -138,16 +128,6 @@ interface: eth0
 language: fr
 ```
 
-```yaml
-type: custom:system-monitor-status-card
-title: My Home Assistant
-show_hacs: true
-show_processes: true
-show_watchdog: true
-zoom: true
-language: fr
-```
-
 ### Options reference
 
 | Option | Card | Default | Description |
@@ -156,44 +136,18 @@ language: fr
 | `show_system` | full | `true` | CPU, RAM, disk and temperature gauges, uptime, load, IP address |
 | `show_network` | full, mini | `true` | Network download / upload |
 | `show_storage` | full, mini | `true` | Full card: mount points, swap and database size. Mini card: disk bar |
-| `show_processes` | full, status | `true` | Monitored processes and their status tile |
-| `show_hacs` | full, status | `true` | HACS extensions list (status card: update button) and their status tile |
-| `show_watchdog` | full, status | `true` | Unavailable integrations list and their status tile (needs Integration Watchdog) |
-| `zoom` | mini, status | `true` | Zoom button at the top right: shows the full card, and back to the compact view |
+| `show_processes` | full | `true` | Monitored processes and their status tile |
+| `zoom` | mini | `true` | Zoom button at the top right: shows the full card, and back to the compact view |
 | `interface` | full, mini | All physical interfaces | Network interface to display (e.g. `eth0`, `enp0s3`) |
 | `language` | all | Auto | Force language: `en`, `fr`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt`, `pl`, `ro`, `da`, `sv`, `bg`, `ru`, `uk`, `hu`, `sk`, `cs`, `sl`, `lv` or `el` (auto-detects from HA settings) |
 
 ## Screenshots
-
-While HACS checks for updates, the card animates: the check button spins as the repositories are scanned. It settles to a still card when the check finishes.
-
-| Light | Dark |
-|---|---|
-| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-checking.gif" alt="HACS check animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-checking-dark.gif" alt="HACS check animation dark" width="400"> |
-
-While **Install all** runs, its chip spins with the progress of the installs (here 1 of 2 done).
-
-| Light | Dark |
-|---|---|
-| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-installing.gif" alt="Install all animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/hacs-installing-dark.gif" alt="Install all animation dark" width="400"> |
-
-While Integration Watchdog checks the integrations, its check button spins until the result comes back.
-
-| Light | Dark |
-|---|---|
-| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/wd-checking.gif" alt="Watchdog check animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/wd-checking-dark.gif" alt="Watchdog check animation dark" width="400"> |
 
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card.png" alt="card" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-dark.png" alt="card dark" width="400"> |
 | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card.png" alt="mini card" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card-dark.png" alt="mini card dark" width="400"> |
 | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card-zoom.png" alt="mini card zoomed in" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/mini-card-zoom-dark.png" alt="mini card zoomed in dark" width="400"> |
-| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card.png" alt="status card" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card-dark.png" alt="status card dark" width="400"> |
-| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card-zoom.png" alt="status card zoomed in" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/status-card-zoom-dark.png" alt="status card zoomed in dark" width="400"> |
-| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs.png" alt="HACS extensions" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs-dark.png" alt="HACS extensions dark" width="400"> |
-| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs-search-light.png" alt="HACS search" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-hacs-search.png" alt="HACS search dark" width="400"> |
-| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-install-light.png" alt="Install confirmation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-install.png" alt="Install confirmation dark" width="400"> |
-| <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-watchdog.png" alt="Unavailable integrations" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-system-monitor-card/main/screenshots/card-watchdog-dark.png" alt="Unavailable integrations dark" width="400"> |
 
 ## How it works
 
@@ -203,22 +157,11 @@ The Core and OS versions come from the `update.home_assistant_core_*` and `updat
 
 ### Status row
 
-Under the header, a row of tiles gives the overall status of each section: **HACS** (up to date or the number of updates), **Processes** (running or the number stopped) and **Integrations** (available or the number unavailable), green when all is well, orange or red otherwise, and grey "Unknown" when its source is unavailable (HACS failed to start, Integration Watchdog unloaded). The same goes for the Core / OS update badge when the update entity is unavailable. Click a tile to show its section unfolded; a click elsewhere folds or hides it again. The Home Assistant Core / OS update stays next to the logo. Tiles of hidden or missing sections are left out.
-
-### Status card
-
-The minimal card keeps the header (Core / OS versions and their update badge) and the status row, without gauges or lists. The status row shows up only while one of the statuses is not good (HACS update, stopped process, unavailable integration, or an unavailable HACS or Integration Watchdog); when all is well, the card is just the header. On the right of the header, one button:
-
-- **Install (n)** when HACS updates are pending (admins only): installs them all, one after the other, after a confirmation, with the progress in the button
-- **Check** otherwise, for every user as in the full card: checks every HACS repository for updates through [HACS Refresh](https://github.com/juju35/ha-hacs-refresh), with the progress in the button; hover it for the time of the last check. Without HACS Refresh and no pending update, the button is hidden
-
-A click on the **HACS** tile opens HACS, on the **Integrations** tile the integrations page, and on the **Processes** tile the first stopped process.
-
-At the far right of the header, a small round button (`mdi:arrow-expand`) shows the full card in its place: gauges, network, storage, processes, HACS and integrations lists, with the same options, exactly as the **System Monitor Card** shows them. The button turns into `mdi:arrow-collapse` and brings the status view back; a click anywhere outside the card does too, but not a click in a dialog opened from it (more-info), nor while the install confirmation is open. `zoom: false` removes the button.
+Under the header, a tile gives the overall status of the **Processes** section (running or the number stopped), green when all is well, red otherwise. The Core / OS update badge turns grey "Unknown" when the update entity is unavailable. Click the tile to show the section unfolded; a click elsewhere folds or hides it again. The Home Assistant Core / OS update stays next to the logo. The tile is left out when the section is hidden or has no process.
 
 ### Mini card
 
-The compact card shows CPU, RAM, disk and temperature bars, then the Core / OS status, the network rates and the uptime. At the far right of the header, the same zoom button as the status card (`mdi:arrow-expand`) shows the full card in its place, with the same options, and turns into `mdi:arrow-collapse` to bring the compact view back; a click anywhere outside the card does too, but not a click in a dialog opened from it (more-info), nor while the install confirmation is open. `zoom: false` removes the button.
+The compact card shows CPU, RAM, disk and temperature bars, then the Core / OS status, the network rates and the uptime. At the far right of the header, a small round button (`mdi:arrow-expand`) shows the full card in its place, with the same options, exactly as the **System Monitor Card** shows it, and turns into `mdi:arrow-collapse` to bring the compact view back; a click anywhere outside the card does too, but not a click in a dialog opened from it (more-info). `zoom: false` removes the button.
 
 ### Processes
 
@@ -237,25 +180,6 @@ The **Storage** section ends with the size of the Home Assistant database (the d
 2. **Settings → Devices & services → Add integration → File Size**, with the path `/config/home-assistant_v2.db`.
 
 The card finds its size sensor by itself (platform `filesize`, a file named `home-assistant_v2.db`); a click on the row opens its history. Without it, the row is not shown. An external database (MariaDB, PostgreSQL) is not a file and isn't supported.
-
-### HACS extensions
-
-HACS creates an update entity for every repository it downloaded. The card lists them with their name and category (from the HACS device), installed and latest version, and the GitHub repository (from the release URL). The list is folded by default: click the **HACS** section, or its tile in the status row, to unfold it. Click a line to open its update dialog (release notes, install), its refresh button to check that extension alone for updates (needs HACS Refresh 0.2.0 or later), or the GitHub button to open the repository. The search field at the top of the unfolded list filters it as you type, by name or GitHub repository (case and accents ignored); the ✕ button or Escape clears it, and folding the list clears it too.
-
-Logos are loaded dynamically, best source first:
-
-1. For integrations, Home Assistant's brands proxy (`/api/brands`, Home Assistant 2026.3 and later), which serves the `brand/icon.png` shipped by a custom integration before the brands CDN
-2. The brands CDN (`brands.home-assistant.io`)
-3. The avatar of the GitHub owner of the repository
-4. An icon for the HACS category (integration, dashboard, theme…)
-
-**Check for updates** (the refresh button next to the HACS section title, visible even while the list is folded) presses the button of the [HACS Refresh](https://github.com/juju35/ha-hacs-refresh) integration: Home Assistant asks HACS to fetch every downloaded repository again from GitHub, in the background, and the card shows the progress and the time of the last check from HACS Refresh's sensors. The check goes on if you leave the page, and HACS Refresh can also check at an interval set in its options. Without HACS Refresh, the button is hidden and the unfolded list shows a link to install it.
-
-**Install all updates**: when updates are pending, their number next to the HACS section title is a button (for admins). A click opens a confirmation popup at the top of the card, listing each extension with its current and new version (**Cancel**, a click outside the popup or Escape closes it), then **Install** installs every pending update one after the other through `update.install`, with the progress in the button. Integrations then need a Home Assistant restart (Home Assistant raises a repair for it), dashboard cards a browser reload.
-
-### Unavailable integrations
-
-When the [Integration Watchdog](https://github.com/juju35/ha-integration-watchdog) integration is set up, the card reads its sensors: its tile in the status row says whether every integration is available, and the **Integrations** section lists those whose entities are all unavailable, with the time they became unavailable, the number of reloads done by the watchdog, and **Given up** once it stopped reloading one. The section shows the last reload (in red when it failed) and the time of the last check. Click a line to open the integration page, the refresh button next to the title to check the integrations now (it presses the watchdog's **Check now** button), or the last reload to open its history. Like the HACS list, the section is folded by default and folds again on a click elsewhere. The section is hidden while every integration is available: a click on the **Integrations** tile of the status row shows it unfolded (last reload, last check, **Check now** button), and a click elsewhere hides it again.
 
 ### Thresholds
 
@@ -277,7 +201,7 @@ The CPU temperature is shown in the unit of its sensor, which follows the unit s
 npm ci               # installs the locked dev dependencies (Playwright, for the screenshots)
 npm run build        # bundles src/system-monitor-card.js + images/home-assistant.svg into dist/system-monitor-card.js
 npm run check        # builds and checks the card (run in CI)
-npm run screenshots  # renders the cards (and the hacs-checking, hacs-installing and wd-checking GIFs, needs ffmpeg) with mock data into screenshots/
+npm run screenshots  # renders the cards with mock data into screenshots/ (ffmpeg compares the pixels of the captures)
 ```
 
 `dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where HACS downloads it from.

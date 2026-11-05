@@ -5,7 +5,9 @@ import { shots } from "../scripts/screenshot-shots.mjs";
 
 const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8")
   // <img> screenshots (sized for HACS) read as ![](url)
-  .replace(/<img\b[^>]*\bsrc="([^"]+)"[^>]*>/g, "![]($1)");
+  .replace(/<img\b[^>]*\bsrc="([^"]+)"[^>]*>/g, "![]($1)")
+  // The overview table at the top pairs the cards, not the themes: only the "| Light | Dark |" tables count.
+  .replace(/^[\s\S]*?(?=^\| Light \| Dark \|$)/m, "");
 const withoutTheme = ({ file, theme, ...setup }) => setup;
 
 // The README's "| Light | Dark |" screenshot rows: [light file, dark file].
@@ -15,7 +17,7 @@ const pairs = [...readme.matchAll(/^\| !\[[^\]]*\]\((?:[^)\s]*\/)?screenshots\/(
 ]);
 
 test("the README pairs every light screenshot with a dark twin", () => {
-  assert.ok(pairs.length >= 9, `found ${pairs.length} pairs`);
+  assert.ok(pairs.length >= 3, `found ${pairs.length} pairs`);
   const byFile = Object.fromEntries(shots.map((s) => [s.file, s]));
   for (const [light, dark] of pairs) {
     assert.equal(byFile[light]?.theme, "light", `${light} is rendered in the light theme`);
