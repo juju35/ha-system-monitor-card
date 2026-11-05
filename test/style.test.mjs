@@ -25,8 +25,6 @@ const renders = () => {
     full: card(lib.SystemMonitorCard, hass)._render(),
     mini: card(lib.SystemMonitorMiniCard, hass)._render(),
     "mini zoomed": zoomed(lib.SystemMonitorMiniCard),
-    status: card(lib.SystemMonitorStatusCard, hass)._render(),
-    "status zoomed": zoomed(lib.SystemMonitorStatusCard),
   };
 };
 
@@ -42,17 +40,6 @@ const rulesFor = (css, selector) => {
 };
 
 for (const [name, html] of Object.entries(renders())) {
-  test(`${name}: animations stop under prefers-reduced-motion`, () => {
-    const css = styleOf(html);
-    const spin = css.search(/\.spin\s*\{[^}]*animation:\s*sm-spin/);
-    if (spin < 0) return; // No spinner on this card.
-    const media = css.match(/@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{((?:[^{}]*\{[^{}]*\})*)[^{}]*\}/);
-    assert.ok(media, "no @media (prefers-reduced-motion: reduce) block");
-    assert.match(media[1], /\.spin\s*\{[^}]*animation:\s*none/);
-    // Same specificity as .spin: the media rule must come after it, or the spinner keeps turning.
-    assert.ok(media.index > spin, "the reduced-motion rule comes before .spin and is overridden");
-  });
-
   // Every render replaces the whole shadow DOM: a CSS transition never plays (no old value to start from).
   test(`${name}: no dead CSS transitions on re-rendered elements`, () => {
     const css = styleOf(html);
@@ -103,8 +90,8 @@ test("labels still cut on the narrowest cards keep their full text in title", ()
     assert.equal(m[1], ` title="${m[2]}"`, `"${m[2]}" without a title`);
 });
 
-// Narrow cards (260 px, Integrationen): the section name gives way, never the chevron or the check button.
-test("section titles: the name is cut with an ellipsis (full text in title), the chevron and buttons keep their size", () => {
+// Narrow cards (260 px, long names): the section name gives way, never the chevron.
+test("section titles: the name is cut with an ellipsis (full text in title), the chevron keeps its size", () => {
   for (const [name, html] of Object.entries(renders())) {
     if (!/class="section-title/.test(html)) continue;
     const css = styleOf(html);
@@ -112,16 +99,10 @@ test("section titles: the name is cut with an ellipsis (full text in title), the
     const label = rulesFor(css, ".section-title > .label");
     for (const re of [/min-width:\s*0/, /text-overflow:\s*ellipsis/, /white-space:\s*nowrap/, /overflow:\s*hidden/, /flex:\s*0 1 auto/])
       assert.match(label, re, `${name}: section name without ${re}`);
-    // The check button may drop its text (kept in title and aria-label) once the name is cut, as the status header does.
-    assert.match(rulesFor(css, ".section-title.tight .btn-check > span"), /display:\s*none/, `${name}: no icon-only check button`);
     for (const head of html.matchAll(/<div class="section-title[^"]*"[^>]*>([\s\S]*?)<\/div>/g)) {
       const m = head[1].match(/<span class="label"( title="[^"]*")?>([^<]*)<\/span>/);
       assert.ok(m, `${name}: section title without a .label name: ${head[1].trim().slice(0, 80)}`);
       assert.equal(m[1], ` title="${m[2]}"`, `${name}: "${m[2]}" without a title`);
-    }
-    for (const b of html.matchAll(/<span class="btn btn-check"[^>]*>/g)) {
-      const t = b[0].match(/ title="([^"]+)"/)?.[1];
-      assert.ok(t && b[0].includes(`aria-label="${t}"`), `${name}: check button without title and aria-label`);
     }
   }
 });
@@ -130,75 +111,4 @@ test("mini card: the metric labels share one column wide enough for the longest 
   const css = styleOf(card(lib.SystemMonitorMiniCard, hassWith())._render());
   assert.match(rulesFor(css, ".content"), /grid-template-columns:\s*18px minmax\(min\(64px, 30%\), max-content\)/);
   assert.match(rulesFor(css, ".metric"), /grid-template-columns:\s*subgrid/);
-});
-
-test("buttons: a hover state, and a disabled state set apart from the enabled one", () => {
-  const css = styleOf(card(lib.SystemMonitorStatusCard, hassWith())._render());
-  // --btn-c, not --primary-color: this rule outranks .header .btn.warn, whose Install button is orange (--btn-c).
-  assert.match(css, /\.btn:not\(:disabled\):not\(\[aria-disabled="true"\]\):hover\s*\{[^}]*background:\s*color-mix\(in srgb, var\(--btn-c\)/);
-  assert.match(rulesFor(css, ".header .btn.warn"), /--btn-c:\s*var\(--sm-warn\)/);
-  assert.match(rulesFor(css, '.btn[aria-disabled="true"]'), /opacity:\s*\.5/);
-});
-
-// Each render recreates the spinner: without a phase taken from the clock, it restarts at 0° on every
-// progress of a HACS check (done 1 -> 2) and jumps back.
-test("spinner: a re-render keeps its phase, taken from the clock", () => {
-  // A non-admin user: no pending installs, the button checks for updates.
-  const hass = hassWith({
-    user: { is_admin: false },
-    states: {
-      ...states,
-      "sensor.hacs_refresh_status": { entity_id: "sensor.hacs_refresh_status", state: "running", attributes: { done: 1, total: 6 } },
-    },
-  });
-  let spins = [];
-  const c = card(lib.SystemMonitorStatusCard, hass);
-  c.shadowRoot = {
-    activeElement: null,
-    set innerHTML(html) {
-      spins = (html.match(/class="icon spin"/g) || []).map(() => ({ style: {} }));
-    },
-    querySelector: () => null,
-    querySelectorAll: (sel) => (sel === ".spin" ? spins : []),
-  };
-  const before = Date.now();
-  c._update();
-  const after = Date.now();
-  assert.ok(spins.length > 0, "no spinner while HACS Refresh is running");
-  for (const el of spins) {
-    const m = /^-(\d+)ms$/.exec(el.style.animationDelay || "");
-    assert.ok(m, `animation-delay not set: ${el.style.animationDelay}`);
-    const phase = Number(m[1]);
-    const lo = before % 1000;
-    const hi = after % 1000;
-    assert.ok(lo <= hi ? phase >= lo && phase <= hi : phase >= lo || phase <= hi, `phase ${phase} not from the clock`);
-  }
-});
-
-test("spinner: a render without querySelectorAll (no DOM yet) does not throw", () => {
-  const c = card(lib.SystemMonitorCard, hassWith());
-  assert.doesNotThrow(() => c._update());
-});
-
-test("spinner: with the Web Animations API, every spinner is anchored to the start of the timeline", () => {
-  const hass = hassWith({
-    user: { is_admin: false },
-    states: {
-      ...states,
-      "sensor.hacs_refresh_status": { entity_id: "sensor.hacs_refresh_status", state: "running", attributes: { done: 2, total: 6 } },
-    },
-  });
-  let anims = [];
-  const c = card(lib.SystemMonitorCard, hass);
-  c.shadowRoot = {
-    activeElement: null,
-    set innerHTML(html) {
-      anims = (html.match(/class="icon spin"/g) || []).map(() => ({ startTime: 1234 }));
-    },
-    querySelector: () => null,
-    querySelectorAll: (sel) => (sel === ".spin" ? anims.map((a) => ({ style: {}, getAnimations: () => [a] })) : []),
-  };
-  c._update();
-  assert.ok(anims.length > 0, "no spinner while HACS Refresh is running");
-  for (const a of anims) assert.equal(a.startTime, 0);
 });

@@ -5,9 +5,6 @@ import vm from "node:vm";
 
 const NAMES = [
   "discover",
-  "discoverHacs",
-  "discoverRefresh",
-  "discoverWatchdog",
   "discoverDatabase",
   "trackedIds",
   "renderSignature",
@@ -17,13 +14,10 @@ const NAMES = [
   "ICONS",
   "STRINGS",
   "lang",
-  "intlLocale",
   "SystemMonitorCard",
   "SystemMonitorMiniCard",
-  "SystemMonitorStatusCard",
   "SystemMonitorCardEditor",
   "SystemMonitorMiniCardEditor",
-  "SystemMonitorStatusCardEditor",
   "document",
   "window",
 ];

@@ -15,8 +15,7 @@ test("discovery is cached per registry, not per states object", () => {
   // A new states object (any state change) with the same registries: same result object.
   const next = { ...hass, states: { ...hass.states, "sensor.other": { state: "1", attributes: {} } } };
   assert.equal(lib.discover(next), sm);
-  assert.equal(lib.discoverRefresh(next), lib.discoverRefresh(hass));
-  assert.equal(lib.discoverWatchdog(next), lib.discoverWatchdog(hass));
+  assert.equal(lib.discoverDatabase(next), lib.discoverDatabase(hass));
   // New entity registry: discovered again.
   const reg = { ...hass, entities: { ...entities } };
   assert.notEqual(lib.discover(reg), sm);
@@ -342,100 +341,6 @@ test("arguments starting alike keep their first words", () => {
   assert.deepEqual(Object.keys(sm.procs).sort(), ["Plex Media Server", "Plex Tuner Service"]);
 });
 
-test("a new brands token retries the local logos that failed with the previous one", async () => {
-  const card = new lib.SystemMonitorCard();
-  card._hass = { callWS: async () => ({ token: "new" }) };
-  card._update = () => {};
-  card._brandsToken = "old";
-  card._imgFailed.add("/api/brands/integration/parcel/icon.png?placeholder=no");
-  card._imgFailed.add("https://brands.home-assistant.io/_/parcel/icon.png");
-  await card._fetchBrandsToken(true);
-  assert.deepEqual([...card._imgFailed], ["https://brands.home-assistant.io/_/parcel/icon.png"]);
-  assert.ok(card._logoSources({ domain: "parcel" })[0].startsWith("/api/brands/integration/parcel/icon.png"));
-});
-
-/** A card with a recording interval timer and a brands/access_token answer chosen by the test. */
-const tokenCard = (answer) => {
-  const timers = [];
-  const set = lib.window.setInterval;
-  lib.window.setInterval = (fn, ms) => timers.push({ fn, ms });
-  const card = new lib.SystemMonitorCard();
-  card._update = () => {};
-  card._onOutside = () => {};
-  let calls = 0;
-  card._hass = {
-    callWS: async () => {
-      calls++;
-      return answer(calls);
-    },
-  };
-  try {
-    card.connectedCallback();
-  } finally {
-    lib.window.setInterval = set;
-  }
-  const refresh = timers.find((t) => t.ms === 20 * 60 * 1000).fn;
-  return { card, refresh, calls: () => calls };
-};
-const settle = () => new Promise((r) => setTimeout(r, 0));
-
-test("a failed brands token refresh keeps the current token and the timer tries again", async () => {
-  const fail = Object.assign(new Error("Connection lost"), { code: 3 });
-  const { card, refresh, calls } = tokenCard((n) => {
-    if (n === 2) throw fail;
-    return { token: `t${n}` };
-  });
-  await card._fetchBrandsToken();
-  assert.equal(card._brandsToken, "t1");
-  refresh();
-  await settle();
-  assert.equal(calls(), 2);
-  assert.equal(card._brandsToken, "t1");
-  assert.ok(card._logoSources({ domain: "parcel" })[0].includes("token=t1"));
-  refresh();
-  await settle();
-  assert.equal(calls(), 3);
-  assert.equal(card._brandsToken, "t3");
-});
-
-test("a first brands token request that fails for a while is tried again by the timer", async () => {
-  const { card, refresh, calls } = tokenCard((n) => {
-    if (n === 1) throw Object.assign(new Error("timeout"), { code: "timeout" });
-    return { token: "ok" };
-  });
-  await card._fetchBrandsToken();
-  assert.equal(card._brandsToken, null);
-  refresh();
-  await settle();
-  assert.equal(calls(), 2);
-  assert.equal(card._brandsToken, "ok");
-});
-
-test("an older Home Assistant without brands tokens is not asked again", async () => {
-  const { card, refresh, calls } = tokenCard(() => {
-    throw Object.assign(new Error("Unknown command."), { code: "unknown_command" });
-  });
-  await card._fetchBrandsToken();
-  assert.equal(card._brandsToken, null);
-  refresh();
-  await settle();
-  assert.equal(calls(), 1);
-  assert.ok(!card._logoSources({ domain: "parcel" }).some((u) => u.startsWith("/api/brands/")));
-  assert.equal(calls(), 1);
-});
-
-test("HACS extensions follow their states while their registry entries are cached", () => {
-  const hass = hassWith();
-  const before = lib.discoverHacs(hass);
-  assert.equal(before.filter((x) => x.update).length, 0);
-  const id = "update.parcel_update";
-  const s = hass.states[id];
-  const updated = { ...hass, states: { ...hass.states, [id]: { ...s, state: "on", attributes: { ...s.attributes, latest_version: "0.2.0" } } } };
-  const after = lib.discoverHacs(updated);
-  // Objects from the sandbox: compared as JSON.
-  assert.equal(JSON.stringify(after.filter((x) => x.update).map((x) => [x.id, x.name, x.latest])), JSON.stringify([[id, "Parcel", "0.2.0"]]));
-});
-
 test("the render signature ignores untracked states and catches tracked ones", () => {
   const hass = hassWith();
   const sig = lib.renderSignature(hass);
@@ -444,34 +349,21 @@ test("the render signature ignores untracked states and catches tracked ones", (
   const id = "sensor.system_monitor_processor_use";
   const tracked = { ...hass, states: { ...hass.states, [id]: { ...hass.states[id], state: "99" } } };
   assert.ok(!lib.sameSignature(sig, lib.renderSignature(tracked)));
-  for (const id of ["sensor.hacs_refresh_status", "sensor.integration_watchdog_unavailable_integrations", "update.parcel_update"])
-    assert.ok(lib.trackedIds(hass).includes(id), id);
+  for (const id of ["sensor.home_assistant_v2_db_size", "update.home_assistant_core_update"]) assert.ok(lib.trackedIds(hass).includes(id), id);
   assert.ok(!lib.sameSignature(sig, lib.renderSignature({ ...hass, language: "fr" })));
-});
-
-test("the render signature changes every minute, for relative times", (t) => {
-  const hass = hassWith();
-  let now = 1_800_000_000_000; // a whole minute
-  t.mock.method(Date, "now", () => now);
-  const sig = lib.renderSignature(hass);
-  now += 59_000;
-  assert.ok(lib.sameSignature(sig, lib.renderSignature(hass)));
-  now += 1_000;
-  assert.ok(!lib.sameSignature(sig, lib.renderSignature(hass)));
 });
 
 test("set hass renders only when a tracked state changed", () => {
   const card = new lib.SystemMonitorCard();
   let renders = 0;
   card._update = () => renders++;
-  card._fetchBrandsToken = () => {};
   const hass = hassWith();
   card.hass = hass;
   assert.equal(renders, 1);
   card.hass = { ...hass, states: { ...hass.states, "light.kitchen": { state: "on", attributes: {} } } };
   assert.equal(renders, 1);
-  const id = "sensor.integration_watchdog_last_check";
-  card.hass = { ...hass, states: { ...hass.states, [id]: { ...hass.states[id], state: new Date().toISOString() } } };
+  const id = "sensor.home_assistant_v2_db_size";
+  card.hass = { ...hass, states: { ...hass.states, [id]: { ...hass.states[id], state: "2100" } } };
   assert.equal(renders, 2);
 });
 
@@ -505,40 +397,6 @@ test("focusSelector finds an entity row again, but not a plain clickable span", 
   assert.equal(lib.focusSelector(span), null);
 });
 
-const statusCard = (hass, config = {}) => {
-  const card = new lib.SystemMonitorStatusCard();
-  card._hass = hass;
-  card._config = config;
-  return card;
-};
-
-test("the status card shows its status row only when a tile is not good", () => {
-  const hass = hassWith();
-  const card = statusCard(hass);
-  const sm = lib.discover(hass);
-  const tiles = card._stats(sm);
-  assert.ok(tiles.length > 0);
-  const bad = tiles.some((x) => x.cls === "warn" || x.cls === "crit");
-  assert.equal(card._statusRow(sm) !== "", bad);
-  // Every tile good: no row.
-  card._stats = () => tiles.map((x) => ({ ...x, cls: "good" }));
-  assert.equal(card._statusRow(sm), "");
-  card._stats = () => [{ ...tiles[0], cls: "warn" }];
-  assert.match(card._statusRow(sm), /class="stats"/);
-});
-
-test("the status card's check button follows the full card's rule: every user may check, only admins install", () => {
-  const hass = hassWith({ user: { is_admin: false } });
-  const id = "update.parcel_update";
-  const s = hass.states[id];
-  const card = statusCard(hass);
-  assert.match(card._button(), /data-action="hacs-check"/);
-  hass.states = { ...hass.states, [id]: { ...s, state: "on", attributes: { ...s.attributes, latest_version: "9.9.9" } } };
-  assert.match(card._button(), /data-action="hacs-check"/);
-  hass.user = { is_admin: true };
-  assert.match(card._button(), /data-action="hacs-install-all"/);
-});
-
 test("restoring the focus after a re-render does not scroll the page to the card", () => {
   const card = new lib.SystemMonitorCard();
   card._config = {};
@@ -558,45 +416,14 @@ test("restoring the focus after a re-render does not scroll the page to the card
   for (const opts of calls) assert.equal(opts?.preventScroll, true);
 });
 
-test("restoring the focus of the search field does not scroll the page either", () => {
-  const card = new lib.SystemMonitorCard();
-  card._config = {};
-  card._hass = hassWith();
-  const calls = [];
-  const active = { dataset: { search: "hacs" }, selectionStart: 2, selectionEnd: 2 };
-  card.shadowRoot = {
-    activeElement: active,
-    innerHTML: "",
-    querySelector: () => ({ focus: (opts) => calls.push(opts), setSelectionRange() {} }),
-  };
-  card._render = () => "<ha-card>v1</ha-card>";
-  card._update();
-  assert.equal(calls.length, 1);
-  assert.equal(calls[0]?.preventScroll, true);
-});
-
-test("every focus the cards give after a re-render (search field, popup, zoom button) leaves the page where it is", () => {
+test("every focus the cards give after a re-render (rows, zoom button) leaves the page where it is", () => {
   const src = readFileSync(new URL("../src/system-monitor-card.js", import.meta.url), "utf8");
   const calls = [...src.matchAll(/\.focus\(([^)]*)\)/g)];
-  assert.ok(calls.length >= 5, `${calls.length} focus() calls`);
+  assert.ok(calls.length >= 2, `${calls.length} focus() calls`);
   for (const [call, args] of calls) assert.match(args, /^\{ preventScroll: true \}$/, call);
 });
 
-test("the install popup takes the focus without scrolling, then shows itself only if it is off screen", () => {
-  const card = new lib.SystemMonitorCard();
-  const calls = [];
-  const scrolls = [];
-  card._update = () => {};
-  card.shadowRoot = {
-    querySelector: (sel) =>
-      sel === ".modal .primary" ? { focus: (opts) => calls.push({ ...opts }) } : sel === ".modal" ? { scrollIntoView: (opts) => scrolls.push({ ...opts }) } : null,
-  };
-  card._openDialog({ body: "", ok: "OK", onOk() {} });
-  assert.deepEqual(calls, [{ preventScroll: true }]);
-  assert.deepEqual(scrolls, [{ block: "nearest" }]);
-});
-
-// ── Zoom (status and mini cards) ─────────────────────────────────────────────
+// ── Zoom (mini card) ─────────────────────────────────────────────
 
 /** A connected zoomable card with a recording document listener and a shadow root that keeps its HTML. */
 const zoomCard = (cls, config = {}) => {
@@ -607,7 +434,6 @@ const zoomCard = (cls, config = {}) => {
     if (i >= 0) listeners.splice(i, 1);
   };
   const card = new cls();
-  card._fetchBrandsToken = () => {};
   const focused = [];
   card.shadowRoot.querySelector = (sel) => (sel === ".zoom" ? { focus: (opts) => focused.push({ ...opts }) } : null);
   card.setConfig(config);
@@ -621,10 +447,7 @@ const outside = (card, listeners, path = [{ localName: "div" }]) => {
   return card;
 };
 
-for (const [name, cls, compactSize, compactPart] of [
-  ["status", lib.SystemMonitorStatusCard, 2, null],
-  ["mini", lib.SystemMonitorMiniCard, 3, 'class="metric'],
-]) {
+for (const [name, cls, compactSize, compactPart] of [["mini", lib.SystemMonitorMiniCard, 3, 'class="metric']]) {
   test(`the ${name} card's zoom button shows the full card, then the compact view again`, () => {
     const { card } = zoomCard(cls);
     assert.match(card._html, /class="zoom" data-action="zoom"[^>]*title="Show the full card"/);
@@ -637,7 +460,7 @@ for (const [name, cls, compactSize, compactPart] of [
     assert.ok(stopped);
     assert.ok(card._zoomed);
     // Everything the full card shows, with the same config and the collapse button.
-    for (const part of ['class="gauges"', 'class="net"', 'class="vol', 'class="hacs"', 'class="stats"'])
+    for (const part of ['class="gauges"', 'class="net"', 'class="vol', 'class="stats"'])
       assert.ok(card._html.includes(part), part);
     if (compactPart) assert.ok(!card._html.includes(compactPart));
     assert.match(card._html, /title="Back to the compact view"/);
@@ -674,19 +497,6 @@ for (const [name, cls, compactSize, compactPart] of [
     assert.equal(listeners.filter((l) => l.type === "click").length, 0);
   });
 
-  test(`the zoomed ${name} card does not fold back while the install confirmation is open`, () => {
-    const { card, listeners } = zoomCard(cls);
-    card._zoomClick(click([]));
-    card._openDialog({ body: "", ok: "Install", onOk() {} });
-    assert.match(card._html, /class="backdrop"/);
-    // A click outside closes the confirmation only; the next one folds the card back.
-    outside(card, listeners);
-    assert.ok(card._zoomed);
-    assert.equal(card._dialog, null);
-    outside(card, listeners);
-    assert.ok(!card._zoomed);
-  });
-
   test(`zoom: false removes the ${name} card's zoom button`, () => {
     const { card } = zoomCard(cls, { zoom: false });
     assert.doesNotMatch(card._html, /data-action="zoom"/);
@@ -712,10 +522,7 @@ const editorFor = (cls, config = {}) => {
 };
 const toggles = (schema) => schema.flatMap((s) => s.schema || [s]).filter((s) => s.selector?.boolean).map((s) => s.name);
 
-for (const [name, card, editorCls, tag] of [
-  ["status", lib.SystemMonitorStatusCard, lib.SystemMonitorStatusCardEditor, "system-monitor-status-card-editor"],
-  ["mini", lib.SystemMonitorMiniCard, lib.SystemMonitorMiniCardEditor, "system-monitor-mini-card-editor"],
-]) {
+for (const [name, card, editorCls, tag] of [["mini", lib.SystemMonitorMiniCard, lib.SystemMonitorMiniCardEditor, "system-monitor-mini-card-editor"]]) {
   test(`the ${name} card's visual editor lists a zoom toggle, on by default and kept out of the YAML`, () => {
     const create = lib.document.createElement;
     lib.document.createElement = (t) => ({ tag: t });
@@ -738,7 +545,7 @@ for (const [name, card, editorCls, tag] of [
   });
 }
 
-test("the status pill sits in the header row, the status card's one without the new version", () => {
+test("the status pill sits in the header row", () => {
   const hass = hassWith({ states: { ...states, ...updateAvailable } });
   const sm = lib.discover(hass);
   const full = new lib.SystemMonitorCard();
@@ -748,10 +555,6 @@ test("the status pill sits in the header row, the status card's one without the 
   const head = full._header(sm);
   assert.match(head, /<div class="title-row"><div class="name">[^<]*<\/div><span class="chip clickable warn"[^>]*title="Update 2026.10.3"[^>]*><span class="dot"><\/span><span class="chip-text">Update 2026.10.3<\/span><\/span>/);
   assert.doesNotMatch(head, /class="chips"/);
-  const status = statusCard(hass);
-  assert.match(status._header(sm), /title="Update 2026.10.3"[^>]*><span class="dot"><\/span><span class="chip-text">Update<\/span>/);
-  status._zoomed = true;
-  assert.match(status._header(sm), /<span class="chip-text">Update 2026.10.3<\/span>/);
 });
 
 test("the Home Assistant database size comes from the File Size integration", () => {

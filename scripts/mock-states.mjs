@@ -65,43 +65,6 @@ export const updateAvailable = {
   },
 };
 
-// Repositories downloaded with HACS: one update entity each, on a device named after the repository
-// whose model is the HACS category; the release URL carries the GitHub "owner/repo".
-const HACS = [
-  ["hacs", "HACS", "integration", "hacs/integration", "2.0.5", "2.0.5", "hacs"],
-  ["parcel", "Parcel", "integration", "juju35/ha-parcel", "0.1.7", "0.2.0", "parcel"],
-  ["webrtc", "WebRTC Camera", "integration", "AlexxIT/WebRTC", "v3.6.1", "v3.6.1", "webrtc"],
-  ["mushroom", "Mushroom", "plugin", "piitaya/lovelace-mushroom", "v4.5.0", "v4.5.0"],
-  ["system_monitor_card", "System Monitor Card", "plugin", "juju35/ha-system-monitor-card", "1.1.0", "1.2.0"],
-  ["catppuccin", "Catppuccin Theme", "theme", "catppuccin/home-assistant", "v2.1.2", "v2.1.2"],
-];
-export const hacsUpdates = {};
-for (const [slug, name, category, repo, installed, latest, domain] of HACS) {
-  const id = `update.${slug}_update`;
-  const attributes = {
-    friendly_name: `${name} update`,
-    installed_version: installed,
-    latest_version: installed,
-    release_url: `https://github.com/${repo}/releases/${installed}`,
-    ...(domain ? { entity_picture: `https://brands.home-assistant.io/_/${domain}/icon.png` } : {}),
-  };
-  states[id] = { entity_id: id, state: "off", attributes };
-  entities[id] = { entity_id: id, platform: "hacs", device_id: `hacs_${slug}` };
-  devices[`hacs_${slug}`] = { id: `hacs_${slug}`, name, model: category };
-  if (latest !== installed)
-    hacsUpdates[id] = { entity_id: id, state: "on", attributes: { ...attributes, latest_version: latest, release_url: `https://github.com/${repo}/releases/${latest}` } };
-}
-
-// HACS Refresh integration: checks every HACS repository for updates on the server.
-for (const [id, state, attributes] of [
-  ["button.hacs_refresh_check_for_updates", "unknown", {}],
-  ["sensor.hacs_refresh_status", "idle", { device_class: "enum", done: 6, total: 6, updates: 2, failed: [], error: null }],
-  ["sensor.hacs_refresh_last_check", new Date(Date.now() - 2 * 3600 * 1000).toISOString(), { device_class: "timestamp" }],
-]) {
-  states[id] = { entity_id: id, state, attributes };
-  entities[id] = { entity_id: id, platform: "hacs_refresh", device_id: "hacs_refresh" };
-}
-
 // File Size integration watching the Home Assistant database.
 devices.filesize_db = { id: "filesize_db", name: "home-assistant_v2.db" };
 for (const [id, key, state, attributes] of [
@@ -110,27 +73,6 @@ for (const [id, key, state, attributes] of [
 ]) {
   states[id] = { entity_id: id, state, attributes };
   entities[id] = { entity_id: id, platform: "filesize", device_id: "filesize_db", translation_key: key };
-}
-
-// Integration Watchdog: integrations whose entities are all unavailable.
-const ago = (min) => new Date(Date.now() - min * 60 * 1000).toISOString();
-for (const [id, key, state, attributes] of [
-  ["button.integration_watchdog_check_now", null, "unknown", {}],
-  ["sensor.integration_watchdog_unavailable_integrations", "unavailable", "2", {
-    state_class: "measurement",
-    integrations: [
-      { domain: "roborock", title: "Roborock", entry_id: "e1", since: ago(22), reloads: 1, gave_up: false },
-      { domain: "tuya", title: "Tuya", entry_id: "e2", since: ago(95), reloads: 3, gave_up: true },
-    ],
-    ignored: ["zha"],
-  }],
-  ["sensor.integration_watchdog_last_reload", "last_reload", ago(7), {
-    device_class: "timestamp", domain: "roborock", title: "Roborock", entry_id: "e1", success: true, reloads: 4,
-  }],
-  ["sensor.integration_watchdog_last_check", "last_check", ago(2), { device_class: "timestamp" }],
-]) {
-  states[id] = { entity_id: id, state, attributes };
-  entities[id] = { entity_id: id, platform: "integration_watchdog", device_id: "integration_watchdog", ...(key ? { translation_key: key } : {}) };
 }
 
 // Every monitored process running: the processes section stays folded.

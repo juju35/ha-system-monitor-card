@@ -17,7 +17,7 @@ const editor = (Cls) => {
 
 // ha-form renders again whenever its schema or data is a new object: a state change of Home Assistant (set hass,
 // several times a second) must not hand it new ones.
-for (const Cls of [lib.SystemMonitorCardEditor, lib.SystemMonitorMiniCardEditor, lib.SystemMonitorStatusCardEditor])
+for (const Cls of [lib.SystemMonitorCardEditor, lib.SystemMonitorMiniCardEditor])
   test(`${Cls.name}: the form keeps its schema and data across state changes`, () => {
     const e = editor(Cls);
     e.setConfig({ type: "custom:x", title: "Server" });
