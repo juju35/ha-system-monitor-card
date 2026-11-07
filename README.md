@@ -28,6 +28,7 @@ The cards are built on top of the core [System Monitor integration](https://www.
 - CPU, RAM, disk and CPU temperature gauges, uptime, load average and IP address
 - Home Assistant Core and OS versions, with an orange badge when an update is available
 - Network download / upload rates and totals, per interface (virtual interfaces such as `docker0` or `hassio` are hidden)
+- **24 h rate history**: a discreet curve of the last 24 hours behind each download / upload rate, on the full card and the mini card, from the recorder's statistics (refreshed every 5 minutes; `show_history: false` turns it off)
 - Storage: every monitored mount point and the swap, with used space, and the size of the Home Assistant database
 - Monitored processes, green when running and red when stopped: hidden while they all run (their status tile shows the list on a click), always shown while one is stopped, with their overall status in the status row
 - Colors turn orange / red when a threshold is crossed (CPU, RAM, disk, temperature)
@@ -112,6 +113,7 @@ type: custom:system-monitor-card
 title: My Home Assistant
 show_system: true
 show_network: true
+show_history: true
 show_storage: true
 show_processes: true
 interface: eth0
@@ -123,6 +125,7 @@ type: custom:system-monitor-mini-card
 title: My Home Assistant
 show_storage: true
 show_network: true
+show_history: true
 zoom: true
 interface: eth0
 language: fr
@@ -135,6 +138,7 @@ language: fr
 | `title` | all | `Home Assistant` | Card title |
 | `show_system` | full | `true` | CPU, RAM, disk and temperature gauges, uptime, load, IP address |
 | `show_network` | full, mini | `true` | Network download / upload |
+| `show_history` | full, mini | `true` | 24 h curve behind each download / upload rate, from the recorder's 5-minute statistics (on the mini card, the rates then show as tiles above the footer instead of in it) |
 | `show_storage` | full, mini | `true` | Full card: mount points, swap and database size. Mini card: disk bar |
 | `show_processes` | full | `true` | Monitored processes and their status tile |
 | `zoom` | mini | `true` | Zoom button at the top right: shows the full card, and back to the compact view |

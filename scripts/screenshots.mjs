@@ -66,7 +66,17 @@ async function openCard(s) {
     ({ type, config, states, entities, devices, zoom }) => {
       const el = document.createElement(type);
       el.setConfig({ type: `custom:${type}`, ...config });
-      el.hass = { states, entities, devices, config: { version: "2026.10.2" }, language: "en", locale: { language: "en" }, user: { is_admin: true } };
+      // Recorder statistics: a plausible 24 h rate curve for each rate sensor (busy evening, quiet night).
+      const callWS = async (msg) =>
+        Object.fromEntries(
+          (msg.statistic_ids || []).map((id, k) => [
+            id,
+            Array.from({ length: 288 }, (_, i) => ({
+              mean: 20 + 80 * Math.exp(-((i - 230 + k * 20) ** 2) / 900) + 35 * Math.exp(-((i - 110) ** 2) / 400) + 6 * Math.sin(i * 0.035 + k) ** 2,
+            })),
+          ])
+        );
+      el.hass = { states, entities, devices, config: { version: "2026.10.2" }, language: "en", locale: { language: "en" }, user: { is_admin: true }, callWS };
       document.getElementById("root").appendChild(el);
       // A mouse click (detail 1): a keyboard one would focus the new button and draw its focus ring.
       if (zoom) el.shadowRoot.querySelector(".zoom").dispatchEvent(new MouseEvent("click", { bubbles: true, composed: true, detail: 1 }));
