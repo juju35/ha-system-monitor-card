@@ -3,7 +3,7 @@
 ## 2.1.0 - 2026-11-07
 
 ### Features
-- **24 h rate history**: a discreet curve of the last 24 hours behind each download / upload rate tile of the full card, and behind each rate of the mini card's footer (now shown as small tiles), from the recorder's 5-minute statistics (`recorder/statistics_during_period`, mean), fetched again every 5 minutes (after a minute when the recorder has none). The new `show_history` option (default `true`, a toggle in both visual editors, translated in every language) turns it off.
+- **24 h rate history**: a discreet curve of the last 24 hours behind each download / upload rate tile of the full card, and on the mini card, whose rates then show as the full card's tiles above the footer (like the NAS and internet box mini cards; one tile per line on a narrow card, and back in the footer with `show_history: false`), from the recorder's 5-minute statistics (`recorder/statistics_during_period`, mean), fetched again every 5 minutes (after a minute when the recorder has none). The new `show_history` option (default `true`, a toggle in both visual editors, translated in every language) turns it off.
 
 ### Maintenance
 - Screenshots: the mock Home Assistant answers the statistics query with a plausible 24 h curve per rate sensor.

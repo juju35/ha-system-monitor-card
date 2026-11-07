@@ -138,7 +138,7 @@ language: fr
 | `title` | all | `Home Assistant` | Card title |
 | `show_system` | full | `true` | CPU, RAM, disk and temperature gauges, uptime, load, IP address |
 | `show_network` | full, mini | `true` | Network download / upload |
-| `show_history` | full, mini | `true` | 24 h curve behind each download / upload rate, from the recorder's 5-minute statistics |
+| `show_history` | full, mini | `true` | 24 h curve behind each download / upload rate, from the recorder's 5-minute statistics (on the mini card, the rates then show as tiles above the footer instead of in it) |
 | `show_storage` | full, mini | `true` | Full card: mount points, swap and database size. Mini card: disk bar |
 | `show_processes` | full | `true` | Monitored processes and their status tile |
 | `zoom` | mini | `true` | Zoom button at the top right: shows the full card, and back to the compact view |

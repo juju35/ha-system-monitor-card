@@ -1964,20 +1964,6 @@ const FULL_STYLE = `
   .facts { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; margin-top: 6px; }
   .facts > span { display: inline-flex; align-items: center; gap: 4px; }
   .facts .icon { width: 14px; height: 14px; color: var(--secondary-text-color); }
-  .net { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-  .net + .net { margin-top: 6px; }
-  .tile { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 10px; min-width: 0;
-          background: var(--secondary-background-color, rgba(127,127,127,.08)); position: relative; overflow: hidden; }
-  .tile > :not(.spark) { position: relative; }
-  .tile .spark { position: absolute; left: 0; bottom: 0; width: 100%; height: 55%; pointer-events: none; }
-  .spark-a { fill: color-mix(in srgb, var(--c) 12%, transparent); }
-  .spark-l { fill: none; stroke: color-mix(in srgb, var(--c) 50%, transparent); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
-  .tile .icon { color: var(--c, var(--sm-blue)); }
-  .tile .k { font-size: 11px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .tile .v { font-size: 14px; font-weight: 500; }
-  .tile .t { font-size: 11px; color: var(--secondary-text-color); }
-  .tile.up { --c: var(--info-color, #039be5); }
-  .tile.down { --c: var(--sm-ok); }
   .vol { margin-bottom: 8px; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; align-items: center; }
   .vol .row { grid-column: 1; grid-row: 1; }
   .vol:last-child { margin-bottom: 0; }
@@ -2023,7 +2009,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     if (c.show_network !== false) parts.push(this._network(sm));
     if (c.show_storage !== false) parts.push(this._storage(sm));
     if (c.show_processes !== false) parts.push(this._processes(sm));
-    return `<style>${BASE_STYLE}${TILES_STYLE}${FULL_STYLE}</style>
+    return `<style>${BASE_STYLE}${TILES_STYLE}${FULL_STYLE}${NET_STYLE}</style>
       <ha-card>
         ${this._header(sm)}
         ${this._statusRow(sm)}
@@ -2109,7 +2095,16 @@ class SystemMonitorCard extends SystemMonitorBase {
       this._config.show_history === false
         ? null
         : this._history(ifs.flatMap((i) => [sm.nets[i].throughput_network_in, sm.nets[i].throughput_network_out]).filter(Boolean));
-    const tile = (n, rateKey, totalKey, cls, icon, label) => {
+    const rows = ifs.map((i) => this._netRow(sm.nets[i], hist, multi ? ` · ${i}` : ""));
+    return `<div>
+      <div class="section-title">${svgIcon(ICONS.network)}${this._label("network")}${multi ? "" : `<span class="arg" title="${esc(ifs[0])}">· ${esc(ifs[0])}</span>`}</div>
+      ${rows.join("")}
+    </div>`;
+  }
+
+  // The download and upload tiles of an interface, each with its 24 h curve behind the rate when `hist` has it.
+  _netRow(n, hist, sfx = "") {
+    const tile = (rateKey, totalKey, cls, icon, label) => {
       const id = n[rateKey];
       const total = toBytes(this._s(n[totalKey]));
       return `<div class="tile clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">${spark(hist?.[id])}${svgIcon(icon)}<div style="min-width:0">
@@ -2118,18 +2113,10 @@ class SystemMonitorCard extends SystemMonitorBase {
         ${total !== null ? `<div class="t">${this._t("total")} ${fmtBytes(total)}</div>` : ""}
       </div></div>`;
     };
-    const rows = ifs.map((i) => {
-      const n = sm.nets[i];
-      const sfx = multi ? ` · ${i}` : "";
-      return `<div class="net">
-        ${tile(n, "throughput_network_in", "network_in", "down", ICONS.down, this._t("download") + sfx)}
-        ${tile(n, "throughput_network_out", "network_out", "up", ICONS.up, this._t("upload") + sfx)}
+    return `<div class="net">
+        ${tile("throughput_network_in", "network_in", "down", ICONS.down, this._t("download") + sfx)}
+        ${tile("throughput_network_out", "network_out", "up", ICONS.up, this._t("upload") + sfx)}
       </div>`;
-    });
-    return `<div>
-      <div class="section-title">${svgIcon(ICONS.network)}${this._label("network")}${multi ? "" : `<span class="arg" title="${esc(ifs[0])}">· ${esc(ifs[0])}</span>`}</div>
-      ${rows.join("")}
-    </div>`;
   }
 
   _bar(id, icon, label, u, warn, crit) {
@@ -2254,6 +2241,26 @@ class SystemMonitorZoomCard extends SystemMonitorCard {
 // Mini card
 // ---------------------------------------------------------------------------
 
+// Download / upload tiles with their 24 h curve: the network section of the full card, the rates row of the mini card.
+const NET_STYLE = `
+  .net { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .net + .net { margin-top: 6px; }
+  .tile { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 10px; min-width: 0;
+          background: var(--secondary-background-color, rgba(127,127,127,.08)); position: relative; overflow: hidden; }
+  .tile > :not(.spark) { position: relative; }
+  .tile .spark { position: absolute; left: 0; bottom: 0; width: 100%; height: 55%; pointer-events: none; }
+  .spark-a { fill: color-mix(in srgb, var(--c) 12%, transparent); }
+  .spark-l { fill: none; stroke: color-mix(in srgb, var(--c) 50%, transparent); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+  .tile .icon { color: var(--c, var(--sm-blue)); }
+  .tile .k { font-size: 11px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tile .v { font-size: 14px; font-weight: 500; }
+  .tile .t { font-size: 11px; color: var(--secondary-text-color); }
+  .tile.up { --c: var(--info-color, #039be5); }
+  .tile.down { --c: var(--sm-ok); }
+  /* A narrow card (a mini card on 6 columns of a phone): one tile per line, so that each rate keeps its whole text. */
+  @container (max-width: 260px) { .net { grid-template-columns: minmax(0, 1fr); } }
+`;
+
 const MINI_STYLE = `
   /* The full card's logo size: the compact view does not shrink it. */
   .logo { height: 40px; width: 40px; align-self: flex-start; }
@@ -2274,15 +2281,6 @@ const MINI_STYLE = `
   .foot span { display: inline-flex; align-items: center; gap: 2px; }
   .foot .icon { width: 14px; height: 14px; }
   .foot .rates { flex-wrap: wrap; column-gap: 8px; }
-  /* 24 h rate curves: each rate in a small tile, its curve in the lower half behind the text, in the full card's tile colours. */
-  .foot .rates > span { position: relative; overflow: hidden; padding: 3px 6px; border-radius: 6px; }
-  .foot .rates > span:has(.spark) { background: var(--secondary-background-color, rgba(127,127,127,.08)); }
-  .foot .rates > span > :not(.spark) { position: relative; }
-  .foot .rates .down { --c: var(--sm-ok); }
-  .foot .rates .up { --c: var(--info-color, #039be5); }
-  .foot .rates .spark { position: absolute; left: 0; bottom: 0; width: 100%; height: 55%; pointer-events: none; }
-  .spark-a { fill: color-mix(in srgb, var(--c) 12%, transparent); }
-  .spark-l { fill: none; stroke: color-mix(in srgb, var(--c) 50%, transparent); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
 `;
 
 /**
@@ -2345,12 +2343,16 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
       )}</span>`
     );
     const ifs = interfaces(sm, c);
-    if (c.show_network !== false && ifs.length) {
+    // With their 24 h curves, the rates of the first interface get the full card's tiles above the footer (like the
+    // NAS and internet box mini cards); without, they stay in the footer.
+    let netRow = "";
+    if (c.show_network !== false && ifs.length && c.show_history !== false) {
       const n = sm.nets[ifs[0]];
-      const hist = c.show_history === false ? null : this._history([n.throughput_network_in, n.throughput_network_out].filter(Boolean));
-      // One span per direction: each rate opens its own sensor, its 24 h curve drawn behind it.
-      const rate = (id, cls, icon) =>
-        `<span class="clickable ${cls}" data-entity="${id || ""}">${spark(hist?.[id])}${svgIcon(icon)}<span>${fmtRate(toBps(this._s(id)))}</span></span>`;
+      netRow = this._netRow(n, this._history([n.throughput_network_in, n.throughput_network_out].filter(Boolean)));
+    } else if (c.show_network !== false && ifs.length) {
+      const n = sm.nets[ifs[0]];
+      // One span per direction: each rate opens its own sensor.
+      const rate = (id, cls, icon) => `<span class="clickable ${cls}" data-entity="${id || ""}">${svgIcon(icon)}<span>${fmtRate(toBps(this._s(id)))}</span></span>`;
       foot.push(
         `<span class="rates">${rate(n.throughput_network_in, "down", ICONS.down)}${rate(n.throughput_network_out, "up", ICONS.up)}</span>`
       );
@@ -2358,11 +2360,12 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
     const up = uptimeSec(this._s(sc.last_boot));
     if (up !== null)
       foot.push(`<span class="clickable" data-entity="${sc.last_boot}">${svgIcon(ICONS.timer)}${fmtUptime(up, this._hass, this._config)}</span>`);
-    return `<style>${BASE_STYLE}${MINI_STYLE}</style>
+    return `<style>${BASE_STYLE}${MINI_STYLE}${NET_STYLE}</style>
       <ha-card>
         ${this._header(sm)}
         <div class="content">
           ${rows.join("")}
+          ${netRow}
           ${foot.length ? `<div class="foot">${foot.join("")}</div>` : ""}
         </div>
       </ha-card>`;

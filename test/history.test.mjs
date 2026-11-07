@@ -73,19 +73,23 @@ test("rate tiles: no curve and a retry after a minute when the recorder has no s
   assert.equal(n, 2);
 });
 
-test("mini card: the footer rates draw the same 24 h curves", async () => {
+test("mini card: the rates show as tiles with the same 24 h curves above the footer", async () => {
   const calls = [];
   const el = card(lib.SystemMonitorMiniCard, hassWith(calls));
   el._update();
   assert.equal(calls.length, 1);
   assert.equal(calls[0].statistic_ids.length, 2);
   await tick();
-  assert.match(el.html, /<span class="clickable down"[^>]*><svg class="spark"/);
-  assert.match(el.html, /<span class="clickable up"[^>]*><svg class="spark"/);
+  assert.match(el.html, /<div class="tile clickable down"[^>]*><svg class="spark"/);
+  assert.match(el.html, /<div class="tile clickable up"[^>]*><svg class="spark"/);
+  assert.doesNotMatch(el.html, /<span class="rates">/);
   el._update();
   assert.equal(calls.length, 1, "no new query within 5 minutes");
+  // Without the curves, the rates stay in the footer.
   el._config = { show_history: false };
-  assert.doesNotMatch(el._render(), /class="spark"/);
+  const off = el._render();
+  assert.doesNotMatch(off, /class="spark"/);
+  assert.match(off, /<span class="rates">/);
 });
 
 test("editors: show_history among the toggles of both cards", () => {
