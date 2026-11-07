@@ -71,6 +71,7 @@ const STRINGS = {
     title: "Title (optional, defaults to Home Assistant)",
     show_system: "Show system (CPU, RAM, disk, temperature)",
     show_network: "Show network",
+    show_history: "Show 24 h rate history",
     show_storage: "Show storage",
     show_processes: "Show processes",
     zoom: "Zoom button",
@@ -115,6 +116,7 @@ const STRINGS = {
     title: "Titre (facultatif, Home Assistant par défaut)",
     show_system: "Afficher le système (CPU, RAM, disque, température)",
     show_network: "Afficher le réseau",
+    show_history: "Afficher l’historique 24 h des débits",
     show_storage: "Afficher le stockage",
     show_processes: "Afficher les processus",
     zoom: "Bouton zoom",
@@ -159,6 +161,7 @@ const STRINGS = {
     title: "Titel (optional, standardmäßig Home Assistant)",
     show_system: "System anzeigen (CPU, RAM, Datenträger, Temperatur)",
     show_network: "Netzwerk anzeigen",
+    show_history: "24-h-Verlauf der Raten anzeigen",
     show_storage: "Speicher anzeigen",
     show_processes: "Prozesse anzeigen",
     zoom: "Zoom-Schaltfläche",
@@ -203,6 +206,7 @@ const STRINGS = {
     title: "Título (opcional, Home Assistant por defecto)",
     show_system: "Mostrar el sistema (CPU, RAM, disco, temperatura)",
     show_network: "Mostrar la red",
+    show_history: "Mostrar el historial de 24 h de las velocidades",
     show_storage: "Mostrar el almacenamiento",
     show_processes: "Mostrar los procesos",
     zoom: "Botón de zoom",
@@ -248,6 +252,7 @@ const STRINGS = {
     title: "Наслов (опционо, подразумевано је Home Assistant)",
     show_system: "Прикажи систем (CPU, RAM, диск, температура)",
     show_network: "Прикажи мрежу",
+    show_history: "Прикажи историју протока за 24 ч",
     show_storage: "Прикажи складиште",
     show_processes: "Прикажи процесе",
     zoom: "Дугме за увећање",
@@ -293,6 +298,7 @@ const STRINGS = {
     title: "Naslov (opciono, podrazumevano je Home Assistant)",
     show_system: "Prikaži sistem (CPU, RAM, disk, temperatura)",
     show_network: "Prikaži mrežu",
+    show_history: "Prikaži istoriju protoka za 24 č",
     show_storage: "Prikaži skladište",
     show_processes: "Prikaži procese",
     zoom: "Dugme za uvećanje",
@@ -338,6 +344,7 @@ const STRINGS = {
     title: "Titolo (facoltativo, predefinito: Home Assistant)",
     show_system: "Mostra il sistema (CPU, RAM, disco, temperatura)",
     show_network: "Mostra la rete",
+    show_history: "Mostra lo storico 24 h delle velocità",
     show_storage: "Mostra l'archiviazione",
     show_processes: "Mostra i processi",
     zoom: "Pulsante zoom",
@@ -383,6 +390,7 @@ const STRINGS = {
     title: "Titel (optioneel, standaard Home Assistant)",
     show_system: "Systeem tonen (CPU, RAM, schijf, temperatuur)",
     show_network: "Netwerk tonen",
+    show_history: "24-uursgeschiedenis van de snelheden weergeven",
     show_storage: "Opslag tonen",
     show_processes: "Processen tonen",
     zoom: "Zoomknop",
@@ -428,6 +436,7 @@ const STRINGS = {
     title: "Título (opcional, Home Assistant por predefinição)",
     show_system: "Mostrar o sistema (CPU, RAM, disco, temperatura)",
     show_network: "Mostrar a rede",
+    show_history: "Mostrar o histórico de 24 h dos débitos",
     show_storage: "Mostrar o armazenamento",
     show_processes: "Mostrar os processos",
     zoom: "Botão de zoom",
@@ -473,6 +482,7 @@ const STRINGS = {
     title: "Tytuł (opcjonalny, domyślnie Home Assistant)",
     show_system: "Pokaż system (CPU, RAM, dysk, temperatura)",
     show_network: "Pokaż sieć",
+    show_history: "Pokaż historię przepustowości z 24 h",
     show_storage: "Pokaż pamięć masową",
     show_processes: "Pokaż procesy",
     zoom: "Przycisk powiększenia",
@@ -518,6 +528,7 @@ const STRINGS = {
     title: "Titlu (opțional, implicit Home Assistant)",
     show_system: "Afișează sistemul (CPU, RAM, disc, temperatură)",
     show_network: "Afișează rețeaua",
+    show_history: "Afișează istoricul vitezelor pe 24 h",
     show_storage: "Afișează stocarea",
     show_processes: "Afișează procesele",
     zoom: "Buton de zoom",
@@ -563,6 +574,7 @@ const STRINGS = {
     title: "Titel (valgfri, Home Assistant som standard)",
     show_system: "Vis system (CPU, RAM, disk, temperatur)",
     show_network: "Vis netværk",
+    show_history: "Vis 24-timers historik for hastigheder",
     show_storage: "Vis lager",
     show_processes: "Vis processer",
     zoom: "Zoomknap",
@@ -608,6 +620,7 @@ const STRINGS = {
     title: "Titel (valfri, Home Assistant som standard)",
     show_system: "Visa system (CPU, RAM, disk, temperatur)",
     show_network: "Visa nätverk",
+    show_history: "Visa 24 h-historik för hastigheter",
     show_storage: "Visa lagring",
     show_processes: "Visa processer",
     zoom: "Zoomknapp",
@@ -653,6 +666,7 @@ const STRINGS = {
     title: "Заглавие (по избор, по подразбиране Home Assistant)",
     show_system: "Показване на системата (CPU, RAM, диск, температура)",
     show_network: "Показване на мрежата",
+    show_history: "Показване на 24-часовата история на скоростите",
     show_storage: "Показване на хранилището",
     show_processes: "Показване на процесите",
     zoom: "Бутон за мащабиране",
@@ -698,6 +712,7 @@ const STRINGS = {
     title: "Заголовок (необязательно, по умолчанию Home Assistant)",
     show_system: "Показывать систему (CPU, RAM, диск, температура)",
     show_network: "Показывать сеть",
+    show_history: "Показать историю скоростей за 24 ч",
     show_storage: "Показывать хранилище",
     show_processes: "Показывать процессы",
     zoom: "Кнопка масштабирования",
@@ -743,6 +758,7 @@ const STRINGS = {
     title: "Заголовок (необов’язково, типово Home Assistant)",
     show_system: "Показувати систему (CPU, RAM, диск, температура)",
     show_network: "Показувати мережу",
+    show_history: "Показати історію швидкостей за 24 год",
     show_storage: "Показувати сховище",
     show_processes: "Показувати процеси",
     zoom: "Кнопка масштабування",
@@ -788,6 +804,7 @@ const STRINGS = {
     title: "Cím (nem kötelező, alapértelmezés: Home Assistant)",
     show_system: "Rendszer megjelenítése (CPU, RAM, lemez, hőmérséklet)",
     show_network: "Hálózat megjelenítése",
+    show_history: "Sebességek 24 órás előzményeinek megjelenítése",
     show_storage: "Tárhely megjelenítése",
     show_processes: "Folyamatok megjelenítése",
     zoom: "Nagyítás gomb",
@@ -833,6 +850,7 @@ const STRINGS = {
     title: "Názov (voliteľný, predvolene Home Assistant)",
     show_system: "Zobraziť systém (CPU, RAM, disk, teplota)",
     show_network: "Zobraziť sieť",
+    show_history: "Zobraziť 24 h históriu rýchlostí",
     show_storage: "Zobraziť úložisko",
     show_processes: "Zobraziť procesy",
     zoom: "Tlačidlo priblíženia",
@@ -878,6 +896,7 @@ const STRINGS = {
     title: "Název (volitelný, výchozí Home Assistant)",
     show_system: "Zobrazit systém (CPU, RAM, disk, teplota)",
     show_network: "Zobrazit síť",
+    show_history: "Zobrazit 24h historii rychlostí",
     show_storage: "Zobrazit úložiště",
     show_processes: "Zobrazit procesy",
     zoom: "Tlačítko přiblížení",
@@ -923,6 +942,7 @@ const STRINGS = {
     title: "Naslov (neobvezno, privzeto Home Assistant)",
     show_system: "Prikaži sistem (CPU, RAM, disk, temperatura)",
     show_network: "Prikaži omrežje",
+    show_history: "Prikaži 24-urno zgodovino hitrosti",
     show_storage: "Prikaži shrambo",
     show_processes: "Prikaži procese",
     zoom: "Gumb za povečavo",
@@ -968,6 +988,7 @@ const STRINGS = {
     title: "Virsraksts (neobligāts, pēc noklusējuma Home Assistant)",
     show_system: "Rādīt sistēmu (CPU, RAM, disks, temperatūra)",
     show_network: "Rādīt tīklu",
+    show_history: "Rādīt ātrumu 24 h vēsturi",
     show_storage: "Rādīt krātuvi",
     show_processes: "Rādīt procesus",
     zoom: "Tālummaiņas poga",
@@ -1013,6 +1034,7 @@ const STRINGS = {
     title: "Τίτλος (προαιρετικός, προεπιλογή Home Assistant)",
     show_system: "Εμφάνιση συστήματος (CPU, RAM, δίσκος, θερμοκρασία)",
     show_network: "Εμφάνιση δικτύου",
+    show_history: "Εμφάνιση ιστορικού ταχυτήτων 24 ωρών",
     show_storage: "Εμφάνιση αποθήκευσης",
     show_processes: "Εμφάνιση διεργασιών",
     zoom: "Κουμπί μεγέθυνσης",
@@ -1649,6 +1671,15 @@ const BASE_STYLE = `
   .zoom:focus-visible { outline: 2px solid var(--sm-focus); outline-offset: 1px; }
 `;
 
+// Sparkline of a series (24 h of rates), scaled from 0 to its peak; nothing under two points.
+const HIST_REFRESH = 5 * 60000;
+function spark(values) {
+  if (!values || values.length < 2) return "";
+  const peak = Math.max(...values) || 1;
+  const pts = values.map((v, i) => `${((i / (values.length - 1)) * 100).toFixed(2)},${(30 - (Math.max(0, v) / peak) * 28).toFixed(2)}`).join("L");
+  return `<svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path class="spark-a" d="M0,30L${pts}L100,30Z"/><path class="spark-l" d="M${pts}"/></svg>`;
+}
+
 class SystemMonitorBase extends HTMLElement {
   constructor() {
     super();
@@ -1740,6 +1771,34 @@ class SystemMonitorBase extends HTMLElement {
       this.shadowRoot.innerHTML = html;
       if (focused) this.shadowRoot.querySelector(focused)?.focus({ preventScroll: true });
     }
+  }
+
+  // 24 h of 5-minute means from the recorder's statistics, fetched again every 5 minutes. Returns what is
+  // already there (nothing at first): the card renders again when the answer comes.
+  _history(ids) {
+    const key = ids.join(",");
+    if (key && this._hass.callWS && (this._histKey !== key || Date.now() - this._histAt > HIST_REFRESH)) {
+      this._histKey = key;
+      this._histAt = Date.now();
+      this._hass
+        .callWS({
+          type: "recorder/statistics_during_period",
+          start_time: new Date(Date.now() - 864e5).toISOString(),
+          statistic_ids: ids,
+          period: "5minute",
+          types: ["mean"],
+        })
+        .then((r) => {
+          if (this._histKey !== key) return;
+          this._hist = Object.fromEntries(ids.map((id) => [id, (r?.[id] || []).map((p) => p.mean).filter(Number.isFinite)]));
+          this._update();
+        })
+        // No statistics (sensor without state_class, recorder off): try again in a minute, no curve meanwhile.
+        .catch(() => {
+          this._histAt = Date.now() - HIST_REFRESH + 60000;
+        });
+    }
+    return this._histKey === key ? this._hist : null;
   }
 
   _header(sm, aside = "") {
@@ -1908,7 +1967,11 @@ const FULL_STYLE = `
   .net { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
   .net + .net { margin-top: 6px; }
   .tile { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 10px; min-width: 0;
-          background: var(--secondary-background-color, rgba(127,127,127,.08)); }
+          background: var(--secondary-background-color, rgba(127,127,127,.08)); position: relative; overflow: hidden; }
+  .tile > :not(.spark) { position: relative; }
+  .tile .spark { position: absolute; left: 0; bottom: 0; width: 100%; height: 55%; pointer-events: none; }
+  .spark-a { fill: color-mix(in srgb, var(--c) 12%, transparent); }
+  .spark-l { fill: none; stroke: color-mix(in srgb, var(--c) 50%, transparent); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
   .tile .icon { color: var(--c, var(--sm-blue)); }
   .tile .k { font-size: 11px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tile .v { font-size: 14px; font-weight: 500; }
@@ -2042,10 +2105,14 @@ class SystemMonitorCard extends SystemMonitorBase {
     const ifs = interfaces(sm, this._config);
     if (!ifs.length) return "";
     const multi = ifs.length > 1;
+    const hist =
+      this._config.show_history === false
+        ? null
+        : this._history(ifs.flatMap((i) => [sm.nets[i].throughput_network_in, sm.nets[i].throughput_network_out]).filter(Boolean));
     const tile = (n, rateKey, totalKey, cls, icon, label) => {
       const id = n[rateKey];
       const total = toBytes(this._s(n[totalKey]));
-      return `<div class="tile clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">${svgIcon(icon)}<div style="min-width:0">
+      return `<div class="tile clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">${spark(hist?.[id])}${svgIcon(icon)}<div style="min-width:0">
         <div class="k" title="${esc(label)}">${esc(label)}</div>
         <div class="v">${fmtRate(toBps(this._s(id)))}</div>
         ${total !== null ? `<div class="t">${this._t("total")} ${fmtBytes(total)}</div>` : ""}
@@ -2207,6 +2274,15 @@ const MINI_STYLE = `
   .foot span { display: inline-flex; align-items: center; gap: 2px; }
   .foot .icon { width: 14px; height: 14px; }
   .foot .rates { flex-wrap: wrap; column-gap: 8px; }
+  /* 24 h rate curves: each rate in a small tile, its curve in the lower half behind the text, in the full card's tile colours. */
+  .foot .rates > span { position: relative; overflow: hidden; padding: 3px 6px; border-radius: 6px; }
+  .foot .rates > span:has(.spark) { background: var(--secondary-background-color, rgba(127,127,127,.08)); }
+  .foot .rates > span > :not(.spark) { position: relative; }
+  .foot .rates .down { --c: var(--sm-ok); }
+  .foot .rates .up { --c: var(--info-color, #039be5); }
+  .foot .rates .spark { position: absolute; left: 0; bottom: 0; width: 100%; height: 55%; pointer-events: none; }
+  .spark-a { fill: color-mix(in srgb, var(--c) 12%, transparent); }
+  .spark-l { fill: none; stroke: color-mix(in srgb, var(--c) 50%, transparent); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
 `;
 
 /**
@@ -2271,13 +2347,12 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
     const ifs = interfaces(sm, c);
     if (c.show_network !== false && ifs.length) {
       const n = sm.nets[ifs[0]];
-      // One span per direction: each rate opens its own sensor.
+      const hist = c.show_history === false ? null : this._history([n.throughput_network_in, n.throughput_network_out].filter(Boolean));
+      // One span per direction: each rate opens its own sensor, its 24 h curve drawn behind it.
+      const rate = (id, cls, icon) =>
+        `<span class="clickable ${cls}" data-entity="${id || ""}">${spark(hist?.[id])}${svgIcon(icon)}<span>${fmtRate(toBps(this._s(id)))}</span></span>`;
       foot.push(
-        `<span class="rates"><span class="clickable" data-entity="${n.throughput_network_in || ""}">${svgIcon(ICONS.down)}${fmtRate(
-          toBps(this._s(n.throughput_network_in))
-        )}</span><span class="clickable" data-entity="${n.throughput_network_out || ""}">${svgIcon(ICONS.up)}${fmtRate(
-          toBps(this._s(n.throughput_network_out))
-        )}</span></span>`
+        `<span class="rates">${rate(n.throughput_network_in, "down", ICONS.down)}${rate(n.throughput_network_out, "up", ICONS.up)}</span>`
       );
     }
     const up = uptimeSec(this._s(sc.last_boot));
@@ -2415,13 +2490,13 @@ class SystemMonitorEditorBase extends HTMLElement {
 
 class SystemMonitorCardEditor extends SystemMonitorEditorBase {
   static get toggles() {
-    return ["show_system", "show_network", "show_storage", "show_processes"];
+    return ["show_system", "show_network", "show_history", "show_storage", "show_processes"];
   }
 }
 
 class SystemMonitorMiniCardEditor extends SystemMonitorEditorBase {
   static get toggles() {
-    return ["show_storage", "show_network", "zoom"];
+    return ["show_storage", "show_network", "show_history", "zoom"];
   }
 }
 

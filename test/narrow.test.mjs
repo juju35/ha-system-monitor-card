@@ -228,7 +228,7 @@ test("mini card at phone width: the metric grid fits inside the card with the wh
 
 test("mini card footer: the two network rates wrap rather than run out of a narrow card", () => {
   const html = card(lib.SystemMonitorMiniCard, hassWith())._render();
-  assert.match(html, /<span class="rates"><span class="clickable"[^>]*>[\s\S]*?<\/span><span class="clickable"/);
+  assert.match(html, /<span class="rates"><span class="clickable[^"]*"[^>]*>[\s\S]*?<\/span><span class="clickable[^"]*"/);
   assert.doesNotMatch(html, /&nbsp;&nbsp;<span class="clickable"/);
   assert.match(rulesFor(styleOf(html), ".foot .rates"), /flex-wrap:\s*wrap/);
 });
