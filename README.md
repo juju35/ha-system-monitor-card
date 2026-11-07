@@ -1,6 +1,6 @@
 # ha-system-monitor-card
 
-[![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+[![Marketplace](https://img.shields.io/badge/Marketplace-Custom-41BDF5.svg)](https://www.home-assistant.io/integrations/marketplace/)
 [![HACS Validation](https://github.com/juju35/ha-system-monitor-card/actions/workflows/hacs.yml/badge.svg)](https://github.com/juju35/ha-system-monitor-card/actions/workflows/hacs.yml)
 [![Validate](https://github.com/juju35/ha-system-monitor-card/actions/workflows/validate.yml/badge.svg)](https://github.com/juju35/ha-system-monitor-card/actions/workflows/validate.yml)
 [![Lint](https://github.com/juju35/ha-system-monitor-card/actions/workflows/lint.yml/badge.svg)](https://github.com/juju35/ha-system-monitor-card/actions/workflows/lint.yml)
@@ -14,7 +14,7 @@ Lovelace cards for Home Assistant to monitor the machine running Home Assistant 
 
 The cards are built on top of the core [System Monitor integration](https://www.home-assistant.io/integrations/systemmonitor/): entities are **discovered automatically**, you don't have to pick them one by one, and it works whatever the language of your installation.
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-system-monitor-card&category=plugin)
+[![Open your Home Assistant instance and open a repository inside the Marketplace.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=juju35&repository=ha-system-monitor-card&category=plugin)
 
 | System Monitor Card | System Monitor Mini Card |
 |---|---|
@@ -65,19 +65,19 @@ Sections and gauges without any enabled sensor are simply not displayed.
 
 ## Installation
 
-### Via HACS (recommended)
+### Via the Marketplace (recommended)
 
 Click the button below to add the repository directly:
 
-[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-system-monitor-card&category=plugin)
+[![Add to the Marketplace](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=juju35&repository=ha-system-monitor-card&category=plugin)
 
-Then click **Download**, and reload your browser when HACS asks you to.
+Then click **Install**, and reload your browser when the Marketplace asks you to.
 
 Or manually:
 
-1. Open HACS → **⋮** (top right) → **Custom repositories**
+1. Open **Settings → Marketplace → Add from link** (top right; this needs a GitHub account connected)
 2. Add `https://github.com/juju35/ha-system-monitor-card` — Type: **Dashboard**
-3. Search for **System Monitor Card** and click **Download**
+3. Open **System Monitor Card** and click **Install**
 4. Clear your browser cache and refresh
 
 ### Manual
@@ -204,7 +204,7 @@ npm run check        # builds and checks the card (run in CI)
 npm run screenshots  # renders the cards with mock data into screenshots/ (ffmpeg compares the pixels of the captures)
 ```
 
-`dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where HACS downloads it from.
+`dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where the Marketplace installs it from.
 
 ### Releasing
 
