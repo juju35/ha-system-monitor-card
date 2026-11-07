@@ -72,6 +72,16 @@ const STRINGS = {
     show_system: "Show system (CPU, RAM, disk, temperature)",
     show_network: "Show network",
     show_history: "Show 24 h rate history",
+    cpu_warning: "CPU warning (%)",
+    cpu_critical: "CPU critical (%)",
+    ram_warning: "RAM warning (%)",
+    ram_critical: "RAM critical (%)",
+    disk_warning: "Disk warning (% used)",
+    disk_critical: "Disk critical (% used)",
+    temp_warning: "Temperature warning (°C)",
+    temp_critical: "Temperature critical (°C)",
+    swap_warning: "Swap warning (% used)",
+    swap_critical: "Swap critical (% used)",
     show_storage: "Show storage",
     show_processes: "Show processes",
     zoom: "Zoom button",
@@ -117,6 +127,16 @@ const STRINGS = {
     show_system: "Afficher le système (CPU, RAM, disque, température)",
     show_network: "Afficher le réseau",
     show_history: "Afficher l’historique 24 h des débits",
+    cpu_warning: "Seuil d’alerte CPU (%)",
+    cpu_critical: "Seuil critique CPU (%)",
+    ram_warning: "Seuil d’alerte RAM (%)",
+    ram_critical: "Seuil critique RAM (%)",
+    disk_warning: "Seuil d’alerte disque (% utilisé)",
+    disk_critical: "Seuil critique disque (% utilisé)",
+    temp_warning: "Seuil d’alerte température (°C)",
+    temp_critical: "Seuil critique température (°C)",
+    swap_warning: "Seuil d’alerte swap (% utilisé)",
+    swap_critical: "Seuil critique swap (% utilisé)",
     show_storage: "Afficher le stockage",
     show_processes: "Afficher les processus",
     zoom: "Bouton zoom",
@@ -162,6 +182,16 @@ const STRINGS = {
     show_system: "System anzeigen (CPU, RAM, Datenträger, Temperatur)",
     show_network: "Netzwerk anzeigen",
     show_history: "24-h-Verlauf der Raten anzeigen",
+    cpu_warning: "CPU-Warnschwelle (%)",
+    cpu_critical: "Kritische CPU-Schwelle (%)",
+    ram_warning: "RAM-Warnschwelle (%)",
+    ram_critical: "Kritische RAM-Schwelle (%)",
+    disk_warning: "Datenträger-Warnschwelle (% belegt)",
+    disk_critical: "Kritische Datenträgerschwelle (% belegt)",
+    temp_warning: "Temperatur-Warnschwelle (°C)",
+    temp_critical: "Kritische Temperaturschwelle (°C)",
+    swap_warning: "Swap-Warnschwelle (% belegt)",
+    swap_critical: "Kritische Swap-Schwelle (% belegt)",
     show_storage: "Speicher anzeigen",
     show_processes: "Prozesse anzeigen",
     zoom: "Zoom-Schaltfläche",
@@ -207,6 +237,16 @@ const STRINGS = {
     show_system: "Mostrar el sistema (CPU, RAM, disco, temperatura)",
     show_network: "Mostrar la red",
     show_history: "Mostrar el historial de 24 h de las velocidades",
+    cpu_warning: "Umbral de aviso de CPU (%)",
+    cpu_critical: "Umbral crítico de CPU (%)",
+    ram_warning: "Umbral de aviso de RAM (%)",
+    ram_critical: "Umbral crítico de RAM (%)",
+    disk_warning: "Umbral de aviso de disco (% usado)",
+    disk_critical: "Umbral crítico de disco (% usado)",
+    temp_warning: "Umbral de aviso de temperatura (°C)",
+    temp_critical: "Umbral crítico de temperatura (°C)",
+    swap_warning: "Umbral de aviso de swap (% usado)",
+    swap_critical: "Umbral crítico de swap (% usado)",
     show_storage: "Mostrar el almacenamiento",
     show_processes: "Mostrar los procesos",
     zoom: "Botón de zoom",
@@ -253,6 +293,16 @@ const STRINGS = {
     show_system: "Прикажи систем (CPU, RAM, диск, температура)",
     show_network: "Прикажи мрежу",
     show_history: "Прикажи историју протока за 24 ч",
+    cpu_warning: "Праг упозорења ЦПУ (%)",
+    cpu_critical: "Критични праг ЦПУ (%)",
+    ram_warning: "Праг упозорења РАМ (%)",
+    ram_critical: "Критични праг РАМ (%)",
+    disk_warning: "Праг упозорења диска (% заузето)",
+    disk_critical: "Критични праг диска (% заузето)",
+    temp_warning: "Праг упозорења температуре (°)",
+    temp_critical: "Критични праг температуре (°)",
+    swap_warning: "Праг упозорења свопа (% заузето)",
+    swap_critical: "Критични праг свопа (% заузето)",
     show_storage: "Прикажи складиште",
     show_processes: "Прикажи процесе",
     zoom: "Дугме за увећање",
@@ -299,6 +349,16 @@ const STRINGS = {
     show_system: "Prikaži sistem (CPU, RAM, disk, temperatura)",
     show_network: "Prikaži mrežu",
     show_history: "Prikaži istoriju protoka za 24 č",
+    cpu_warning: "Prag upozorenja CPU (%)",
+    cpu_critical: "Kritični prag CPU (%)",
+    ram_warning: "Prag upozorenja RAM (%)",
+    ram_critical: "Kritični prag RAM (%)",
+    disk_warning: "Prag upozorenja diska (% zauzeto)",
+    disk_critical: "Kritični prag diska (% zauzeto)",
+    temp_warning: "Prag upozorenja temperature (°C)",
+    temp_critical: "Kritični prag temperature (°C)",
+    swap_warning: "Prag upozorenja swapa (% zauzeto)",
+    swap_critical: "Kritični prag swapa (% zauzeto)",
     show_storage: "Prikaži skladište",
     show_processes: "Prikaži procese",
     zoom: "Dugme za uvećanje",
@@ -345,6 +405,16 @@ const STRINGS = {
     show_system: "Mostra il sistema (CPU, RAM, disco, temperatura)",
     show_network: "Mostra la rete",
     show_history: "Mostra lo storico 24 h delle velocità",
+    cpu_warning: "Soglia di avviso CPU (%)",
+    cpu_critical: "Soglia critica CPU (%)",
+    ram_warning: "Soglia di avviso RAM (%)",
+    ram_critical: "Soglia critica RAM (%)",
+    disk_warning: "Soglia di avviso disco (% usato)",
+    disk_critical: "Soglia critica disco (% usato)",
+    temp_warning: "Soglia di avviso temperatura (°C)",
+    temp_critical: "Soglia critica temperatura (°C)",
+    swap_warning: "Soglia di avviso swap (% usato)",
+    swap_critical: "Soglia critica swap (% usato)",
     show_storage: "Mostra l'archiviazione",
     show_processes: "Mostra i processi",
     zoom: "Pulsante zoom",
@@ -391,6 +461,16 @@ const STRINGS = {
     show_system: "Systeem tonen (CPU, RAM, schijf, temperatuur)",
     show_network: "Netwerk tonen",
     show_history: "24-uursgeschiedenis van de snelheden weergeven",
+    cpu_warning: "Waarschuwingsdrempel CPU (%)",
+    cpu_critical: "Kritieke drempel CPU (%)",
+    ram_warning: "Waarschuwingsdrempel RAM (%)",
+    ram_critical: "Kritieke drempel RAM (%)",
+    disk_warning: "Waarschuwingsdrempel schijf (% gebruikt)",
+    disk_critical: "Kritieke drempel schijf (% gebruikt)",
+    temp_warning: "Waarschuwingsdrempel temperatuur (°C)",
+    temp_critical: "Kritieke drempel temperatuur (°C)",
+    swap_warning: "Waarschuwingsdrempel swap (% gebruikt)",
+    swap_critical: "Kritieke drempel swap (% gebruikt)",
     show_storage: "Opslag tonen",
     show_processes: "Processen tonen",
     zoom: "Zoomknop",
@@ -437,6 +517,16 @@ const STRINGS = {
     show_system: "Mostrar o sistema (CPU, RAM, disco, temperatura)",
     show_network: "Mostrar a rede",
     show_history: "Mostrar o histórico de 24 h dos débitos",
+    cpu_warning: "Limiar de aviso da CPU (%)",
+    cpu_critical: "Limiar crítico da CPU (%)",
+    ram_warning: "Limiar de aviso da RAM (%)",
+    ram_critical: "Limiar crítico da RAM (%)",
+    disk_warning: "Limiar de aviso do disco (% usado)",
+    disk_critical: "Limiar crítico do disco (% usado)",
+    temp_warning: "Limiar de aviso de temperatura (°C)",
+    temp_critical: "Limiar crítico de temperatura (°C)",
+    swap_warning: "Limiar de aviso do swap (% usado)",
+    swap_critical: "Limiar crítico do swap (% usado)",
     show_storage: "Mostrar o armazenamento",
     show_processes: "Mostrar os processos",
     zoom: "Botão de zoom",
@@ -483,6 +573,16 @@ const STRINGS = {
     show_system: "Pokaż system (CPU, RAM, dysk, temperatura)",
     show_network: "Pokaż sieć",
     show_history: "Pokaż historię przepustowości z 24 h",
+    cpu_warning: "Próg ostrzeżenia CPU (%)",
+    cpu_critical: "Próg krytyczny CPU (%)",
+    ram_warning: "Próg ostrzeżenia RAM (%)",
+    ram_critical: "Próg krytyczny RAM (%)",
+    disk_warning: "Próg ostrzeżenia dysku (% zajęte)",
+    disk_critical: "Próg krytyczny dysku (% zajęte)",
+    temp_warning: "Próg ostrzeżenia temperatury (°C)",
+    temp_critical: "Próg krytyczny temperatury (°C)",
+    swap_warning: "Próg ostrzeżenia swap (% zajęte)",
+    swap_critical: "Próg krytyczny swap (% zajęte)",
     show_storage: "Pokaż pamięć masową",
     show_processes: "Pokaż procesy",
     zoom: "Przycisk powiększenia",
@@ -529,6 +629,16 @@ const STRINGS = {
     show_system: "Afișează sistemul (CPU, RAM, disc, temperatură)",
     show_network: "Afișează rețeaua",
     show_history: "Afișează istoricul vitezelor pe 24 h",
+    cpu_warning: "Prag de avertizare CPU (%)",
+    cpu_critical: "Prag critic CPU (%)",
+    ram_warning: "Prag de avertizare RAM (%)",
+    ram_critical: "Prag critic RAM (%)",
+    disk_warning: "Prag de avertizare disc (% utilizat)",
+    disk_critical: "Prag critic disc (% utilizat)",
+    temp_warning: "Prag de avertizare temperatură (°C)",
+    temp_critical: "Prag critic temperatură (°C)",
+    swap_warning: "Prag de avertizare swap (% utilizat)",
+    swap_critical: "Prag critic swap (% utilizat)",
     show_storage: "Afișează stocarea",
     show_processes: "Afișează procesele",
     zoom: "Buton de zoom",
@@ -575,6 +685,16 @@ const STRINGS = {
     show_system: "Vis system (CPU, RAM, disk, temperatur)",
     show_network: "Vis netværk",
     show_history: "Vis 24-timers historik for hastigheder",
+    cpu_warning: "Advarselsgrænse for CPU (%)",
+    cpu_critical: "Kritisk grænse for CPU (%)",
+    ram_warning: "Advarselsgrænse for RAM (%)",
+    ram_critical: "Kritisk grænse for RAM (%)",
+    disk_warning: "Advarselsgrænse for disk (% brugt)",
+    disk_critical: "Kritisk grænse for disk (% brugt)",
+    temp_warning: "Advarselsgrænse for temperatur (°C)",
+    temp_critical: "Kritisk grænse for temperatur (°C)",
+    swap_warning: "Advarselsgrænse for swap (% brugt)",
+    swap_critical: "Kritisk grænse for swap (% brugt)",
     show_storage: "Vis lager",
     show_processes: "Vis processer",
     zoom: "Zoomknap",
@@ -621,6 +741,16 @@ const STRINGS = {
     show_system: "Visa system (CPU, RAM, disk, temperatur)",
     show_network: "Visa nätverk",
     show_history: "Visa 24 h-historik för hastigheter",
+    cpu_warning: "Varningsgräns för CPU (%)",
+    cpu_critical: "Kritisk gräns för CPU (%)",
+    ram_warning: "Varningsgräns för RAM (%)",
+    ram_critical: "Kritisk gräns för RAM (%)",
+    disk_warning: "Varningsgräns för disk (% använt)",
+    disk_critical: "Kritisk gräns för disk (% använt)",
+    temp_warning: "Varningsgräns för temperatur (°C)",
+    temp_critical: "Kritisk gräns för temperatur (°C)",
+    swap_warning: "Varningsgräns för swap (% använt)",
+    swap_critical: "Kritisk gräns för swap (% använt)",
     show_storage: "Visa lagring",
     show_processes: "Visa processer",
     zoom: "Zoomknapp",
@@ -667,6 +797,16 @@ const STRINGS = {
     show_system: "Показване на системата (CPU, RAM, диск, температура)",
     show_network: "Показване на мрежата",
     show_history: "Показване на 24-часовата история на скоростите",
+    cpu_warning: "Праг за предупреждение за CPU (%)",
+    cpu_critical: "Критичен праг за CPU (%)",
+    ram_warning: "Праг за предупреждение за RAM (%)",
+    ram_critical: "Критичен праг за RAM (%)",
+    disk_warning: "Праг за предупреждение за диска (% заето)",
+    disk_critical: "Критичен праг за диска (% заето)",
+    temp_warning: "Праг за предупреждение за температура (°C)",
+    temp_critical: "Критичен праг за температура (°C)",
+    swap_warning: "Праг за предупреждение за swap (% заето)",
+    swap_critical: "Критичен праг за swap (% заето)",
     show_storage: "Показване на хранилището",
     show_processes: "Показване на процесите",
     zoom: "Бутон за мащабиране",
@@ -713,6 +853,16 @@ const STRINGS = {
     show_system: "Показывать систему (CPU, RAM, диск, температура)",
     show_network: "Показывать сеть",
     show_history: "Показать историю скоростей за 24 ч",
+    cpu_warning: "Порог предупреждения CPU (%)",
+    cpu_critical: "Критический порог CPU (%)",
+    ram_warning: "Порог предупреждения RAM (%)",
+    ram_critical: "Критический порог RAM (%)",
+    disk_warning: "Порог предупреждения диска (% занято)",
+    disk_critical: "Критический порог диска (% занято)",
+    temp_warning: "Порог предупреждения температуры (°C)",
+    temp_critical: "Критический порог температуры (°C)",
+    swap_warning: "Порог предупреждения swap (% занято)",
+    swap_critical: "Критический порог swap (% занято)",
     show_storage: "Показывать хранилище",
     show_processes: "Показывать процессы",
     zoom: "Кнопка масштабирования",
@@ -759,6 +909,16 @@ const STRINGS = {
     show_system: "Показувати систему (CPU, RAM, диск, температура)",
     show_network: "Показувати мережу",
     show_history: "Показати історію швидкостей за 24 год",
+    cpu_warning: "Поріг попередження CPU (%)",
+    cpu_critical: "Критичний поріг CPU (%)",
+    ram_warning: "Поріг попередження RAM (%)",
+    ram_critical: "Критичний поріг RAM (%)",
+    disk_warning: "Поріг попередження диска (% зайнято)",
+    disk_critical: "Критичний поріг диска (% зайнято)",
+    temp_warning: "Поріг попередження температури (°C)",
+    temp_critical: "Критичний поріг температури (°C)",
+    swap_warning: "Поріг попередження swap (% зайнято)",
+    swap_critical: "Критичний поріг swap (% зайнято)",
     show_storage: "Показувати сховище",
     show_processes: "Показувати процеси",
     zoom: "Кнопка масштабування",
@@ -805,6 +965,16 @@ const STRINGS = {
     show_system: "Rendszer megjelenítése (CPU, RAM, lemez, hőmérséklet)",
     show_network: "Hálózat megjelenítése",
     show_history: "Sebességek 24 órás előzményeinek megjelenítése",
+    cpu_warning: "CPU figyelmeztetési küszöb (%)",
+    cpu_critical: "CPU kritikus küszöb (%)",
+    ram_warning: "RAM figyelmeztetési küszöb (%)",
+    ram_critical: "RAM kritikus küszöb (%)",
+    disk_warning: "Lemez figyelmeztetési küszöb (% foglalt)",
+    disk_critical: "Lemez kritikus küszöb (% foglalt)",
+    temp_warning: "Hőmérséklet figyelmeztetési küszöb (°C)",
+    temp_critical: "Hőmérséklet kritikus küszöb (°C)",
+    swap_warning: "Swap figyelmeztetési küszöb (% foglalt)",
+    swap_critical: "Swap kritikus küszöb (% foglalt)",
     show_storage: "Tárhely megjelenítése",
     show_processes: "Folyamatok megjelenítése",
     zoom: "Nagyítás gomb",
@@ -851,6 +1021,16 @@ const STRINGS = {
     show_system: "Zobraziť systém (CPU, RAM, disk, teplota)",
     show_network: "Zobraziť sieť",
     show_history: "Zobraziť 24 h históriu rýchlostí",
+    cpu_warning: "Prah upozornenia CPU (%)",
+    cpu_critical: "Kritický prah CPU (%)",
+    ram_warning: "Prah upozornenia RAM (%)",
+    ram_critical: "Kritický prah RAM (%)",
+    disk_warning: "Prah upozornenia disku (% obsadené)",
+    disk_critical: "Kritický prah disku (% obsadené)",
+    temp_warning: "Prah upozornenia teploty (°C)",
+    temp_critical: "Kritický prah teploty (°C)",
+    swap_warning: "Prah upozornenia swapu (% obsadené)",
+    swap_critical: "Kritický prah swapu (% obsadené)",
     show_storage: "Zobraziť úložisko",
     show_processes: "Zobraziť procesy",
     zoom: "Tlačidlo priblíženia",
@@ -897,6 +1077,16 @@ const STRINGS = {
     show_system: "Zobrazit systém (CPU, RAM, disk, teplota)",
     show_network: "Zobrazit síť",
     show_history: "Zobrazit 24h historii rychlostí",
+    cpu_warning: "Práh varování CPU (%)",
+    cpu_critical: "Kritický práh CPU (%)",
+    ram_warning: "Práh varování RAM (%)",
+    ram_critical: "Kritický práh RAM (%)",
+    disk_warning: "Práh varování disku (% obsazeno)",
+    disk_critical: "Kritický práh disku (% obsazeno)",
+    temp_warning: "Práh varování teploty (°C)",
+    temp_critical: "Kritický práh teploty (°C)",
+    swap_warning: "Práh varování swapu (% obsazeno)",
+    swap_critical: "Kritický práh swapu (% obsazeno)",
     show_storage: "Zobrazit úložiště",
     show_processes: "Zobrazit procesy",
     zoom: "Tlačítko přiblížení",
@@ -943,6 +1133,16 @@ const STRINGS = {
     show_system: "Prikaži sistem (CPU, RAM, disk, temperatura)",
     show_network: "Prikaži omrežje",
     show_history: "Prikaži 24-urno zgodovino hitrosti",
+    cpu_warning: "Prag opozorila CPU (%)",
+    cpu_critical: "Kritični prag CPU (%)",
+    ram_warning: "Prag opozorila RAM (%)",
+    ram_critical: "Kritični prag RAM (%)",
+    disk_warning: "Prag opozorila diska (% zasedeno)",
+    disk_critical: "Kritični prag diska (% zasedeno)",
+    temp_warning: "Prag opozorila temperature (°C)",
+    temp_critical: "Kritični prag temperature (°C)",
+    swap_warning: "Prag opozorila swapa (% zasedeno)",
+    swap_critical: "Kritični prag swapa (% zasedeno)",
     show_storage: "Prikaži shrambo",
     show_processes: "Prikaži procese",
     zoom: "Gumb za povečavo",
@@ -989,6 +1189,16 @@ const STRINGS = {
     show_system: "Rādīt sistēmu (CPU, RAM, disks, temperatūra)",
     show_network: "Rādīt tīklu",
     show_history: "Rādīt ātrumu 24 h vēsturi",
+    cpu_warning: "CPU brīdinājuma slieksnis (%)",
+    cpu_critical: "CPU kritiskais slieksnis (%)",
+    ram_warning: "RAM brīdinājuma slieksnis (%)",
+    ram_critical: "RAM kritiskais slieksnis (%)",
+    disk_warning: "Diska brīdinājuma slieksnis (% aizņemts)",
+    disk_critical: "Diska kritiskais slieksnis (% aizņemts)",
+    temp_warning: "Temperatūras brīdinājuma slieksnis (°C)",
+    temp_critical: "Temperatūras kritiskais slieksnis (°C)",
+    swap_warning: "Swap brīdinājuma slieksnis (% aizņemts)",
+    swap_critical: "Swap kritiskais slieksnis (% aizņemts)",
     show_storage: "Rādīt krātuvi",
     show_processes: "Rādīt procesus",
     zoom: "Tālummaiņas poga",
@@ -1035,6 +1245,16 @@ const STRINGS = {
     show_system: "Εμφάνιση συστήματος (CPU, RAM, δίσκος, θερμοκρασία)",
     show_network: "Εμφάνιση δικτύου",
     show_history: "Εμφάνιση ιστορικού ταχυτήτων 24 ωρών",
+    cpu_warning: "Όριο προειδοποίησης CPU (%)",
+    cpu_critical: "Κρίσιμο όριο CPU (%)",
+    ram_warning: "Όριο προειδοποίησης RAM (%)",
+    ram_critical: "Κρίσιμο όριο RAM (%)",
+    disk_warning: "Όριο προειδοποίησης δίσκου (% σε χρήση)",
+    disk_critical: "Κρίσιμο όριο δίσκου (% σε χρήση)",
+    temp_warning: "Όριο προειδοποίησης θερμοκρασίας (°C)",
+    temp_critical: "Κρίσιμο όριο θερμοκρασίας (°C)",
+    swap_warning: "Όριο προειδοποίησης swap (% σε χρήση)",
+    swap_critical: "Κρίσιμο όριο swap (% σε χρήση)",
     show_storage: "Εμφάνιση αποθήκευσης",
     show_processes: "Εμφάνιση διεργασιών",
     zoom: "Κουμπί μεγέθυνσης",
@@ -1144,6 +1364,31 @@ const temperature = (s, hass) => {
 };
 
 const level = (v, warn, crit) => (v === null ? "" : v >= crit ? "crit" : v >= warn ? "warn" : "ok");
+
+// Default warning / critical thresholds: percentages, the CPU temperature in °C. Each can be set in the card options
+// (`cpu_warning`, `cpu_critical`, `ram_warning`…).
+const THRESHOLDS = {
+  cpu_warning: 70,
+  cpu_critical: 90,
+  ram_warning: 80,
+  ram_critical: 95,
+  disk_warning: 80,
+  disk_critical: 90,
+  temp_warning: 75,
+  temp_critical: 90,
+  swap_warning: 50,
+  swap_critical: 80,
+};
+
+/** A threshold option as a number, or its default when unset or not a number. */
+const threshold = (config, key) => {
+  const v = config?.[key];
+  const n = v === "" || v === null || v === undefined ? Number.NaN : Number(v);
+  return Number.isFinite(n) ? n : THRESHOLDS[key];
+};
+
+/** The level ("ok", "warn", "crit") of a metric's value against the thresholds of the card's config. */
+const metricLevel = (config, metric, v) => level(v, threshold(config, `${metric}_warning`), threshold(config, `${metric}_critical`));
 
 const svgIcon = (path, cls = "") => `<svg class="icon ${cls}" viewBox="0 0 24 24"><path d="${path}"/></svg>`;
 
@@ -1671,14 +1916,41 @@ const BASE_STYLE = `
   .zoom:focus-visible { outline: 2px solid var(--sm-focus); outline-offset: 1px; }
 `;
 
-// Sparkline of a series (24 h of rates), scaled from 0 to its peak; nothing under two points.
+// Sparkline of a series of [time (ms), value] points (24 h of 5-minute rate means), on a real time axis: x is the
+// point's time over the 24 h window ending at `end`, y its value scaled from 0 to the series' peak. Points more than
+// two periods apart are not joined: the curve breaks where the recorder has no data. Runs of a single point are not
+// drawn; nothing at all without a run of two points.
 const HIST_REFRESH = 5 * 60000;
-function spark(values) {
-  if (!values || values.length < 2) return "";
-  const peak = Math.max(...values) || 1;
-  const pts = values.map((v, i) => `${((i / (values.length - 1)) * 100).toFixed(2)},${(30 - (Math.max(0, v) / peak) * 28).toFixed(2)}`).join("L");
-  return `<svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path class="spark-a" d="M0,30L${pts}L100,30Z"/><path class="spark-l" d="M${pts}"/></svg>`;
+const HIST_WINDOW = 864e5;
+const HIST_PERIOD = 5 * 60000;
+function spark(points, end) {
+  if (!points || points.length < 2) return "";
+  const start = end - HIST_WINDOW;
+  const inWindow = points.filter(([at]) => at >= start && at <= end).sort((a, b) => a[0] - b[0]);
+  const runs = [];
+  let run = [];
+  for (const p of inWindow) {
+    if (run.length && p[0] - run[run.length - 1][0] > 2 * HIST_PERIOD) {
+      runs.push(run);
+      run = [];
+    }
+    run.push(p);
+  }
+  runs.push(run);
+  const drawn = runs.filter((r) => r.length >= 2);
+  if (!drawn.length) return "";
+  const peak = Math.max(...drawn.flat().map(([, v]) => v)) || 1;
+  const x = (at) => (((at - start) / HIST_WINDOW) * 100).toFixed(2);
+  const y = (v) => (30 - (Math.max(0, v) / peak) * 28).toFixed(2);
+  const lines = drawn.map((r) => `M${r.map(([at, v]) => `${x(at)},${y(v)}`).join("L")}`);
+  const areas = drawn.map((r, i) => `M${x(r[0][0])},30L${lines[i].slice(1)}L${x(r[r.length - 1][0])},30Z`);
+  return `<svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path class="spark-a" d="${areas.join("")}"/><path class="spark-l" d="${lines.join(
+    ""
+  )}"/></svg>`;
 }
+
+/** Time of a recorder statistics row in ms: a number (Home Assistant 2023.3 and later) or an ISO date string. */
+const statTime = (p) => (typeof p.start === "number" ? p.start : Date.parse(p.start));
 
 class SystemMonitorBase extends HTMLElement {
   constructor() {
@@ -1778,19 +2050,22 @@ class SystemMonitorBase extends HTMLElement {
   _history(ids) {
     const key = ids.join(",");
     if (key && this._hass.callWS && (this._histKey !== key || Date.now() - this._histAt > HIST_REFRESH)) {
+      const end = Date.now();
       this._histKey = key;
-      this._histAt = Date.now();
+      this._histAt = end;
       this._hass
         .callWS({
           type: "recorder/statistics_during_period",
-          start_time: new Date(Date.now() - 864e5).toISOString(),
+          start_time: new Date(end - HIST_WINDOW).toISOString(),
           statistic_ids: ids,
           period: "5minute",
           types: ["mean"],
         })
         .then((r) => {
           if (this._histKey !== key) return;
-          this._hist = Object.fromEntries(ids.map((id) => [id, (r?.[id] || []).map((p) => p.mean).filter(Number.isFinite)]));
+          // [time, mean] pairs; the window ends at the request time, so the curves stay put until the next fetch.
+          const series = ids.map((id) => [id, (r?.[id] || []).map((p) => [statTime(p), p.mean]).filter(([at, v]) => Number.isFinite(at) && Number.isFinite(v))]);
+          this._hist = { ...Object.fromEntries(series), end };
           this._update();
         })
         // No statistics (sensor without state_class, recorder off): try again in a minute, no curve meanwhile.
@@ -2036,13 +2311,13 @@ class SystemMonitorCard extends SystemMonitorBase {
     const gauges = [];
     const cpu = num(this._s(sc.processor_use));
     if (sc.processor_use)
-      gauges.push(this._gauge(sc.processor_use, this._t("cpu"), ICONS.cpu, cpu, cpu === null ? "—" : `${Math.round(cpu)}%`, level(cpu, 70, 90)));
+      gauges.push(this._gauge(sc.processor_use, this._t("cpu"), ICONS.cpu, cpu, cpu === null ? "—" : `${Math.round(cpu)}%`, metricLevel(this._config, "cpu", cpu)));
 
     const mem = memUsage(this._hass, sc, "memory");
     if (sc.memory_use_percent || (sc.memory_use && sc.memory_free)) {
       const detail = mem.used !== null && mem.total !== null ? `${fmtBytes(mem.used).split(" ")[0]} / ${fmtBytes(mem.total)}` : "";
       gauges.push(
-        this._gauge(sc.memory_use_percent || sc.memory_use, this._t("ram"), ICONS.ram, mem.pct, mem.pct === null ? "—" : `${Math.round(mem.pct)}%`, level(mem.pct, 80, 95), detail)
+        this._gauge(sc.memory_use_percent || sc.memory_use, this._t("ram"), ICONS.ram, mem.pct, mem.pct === null ? "—" : `${Math.round(mem.pct)}%`, metricLevel(this._config, "ram", mem.pct), detail)
       );
     }
 
@@ -2053,13 +2328,13 @@ class SystemMonitorCard extends SystemMonitorBase {
       const u = diskUsage(this._hass, d);
       const detail = u.used !== null && u.total !== null ? `${fmtBytes(u.used).split(" ")[0]} / ${fmtBytes(u.total)}` : "";
       gauges.push(
-        this._gauge(d.disk_use_percent || d.disk_use || d.disk_free, `${this._t("disk")} ${esc(mount)}`, ICONS.disk, u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, level(u.pct, 80, 90), detail)
+        this._gauge(d.disk_use_percent || d.disk_use || d.disk_free, `${this._t("disk")} ${esc(mount)}`, ICONS.disk, u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, metricLevel(this._config, "disk", u.pct), detail)
       );
     }
 
     const temp = temperature(this._s(sc.processor_temperature), this._hass);
     if (sc.processor_temperature)
-      gauges.push(this._gauge(sc.processor_temperature, `${this._t("temperature")} ${this._t("cpu")}`, ICONS.temp, temp.c, esc(temp.display), level(temp.c, 75, 90)));
+      gauges.push(this._gauge(sc.processor_temperature, `${this._t("temperature")} ${this._t("cpu")}`, ICONS.temp, temp.c, esc(temp.display), metricLevel(this._config, "temp", temp.c)));
 
     const facts = [];
     const up = uptimeSec(this._s(sc.last_boot));
@@ -2107,7 +2382,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     const tile = (rateKey, totalKey, cls, icon, label) => {
       const id = n[rateKey];
       const total = toBytes(this._s(n[totalKey]));
-      return `<div class="tile clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">${spark(hist?.[id])}${svgIcon(icon)}<div style="min-width:0">
+      return `<div class="tile clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">${spark(hist?.[id], hist?.end)}${svgIcon(icon)}<div style="min-width:0">
         <div class="k" title="${esc(label)}">${esc(label)}</div>
         <div class="v">${fmtRate(toBps(this._s(id)))}</div>
         ${total !== null ? `<div class="t">${this._t("total")} ${fmtBytes(total)}</div>` : ""}
@@ -2119,8 +2394,8 @@ class SystemMonitorCard extends SystemMonitorBase {
       </div>`;
   }
 
-  _bar(id, icon, label, u, warn, crit) {
-    const cls = level(u.pct, warn, crit);
+  _bar(id, icon, label, u, metric) {
+    const cls = metricLevel(this._config, metric, u.pct);
     return `<div class="vol clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">
       <div class="row">${svgIcon(icon)}<span class="grow">${esc(label)}</span></div>
       <div class="bar"><div style="width:${u.pct === null ? 0 : Math.max(0, Math.min(100, u.pct))}%"></div></div>
@@ -2133,12 +2408,12 @@ class SystemMonitorCard extends SystemMonitorBase {
 
   _storage(sm) {
     const rows = Object.entries(sm.disks).map(([mount, d]) =>
-      this._bar(d.disk_use || d.disk_use_percent || d.disk_free, ICONS.disk, mount, diskUsage(this._hass, d), 80, 90)
+      this._bar(d.disk_use || d.disk_use_percent || d.disk_free, ICONS.disk, mount, diskUsage(this._hass, d), "disk")
     );
     const sc = sm.scalars;
     if (sc.swap_use_percent || (sc.swap_use && sc.swap_free)) {
       const u = memUsage(this._hass, sc, "swap");
-      if (u.total !== 0) rows.push(this._bar(sc.swap_use_percent || sc.swap_use, ICONS.swap, this._t("swap"), u, 50, 80));
+      if (u.total !== 0) rows.push(this._bar(sc.swap_use_percent || sc.swap_use, ICONS.swap, this._t("swap"), u, "swap"));
     }
     const db = discoverDatabase(this._hass);
     if (db)
@@ -2312,11 +2587,11 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
     const rows = [];
     const cpu = num(this._s(sc.processor_use));
     if (sc.processor_use)
-      rows.push(this._metric(sc.processor_use, ICONS.cpu, this._t("cpu"), cpu, cpu === null ? "—" : `${Math.round(cpu)}%`, level(cpu, 70, 90)));
+      rows.push(this._metric(sc.processor_use, ICONS.cpu, this._t("cpu"), cpu, cpu === null ? "—" : `${Math.round(cpu)}%`, metricLevel(this._config, "cpu", cpu)));
     const mem = memUsage(this._hass, sc, "memory");
     if (sc.memory_use_percent || (sc.memory_use && sc.memory_free))
       rows.push(
-        this._metric(sc.memory_use_percent || sc.memory_use, ICONS.ram, this._t("ram"), mem.pct, mem.pct === null ? "—" : `${Math.round(mem.pct)}%`, level(mem.pct, 80, 95))
+        this._metric(sc.memory_use_percent || sc.memory_use, ICONS.ram, this._t("ram"), mem.pct, mem.pct === null ? "—" : `${Math.round(mem.pct)}%`, metricLevel(this._config, "ram", mem.pct))
       );
     if (c.show_storage !== false) {
       const mount = sm.disks["/"] ? "/" : Object.keys(sm.disks)[0];
@@ -2324,13 +2599,13 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
         const d = sm.disks[mount];
         const u = diskUsage(this._hass, d);
         rows.push(
-          this._metric(d.disk_use_percent || d.disk_use || d.disk_free, ICONS.disk, this._t("disk"), u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, level(u.pct, 80, 90))
+          this._metric(d.disk_use_percent || d.disk_use || d.disk_free, ICONS.disk, this._t("disk"), u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, metricLevel(this._config, "disk", u.pct))
         );
       }
     }
     const temp = temperature(this._s(sc.processor_temperature), this._hass);
     if (sc.processor_temperature)
-      rows.push(this._metric(sc.processor_temperature, ICONS.temp, this._t("temperature"), temp.c, esc(temp.display), level(temp.c, 75, 90)));
+      rows.push(this._metric(sc.processor_temperature, ICONS.temp, this._t("temperature"), temp.c, esc(temp.display), metricLevel(this._config, "temp", temp.c)));
 
     const foot = [];
     const core = this._s(sm.core_update);
@@ -2411,6 +2686,15 @@ class SystemMonitorEditorBase extends HTMLElement {
           ...this._booleans().map((name) => ({ name, selector: { boolean: {} } })),
         ],
       },
+      // Warning / critical thresholds, shown at their default values.
+      {
+        type: "grid",
+        name: "",
+        schema: Object.keys(THRESHOLDS).map((name) => ({
+          name,
+          selector: { number: { min: 0, max: name.startsWith("temp") ? 150 : 100, step: 1, mode: "box", unit_of_measurement: name.startsWith("temp") ? "°C" : "%" } },
+        })),
+      },
       {
         name: "interface",
         selector: { select: { mode: "dropdown", custom_value: true, options: [{ value: "", label: tr("lang_auto") }, ...ifOptions] } },
@@ -2465,8 +2749,8 @@ class SystemMonitorEditorBase extends HTMLElement {
         ev.stopPropagation();
         const config = { ...ev.detail.value };
         for (const [k, v] of Object.entries(config)) {
-          // Keep the YAML minimal: drop empty values and toggles left at their default (true).
-          if (v === "" || v === undefined || v === null || (this._booleans().includes(k) && v === true)) delete config[k];
+          // Keep the YAML minimal: drop empty values, toggles left at their default (true) and default thresholds.
+          if (v === "" || v === undefined || v === null || (this._booleans().includes(k) && v === true) || THRESHOLDS[k] === v) delete config[k];
         }
         this._config = config;
         this.dispatchEvent(new CustomEvent("config-changed", { detail: { config }, bubbles: true, composed: true }));
@@ -2478,7 +2762,7 @@ class SystemMonitorEditorBase extends HTMLElement {
     // network interfaces change, not on every state change of Home Assistant.
     if (this._formConfig !== this._config) {
       this._formConfig = this._config;
-      const data = { ...this._config };
+      const data = { ...THRESHOLDS, ...this._config };
       for (const name of this._booleans()) if (data[name] === undefined) data[name] = true;
       this._form.data = data;
     }

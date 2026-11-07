@@ -28,10 +28,10 @@ The cards are built on top of the core [System Monitor integration](https://www.
 - CPU, RAM, disk and CPU temperature gauges, uptime, load average and IP address
 - Home Assistant Core and OS versions, with an orange badge when an update is available
 - Network download / upload rates and totals, per interface (virtual interfaces such as `docker0` or `hassio` are hidden)
-- **24 h rate history**: a discreet curve of the last 24 hours behind each download / upload rate, on the full card and the mini card, from the recorder's statistics (refreshed every 5 minutes; `show_history: false` turns it off)
+- **24 h rate history**: a discreet curve of the last 24 hours behind each download / upload rate, on the full card and the mini card, from the recorder's statistics on a real time axis, with a break where the recorder has no data (refreshed every 5 minutes; `show_history: false` turns it off)
 - Storage: every monitored mount point and the swap, with used space, and the size of the Home Assistant database
 - Monitored processes, green when running and red when stopped: hidden while they all run (their status tile shows the list on a click), always shown while one is stopped, with their overall status in the status row
-- Colors turn orange / red when a threshold is crossed (CPU, RAM, disk, temperature)
+- Colors turn orange / red when a threshold is crossed (CPU, RAM, disk, temperature, swap), with thresholds you can change
 - Click any value to open its Home Assistant history (more-info dialog)
 - Visual editor in the dashboard UI for every card (no YAML needed)
 - Light and dark mode, English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese, Polish, Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek
@@ -118,6 +118,16 @@ show_storage: true
 show_processes: true
 interface: eth0
 language: fr
+cpu_warning: 70
+cpu_critical: 90
+ram_warning: 80
+ram_critical: 95
+disk_warning: 80
+disk_critical: 90
+temp_warning: 75
+temp_critical: 90
+swap_warning: 50
+swap_critical: 80
 ```
 
 ```yaml
@@ -129,6 +139,8 @@ show_history: true
 zoom: true
 interface: eth0
 language: fr
+cpu_warning: 70
+cpu_critical: 90
 ```
 
 ### Options reference
@@ -143,6 +155,11 @@ language: fr
 | `show_processes` | full | `true` | Monitored processes and their status tile |
 | `zoom` | mini | `true` | Zoom button at the top right: shows the full card, and back to the compact view |
 | `interface` | full, mini | All physical interfaces | Network interface to display (e.g. `eth0`, `enp0s3`) |
+| `cpu_warning` / `cpu_critical` | full, mini | `70` / `90` | CPU usage (%) from which the gauge turns orange / red |
+| `ram_warning` / `ram_critical` | full, mini | `80` / `95` | RAM usage (%) from which the gauge turns orange / red |
+| `disk_warning` / `disk_critical` | full, mini | `80` / `90` | Disk usage (%) from which the gauges and storage bars turn orange / red |
+| `temp_warning` / `temp_critical` | full, mini | `75` / `90` | CPU temperature (°C, whatever the unit of the sensor) from which the gauge turns orange / red |
+| `swap_warning` / `swap_critical` | full | `50` / `80` | Swap usage (%) from which the swap bar turns orange / red |
 | `language` | all | Auto | Force language: `en`, `fr`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt`, `pl`, `ro`, `da`, `sv`, `bg`, `ru`, `uk`, `hu`, `sk`, `cs`, `sl`, `lv` or `el` (auto-detects from HA settings) |
 
 ## Screenshots
@@ -187,7 +204,7 @@ The card finds its size sensor by itself (platform `filesize`, a file named `hom
 
 ### Thresholds
 
-Gauges and bars turn orange, then red, when a value crosses these thresholds:
+Gauges and bars turn orange, then red, when a value reaches these thresholds (the defaults; each can be changed with the `*_warning` / `*_critical` options, in YAML or in the visual editor):
 
 | Value | Orange | Red |
 |---|---|---|
@@ -197,7 +214,7 @@ Gauges and bars turn orange, then red, when a value crosses these thresholds:
 | CPU temperature | 75 °C (167 °F) | 90 °C (194 °F) |
 | Swap usage | 50 % | 80 % |
 
-The CPU temperature is shown in the unit of its sensor, which follows the unit system of Home Assistant (°C, or °F with US customary units) or the display unit chosen in the sensor's settings; the thresholds apply to the same temperature in any unit.
+The CPU temperature is shown in the unit of its sensor, which follows the unit system of Home Assistant (°C, or °F with US customary units) or the display unit chosen in the sensor's settings; the thresholds are in °C and apply to the same temperature in any unit.
 
 ## Development
 

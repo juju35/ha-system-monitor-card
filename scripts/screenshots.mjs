@@ -72,6 +72,7 @@ async function openCard(s) {
           (msg.statistic_ids || []).map((id, k) => [
             id,
             Array.from({ length: 288 }, (_, i) => ({
+              start: Date.parse(msg.start_time) + i * 300000,
               mean: 20 + 80 * Math.exp(-((i - 230 + k * 20) ** 2) / 900) + 35 * Math.exp(-((i - 110) ** 2) / 400) + 6 * Math.sin(i * 0.035 + k) ** 2,
             })),
           ])
