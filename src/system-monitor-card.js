@@ -1278,6 +1278,25 @@ const lang = (hass, config) => {
   return STRINGS[l] ? l : STRINGS[l.split("-")[0]] ? l.split("-")[0] : "en";
 };
 
+// Locale for Intl: Home Assistant's full locale when its base matches the card's resolved language (keeps the region,
+// e.g. pt-BR or de-CH), otherwise the resolved language. Home Assistant's "pt" is European Portuguese, which Intl would
+// format as Brazilian, so bare "pt" becomes "pt-PT". sr-Latn stays as resolved.
+const fmtLang = (hass, config) => {
+  const l = lang(hass, config);
+  const ha = hass && (hass.locale?.language || hass.language);
+  const loc = ha && ha.split("-")[0] === l ? ha : l;
+  return loc === "pt" ? "pt-PT" : loc;
+};
+
+/** A number with `min` to `max` decimals in the locale's notation (decimal comma in French), without grouping. */
+const fmtNum = (v, loc, max, min = max) => {
+  try {
+    return new Intl.NumberFormat(loc, { minimumFractionDigits: min, maximumFractionDigits: max, useGrouping: false }).format(v);
+  } catch {
+    return new Intl.NumberFormat("en", { minimumFractionDigits: min, maximumFractionDigits: max, useGrouping: false }).format(v);
+  }
+};
+
 const t = (hass, config, key) => STRINGS[lang(hass, config)][key] ?? STRINGS.en[key] ?? key;
 
 const num = (s) => {
@@ -1308,7 +1327,7 @@ const toBps = (s) => {
 };
 
 /** Sizes in powers of 1024, with binary prefixes as Home Assistant shows them (System Monitor reports MiB and GiB). */
-const fmtBytes = (b) => {
+const fmtBytes = (b, loc = "en") => {
   if (b === null || b === undefined) return "—";
   const units = ["B", "KiB", "MiB", "GiB", "TiB", "PiB"];
   let i = 0;
@@ -1316,11 +1335,11 @@ const fmtBytes = (b) => {
     b /= 1024;
     i++;
   }
-  const v = b >= 100 || i === 0 ? b.toFixed(0) : b.toFixed(b >= 10 ? 1 : 2);
-  return `${v.includes(".") ? v.replace(/\.?0+$/, "") : v} ${units[i]}`;
+  // Up to 2 decimals under 10, 1 under 100, none above; trailing zeros dropped ("1.5 KiB", "20 GiB").
+  return `${fmtNum(b, loc, b >= 100 || i === 0 ? 0 : b >= 10 ? 1 : 2, 0)} ${units[i]}`;
 };
 
-const fmtRate = (bps) => {
+const fmtRate = (bps, loc = "en") => {
   if (bps === null || bps === undefined) return "—";
   const units = ["B/s", "kB/s", "MB/s", "GB/s"];
   let i = 0;
@@ -1328,7 +1347,7 @@ const fmtRate = (bps) => {
     bps /= 1000;
     i++;
   }
-  return `${bps >= 100 || i === 0 ? bps.toFixed(0) : bps.toFixed(1)} ${units[i]}`;
+  return `${fmtNum(bps, loc, bps >= 100 || i === 0 ? 0 : 1)} ${units[i]}`;
 };
 
 const fmtUptime = (sec, hass, config) => {
@@ -1987,7 +2006,7 @@ class SystemMonitorBase extends HTMLElement {
     // A click elsewhere on the page folds the processes list (as in ha-carburants-france), unless a process is stopped.
     // A click, not a pointerdown: folding on press would shift the layout under the pointer before the click.
     this._onOutside ??= (ev) => {
-      if (!this._procsOpen || ev.composedPath().includes(this)) return;
+      if (!this._procsOpen || ev.composedPath().includes(this) || inDialog(ev)) return;
       this._procsOpen = false;
       this._update();
     };
@@ -2026,6 +2045,11 @@ class SystemMonitorBase extends HTMLElement {
 
   _t(key) {
     return t(this._hass, this._config, key);
+  }
+
+  /** Locale of the card's numbers (decimal separator). */
+  _loc() {
+    return fmtLang(this._hass, this._config);
   }
 
   _s(id) {
@@ -2087,7 +2111,7 @@ class SystemMonitorBase extends HTMLElement {
     const { pending, unknown } = updateStatus(core, os);
     // Its full text stays in title and aria-label: on a narrow header the pill is cut, then shows its dot only.
     const pill = (cls, entity, text) =>
-      `<span class="chip ${cls}" data-entity="${entity || ""}" title="${esc(text)}" aria-label="${esc(text)}"><span class="dot"></span><span class="chip-text">${esc(text)}</span></span>`;
+      `<span class="chip ${cls}" data-entity="${entity || ""}"${entity ? ' role="button" tabindex="0"' : ""} title="${esc(text)}" aria-label="${esc(text)}"><span class="dot"></span><span class="chip-text">${esc(text)}</span></span>`;
     // The header icon takes the status colour of the pill: green up to date, orange update pending, grey unknown.
     const iconCls = pending ? "warn" : unknown ? "muted" : "good";
     let chip;
@@ -2107,9 +2131,17 @@ class SystemMonitorBase extends HTMLElement {
       </div>`;
   }
 
-  /** Monitored processes that are stopped (process binary sensors off). */
+  /**
+   * Monitored processes that are stopped (process binary sensors off). An unavailable or unknown sensor says nothing
+   * about its process: it is not counted (grey chip, see `_unknownProcs`).
+   */
   _stopped(sm) {
-    return Object.values(sm.procs).filter((id) => this._s(id)?.state !== "on");
+    return Object.values(sm.procs).filter((id) => this._s(id)?.state === "off");
+  }
+
+  /** Monitored processes whose sensor is neither on nor off (unavailable, unknown, missing). */
+  _unknownProcs(sm) {
+    return Object.values(sm.procs).filter((id) => !["on", "off"].includes(this._s(id)?.state));
   }
 
   _procsKo() {
@@ -2128,6 +2160,11 @@ class SystemMonitorBase extends HTMLElement {
   _procsStat(sm) {
     if (this._config.show_processes === false || !Object.keys(sm.procs).length) return "";
     const n = this._stopped(sm).length;
+    // None stopped but some not reported: the tile does not claim they all run.
+    if (!n && this._unknownProcs(sm).length) {
+      const unknown = this._t("st_unknown");
+      return this._stat("procs", ICONS.process, this._t("processes"), unknown, "muted", `${this._t("processes")}: ${unknown}`);
+    }
     const text = n === 0 ? this._t("procs_ok") : n === 1 ? this._t("procs_one") : this._t("procs_many").replace("{n}", n);
     const value = n === 0 ? this._t("st_running") : this._t(n === 1 ? "st_stopped_one" : "st_stopped").replace("{n}", n);
     return this._stat("procs", ICONS.process, this._t("processes"), value, n ? "crit" : "good", text);
@@ -2315,7 +2352,7 @@ class SystemMonitorCard extends SystemMonitorBase {
 
     const mem = memUsage(this._hass, sc, "memory");
     if (sc.memory_use_percent || (sc.memory_use && sc.memory_free)) {
-      const detail = mem.used !== null && mem.total !== null ? `${fmtBytes(mem.used).split(" ")[0]} / ${fmtBytes(mem.total)}` : "";
+      const detail = mem.used !== null && mem.total !== null ? `${fmtBytes(mem.used, this._loc()).split(" ")[0]} / ${fmtBytes(mem.total, this._loc())}` : "";
       gauges.push(
         this._gauge(sc.memory_use_percent || sc.memory_use, this._t("ram"), ICONS.ram, mem.pct, mem.pct === null ? "—" : `${Math.round(mem.pct)}%`, metricLevel(this._config, "ram", mem.pct), detail)
       );
@@ -2326,7 +2363,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     if (mount) {
       const d = sm.disks[mount];
       const u = diskUsage(this._hass, d);
-      const detail = u.used !== null && u.total !== null ? `${fmtBytes(u.used).split(" ")[0]} / ${fmtBytes(u.total)}` : "";
+      const detail = u.used !== null && u.total !== null ? `${fmtBytes(u.used, this._loc()).split(" ")[0]} / ${fmtBytes(u.total, this._loc())}` : "";
       gauges.push(
         this._gauge(d.disk_use_percent || d.disk_use || d.disk_free, `${this._t("disk")} ${esc(mount)}`, ICONS.disk, u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, metricLevel(this._config, "disk", u.pct), detail)
       );
@@ -2340,20 +2377,20 @@ class SystemMonitorCard extends SystemMonitorBase {
     const up = uptimeSec(this._s(sc.last_boot));
     if (up !== null)
       facts.push(
-        `<span class="clickable" data-entity="${sc.last_boot}">${svgIcon(ICONS.timer)}${this._t("uptime")} ${fmtUptime(up, this._hass, this._config)}</span>`
+        `<span class="clickable" data-entity="${sc.last_boot}" role="button" tabindex="0">${svgIcon(ICONS.timer)}${this._t("uptime")} ${fmtUptime(up, this._hass, this._config)}</span>`
       );
     const loads = ["load_1m", "load_5m", "load_15m"].filter((k) => sc[k]);
     if (loads.length)
       facts.push(
-        `<span class="clickable" data-entity="${sc[loads[0]]}">${svgIcon(ICONS.load)}${this._t("load")} ${loads
+        `<span class="clickable" data-entity="${sc[loads[0]]}" role="button" tabindex="0">${svgIcon(ICONS.load)}${this._t("load")} ${loads
           .map((k) => {
             const v = num(this._s(sc[k]));
-            return v === null ? "—" : v.toFixed(2);
+            return v === null ? "—" : fmtNum(v, this._loc(), 2);
           })
           .join(" · ")}</span>`
       );
     const ip = mainIp(this._hass, sm, this._config);
-    if (ip) facts.push(`<span class="clickable" data-entity="${ip.entity_id}">${svgIcon(ICONS.ip)}${esc(ip.state)}</span>`);
+    if (ip) facts.push(`<span class="clickable" data-entity="${ip.entity_id}" role="button" tabindex="0">${svgIcon(ICONS.ip)}${esc(ip.state)}</span>`);
 
     if (!gauges.length && !facts.length) return "";
     return `<div>
@@ -2384,8 +2421,8 @@ class SystemMonitorCard extends SystemMonitorBase {
       const total = toBytes(this._s(n[totalKey]));
       return `<div class="tile clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">${spark(hist?.[id], hist?.end)}${svgIcon(icon)}<div style="min-width:0">
         <div class="k" title="${esc(label)}">${esc(label)}</div>
-        <div class="v">${fmtRate(toBps(this._s(id)))}</div>
-        ${total !== null ? `<div class="t">${this._t("total")} ${fmtBytes(total)}</div>` : ""}
+        <div class="v">${fmtRate(toBps(this._s(id)), this._loc())}</div>
+        ${total !== null ? `<div class="t">${this._t("total")} ${fmtBytes(total, this._loc())}</div>` : ""}
       </div></div>`;
     };
     return `<div class="net">
@@ -2400,7 +2437,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       <div class="row">${svgIcon(icon)}<span class="grow">${esc(label)}</span></div>
       <div class="bar"><div style="width:${u.pct === null ? 0 : Math.max(0, Math.min(100, u.pct))}%"></div></div>
       <div class="detail">
-        <span>${u.used !== null ? `${fmtBytes(u.used)} ${this._t("used")}${u.total !== null ? ` ${this._t("of")} ${fmtBytes(u.total)}` : ""}` : ""}</span>
+        <span>${u.used !== null ? `${fmtBytes(u.used, this._loc())} ${this._t("used")}${u.total !== null ? ` ${this._t("of")} ${fmtBytes(u.total, this._loc())}` : ""}` : ""}</span>
         <span>${u.pct === null ? "" : `${u.pct.toFixed(0)}%`}</span>
       </div>
     </div>`;
@@ -2419,7 +2456,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     if (db)
       rows.push(`<div class="vol clickable" data-entity="${db}" role="button" tabindex="0">
         <div class="row">${svgIcon(ICONS.database)}<span class="grow">${this._t("database")}</span></div>
-        <div class="detail"><span>${fmtBytes(toBytes(this._s(db)))}</span></div>
+        <div class="detail"><span>${fmtBytes(toBytes(this._s(db)), this._loc())}</span></div>
       </div>`);
     if (!rows.length) return "";
     return `<div><div class="section-title">${svgIcon(ICONS.database)}${this._label("storage")}</div>${rows.join("")}</div>`;
@@ -2430,16 +2467,19 @@ class SystemMonitorCard extends SystemMonitorBase {
     if (!entries.length) return "";
     const n = this._stopped(sm).length;
     const open = this._procsUnfolded();
-    const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="procs" role="button" aria-expanded="${open}">
+    const head = `<div class="section-title toggle ${open ? "" : "closed"}" data-action="procs" role="button" tabindex="0" aria-expanded="${open}">
         ${svgIcon(ICONS.process)}${this._label("processes")}
         ${n ? `<span class="chip crit"><span class="dot"></span>${n}</span>` : ""}
         <span class="count">${entries.length}</span>${svgIcon(ICONS.chevron, "chevron")}
       </div>`;
     // Hidden while every process runs, unless unfolded from the status tile; shown as soon as one stops.
     if (!open) return "";
+    // Running green, stopped red, unavailable / unknown grey (its state in the tooltip).
     const chips = entries.map(([name, id]) => {
-      const on = this._s(id)?.state === "on";
-      return `<span class="chip clickable ${on ? "good" : "crit"}" data-entity="${id}"><span class="dot"></span>${esc(name)}</span>`;
+      const state = this._s(id)?.state;
+      const cls = state === "on" ? "good" : state === "off" ? "crit" : "muted";
+      const title = cls === "muted" ? ` title="${esc(`${name}: ${this._t("st_unknown")}`)}"` : "";
+      return `<span class="chip clickable ${cls}" data-entity="${id}" role="button" tabindex="0"${title}><span class="dot"></span>${esc(name)}</span>`;
     });
     return `<div>${head}<div class="procs">${chips.join("")}</div></div>`;
   }
@@ -2610,8 +2650,9 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
     const foot = [];
     const core = this._s(sm.core_update);
     const { pending, unknown } = updateStatus(core, this._s(sm.os_update));
+    const status = (pending || unknown || core)?.entity_id;
     foot.push(
-      `<span class="clickable ${pending ? "warn" : unknown ? "muted" : "good"}" data-entity="${(pending || unknown || core)?.entity_id || ""}"><span class="dot"></span>&nbsp;${esc(
+      `<span class="clickable ${pending ? "warn" : unknown ? "muted" : "good"}" data-entity="${status || ""}"${status ? ' role="button" tabindex="0"' : ""}><span class="dot"></span>&nbsp;${esc(
         pending
           ? `${this._t("update")} ${pending.attributes.latest_version || ""}`.trim()
           : this._t(unknown ? "st_unknown" : core ? "up_to_date" : "running")
@@ -2627,14 +2668,14 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
     } else if (c.show_network !== false && ifs.length) {
       const n = sm.nets[ifs[0]];
       // One span per direction: each rate opens its own sensor.
-      const rate = (id, cls, icon) => `<span class="clickable ${cls}" data-entity="${id || ""}">${svgIcon(icon)}<span>${fmtRate(toBps(this._s(id)))}</span></span>`;
+      const rate = (id, cls, icon) => `<span class="clickable ${cls}" data-entity="${id || ""}"${id ? ' role="button" tabindex="0"' : ""}>${svgIcon(icon)}<span>${fmtRate(toBps(this._s(id)), this._loc())}</span></span>`;
       foot.push(
         `<span class="rates">${rate(n.throughput_network_in, "down", ICONS.down)}${rate(n.throughput_network_out, "up", ICONS.up)}</span>`
       );
     }
     const up = uptimeSec(this._s(sc.last_boot));
     if (up !== null)
-      foot.push(`<span class="clickable" data-entity="${sc.last_boot}">${svgIcon(ICONS.timer)}${fmtUptime(up, this._hass, this._config)}</span>`);
+      foot.push(`<span class="clickable" data-entity="${sc.last_boot}" role="button" tabindex="0">${svgIcon(ICONS.timer)}${fmtUptime(up, this._hass, this._config)}</span>`);
     return `<style>${BASE_STYLE}${MINI_STYLE}${NET_STYLE}</style>
       <ha-card>
         ${this._header(sm)}
