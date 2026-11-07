@@ -14,7 +14,8 @@ const hassWith = (calls) => ({
   config: { version: "2026.10.2" },
   callWS: async (msg) => {
     calls.push(msg);
-    return Object.fromEntries(msg.statistic_ids.map((id) => [id, [{ mean: 10 }, { mean: 40 }, { mean: 20 }]]));
+    const end = Date.parse(msg.start_time) + 864e5;
+    return Object.fromEntries(msg.statistic_ids.map((id) => [id, [10, 40, 20].map((mean, i) => ({ start: end - (3 - i) * 300000, mean }))]));
   },
 });
 const card = (Cls, hass, config = {}) => {
@@ -97,4 +98,52 @@ test("editors: show_history among the toggles of both cards", () => {
   assert.ok(lib.SystemMonitorMiniCardEditor.toggles.includes("show_history"));
   for (const [code, s] of Object.entries(lib.STRINGS)) assert.ok(s.show_history, code);
   assert.doesNotMatch(lib.STRINGS.sr.show_history, /[A-Za-z]/);
+});
+
+test("sparkline: real time axis, a break where the recorder has no data, ISO start times too", async () => {
+  const hass = hassWith([]);
+  // Two runs (the first two hours, the last hour) with a 21 h gap; a lone point in the gap; ISO dates for the last run.
+  hass.callWS = async (msg) => {
+    const end = Date.parse(msg.start_time) + 864e5;
+    return Object.fromEntries(
+      msg.statistic_ids.map((id) => [
+        id,
+        [
+          ...Array.from({ length: 24 }, (_, i) => ({ start: end - 864e5 + i * 300000, mean: 10 })),
+          { start: end - 864e5 / 2, mean: 50 },
+          ...Array.from({ length: 12 }, (_, i) => ({ start: new Date(end - (12 - i) * 300000).toISOString(), mean: 20 })),
+        ],
+      ])
+    );
+  };
+  const el = card(lib.SystemMonitorCard, hass);
+  el._update();
+  await tick();
+  const line = el.html.match(/class="spark-l" d="([^"]+)"/)[1];
+  const segments = line.split("M").filter(Boolean);
+  assert.equal(segments.length, 2, line);
+  const xs = (seg) => seg.split("L").map((p) => Number(p.split(",")[0]));
+  // First run: from the start of the window to ~2 h (115 minutes / 24 h ≈ 7.99 %), not spread over the width.
+  assert.ok(xs(segments[0])[0] < 0.1, segments[0]);
+  assert.ok(Math.abs(xs(segments[0]).at(-1) - 7.99) < 0.1, segments[0]);
+  // Last run: the last hour, ending 5 minutes before the end of the window.
+  assert.ok(Math.abs(xs(segments[1])[0] - 95.83) < 0.1, segments[1]);
+  assert.ok(Math.abs(xs(segments[1]).at(-1) - 99.65) < 0.1, segments[1]);
+  // The lone point in the middle is not drawn, nor counted in the peak (y of 20 ≈ 2, the top).
+  assert.doesNotMatch(line, /\b50\.\d+,/);
+  assert.ok(Math.abs(Number(segments[1].split("L")[0].split(",")[1]) - 2) < 0.01, segments[1]);
+  // The area closes each run down to the axis on its own.
+  const area = el.html.match(/class="spark-a" d="([^"]+)"/)[1];
+  assert.equal((area.match(/Z/g) || []).length, 2, area);
+});
+
+test("sparkline: nothing without two consecutive points", async () => {
+  const end = Date.now();
+  const hass = hassWith([]);
+  hass.callWS = async (msg) =>
+    Object.fromEntries(msg.statistic_ids.map((id) => [id, [0, 1, 2].map((k) => ({ start: end - 864e5 + k * 864e5 * 0.3, mean: 5 }))]));
+  const el = card(lib.SystemMonitorMiniCard, hass);
+  el._update();
+  await tick();
+  assert.doesNotMatch(el.html, /class="spark"/);
 });

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.2.0 - 2026-11-07
+
+### Features
+- **Configurable thresholds**: the orange / red levels of CPU, RAM, disk, CPU temperature and swap can be set with the `cpu_warning`, `cpu_critical`, `ram_warning`, `ram_critical`, `disk_warning`, `disk_critical`, `temp_warning`, `temp_critical` (°C), `swap_warning` and `swap_critical` options, in both visual editors (translated in every language); the former fixed values are the defaults.
+- **24 h rate history**: the curves are drawn on a real time axis and break where the recorder has no data, instead of joining the points spread evenly over the width.
+
+### Maintenance
+- Tests: the thresholds (defaults, options, °F sensor, editor defaults and minimal YAML), the time axis and the breaks of the curves.
+
 ## 2.1.0 - 2026-11-07
 
 ### Features
