@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.1 - 2026-11-08
+
+### Fixes
+- Gauges "used / total" detail: the used value keeps its unit when it differs from the total's ("980 MiB / 62.5 GiB" instead of "980 / 62.5 GiB").
+- Storage bars: the percentage is rounded like the gauges' (same display helper as the other cards).
+
 ## 2.3.0 - 2026-11-08
 
 ### Features

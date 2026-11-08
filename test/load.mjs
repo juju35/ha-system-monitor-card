@@ -11,6 +11,7 @@ const NAMES = [
   "sameSignature",
   "focusSelector",
   "fmtBytes",
+  "fmtBytesPair",
   "spark",
   "ICONS",
   "STRINGS",

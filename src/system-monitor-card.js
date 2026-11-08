@@ -1339,6 +1339,13 @@ const fmtBytes = (b, loc = "en") => {
   return `${fmtNum(b, loc, b >= 100 || i === 0 ? 0 : b >= 10 ? 1 : 2, 0)} ${units[i]}`;
 };
 
+// "used / total" label: the unit of used is dropped only when it matches the total's ("12.3 / 62.5 GiB", "980 MiB / 62.5 GiB").
+const fmtBytesPair = (used, total, loc = "en") => {
+  const u = fmtBytes(used, loc).split(" ");
+  const t = fmtBytes(total, loc).split(" ");
+  return `${u[1] === t[1] ? u[0] : u.join(" ")} / ${t.join(" ")}`;
+};
+
 const fmtRate = (bps, loc = "en") => {
   if (bps === null || bps === undefined) return "—";
   const units = ["B/s", "kB/s", "MB/s", "GB/s"];
@@ -2374,7 +2381,7 @@ class SystemMonitorCard extends SystemMonitorBase {
 
     const mem = memUsage(this._hass, sc, "memory");
     if (sc.memory_use_percent || (sc.memory_use && sc.memory_free)) {
-      const detail = mem.used !== null && mem.total !== null ? `${fmtBytes(mem.used, this._loc()).split(" ")[0]} / ${fmtBytes(mem.total, this._loc())}` : "";
+      const detail = mem.used !== null && mem.total !== null ? fmtBytesPair(mem.used, mem.total, this._loc()) : "";
       gauges.push(
         this._gauge(sc.memory_use_percent || sc.memory_use, this._t("ram"), ICONS.ram, mem.pct, mem.pct === null ? "—" : `${Math.round(mem.pct)}%`, metricLevel(this._config, "ram", mem.pct), detail, hist)
       );
@@ -2385,7 +2392,7 @@ class SystemMonitorCard extends SystemMonitorBase {
     if (mount) {
       const d = sm.disks[mount];
       const u = diskUsage(this._hass, d);
-      const detail = u.used !== null && u.total !== null ? `${fmtBytes(u.used, this._loc()).split(" ")[0]} / ${fmtBytes(u.total, this._loc())}` : "";
+      const detail = u.used !== null && u.total !== null ? fmtBytesPair(u.used, u.total, this._loc()) : "";
       gauges.push(
         this._gauge(d.disk_use_percent || d.disk_use || d.disk_free, `${this._t("disk")} ${esc(mount)}`, ICONS.disk, u.pct, u.pct === null ? "—" : `${Math.round(u.pct)}%`, metricLevel(this._config, "disk", u.pct), detail)
       );
@@ -2455,7 +2462,7 @@ class SystemMonitorCard extends SystemMonitorBase {
       <div class="bar"><div style="width:${u.pct === null ? 0 : Math.max(0, Math.min(100, u.pct))}%"></div></div>
       <div class="detail">
         <span>${u.used !== null ? `${fmtBytes(u.used, this._loc())} ${this._t("used")}${u.total !== null ? ` ${this._t("of")} ${fmtBytes(u.total, this._loc())}` : ""}` : ""}</span>
-        <span>${u.pct === null ? "" : `${u.pct.toFixed(0)}%`}</span>
+        <span>${u.pct === null ? "" : `${Math.round(u.pct)}%`}</span>
       </div>
     </div>`;
   }
