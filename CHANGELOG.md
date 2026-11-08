@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.2.1 - 2026-11-07
+
+### Fixes
+- **Processes**: an unavailable or unknown process sensor shows a grey chip and is no longer counted as stopped, nor keeps the list unfolded; the Processes tile says "Unknown" when no process is stopped but some are not reported.
+- **Keyboard**: the update pill, the uptime / load / IP facts, the processes header and chips and the mini card's footer items can be reached with Tab and opened with Enter or Space.
+- **Processes list**: a click in a dialog opened from the card (more-info) no longer folds the list.
+- **Numbers**: rates, sizes and the load use the card language's decimal separator (1,3 MB/s in French).
+
+### Maintenance
+- Tests: unknown process sensors, keyboard roles of every clickable element, the click in a dialog and the localized decimals.
+
 ## 2.2.0 - 2026-11-07
 
 ### Features
