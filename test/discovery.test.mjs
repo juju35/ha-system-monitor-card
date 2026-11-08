@@ -390,6 +390,13 @@ test("fmtBytes divides by 1024 and says so with binary prefixes", () => {
   assert.equal(lib.fmtBytes(null), "—");
 });
 
+test("fmtBytesPair drops the used unit only when it matches the total's", () => {
+  const GiB = 1024 ** 3;
+  assert.equal(lib.fmtBytesPair(3.02 * GiB, 7.81 * GiB), "3.02 / 7.81 GiB");
+  assert.equal(lib.fmtBytesPair(980 * 1024 ** 2, 62.5 * GiB), "980 MiB / 62.5 GiB");
+  assert.equal(lib.fmtBytesPair(12.3 * GiB, 62.5 * GiB, "fr"), "12,3 / 62,5 GiB");
+});
+
 test("focusSelector finds an entity row again, but not a plain clickable span", () => {
   const row = { dataset: { entity: "update.parcel_update" }, getAttribute: (n) => (n === "role" ? "button" : null) };
   assert.equal(lib.focusSelector(row), '[role="button"][data-entity="update.parcel_update"]');
