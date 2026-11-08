@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.3.0 - 2026-11-08
+
+### Features
+- **Mini card, stopped processes**: while a monitored process is stopped, the compact view tints its header icon red and shows a red "N stopped" item in its footer, whose click shows the full card with the processes list unfolded (or, with `zoom: false`, opens the first stopped process).
+- **24 h CPU and RAM history**: a discreet curve of the last 24 hours behind the CPU and RAM gauges of the full card and the CPU and RAM bars of the mini card, on a 0–100 % scale, from the same statistics query as the rate curves; `show_history` (now labelled "Show 24 h history" in every language) turns them all off.
+
+### Maintenance
+- Screenshots: the mock Home Assistant answers the statistics query with plausible CPU and RAM percentages.
+- Tests: the stopped item and the red icon of the mini card (zoom, `zoom: false`, `show_processes: false`, full view), the CPU and RAM curves, the single query and its statistic ids.
+
 ## 2.2.1 - 2026-11-07
 
 ### Fixes

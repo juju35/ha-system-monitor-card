@@ -71,7 +71,7 @@ const STRINGS = {
     title: "Title (optional, defaults to Home Assistant)",
     show_system: "Show system (CPU, RAM, disk, temperature)",
     show_network: "Show network",
-    show_history: "Show 24 h rate history",
+    show_history: "Show 24 h history",
     cpu_warning: "CPU warning (%)",
     cpu_critical: "CPU critical (%)",
     ram_warning: "RAM warning (%)",
@@ -126,7 +126,7 @@ const STRINGS = {
     title: "Titre (facultatif, Home Assistant par défaut)",
     show_system: "Afficher le système (CPU, RAM, disque, température)",
     show_network: "Afficher le réseau",
-    show_history: "Afficher l’historique 24 h des débits",
+    show_history: "Afficher l’historique 24 h",
     cpu_warning: "Seuil d’alerte CPU (%)",
     cpu_critical: "Seuil critique CPU (%)",
     ram_warning: "Seuil d’alerte RAM (%)",
@@ -181,7 +181,7 @@ const STRINGS = {
     title: "Titel (optional, standardmäßig Home Assistant)",
     show_system: "System anzeigen (CPU, RAM, Datenträger, Temperatur)",
     show_network: "Netzwerk anzeigen",
-    show_history: "24-h-Verlauf der Raten anzeigen",
+    show_history: "24-h-Verlauf anzeigen",
     cpu_warning: "CPU-Warnschwelle (%)",
     cpu_critical: "Kritische CPU-Schwelle (%)",
     ram_warning: "RAM-Warnschwelle (%)",
@@ -236,7 +236,7 @@ const STRINGS = {
     title: "Título (opcional, Home Assistant por defecto)",
     show_system: "Mostrar el sistema (CPU, RAM, disco, temperatura)",
     show_network: "Mostrar la red",
-    show_history: "Mostrar el historial de 24 h de las velocidades",
+    show_history: "Mostrar el historial de 24 h",
     cpu_warning: "Umbral de aviso de CPU (%)",
     cpu_critical: "Umbral crítico de CPU (%)",
     ram_warning: "Umbral de aviso de RAM (%)",
@@ -292,7 +292,7 @@ const STRINGS = {
     title: "Наслов (опционо, подразумевано је Home Assistant)",
     show_system: "Прикажи систем (CPU, RAM, диск, температура)",
     show_network: "Прикажи мрежу",
-    show_history: "Прикажи историју протока за 24 ч",
+    show_history: "Прикажи историју за 24 ч",
     cpu_warning: "Праг упозорења ЦПУ (%)",
     cpu_critical: "Критични праг ЦПУ (%)",
     ram_warning: "Праг упозорења РАМ (%)",
@@ -348,7 +348,7 @@ const STRINGS = {
     title: "Naslov (opciono, podrazumevano je Home Assistant)",
     show_system: "Prikaži sistem (CPU, RAM, disk, temperatura)",
     show_network: "Prikaži mrežu",
-    show_history: "Prikaži istoriju protoka za 24 č",
+    show_history: "Prikaži istoriju za 24 č",
     cpu_warning: "Prag upozorenja CPU (%)",
     cpu_critical: "Kritični prag CPU (%)",
     ram_warning: "Prag upozorenja RAM (%)",
@@ -404,7 +404,7 @@ const STRINGS = {
     title: "Titolo (facoltativo, predefinito: Home Assistant)",
     show_system: "Mostra il sistema (CPU, RAM, disco, temperatura)",
     show_network: "Mostra la rete",
-    show_history: "Mostra lo storico 24 h delle velocità",
+    show_history: "Mostra lo storico 24 h",
     cpu_warning: "Soglia di avviso CPU (%)",
     cpu_critical: "Soglia critica CPU (%)",
     ram_warning: "Soglia di avviso RAM (%)",
@@ -460,7 +460,7 @@ const STRINGS = {
     title: "Titel (optioneel, standaard Home Assistant)",
     show_system: "Systeem tonen (CPU, RAM, schijf, temperatuur)",
     show_network: "Netwerk tonen",
-    show_history: "24-uursgeschiedenis van de snelheden weergeven",
+    show_history: "24-uursgeschiedenis weergeven",
     cpu_warning: "Waarschuwingsdrempel CPU (%)",
     cpu_critical: "Kritieke drempel CPU (%)",
     ram_warning: "Waarschuwingsdrempel RAM (%)",
@@ -516,7 +516,7 @@ const STRINGS = {
     title: "Título (opcional, Home Assistant por predefinição)",
     show_system: "Mostrar o sistema (CPU, RAM, disco, temperatura)",
     show_network: "Mostrar a rede",
-    show_history: "Mostrar o histórico de 24 h dos débitos",
+    show_history: "Mostrar o histórico de 24 h",
     cpu_warning: "Limiar de aviso da CPU (%)",
     cpu_critical: "Limiar crítico da CPU (%)",
     ram_warning: "Limiar de aviso da RAM (%)",
@@ -572,7 +572,7 @@ const STRINGS = {
     title: "Tytuł (opcjonalny, domyślnie Home Assistant)",
     show_system: "Pokaż system (CPU, RAM, dysk, temperatura)",
     show_network: "Pokaż sieć",
-    show_history: "Pokaż historię przepustowości z 24 h",
+    show_history: "Pokaż historię z 24 h",
     cpu_warning: "Próg ostrzeżenia CPU (%)",
     cpu_critical: "Próg krytyczny CPU (%)",
     ram_warning: "Próg ostrzeżenia RAM (%)",
@@ -628,7 +628,7 @@ const STRINGS = {
     title: "Titlu (opțional, implicit Home Assistant)",
     show_system: "Afișează sistemul (CPU, RAM, disc, temperatură)",
     show_network: "Afișează rețeaua",
-    show_history: "Afișează istoricul vitezelor pe 24 h",
+    show_history: "Afișează istoricul pe 24 h",
     cpu_warning: "Prag de avertizare CPU (%)",
     cpu_critical: "Prag critic CPU (%)",
     ram_warning: "Prag de avertizare RAM (%)",
@@ -684,7 +684,7 @@ const STRINGS = {
     title: "Titel (valgfri, Home Assistant som standard)",
     show_system: "Vis system (CPU, RAM, disk, temperatur)",
     show_network: "Vis netværk",
-    show_history: "Vis 24-timers historik for hastigheder",
+    show_history: "Vis 24-timers historik",
     cpu_warning: "Advarselsgrænse for CPU (%)",
     cpu_critical: "Kritisk grænse for CPU (%)",
     ram_warning: "Advarselsgrænse for RAM (%)",
@@ -740,7 +740,7 @@ const STRINGS = {
     title: "Titel (valfri, Home Assistant som standard)",
     show_system: "Visa system (CPU, RAM, disk, temperatur)",
     show_network: "Visa nätverk",
-    show_history: "Visa 24 h-historik för hastigheter",
+    show_history: "Visa 24 h-historik",
     cpu_warning: "Varningsgräns för CPU (%)",
     cpu_critical: "Kritisk gräns för CPU (%)",
     ram_warning: "Varningsgräns för RAM (%)",
@@ -796,7 +796,7 @@ const STRINGS = {
     title: "Заглавие (по избор, по подразбиране Home Assistant)",
     show_system: "Показване на системата (CPU, RAM, диск, температура)",
     show_network: "Показване на мрежата",
-    show_history: "Показване на 24-часовата история на скоростите",
+    show_history: "Показване на 24-часовата история",
     cpu_warning: "Праг за предупреждение за CPU (%)",
     cpu_critical: "Критичен праг за CPU (%)",
     ram_warning: "Праг за предупреждение за RAM (%)",
@@ -852,7 +852,7 @@ const STRINGS = {
     title: "Заголовок (необязательно, по умолчанию Home Assistant)",
     show_system: "Показывать систему (CPU, RAM, диск, температура)",
     show_network: "Показывать сеть",
-    show_history: "Показать историю скоростей за 24 ч",
+    show_history: "Показать историю за 24 ч",
     cpu_warning: "Порог предупреждения CPU (%)",
     cpu_critical: "Критический порог CPU (%)",
     ram_warning: "Порог предупреждения RAM (%)",
@@ -908,7 +908,7 @@ const STRINGS = {
     title: "Заголовок (необов’язково, типово Home Assistant)",
     show_system: "Показувати систему (CPU, RAM, диск, температура)",
     show_network: "Показувати мережу",
-    show_history: "Показати історію швидкостей за 24 год",
+    show_history: "Показати історію за 24 год",
     cpu_warning: "Поріг попередження CPU (%)",
     cpu_critical: "Критичний поріг CPU (%)",
     ram_warning: "Поріг попередження RAM (%)",
@@ -964,7 +964,7 @@ const STRINGS = {
     title: "Cím (nem kötelező, alapértelmezés: Home Assistant)",
     show_system: "Rendszer megjelenítése (CPU, RAM, lemez, hőmérséklet)",
     show_network: "Hálózat megjelenítése",
-    show_history: "Sebességek 24 órás előzményeinek megjelenítése",
+    show_history: "24 órás előzmények megjelenítése",
     cpu_warning: "CPU figyelmeztetési küszöb (%)",
     cpu_critical: "CPU kritikus küszöb (%)",
     ram_warning: "RAM figyelmeztetési küszöb (%)",
@@ -1020,7 +1020,7 @@ const STRINGS = {
     title: "Názov (voliteľný, predvolene Home Assistant)",
     show_system: "Zobraziť systém (CPU, RAM, disk, teplota)",
     show_network: "Zobraziť sieť",
-    show_history: "Zobraziť 24 h históriu rýchlostí",
+    show_history: "Zobraziť 24 h históriu",
     cpu_warning: "Prah upozornenia CPU (%)",
     cpu_critical: "Kritický prah CPU (%)",
     ram_warning: "Prah upozornenia RAM (%)",
@@ -1076,7 +1076,7 @@ const STRINGS = {
     title: "Název (volitelný, výchozí Home Assistant)",
     show_system: "Zobrazit systém (CPU, RAM, disk, teplota)",
     show_network: "Zobrazit síť",
-    show_history: "Zobrazit 24h historii rychlostí",
+    show_history: "Zobrazit 24h historii",
     cpu_warning: "Práh varování CPU (%)",
     cpu_critical: "Kritický práh CPU (%)",
     ram_warning: "Práh varování RAM (%)",
@@ -1132,7 +1132,7 @@ const STRINGS = {
     title: "Naslov (neobvezno, privzeto Home Assistant)",
     show_system: "Prikaži sistem (CPU, RAM, disk, temperatura)",
     show_network: "Prikaži omrežje",
-    show_history: "Prikaži 24-urno zgodovino hitrosti",
+    show_history: "Prikaži 24-urno zgodovino",
     cpu_warning: "Prag opozorila CPU (%)",
     cpu_critical: "Kritični prag CPU (%)",
     ram_warning: "Prag opozorila RAM (%)",
@@ -1188,7 +1188,7 @@ const STRINGS = {
     title: "Virsraksts (neobligāts, pēc noklusējuma Home Assistant)",
     show_system: "Rādīt sistēmu (CPU, RAM, disks, temperatūra)",
     show_network: "Rādīt tīklu",
-    show_history: "Rādīt ātrumu 24 h vēsturi",
+    show_history: "Rādīt 24 h vēsturi",
     cpu_warning: "CPU brīdinājuma slieksnis (%)",
     cpu_critical: "CPU kritiskais slieksnis (%)",
     ram_warning: "RAM brīdinājuma slieksnis (%)",
@@ -1244,7 +1244,7 @@ const STRINGS = {
     title: "Τίτλος (προαιρετικός, προεπιλογή Home Assistant)",
     show_system: "Εμφάνιση συστήματος (CPU, RAM, δίσκος, θερμοκρασία)",
     show_network: "Εμφάνιση δικτύου",
-    show_history: "Εμφάνιση ιστορικού ταχυτήτων 24 ωρών",
+    show_history: "Εμφάνιση ιστορικού 24 ωρών",
     cpu_warning: "Όριο προειδοποίησης CPU (%)",
     cpu_critical: "Κρίσιμο όριο CPU (%)",
     ram_warning: "Όριο προειδοποίησης RAM (%)",
@@ -1935,14 +1935,15 @@ const BASE_STYLE = `
   .zoom:focus-visible { outline: 2px solid var(--sm-focus); outline-offset: 1px; }
 `;
 
-// Sparkline of a series of [time (ms), value] points (24 h of 5-minute rate means), on a real time axis: x is the
-// point's time over the 24 h window ending at `end`, y its value scaled from 0 to the series' peak. Points more than
+// Sparkline of a series of [time (ms), value] points (24 h of 5-minute means), on a real time axis: x is the
+// point's time over the 24 h window ending at `end`, y its value scaled from 0 to `max` (100 for a percentage), else
+// to the series' peak. Points more than
 // two periods apart are not joined: the curve breaks where the recorder has no data. Runs of a single point are not
 // drawn; nothing at all without a run of two points.
 const HIST_REFRESH = 5 * 60000;
 const HIST_WINDOW = 864e5;
 const HIST_PERIOD = 5 * 60000;
-function spark(points, end) {
+function spark(points, end, max) {
   if (!points || points.length < 2) return "";
   const start = end - HIST_WINDOW;
   const inWindow = points.filter(([at]) => at >= start && at <= end).sort((a, b) => a[0] - b[0]);
@@ -1958,9 +1959,9 @@ function spark(points, end) {
   runs.push(run);
   const drawn = runs.filter((r) => r.length >= 2);
   if (!drawn.length) return "";
-  const peak = Math.max(...drawn.flat().map(([, v]) => v)) || 1;
+  const peak = max || Math.max(...drawn.flat().map(([, v]) => v)) || 1;
   const x = (at) => (((at - start) / HIST_WINDOW) * 100).toFixed(2);
-  const y = (v) => (30 - (Math.max(0, v) / peak) * 28).toFixed(2);
+  const y = (v) => (30 - (Math.min(Math.max(0, v), peak) / peak) * 28).toFixed(2);
   const lines = drawn.map((r) => `M${r.map(([at, v]) => `${x(at)},${y(v)}`).join("L")}`);
   const areas = drawn.map((r, i) => `M${x(r[0][0])},30L${lines[i].slice(1)}L${x(r[r.length - 1][0])},30Z`);
   return `<svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path class="spark-a" d="${areas.join("")}"/><path class="spark-l" d="${lines.join(
@@ -2100,6 +2101,16 @@ class SystemMonitorBase extends HTMLElement {
     return this._histKey === key ? this._hist : null;
   }
 
+  /**
+   * The 24 h history of the CPU and RAM percentages and of the given rate sensors, in one statistics query (null
+   * with `show_history: false`). RAM only from its percentage sensor.
+   */
+  _histFor(sm, rateIds = []) {
+    if (this._config.show_history === false) return null;
+    const sc = sm.scalars;
+    return this._history([sc.processor_use, sc.memory_use_percent, ...rateIds].filter(Boolean));
+  }
+
   _header(sm, aside = "") {
     const c = this._config;
     const core = this._s(sm.core_update);
@@ -2113,7 +2124,8 @@ class SystemMonitorBase extends HTMLElement {
     const pill = (cls, entity, text) =>
       `<span class="chip ${cls}" data-entity="${entity || ""}"${entity ? ' role="button" tabindex="0"' : ""} title="${esc(text)}" aria-label="${esc(text)}"><span class="dot"></span><span class="chip-text">${esc(text)}</span></span>`;
     // The header icon takes the status colour of the pill: green up to date, orange update pending, grey unknown.
-    const iconCls = pending ? "warn" : unknown ? "muted" : "good";
+    // A subclass may tint it red instead (the compact view of the mini card, while a process is stopped).
+    const iconCls = this._logoAlert(sm) ? "crit" : pending ? "warn" : unknown ? "muted" : "good";
     let chip;
     if (pending) {
       const text = `${this._t("update")} ${pending.attributes.latest_version || ""}`.trim();
@@ -2129,6 +2141,11 @@ class SystemMonitorBase extends HTMLElement {
         </div>
         ${aside}
       </div>`;
+  }
+
+  /** Whether the header icon turns red whatever the update status: never on the full card. */
+  _logoAlert() {
+    return false;
   }
 
   /**
@@ -2258,7 +2275,10 @@ const FULL_STYLE = `
     .section-title > .icon:first-child { display: none; }
   }
   .gauges { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; container-type: inline-size; }
-  .gauge { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+  .gauge { display: flex; flex-direction: column; align-items: center; min-width: 0; position: relative; border-radius: 10px; overflow: hidden; }
+  /* 24 h curve of the CPU and RAM gauges, behind the whole gauge (0 % at its bottom, 100 % at its top). */
+  .gauge > :not(.spark) { position: relative; }
+  .gauge .spark { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
   .dial { position: relative; width: 100%; max-width: 60px; aspect-ratio: 1; }
   .ring { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
   .ring circle { fill: none; stroke-width: 6; }
@@ -2317,8 +2337,10 @@ class SystemMonitorCard extends SystemMonitorBase {
     if (!sm.found) return this._noSm();
     const c = this._config;
     const parts = [];
-    if (c.show_system !== false) parts.push(this._system(sm));
-    if (c.show_network !== false) parts.push(this._network(sm));
+    const ifs = c.show_network !== false ? interfaces(sm, c) : [];
+    const hist = this._histFor(sm, ifs.flatMap((i) => [sm.nets[i].throughput_network_in, sm.nets[i].throughput_network_out]));
+    if (c.show_system !== false) parts.push(this._system(sm, hist));
+    if (c.show_network !== false) parts.push(this._network(sm, ifs, hist));
     if (c.show_storage !== false) parts.push(this._storage(sm));
     if (c.show_processes !== false) parts.push(this._processes(sm));
     return `<style>${BASE_STYLE}${TILES_STYLE}${FULL_STYLE}${NET_STYLE}</style>
@@ -2335,26 +2357,26 @@ class SystemMonitorCard extends SystemMonitorBase {
     return `<span class="label" title="${text}">${text}</span>`;
   }
 
-  _gauge(id, label, icon, value, display, cls, detail = "") {
-    return `<div class="gauge clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">
+  _gauge(id, label, icon, value, display, cls, detail = "", hist = null) {
+    return `<div class="gauge clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">${spark(hist?.[id], hist?.end, 100)}
       <div class="dial">${ring(value)}<div class="val">${svgIcon(icon)}<b>${display}</b></div></div>
       <div class="lbl" title="${label}">${label}</div>
       ${detail ? `<div class="lbl2">${detail}</div>` : ""}
     </div>`;
   }
 
-  _system(sm) {
+  _system(sm, hist) {
     const sc = sm.scalars;
     const gauges = [];
     const cpu = num(this._s(sc.processor_use));
     if (sc.processor_use)
-      gauges.push(this._gauge(sc.processor_use, this._t("cpu"), ICONS.cpu, cpu, cpu === null ? "—" : `${Math.round(cpu)}%`, metricLevel(this._config, "cpu", cpu)));
+      gauges.push(this._gauge(sc.processor_use, this._t("cpu"), ICONS.cpu, cpu, cpu === null ? "—" : `${Math.round(cpu)}%`, metricLevel(this._config, "cpu", cpu), "", hist));
 
     const mem = memUsage(this._hass, sc, "memory");
     if (sc.memory_use_percent || (sc.memory_use && sc.memory_free)) {
       const detail = mem.used !== null && mem.total !== null ? `${fmtBytes(mem.used, this._loc()).split(" ")[0]} / ${fmtBytes(mem.total, this._loc())}` : "";
       gauges.push(
-        this._gauge(sc.memory_use_percent || sc.memory_use, this._t("ram"), ICONS.ram, mem.pct, mem.pct === null ? "—" : `${Math.round(mem.pct)}%`, metricLevel(this._config, "ram", mem.pct), detail)
+        this._gauge(sc.memory_use_percent || sc.memory_use, this._t("ram"), ICONS.ram, mem.pct, mem.pct === null ? "—" : `${Math.round(mem.pct)}%`, metricLevel(this._config, "ram", mem.pct), detail, hist)
       );
     }
 
@@ -2399,14 +2421,9 @@ class SystemMonitorCard extends SystemMonitorBase {
     </div>`;
   }
 
-  _network(sm) {
-    const ifs = interfaces(sm, this._config);
+  _network(sm, ifs, hist) {
     if (!ifs.length) return "";
     const multi = ifs.length > 1;
-    const hist =
-      this._config.show_history === false
-        ? null
-        : this._history(ifs.flatMap((i) => [sm.nets[i].throughput_network_in, sm.nets[i].throughput_network_out]).filter(Boolean));
     const rows = ifs.map((i) => this._netRow(sm.nets[i], hist, multi ? ` · ${i}` : ""));
     return `<div>
       <div class="section-title">${svgIcon(ICONS.network)}${this._label("network")}${multi ? "" : `<span class="arg" title="${esc(ifs[0])}">· ${esc(ifs[0])}</span>`}</div>
@@ -2564,8 +2581,8 @@ const NET_STYLE = `
           background: var(--secondary-background-color, rgba(127,127,127,.08)); position: relative; overflow: hidden; }
   .tile > :not(.spark) { position: relative; }
   .tile .spark { position: absolute; left: 0; bottom: 0; width: 100%; height: 55%; pointer-events: none; }
-  .spark-a { fill: color-mix(in srgb, var(--c) 12%, transparent); }
-  .spark-l { fill: none; stroke: color-mix(in srgb, var(--c) 50%, transparent); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+  .spark-a { fill: color-mix(in srgb, var(--c, var(--sm-blue)) 12%, transparent); }
+  .spark-l { fill: none; stroke: color-mix(in srgb, var(--c, var(--sm-blue)) 50%, transparent); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
   .tile .icon { color: var(--c, var(--sm-blue)); }
   .tile .k { font-size: 11px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tile .v { font-size: 14px; font-weight: 500; }
@@ -2596,6 +2613,11 @@ const MINI_STYLE = `
   .foot span { display: inline-flex; align-items: center; gap: 2px; }
   .foot .icon { width: 14px; height: 14px; }
   .foot .rates { flex-wrap: wrap; column-gap: 8px; }
+  .foot .stopped { font-weight: 500; color: color-mix(in srgb, var(--sm-crit) 45%, var(--primary-text-color)); }
+  /* 24 h curve of the CPU and RAM rows, behind the whole row. */
+  .metric { position: relative; }
+  .metric > :not(.spark) { position: relative; }
+  .metric .spark { position: absolute; inset: -2px -4px; width: calc(100% + 8px); height: calc(100% + 4px); pointer-events: none; }
 `;
 
 /**
@@ -2611,8 +2633,13 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
     return 3;
   }
 
-  _metric(id, icon, label, p, display, cls) {
-    return `<div class="metric clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">
+  /** The compact view tints its header icon red while a monitored process is stopped. */
+  _logoAlert(sm) {
+    return !this._zoomed && this._config.show_processes !== false && this._stopped(sm).length > 0;
+  }
+
+  _metric(id, icon, label, p, display, cls, hist = null) {
+    return `<div class="metric clickable ${cls}" data-entity="${id || ""}" role="button" tabindex="0">${spark(hist?.[id], hist?.end, 100)}
       ${svgIcon(icon)}<span>${label}</span>
       <div class="bar"><div style="width:${p === null ? 0 : Math.max(0, Math.min(100, p))}%"></div></div>
       <span class="v">${display}</span>
@@ -2624,14 +2651,18 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
     if (!sm.found) return this._noSm();
     const c = this._config;
     const sc = sm.scalars;
+    const ifs = c.show_network !== false ? interfaces(sm, c) : [];
+    const net = ifs.length ? sm.nets[ifs[0]] : null;
+    // One statistics query: the CPU and RAM rows and the rates of the first interface.
+    const hist = this._histFor(sm, net ? [net.throughput_network_in, net.throughput_network_out] : []);
     const rows = [];
     const cpu = num(this._s(sc.processor_use));
     if (sc.processor_use)
-      rows.push(this._metric(sc.processor_use, ICONS.cpu, this._t("cpu"), cpu, cpu === null ? "—" : `${Math.round(cpu)}%`, metricLevel(this._config, "cpu", cpu)));
+      rows.push(this._metric(sc.processor_use, ICONS.cpu, this._t("cpu"), cpu, cpu === null ? "—" : `${Math.round(cpu)}%`, metricLevel(this._config, "cpu", cpu), hist));
     const mem = memUsage(this._hass, sc, "memory");
     if (sc.memory_use_percent || (sc.memory_use && sc.memory_free))
       rows.push(
-        this._metric(sc.memory_use_percent || sc.memory_use, ICONS.ram, this._t("ram"), mem.pct, mem.pct === null ? "—" : `${Math.round(mem.pct)}%`, metricLevel(this._config, "ram", mem.pct))
+        this._metric(sc.memory_use_percent || sc.memory_use, ICONS.ram, this._t("ram"), mem.pct, mem.pct === null ? "—" : `${Math.round(mem.pct)}%`, metricLevel(this._config, "ram", mem.pct), hist)
       );
     if (c.show_storage !== false) {
       const mount = sm.disks["/"] ? "/" : Object.keys(sm.disks)[0];
@@ -2658,15 +2689,24 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
           : this._t(unknown ? "st_unknown" : core ? "up_to_date" : "running")
       )}</span>`
     );
-    const ifs = interfaces(sm, c);
+    // Stopped processes: a red item, whose click shows the full card (its processes list unfolded), or, without the
+    // zoom button, the first stopped process.
+    const stopped = c.show_processes !== false ? this._stopped(sm) : [];
+    if (stopped.length) {
+      const text = this._t(stopped.length === 1 ? "st_stopped_one" : "st_stopped").replace("{n}", stopped.length);
+      const title = esc(stopped.length === 1 ? this._t("procs_one") : this._t("procs_many").replace("{n}", stopped.length));
+      const target = c.zoom === false ? `data-entity="${stopped[0]}"` : `data-action="zoom"`;
+      foot.push(
+        `<span class="clickable crit stopped" ${target} role="button" tabindex="0" title="${title}" aria-label="${title}"><span class="dot"></span>&nbsp;${esc(text)}</span>`
+      );
+    }
     // With their 24 h curves, the rates of the first interface get the full card's tiles above the footer (like the
     // NAS and internet box mini cards); without, they stay in the footer.
     let netRow = "";
-    if (c.show_network !== false && ifs.length && c.show_history !== false) {
-      const n = sm.nets[ifs[0]];
-      netRow = this._netRow(n, this._history([n.throughput_network_in, n.throughput_network_out].filter(Boolean)));
-    } else if (c.show_network !== false && ifs.length) {
-      const n = sm.nets[ifs[0]];
+    if (net && c.show_history !== false) {
+      netRow = this._netRow(net, hist);
+    } else if (net) {
+      const n = net;
       // One span per direction: each rate opens its own sensor.
       const rate = (id, cls, icon) => `<span class="clickable ${cls}" data-entity="${id || ""}"${id ? ' role="button" tabindex="0"' : ""}>${svgIcon(icon)}<span>${fmtRate(toBps(this._s(id)), this._loc())}</span></span>`;
       foot.push(

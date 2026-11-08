@@ -28,7 +28,7 @@ The cards are built on top of the core [System Monitor integration](https://www.
 - CPU, RAM, disk and CPU temperature gauges, uptime, load average and IP address
 - Home Assistant Core and OS versions, with an orange badge when an update is available
 - Network download / upload rates and totals, per interface (virtual interfaces such as `docker0` or `hassio` are hidden)
-- **24 h rate history**: a discreet curve of the last 24 hours behind each download / upload rate, on the full card and the mini card, from the recorder's statistics on a real time axis, with a break where the recorder has no data (refreshed every 5 minutes; `show_history: false` turns it off)
+- **24 h history**: a discreet curve of the last 24 hours behind the CPU and RAM gauges (bars on the mini card) and each download / upload rate, on the full card and the mini card, from the recorder's statistics on a real time axis, with a break where the recorder has no data (refreshed every 5 minutes; `show_history: false` turns it off)
 - Storage: every monitored mount point and the swap, with used space, and the size of the Home Assistant database
 - Monitored processes, green when running and red when stopped: hidden while they all run (their status tile shows the list on a click), always shown while one is stopped, with their overall status in the status row
 - Colors turn orange / red when a threshold is crossed (CPU, RAM, disk, temperature, swap), with thresholds you can change
@@ -150,7 +150,7 @@ cpu_critical: 90
 | `title` | all | `Home Assistant` | Card title |
 | `show_system` | full | `true` | CPU, RAM, disk and temperature gauges, uptime, load, IP address |
 | `show_network` | full, mini | `true` | Network download / upload |
-| `show_history` | full, mini | `true` | 24 h curve behind each download / upload rate, from the recorder's 5-minute statistics (on the mini card, the rates then show as tiles above the footer instead of in it) |
+| `show_history` | full, mini | `true` | 24 h curve behind the CPU and RAM gauges (bars on the mini card, RAM from its `memory_use_percent` sensor, on a 0–100 % scale) and each download / upload rate, from the recorder's 5-minute statistics (one query for all of them) (on the mini card, the rates then show as tiles above the footer instead of in it) |
 | `show_storage` | full, mini | `true` | Full card: mount points, swap and database size. Mini card: disk bar |
 | `show_processes` | full | `true` | Monitored processes and their status tile |
 | `zoom` | mini | `true` | Zoom button at the top right: shows the full card, and back to the compact view |
@@ -182,7 +182,7 @@ Under the header, a tile gives the overall status of the **Processes** section (
 
 ### Mini card
 
-The compact card shows CPU, RAM, disk and temperature bars, then the Core / OS status, the network rates and the uptime. At the far right of the header, a small round button (`mdi:arrow-expand`) shows the full card in its place, with the same options, exactly as the **System Monitor Card** shows it, and turns into `mdi:arrow-collapse` to bring the compact view back; a click anywhere outside the card does too, but not a click in a dialog opened from it (more-info). `zoom: false` removes the button.
+The compact card shows CPU, RAM, disk and temperature bars, then the Core / OS status, the network rates and the uptime. While a monitored process is stopped, its header icon turns red and its footer shows a red "N stopped" item: a click on it shows the full card with the processes list unfolded (with `zoom: false`, it opens the first stopped process). At the far right of the header, a small round button (`mdi:arrow-expand`) shows the full card in its place, with the same options, exactly as the **System Monitor Card** shows it, and turns into `mdi:arrow-collapse` to bring the compact view back; a click anywhere outside the card does too, but not a click in a dialog opened from it (more-info). `zoom: false` removes the button.
 
 ### Processes
 
