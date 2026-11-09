@@ -30,6 +30,7 @@ The cards are built on top of the core [System Monitor integration](https://www.
 - Network download / upload rates and totals, per interface (virtual interfaces such as `docker0` or `hassio` are hidden)
 - **24 h history**: a discreet curve of the last 24 hours behind the CPU and RAM gauges (bars on the mini card) and each download / upload rate, on the full card and the mini card, from the recorder's statistics on a real time axis, with a break where the recorder has no data (refreshed every 5 minutes; `show_history: false` turns it off)
 - Storage: every monitored mount point and the swap, with used space, and the size of the Home Assistant database
+- Backups: when the last automatic backup was made and when the next one is due, orange / red when it gets old or the last attempt failed (the mini card shows it only then), from Home Assistant's own backup sensors
 - Monitored processes, green when running and red when stopped: hidden while they all run (their status tile shows the list on a click), always shown while one is stopped, with their overall status in the status row
 - Colors turn orange / red when a threshold is crossed (CPU, RAM, disk, temperature, swap), with thresholds you can change
 - Click any value to open its Home Assistant history (more-info dialog)
@@ -115,6 +116,7 @@ show_system: true
 show_network: true
 show_history: true
 show_storage: true
+show_backups: true
 show_processes: true
 interface: eth0
 language: fr
@@ -128,6 +130,8 @@ temp_warning: 75
 temp_critical: 90
 swap_warning: 50
 swap_critical: 80
+backup_warning: 2
+backup_critical: 7
 ```
 
 ```yaml
@@ -152,6 +156,7 @@ cpu_critical: 90
 | `show_network` | full, mini | `true` | Network download / upload |
 | `show_history` | full, mini | `true` | 24 h curve behind the CPU and RAM gauges (bars on the mini card, RAM from its `memory_use_percent` sensor, on a 0–100 % scale) and each download / upload rate, from the recorder's 5-minute statistics (one query for all of them) (on the mini card, the rates then show as tiles above the footer instead of in it) |
 | `show_storage` | full, mini | `true` | Full card: mount points, swap and database size. Mini card: disk bar |
+| `show_backups` | full, mini | `true` | Full card: the last and next automatic backups at the end of Storage. Mini card: an orange / red item when the last backup is too old or failed |
 | `show_processes` | full | `true` | Monitored processes and their status tile |
 | `zoom` | mini | `true` | Zoom button at the top right: shows the full card, and back to the compact view |
 | `interface` | full, mini | All physical interfaces | Network interface to display (e.g. `eth0`, `enp0s3`) |
@@ -160,6 +165,7 @@ cpu_critical: 90
 | `disk_warning` / `disk_critical` | full, mini | `80` / `90` | Disk usage (%) from which the gauges and storage bars turn orange / red |
 | `temp_warning` / `temp_critical` | full, mini | `75` / `90` | CPU temperature (°C, whatever the unit of the sensor) from which the gauge turns orange / red |
 | `swap_warning` / `swap_critical` | full | `50` / `80` | Swap usage (%) from which the swap bar turns orange / red |
+| `backup_warning` / `backup_critical` | full, mini | `2` / `7` | Days since the last successful automatic backup from which the backup turns orange / red (red also when the last attempt failed, or there was never one) |
 | `language` | all | Auto | Force language: `en`, `fr`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt`, `pl`, `ro`, `da`, `sv`, `bg`, `ru`, `uk`, `hu`, `sk`, `cs`, `sl`, `lv` or `el` (auto-detects from HA settings) |
 
 ## Screenshots
@@ -187,6 +193,10 @@ The compact card shows CPU, RAM, disk and temperature bars, then the Core / OS s
 ### Processes
 
 The processes section is hidden while every monitored process runs: the **Processes** tile of the status row says "Running", and a click on it shows the list, which hides again on a click on its title or elsewhere. As soon as a process is stopped, the section shows up by itself and stays, whatever you click, until every process runs again. Its title shows the number of processes, and the number stopped in red.
+
+### Backups
+
+The **Storage** section also shows Home Assistant's automatic backups, from the sensors of the built-in Backup integration (Home Assistant 2025.2 or later, nothing to set up): *Last successful automatic backup*, *Last attempted automatic backup*, *Next scheduled automatic backup* and *Backup manager state*. The row shows when the last one was made and when the next one is due; it turns orange after `backup_warning` days, red after `backup_critical` days, when the last attempt failed or when there was never one, and says *Backing up…* while one runs. Click it for the sensor's history. Only automatic backups count (set them up in **Settings → System → Backups**).
 
 ### Database size
 

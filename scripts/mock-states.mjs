@@ -75,6 +75,18 @@ for (const [id, key, state, attributes] of [
   entities[id] = { entity_id: id, platform: "filesize", device_id: "filesize_db", translation_key: key };
 }
 
+// Home Assistant's backup sensors: the last automatic backup yesterday morning, the next one tonight.
+const at = (hours) => new Date(Date.now() + hours * 3600 * 1000).toISOString();
+for (const [id, key, state, attributes] of [
+  ["sensor.backup_backup_manager_state", "backup_manager_state", "idle", { device_class: "enum" }],
+  ["sensor.backup_last_successful_automatic_backup", "last_successful_automatic_backup", at(-27), { device_class: "timestamp" }],
+  ["sensor.backup_last_attempted_automatic_backup", "last_attempted_automatic_backup", at(-27.1), { device_class: "timestamp" }],
+  ["sensor.backup_next_scheduled_automatic_backup", "next_scheduled_automatic_backup", at(10), { device_class: "timestamp" }],
+]) {
+  states[id] = { entity_id: id, state, attributes };
+  entities[id] = { entity_id: id, platform: "backup", translation_key: key };
+}
+
 // Every monitored process running: the processes section stays folded.
 const z2m = "binary_sensor.system_monitor_process_zigbee2mqtt";
 export const procsRunning = { [z2m]: { ...states[z2m], state: "on" } };
