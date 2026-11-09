@@ -83,8 +83,8 @@ Or manually:
 
 ### Manual
 
-1. Download `system-monitor-card.js` from the [latest release](https://github.com/juju35/ha-system-monitor-card/releases/latest)
-2. Copy it to `/config/www/system-monitor-card.js`
+1. Download `system-monitor-card.js` and the `system-monitor-card.i18n.*.js` translation files from the [latest release](https://github.com/juju35/ha-system-monitor-card/releases/latest)
+2. Copy them all to `/config/www/` (without the translation files, the cards show in English)
 3. Go to **Settings → Dashboards → ⋮ → Resources** → Add resource:
    - URL: `/local/system-monitor-card.js`
    - Type: **JavaScript Module**
