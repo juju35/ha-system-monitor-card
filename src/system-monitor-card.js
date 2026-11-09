@@ -28,6 +28,8 @@ const ICONS = {
   swap: "M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z",
   close: "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z",
   chevron: "M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z",
+  // mdi:backup-restore, for the backups.
+  backup: "M12,3A9,9 0 0,0 3,12H0L4,16L8,12H5A7,7 0 0,1 12,5A7,7 0 0,1 19,12A7,7 0 0,1 12,19C10.5,19 9.09,18.5 7.94,17.7L6.5,19.14C8.04,20.3 9.94,21 12,21A9,9 0 0,0 21,12A9,9 0 0,0 12,3M14,12A2,2 0 0,0 12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12Z",
   // mdi:arrow-expand and mdi:arrow-collapse, for the zoom button of the mini card.
   expand: "M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z",
   collapse: "M19.5,3.09L15,7.59V4H13V11H20V9H16.41L20.91,4.5L19.5,3.09M4,13V15H7.59L3.09,19.5L4.5,20.91L9,16.41V20H11V13H4Z",
@@ -82,6 +84,14 @@ const STRINGS = {
     temp_critical: "Temperature critical (°C)",
     swap_warning: "Swap warning (% used)",
     swap_critical: "Swap critical (% used)",
+    backup: "Backup",
+    backup_none: "No backup yet",
+    backup_failed: "Last attempt failed",
+    backup_running: "Backing up…",
+    backup_next: "Next {when}",
+    show_backups: "Show backups",
+    backup_warning: "Backup warning (days without backup)",
+    backup_critical: "Backup critical (days without backup)",
     show_storage: "Show storage",
     show_processes: "Show processes",
     zoom: "Zoom button",
@@ -137,6 +147,14 @@ const STRINGS = {
     temp_critical: "Seuil critique température (°C)",
     swap_warning: "Seuil d’alerte swap (% utilisé)",
     swap_critical: "Seuil critique swap (% utilisé)",
+    backup: "Sauvegarde",
+    backup_none: "Aucune sauvegarde",
+    backup_failed: "Dernière tentative échouée",
+    backup_running: "Sauvegarde en cours…",
+    backup_next: "Prochaine {when}",
+    show_backups: "Afficher les sauvegardes",
+    backup_warning: "Alerte sauvegarde (jours sans sauvegarde)",
+    backup_critical: "Sauvegarde critique (jours sans sauvegarde)",
     show_storage: "Afficher le stockage",
     show_processes: "Afficher les processus",
     zoom: "Bouton zoom",
@@ -192,6 +210,14 @@ const STRINGS = {
     temp_critical: "Kritische Temperaturschwelle (°C)",
     swap_warning: "Swap-Warnschwelle (% belegt)",
     swap_critical: "Kritische Swap-Schwelle (% belegt)",
+    backup: "Backup",
+    backup_none: "Noch kein Backup",
+    backup_failed: "Letzter Versuch fehlgeschlagen",
+    backup_running: "Backup läuft…",
+    backup_next: "Nächstes {when}",
+    show_backups: "Backups anzeigen",
+    backup_warning: "Backup-Warnung (Tage ohne Backup)",
+    backup_critical: "Backup kritisch (Tage ohne Backup)",
     show_storage: "Speicher anzeigen",
     show_processes: "Prozesse anzeigen",
     zoom: "Zoom-Schaltfläche",
@@ -247,6 +273,14 @@ const STRINGS = {
     temp_critical: "Umbral crítico de temperatura (°C)",
     swap_warning: "Umbral de aviso de swap (% usado)",
     swap_critical: "Umbral crítico de swap (% usado)",
+    backup: "Copia de seguridad",
+    backup_none: "Aún sin copia",
+    backup_failed: "Último intento fallido",
+    backup_running: "Copiando…",
+    backup_next: "Próxima {when}",
+    show_backups: "Mostrar las copias de seguridad",
+    backup_warning: "Aviso de copia (días sin copia)",
+    backup_critical: "Copia crítica (días sin copia)",
     show_storage: "Mostrar el almacenamiento",
     show_processes: "Mostrar los procesos",
     zoom: "Botón de zoom",
@@ -303,6 +337,14 @@ const STRINGS = {
     temp_critical: "Критични праг температуре (°)",
     swap_warning: "Праг упозорења свопа (% заузето)",
     swap_critical: "Критични праг свопа (% заузето)",
+    backup: "Резервна копија",
+    backup_none: "Још нема копије",
+    backup_failed: "Последњи покушај није успео",
+    backup_running: "Прављење копије…",
+    backup_next: "Следећа {when}",
+    show_backups: "Прикажи резервне копије",
+    backup_warning: "Упозорење за копију (дана без копије)",
+    backup_critical: "Критично за копију (дана без копије)",
     show_storage: "Прикажи складиште",
     show_processes: "Прикажи процесе",
     zoom: "Дугме за увећање",
@@ -359,6 +401,14 @@ const STRINGS = {
     temp_critical: "Kritični prag temperature (°C)",
     swap_warning: "Prag upozorenja swapa (% zauzeto)",
     swap_critical: "Kritični prag swapa (% zauzeto)",
+    backup: "Rezervna kopija",
+    backup_none: "Još nema kopije",
+    backup_failed: "Poslednji pokušaj nije uspeo",
+    backup_running: "Pravljenje kopije…",
+    backup_next: "Sledeća {when}",
+    show_backups: "Prikaži rezervne kopije",
+    backup_warning: "Upozorenje za kopiju (dana bez kopije)",
+    backup_critical: "Kritično za kopiju (dana bez kopije)",
     show_storage: "Prikaži skladište",
     show_processes: "Prikaži procese",
     zoom: "Dugme za uvećanje",
@@ -415,6 +465,14 @@ const STRINGS = {
     temp_critical: "Soglia critica temperatura (°C)",
     swap_warning: "Soglia di avviso swap (% usato)",
     swap_critical: "Soglia critica swap (% usato)",
+    backup: "Backup",
+    backup_none: "Nessun backup",
+    backup_failed: "Ultimo tentativo fallito",
+    backup_running: "Backup in corso…",
+    backup_next: "Prossimo {when}",
+    show_backups: "Mostra i backup",
+    backup_warning: "Avviso backup (giorni senza backup)",
+    backup_critical: "Backup critico (giorni senza backup)",
     show_storage: "Mostra l'archiviazione",
     show_processes: "Mostra i processi",
     zoom: "Pulsante zoom",
@@ -471,6 +529,14 @@ const STRINGS = {
     temp_critical: "Kritieke drempel temperatuur (°C)",
     swap_warning: "Waarschuwingsdrempel swap (% gebruikt)",
     swap_critical: "Kritieke drempel swap (% gebruikt)",
+    backup: "Back-up",
+    backup_none: "Nog geen back-up",
+    backup_failed: "Laatste poging mislukt",
+    backup_running: "Back-up bezig…",
+    backup_next: "Volgende {when}",
+    show_backups: "Back-ups tonen",
+    backup_warning: "Back-upwaarschuwing (dagen zonder back-up)",
+    backup_critical: "Back-up kritiek (dagen zonder back-up)",
     show_storage: "Opslag tonen",
     show_processes: "Processen tonen",
     zoom: "Zoomknop",
@@ -527,6 +593,14 @@ const STRINGS = {
     temp_critical: "Limiar crítico de temperatura (°C)",
     swap_warning: "Limiar de aviso do swap (% usado)",
     swap_critical: "Limiar crítico do swap (% usado)",
+    backup: "Cópia de segurança",
+    backup_none: "Ainda sem cópia",
+    backup_failed: "Última tentativa falhou",
+    backup_running: "A copiar…",
+    backup_next: "Próxima {when}",
+    show_backups: "Mostrar as cópias de segurança",
+    backup_warning: "Aviso de cópia (dias sem cópia)",
+    backup_critical: "Cópia crítica (dias sem cópia)",
     show_storage: "Mostrar o armazenamento",
     show_processes: "Mostrar os processos",
     zoom: "Botão de zoom",
@@ -583,6 +657,14 @@ const STRINGS = {
     temp_critical: "Próg krytyczny temperatury (°C)",
     swap_warning: "Próg ostrzeżenia swap (% zajęte)",
     swap_critical: "Próg krytyczny swap (% zajęte)",
+    backup: "Kopia zapasowa",
+    backup_none: "Brak kopii",
+    backup_failed: "Ostatnia próba nieudana",
+    backup_running: "Tworzenie kopii…",
+    backup_next: "Następna {when}",
+    show_backups: "Pokaż kopie zapasowe",
+    backup_warning: "Ostrzeżenie kopii (dni bez kopii)",
+    backup_critical: "Kopia krytyczna (dni bez kopii)",
     show_storage: "Pokaż pamięć masową",
     show_processes: "Pokaż procesy",
     zoom: "Przycisk powiększenia",
@@ -639,6 +721,14 @@ const STRINGS = {
     temp_critical: "Prag critic temperatură (°C)",
     swap_warning: "Prag de avertizare swap (% utilizat)",
     swap_critical: "Prag critic swap (% utilizat)",
+    backup: "Copie de rezervă",
+    backup_none: "Nicio copie încă",
+    backup_failed: "Ultima încercare a eșuat",
+    backup_running: "Se face copia…",
+    backup_next: "Următoarea {when}",
+    show_backups: "Afișează copiile de rezervă",
+    backup_warning: "Avertizare copie (zile fără copie)",
+    backup_critical: "Copie critică (zile fără copie)",
     show_storage: "Afișează stocarea",
     show_processes: "Afișează procesele",
     zoom: "Buton de zoom",
@@ -695,6 +785,14 @@ const STRINGS = {
     temp_critical: "Kritisk grænse for temperatur (°C)",
     swap_warning: "Advarselsgrænse for swap (% brugt)",
     swap_critical: "Kritisk grænse for swap (% brugt)",
+    backup: "Backup",
+    backup_none: "Ingen backup endnu",
+    backup_failed: "Seneste forsøg mislykkedes",
+    backup_running: "Tager backup…",
+    backup_next: "Næste {when}",
+    show_backups: "Vis backups",
+    backup_warning: "Backup-advarsel (dage uden backup)",
+    backup_critical: "Backup kritisk (dage uden backup)",
     show_storage: "Vis lager",
     show_processes: "Vis processer",
     zoom: "Zoomknap",
@@ -751,6 +849,14 @@ const STRINGS = {
     temp_critical: "Kritisk gräns för temperatur (°C)",
     swap_warning: "Varningsgräns för swap (% använt)",
     swap_critical: "Kritisk gräns för swap (% använt)",
+    backup: "Säkerhetskopia",
+    backup_none: "Ingen säkerhetskopia än",
+    backup_failed: "Senaste försöket misslyckades",
+    backup_running: "Säkerhetskopierar…",
+    backup_next: "Nästa {when}",
+    show_backups: "Visa säkerhetskopior",
+    backup_warning: "Varning säkerhetskopia (dagar utan)",
+    backup_critical: "Kritisk säkerhetskopia (dagar utan)",
     show_storage: "Visa lagring",
     show_processes: "Visa processer",
     zoom: "Zoomknapp",
@@ -807,6 +913,14 @@ const STRINGS = {
     temp_critical: "Критичен праг за температура (°C)",
     swap_warning: "Праг за предупреждение за swap (% заето)",
     swap_critical: "Критичен праг за swap (% заето)",
+    backup: "Резервно копие",
+    backup_none: "Още няма копие",
+    backup_failed: "Последният опит е неуспешен",
+    backup_running: "Създава се копие…",
+    backup_next: "Следващо {when}",
+    show_backups: "Показване на резервните копия",
+    backup_warning: "Предупреждение за копие (дни без копие)",
+    backup_critical: "Критично за копие (дни без копие)",
     show_storage: "Показване на хранилището",
     show_processes: "Показване на процесите",
     zoom: "Бутон за мащабиране",
@@ -863,6 +977,14 @@ const STRINGS = {
     temp_critical: "Критический порог температуры (°C)",
     swap_warning: "Порог предупреждения swap (% занято)",
     swap_critical: "Критический порог swap (% занято)",
+    backup: "Резервная копия",
+    backup_none: "Копий ещё нет",
+    backup_failed: "Последняя попытка не удалась",
+    backup_running: "Создание копии…",
+    backup_next: "Следующая {when}",
+    show_backups: "Показывать резервные копии",
+    backup_warning: "Предупреждение копии (дней без копии)",
+    backup_critical: "Критично для копии (дней без копии)",
     show_storage: "Показывать хранилище",
     show_processes: "Показывать процессы",
     zoom: "Кнопка масштабирования",
@@ -919,6 +1041,14 @@ const STRINGS = {
     temp_critical: "Критичний поріг температури (°C)",
     swap_warning: "Поріг попередження swap (% зайнято)",
     swap_critical: "Критичний поріг swap (% зайнято)",
+    backup: "Резервна копія",
+    backup_none: "Копій ще немає",
+    backup_failed: "Остання спроба не вдалася",
+    backup_running: "Створення копії…",
+    backup_next: "Наступна {when}",
+    show_backups: "Показувати резервні копії",
+    backup_warning: "Попередження копії (днів без копії)",
+    backup_critical: "Критично для копії (днів без копії)",
     show_storage: "Показувати сховище",
     show_processes: "Показувати процеси",
     zoom: "Кнопка масштабування",
@@ -975,6 +1105,14 @@ const STRINGS = {
     temp_critical: "Hőmérséklet kritikus küszöb (°C)",
     swap_warning: "Swap figyelmeztetési küszöb (% foglalt)",
     swap_critical: "Swap kritikus küszöb (% foglalt)",
+    backup: "Biztonsági mentés",
+    backup_none: "Még nincs mentés",
+    backup_failed: "Az utolsó kísérlet sikertelen",
+    backup_running: "Mentés folyamatban…",
+    backup_next: "Következő: {when}",
+    show_backups: "Biztonsági mentések megjelenítése",
+    backup_warning: "Mentési figyelmeztetés (napok mentés nélkül)",
+    backup_critical: "Mentés kritikus (napok mentés nélkül)",
     show_storage: "Tárhely megjelenítése",
     show_processes: "Folyamatok megjelenítése",
     zoom: "Nagyítás gomb",
@@ -1031,6 +1169,14 @@ const STRINGS = {
     temp_critical: "Kritický prah teploty (°C)",
     swap_warning: "Prah upozornenia swapu (% obsadené)",
     swap_critical: "Kritický prah swapu (% obsadené)",
+    backup: "Záloha",
+    backup_none: "Zatiaľ bez zálohy",
+    backup_failed: "Posledný pokus zlyhal",
+    backup_running: "Zálohuje sa…",
+    backup_next: "Ďalšia {when}",
+    show_backups: "Zobraziť zálohy",
+    backup_warning: "Upozornenie zálohy (dni bez zálohy)",
+    backup_critical: "Kritická záloha (dni bez zálohy)",
     show_storage: "Zobraziť úložisko",
     show_processes: "Zobraziť procesy",
     zoom: "Tlačidlo priblíženia",
@@ -1087,6 +1233,14 @@ const STRINGS = {
     temp_critical: "Kritický práh teploty (°C)",
     swap_warning: "Práh varování swapu (% obsazeno)",
     swap_critical: "Kritický práh swapu (% obsazeno)",
+    backup: "Záloha",
+    backup_none: "Zatím bez zálohy",
+    backup_failed: "Poslední pokus selhal",
+    backup_running: "Zálohuje se…",
+    backup_next: "Další {when}",
+    show_backups: "Zobrazit zálohy",
+    backup_warning: "Upozornění zálohy (dny bez zálohy)",
+    backup_critical: "Kritická záloha (dny bez zálohy)",
     show_storage: "Zobrazit úložiště",
     show_processes: "Zobrazit procesy",
     zoom: "Tlačítko přiblížení",
@@ -1143,6 +1297,14 @@ const STRINGS = {
     temp_critical: "Kritični prag temperature (°C)",
     swap_warning: "Prag opozorila swapa (% zasedeno)",
     swap_critical: "Kritični prag swapa (% zasedeno)",
+    backup: "Varnostna kopija",
+    backup_none: "Še ni kopije",
+    backup_failed: "Zadnji poskus ni uspel",
+    backup_running: "Varnostno kopiranje…",
+    backup_next: "Naslednja {when}",
+    show_backups: "Prikaži varnostne kopije",
+    backup_warning: "Opozorilo kopije (dni brez kopije)",
+    backup_critical: "Kritična kopija (dni brez kopije)",
     show_storage: "Prikaži shrambo",
     show_processes: "Prikaži procese",
     zoom: "Gumb za povečavo",
@@ -1199,6 +1361,14 @@ const STRINGS = {
     temp_critical: "Temperatūras kritiskais slieksnis (°C)",
     swap_warning: "Swap brīdinājuma slieksnis (% aizņemts)",
     swap_critical: "Swap kritiskais slieksnis (% aizņemts)",
+    backup: "Rezerves kopija",
+    backup_none: "Vēl nav kopijas",
+    backup_failed: "Pēdējais mēģinājums neizdevās",
+    backup_running: "Veido kopiju…",
+    backup_next: "Nākamā {when}",
+    show_backups: "Rādīt rezerves kopijas",
+    backup_warning: "Kopijas brīdinājums (dienas bez kopijas)",
+    backup_critical: "Kopija kritiska (dienas bez kopijas)",
     show_storage: "Rādīt krātuvi",
     show_processes: "Rādīt procesus",
     zoom: "Tālummaiņas poga",
@@ -1255,6 +1425,14 @@ const STRINGS = {
     temp_critical: "Κρίσιμο όριο θερμοκρασίας (°C)",
     swap_warning: "Όριο προειδοποίησης swap (% σε χρήση)",
     swap_critical: "Κρίσιμο όριο swap (% σε χρήση)",
+    backup: "Αντίγραφο ασφαλείας",
+    backup_none: "Δεν υπάρχει ακόμη αντίγραφο",
+    backup_failed: "Η τελευταία προσπάθεια απέτυχε",
+    backup_running: "Δημιουργία αντιγράφου…",
+    backup_next: "Επόμενο {when}",
+    show_backups: "Εμφάνιση αντιγράφων ασφαλείας",
+    backup_warning: "Προειδοποίηση αντιγράφου (ημέρες χωρίς)",
+    backup_critical: "Κρίσιμο αντίγραφο (ημέρες χωρίς)",
     show_storage: "Εμφάνιση αποθήκευσης",
     show_processes: "Εμφάνιση διεργασιών",
     zoom: "Κουμπί μεγέθυνσης",
@@ -1404,6 +1582,9 @@ const THRESHOLDS = {
   temp_critical: 90,
   swap_warning: 50,
   swap_critical: 80,
+  // Days since the last successful automatic backup.
+  backup_warning: 2,
+  backup_critical: 7,
 };
 
 /** A threshold option as a number, or its default when unset or not a number. */
@@ -1833,12 +2014,60 @@ const discoverDatabase = registryCache((hass, missing) => {
   return null;
 });
 
+/**
+ * Home Assistant's own backup sensors (platform "backup", Home Assistant 2025.2+): the manager's state and the
+ * last successful, last attempted and next scheduled automatic backups, by translation key.
+ */
+const BACKUP_KEYS = ["backup_manager_state", "last_successful_automatic_backup", "last_attempted_automatic_backup", "next_scheduled_automatic_backup"];
+const discoverBackup = registryCache((hass, missing) => {
+  const found = {};
+  for (const e of platformEntities(hass, "backup", missing)) {
+    if (e.entity_id.startsWith("sensor.") && BACKUP_KEYS.includes(e.translation_key)) found[e.translation_key] = e.entity_id;
+  }
+  return found.last_successful_automatic_backup || found.next_scheduled_automatic_backup ? found : null;
+});
+
+/** Relative time of a date ("2 days ago", "in 5 hours"), in minutes, hours or days. */
+const fmtRelative = (ms, loc) => {
+  const sec = (ms - Date.now()) / 1000;
+  const abs = Math.abs(sec);
+  const [v, unit] = abs < 3600 ? [sec / 60, "minute"] : abs < 172800 ? [sec / 3600, "hour"] : [sec / 86400, "day"];
+  try {
+    return new Intl.RelativeTimeFormat(loc, { numeric: "auto" }).format(Math.round(v), unit);
+  } catch {
+    return new Intl.RelativeTimeFormat("en", { numeric: "auto" }).format(Math.round(v), unit);
+  }
+};
+
+const dateOf = (s) => {
+  const ms = isUnknown(s) ? Number.NaN : Date.parse(s.state);
+  return Number.isFinite(ms) ? ms : null;
+};
+
+/**
+ * Where the automatic backups stand: the entity to open, the level ("ok", "warn", "crit") and what to show. A backup
+ * older than `backup_warning` days is a warning, older than `backup_critical` days (or never made, or the last attempt
+ * failed) is critical; one running is neither.
+ */
+const backupStatus = (hass, config, b) => {
+  const st = (k) => (b[k] ? hass.states[b[k]] : undefined);
+  const last = dateOf(st("last_successful_automatic_backup"));
+  const attempt = dateOf(st("last_attempted_automatic_backup"));
+  const next = dateOf(st("next_scheduled_automatic_backup"));
+  const running = ["create_backup", "receive_backup", "restore_backup"].includes(st("backup_manager_state")?.state);
+  // An attempt more than a minute after the last success did not succeed (the success is stamped at its end).
+  const failed = !running && attempt !== null && (last === null || attempt - last > 60000);
+  const days = last === null ? null : (Date.now() - last) / 86400000;
+  const lvl = running ? "ok" : failed || last === null ? "crit" : level(days, threshold(config, "backup_warning"), threshold(config, "backup_critical"));
+  return { id: b.last_successful_automatic_backup || b.next_scheduled_automatic_backup, last, next, running, failed, level: lvl };
+};
+
 /** Entity ids a card reads its states from: a change of any other state doesn't re-render it. */
 const trackedIds = (hass) => {
   const sm = discover(hass);
   const ids = [...Object.values(sm.scalars), ...Object.values(sm.procs), sm.core_update, sm.os_update];
   for (const group of [sm.disks, sm.nets]) for (const g of Object.values(group)) ids.push(...Object.values(g));
-  ids.push(discoverDatabase(hass));
+  ids.push(discoverDatabase(hass), ...Object.values(discoverBackup(hass) || {}));
   return ids;
 };
 
@@ -2312,6 +2541,7 @@ const FULL_STYLE = `
   .row .tag { font-size: 11px; padding: 1px 6px; border-radius: 6px; background: var(--secondary-background-color, rgba(127,127,127,.12));
               color: var(--secondary-text-color); }
   .vol .bar { margin: 4px 0 0; grid-column: 1 / -1; grid-row: 2; }
+  .vol.backup.warn .when, .vol.backup.crit .when { color: color-mix(in srgb, var(--c) 45%, var(--primary-text-color)); font-weight: 600; }
   .vol .detail { font-size: 11px; color: var(--secondary-text-color); display: flex; justify-content: flex-end; grid-column: 2; grid-row: 1; gap: 8px; }
   /* Narrow card: the mount point (the main information) keeps the whole line, the used / total size goes under the bar. */
   @container sm-content (max-width: 300px) {
@@ -2482,6 +2712,17 @@ class SystemMonitorCard extends SystemMonitorBase {
         <div class="row">${svgIcon(ICONS.database)}<span class="grow">${this._t("database")}</span></div>
         <div class="detail"><span>${fmtBytes(toBytes(this._s(db)), this._loc())}</span></div>
       </div>`);
+    const bk = this._config.show_backups !== false ? discoverBackup(this._hass) : null;
+    if (bk) {
+      const b = backupStatus(this._hass, this._config, bk);
+      const loc = this._loc();
+      const when = b.last === null ? this._t("backup_none") : fmtRelative(b.last, loc);
+      const detail = b.running ? this._t("backup_running") : b.failed ? this._t("backup_failed") : b.next !== null ? this._t("backup_next").replace("{when}", fmtRelative(b.next, loc)) : "";
+      rows.push(`<div class="vol clickable backup ${b.level}" data-entity="${b.id}" role="button" tabindex="0">
+        <div class="row">${svgIcon(ICONS.backup)}<span class="grow">${this._t("backup")}</span></div>
+        <div class="detail">${detail ? `<span>${esc(detail)}</span>` : ""}<span class="when">${esc(when)}</span></div>
+      </div>`);
+    }
     if (!rows.length) return "";
     return `<div><div class="section-title">${svgIcon(ICONS.database)}${this._label("storage")}</div>${rows.join("")}</div>`;
   }
@@ -2707,6 +2948,13 @@ class SystemMonitorMiniCard extends SystemMonitorZoomCard {
         `<span class="clickable crit stopped" ${target} role="button" tabindex="0" title="${title}" aria-label="${title}"><span class="dot"></span>&nbsp;${esc(text)}</span>`
       );
     }
+    // Backups too old, missing or failed: an item of their level, opening the backup sensor.
+    const bk = c.show_backups !== false ? discoverBackup(this._hass) : null;
+    const b = bk ? backupStatus(this._hass, this._config, bk) : null;
+    if (b && (b.level === "warn" || b.level === "crit")) {
+      const text = b.failed ? this._t("backup_failed") : b.last === null ? this._t("backup_none") : `${this._t("backup")} ${fmtRelative(b.last, this._loc())}`;
+      foot.push(`<span class="clickable ${b.level}" data-entity="${b.id}" role="button" tabindex="0"><span class="dot"></span>&nbsp;${esc(text)}</span>`);
+    }
     // With their 24 h curves, the rates of the first interface get the full card's tiles above the footer (like the
     // NAS and internet box mini cards); without, they stay in the footer.
     let netRow = "";
@@ -2780,7 +3028,15 @@ class SystemMonitorEditorBase extends HTMLElement {
         name: "",
         schema: Object.keys(THRESHOLDS).map((name) => ({
           name,
-          selector: { number: { min: 0, max: name.startsWith("temp") ? 150 : 100, step: 1, mode: "box", unit_of_measurement: name.startsWith("temp") ? "°C" : "%" } },
+          selector: {
+            number: {
+              min: 0,
+              max: name.startsWith("temp") ? 150 : name.startsWith("backup") ? 365 : 100,
+              step: 1,
+              mode: "box",
+              unit_of_measurement: name.startsWith("temp") ? "°C" : name.startsWith("backup") ? "d" : "%",
+            },
+          },
         })),
       },
       {
@@ -2865,13 +3121,13 @@ class SystemMonitorEditorBase extends HTMLElement {
 
 class SystemMonitorCardEditor extends SystemMonitorEditorBase {
   static get toggles() {
-    return ["show_system", "show_network", "show_history", "show_storage", "show_processes"];
+    return ["show_system", "show_network", "show_history", "show_storage", "show_backups", "show_processes"];
   }
 }
 
 class SystemMonitorMiniCardEditor extends SystemMonitorEditorBase {
   static get toggles() {
-    return ["show_storage", "show_network", "show_history", "zoom"];
+    return ["show_storage", "show_backups", "show_network", "show_history", "zoom"];
   }
 }
 

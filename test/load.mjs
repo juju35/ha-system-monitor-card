@@ -6,6 +6,8 @@ import vm from "node:vm";
 const NAMES = [
   "discover",
   "discoverDatabase",
+  "discoverBackup",
+  "backupStatus",
   "trackedIds",
   "renderSignature",
   "sameSignature",

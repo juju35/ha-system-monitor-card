@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.5.0 - 2026-11-09
+
+### Features
+- **Backups**: the full card's Storage section shows when Home Assistant's last automatic backup was made and when the next one is due, from the built-in Backup integration's sensors (no setup). It turns orange after `backup_warning` days (2), red after `backup_critical` days (7), when the last attempt failed or when there was never one, and says *Backing up…* while one runs. The mini card shows an orange / red item only then. `show_backups: false` hides it.
+
 ## 2.4.1 - 2026-11-09
 
 ### Fixes
