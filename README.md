@@ -1,5 +1,8 @@
 # ha-system-monitor-card
 
+> [!WARNING]
+> **Deprecated, this repository is archived.** The System Monitor cards are now served by [System Hub](https://github.com/juju35/ha-system-hub), under the same names (`custom:system-monitor-card`…). No more updates are published here: install System Hub, then remove this card's dashboard resource so it is not registered twice. See [Migrating](https://github.com/juju35/ha-system-hub#migrating).
+
 [![Marketplace](https://img.shields.io/badge/Marketplace-Custom-41BDF5.svg)](https://www.home-assistant.io/integrations/marketplace/)
 [![HACS Validation](https://github.com/juju35/ha-system-monitor-card/actions/workflows/hacs.yml/badge.svg)](https://github.com/juju35/ha-system-monitor-card/actions/workflows/hacs.yml)
 [![Validate](https://github.com/juju35/ha-system-monitor-card/actions/workflows/validate.yml/badge.svg)](https://github.com/juju35/ha-system-monitor-card/actions/workflows/validate.yml)
